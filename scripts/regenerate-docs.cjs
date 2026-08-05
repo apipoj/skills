@@ -112,11 +112,16 @@ function renderBlock(name, manifest, contract = null, relativePath = '') {
 }
 
 function regenerateContent(text, manifest, contract = null, relativePath = '') {
+  const lineEnding = text.includes('\r\n') ? '\r\n' : '\n';
   return text.replace(MARKER_RE, (match, blockName) => {
     const fullName = `SPK-${blockName}`;
     const rendered = renderBlock(fullName, manifest, contract, relativePath);
     if (rendered === null) return match;
-    return `<!-- ${fullName}:start -->\n${rendered}\n<!-- ${fullName}:end -->`;
+    return [
+      `<!-- ${fullName}:start -->`,
+      rendered.replace(/\r?\n/g, lineEnding),
+      `<!-- ${fullName}:end -->`,
+    ].join(lineEnding);
   });
 }
 
