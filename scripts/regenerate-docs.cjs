@@ -26,14 +26,42 @@ function parseMarkers(text) {
   return blocks;
 }
 
-function renderBlock(name, manifest) {
+function commandTarget(command) {
+  return command.orchestrator || command.agent ||
+    (command.direct === true ? 'direct main-thread workflow' : '(invalid target)');
+}
+
+function splitCommands(manifest, contract) {
+  if (!contract || !Array.isArray(contract.skills)) {
+    return { canonical: manifest.commands, aliases: [] };
+  }
+  const byId = new Map(contract.skills.map(skill => [skill.id, skill]));
+  const canonical = [];
+  const aliases = [];
+  for (const command of manifest.commands) {
+    const id = command.name.replace(/^\//, '');
+    const skill = byId.get(id);
+    if (skill?.tier === 'compat') aliases.push({ command, skill });
+    else canonical.push(command);
+  }
+  return { canonical, aliases };
+}
+
+function renderBlock(name, manifest, contract = null, relativePath = '') {
+  const thai = relativePath === 'README.md';
+  const { canonical, aliases } = splitCommands(manifest, contract);
   switch (name) {
     case 'SPK-COUNTS': {
       const orch = manifest.agents.orchestrators.length;
       const spec = manifest.agents.specialists.length;
       const total = orch + spec;
-      const skills = manifest.commands.length;
-      return `**${total} subagents** (${orch} orchestrators + ${spec} specialists) · **${skills} skills**`;
+      if (aliases.length > 0) {
+        const roster = thai
+          ? `**${canonical.length} skills หลัก** + **${aliases.length} ชื่อเดิม**`
+          : `**${canonical.length} canonical skills** + **${aliases.length} compatibility aliases**`;
+        return `**${total} subagents** (${orch} orchestrators + ${spec} specialists) · ${roster}`;
+      }
+      return `**${total} subagents** (${orch} orchestrators + ${spec} specialists) · **${canonical.length} skills**`;
     }
     case 'SPK-AGENTS': {
       const rows = [
@@ -47,14 +75,34 @@ function renderBlock(name, manifest) {
       return rows.join('\n');
     }
     case 'SPK-COMMANDS': {
+      if (aliases.length === 0) {
+        return [
+          '| Skill | Dispatches to subagent |',
+          '|---|---|',
+          ...canonical.map(command => {
+            const slug = command.name.replace(/^\//, '');
+            return `| \`/spk:${slug}\` | ${commandTarget(command)} |`;
+          }),
+        ].join('\n');
+      }
       const rows = [
-        '| Skill | Dispatches to subagent |',
+        thai ? '### ชื่อหลัก' : '### Canonical skills',
+        '',
+        thai ? '| Skill | ทำงานผ่าน |' : '| Skill | Dispatches to |',
         '|---|---|',
-        ...manifest.commands.map(c => {
-          const target = c.orchestrator || c.agent || (c.direct === true ? 'direct main-thread workflow' : '(invalid target)');
-          const slug = c.name.replace(/^\//, '');
-          return `| \`/spk:${slug}\` | ${target} |`;
-        })
+        ...canonical.map(command => {
+          const slug = command.name.replace(/^\//, '');
+          return `| \`/spk:${slug}\` | ${commandTarget(command)} |`;
+        }),
+        '',
+        thai ? '### ชื่อเดิมที่ยังใช้ได้' : '### Compatibility aliases',
+        '',
+        thai ? '| ชื่อเดิม | ใช้ชื่อหลักนี้ |' : '| Legacy name | Canonical name |',
+        '|---|---|',
+        ...aliases.map(({ command, skill }) => {
+          const slug = command.name.replace(/^\//, '');
+          return `| \`/spk:${slug}\` | \`/spk:${skill.aliasFor}\` |`;
+        }),
       ];
       return rows.join('\n');
     }
@@ -63,10 +111,10 @@ function renderBlock(name, manifest) {
   }
 }
 
-function regenerateContent(text, manifest) {
+function regenerateContent(text, manifest, contract = null, relativePath = '') {
   return text.replace(MARKER_RE, (match, blockName) => {
     const fullName = `SPK-${blockName}`;
-    const rendered = renderBlock(fullName, manifest);
+    const rendered = renderBlock(fullName, manifest, contract, relativePath);
     if (rendered === null) return match;
     return `<!-- ${fullName}:start -->\n${rendered}\n<!-- ${fullName}:end -->`;
   });
@@ -132,6 +180,7 @@ function main() {
   const checkMode = args.includes('--check');
   const rootDir = path.join(__dirname, '..');
   const manifest = JSON.parse(fs.readFileSync(path.join(rootDir, 'manifest.json'), 'utf-8'));
+  const contract = JSON.parse(fs.readFileSync(path.join(rootDir, 'contracts/workflows.json'), 'utf-8'));
   const files = listTargetFiles(rootDir);
 
   let anyChanged = false;
@@ -142,7 +191,7 @@ function main() {
     if (Object.prototype.hasOwnProperty.call(EXPECTED_MARKERS, relative)) {
       markerErrors.push(...collectMarkerContractErrors(relative, original));
     }
-    const regenerated = regenerateContent(original, manifest);
+    const regenerated = regenerateContent(original, manifest, contract, relative);
     if (original !== regenerated) {
       anyChanged = true;
       if (checkMode) {
@@ -174,5 +223,6 @@ module.exports = {
   parseMarkers,
   regenerateContent,
   renderBlock,
+  splitCommands,
   listTargetFiles,
 };

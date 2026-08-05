@@ -219,8 +219,8 @@ describe('hook output contract', () => {
     const out = JSON.parse(result.stdout);
     expect(out.hookSpecificOutput.hookEventName).toBe('PostToolUse');
     expect(out.hookSpecificOutput.additionalContext).toMatch(/new source detected/);
-    expect(out.hookSpecificOutput.additionalContext).toMatch(/\/spk:ingest/);
-    expect(out.hookSpecificOutput.additionalContext).toMatch(/\$spk:ingest/);
+    expect(out.hookSpecificOutput.additionalContext).toMatch(/\/spk:add-knowledge/);
+    expect(out.hookSpecificOutput.additionalContext).toMatch(/\$spk:add-knowledge/);
   });
 
   test('auto-ingest stays silent for non-source writes', () => {

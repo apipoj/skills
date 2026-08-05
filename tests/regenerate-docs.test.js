@@ -50,6 +50,12 @@ describe('regenerateContent', () => {
     },
     commands: [{ name: '/spk-plan' }, { name: '/spk-code' }]
   };
+  const contract = {
+    skills: [
+      { id: 'spk-plan', tier: 'core' },
+      { id: 'spk-code', tier: 'compat', aliasFor: 'spk-plan' },
+    ],
+  };
 
   test('replaces SPK-COUNTS block with totals', () => {
     const input = `## AI Sprint Kit
@@ -77,6 +83,27 @@ OLD
   test('no-op when no markers present', () => {
     const input = '# Header\nplain text';
     expect(regenerateContent(input, manifest)).toBe(input);
+  });
+
+  test('separates canonical skills from compatibility aliases', () => {
+    const input = `<!-- SPK-COMMANDS:start -->
+OLD
+<!-- SPK-COMMANDS:end -->`;
+    const output = regenerateContent(input, manifest, contract, 'README.md');
+    expect(output).toContain('### ชื่อหลัก');
+    expect(output).toContain('`/spk:spk-plan`');
+    expect(output).toContain('### ชื่อเดิมที่ยังใช้ได้');
+    expect(output).toContain('| `/spk:spk-code` | `/spk:spk-plan` |');
+  });
+
+  test('reports canonical and compatibility counts separately', () => {
+    const input = `<!-- SPK-COUNTS:start -->
+OLD
+<!-- SPK-COUNTS:end -->`;
+    const output = regenerateContent(input, manifest, contract, 'README-EN.md');
+    expect(output).toContain('**1 canonical skills**');
+    expect(output).toContain('**1 compatibility aliases**');
+    expect(output).not.toContain('**2 skills**');
   });
 });
 

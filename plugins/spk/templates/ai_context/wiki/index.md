@@ -19,4 +19,4 @@ Last updated: (empty — filled on first ingest)
 
 ---
 
-Drop a source file into `ai_context/sources/` and run `/spk:ingest <path>` (or let auto-ingest pick it up) to populate the wiki.
+Drop a source file into `ai_context/sources/` and run `/spk:add-knowledge <path>` (or let auto-ingest pick it up) to populate the wiki.

@@ -7,43 +7,42 @@ const contract = require('../contracts/workflows.json');
 
 const upstreamCanonical = [
   'start',
-  'diagnosing-bugs',
-  'grill-with-docs',
+  'debug',
+  'ask-with-docs',
   'triage',
-  'improve-codebase-architecture',
+  'improve-codebase',
   'setup',
   'tdd',
   'to-spec',
   'to-tickets',
   'wayfinder',
-  'implement',
+  'code',
   'prototype',
   'research',
   'domain-modeling',
   'codebase-design',
   'code-review',
-  'resolving-merge-conflicts',
-  'grill-me',
-  'grilling',
+  'fix-conflicts',
+  'asking',
   'handoff',
   'teach',
-  'writing-great-skills',
+  'write-skills',
 ];
 
 const spkCore = [
   'ask-me',
   'plan',
-  'design-shotgun',
+  'design-options',
   'deploy',
   'pr',
   'task-to-pr',
-  'ingest',
-  'prime',
-  'query',
-  'wiki-lint',
+  'add-knowledge',
+  'load-project',
+  'ask-project',
+  'check-wiki',
   'doctor',
-  'release-check',
-  'scoped-tests',
+  'check-release',
+  'test-changes',
   'uninstall',
 ];
 
@@ -52,9 +51,22 @@ const aliases = {
   'setup-matt-pocock-skills': 'setup',
   spk: 'start',
   jumpstart: 'start',
-  code: 'implement',
-  debug: 'diagnosing-bugs',
   review: 'code-review',
+  'grill-me': 'ask-me',
+  grilling: 'asking',
+  'grill-with-docs': 'ask-with-docs',
+  'diagnosing-bugs': 'debug',
+  implement: 'code',
+  'design-shotgun': 'design-options',
+  'resolving-merge-conflicts': 'fix-conflicts',
+  'writing-great-skills': 'write-skills',
+  prime: 'load-project',
+  query: 'ask-project',
+  ingest: 'add-knowledge',
+  'wiki-lint': 'check-wiki',
+  'improve-codebase-architecture': 'improve-codebase',
+  'scoped-tests': 'test-changes',
+  'release-check': 'check-release',
 };
 
 describe('Apipoj Skills v5 migration contract', () => {
@@ -71,13 +83,13 @@ describe('Apipoj Skills v5 migration contract', () => {
     });
   });
 
-  test('declares 36 canonical skills and seven temporary aliases', () => {
+  test('declares 35 canonical skills and 20 temporary aliases', () => {
     const skills = new Map(contract.skills.map(skill => [skill.id, skill]));
     const canonical = [...upstreamCanonical, ...spkCore];
 
-    expect(new Set(canonical).size).toBe(36);
-    expect(contract.skills).toHaveLength(43);
-    expect(manifest.commands).toHaveLength(43);
+    expect(new Set(canonical).size).toBe(35);
+    expect(contract.skills).toHaveLength(55);
+    expect(manifest.commands).toHaveLength(55);
 
     for (const id of canonical) {
       expect(skills.get(id)).toMatchObject({ tier: 'core' });

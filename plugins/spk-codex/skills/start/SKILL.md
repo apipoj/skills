@@ -26,17 +26,17 @@ Apply a safe smart default when it is reversible and does not change scope. If a
    - `external_write` — change GitHub, an issue tracker, deployment, or another remote only after exact approval.
    - `destructive` — remove data only after showing exact targets and receiving approval.
 4. Route by outcome:
-   - sharpen an idea or decision → `ask-me`, `grill-me`, or `grill-with-docs`
+   - sharpen an idea or decision → `ask-me`, `asking`, or `ask-with-docs`
    - create an engineering plan → `plan`; publish an existing discussion as a spec → `to-spec`
    - split work → `to-tickets`; map a large foggy effort → `wayfinder`
-   - build an approved plan → `implement`; use a strict red-green loop → `tdd`
-   - investigate a failure → `diagnosing-bugs`; review a diff → `code-review`; get fast test feedback → `scoped-tests`
-   - answer a code-shape question → `prototype`; compare UI directions → `design-shotgun`
-   - improve module shape → `codebase-design` or `improve-codebase-architecture`
-   - triage incoming work → `triage`; resolve Git conflicts → `resolving-merge-conflicts`
-   - inspect or build project knowledge → `query`, `research`, `ingest`, `domain-modeling`, or `wiki-lint`
-   - configure or orient a repository → `setup` or `prime`; check installation → `doctor`
-   - prepare delivery → `release-check`, `pr`, `task-to-pr`, or `deploy`; remove Apipoj Skills → `uninstall`
+   - build an approved plan → `code`; use a strict red-green loop → `tdd`
+   - investigate a failure → `debug`; review a diff → `code-review`; get fast test feedback → `test-changes`
+   - answer a code-shape question → `prototype`; compare UI directions → `design-options`
+   - improve module shape → `codebase-design` or `improve-codebase`
+   - triage incoming work → `triage`; resolve Git conflicts → `fix-conflicts`
+   - inspect or build project knowledge → `ask-project`, `research`, `add-knowledge`, `domain-modeling`, or `check-wiki`
+   - configure or orient a repository → `setup` or `load-project`; check installation → `doctor`
+   - prepare delivery → `check-release`, `pr`, `task-to-pr`, or `deploy`; remove Apipoj Skills → `uninstall`
    - carry context to a fresh session → `handoff`; learn a topic → `teach`
 5. Run only the selected workflow when it is available and within authority. Recommend adjacent work as a next action instead of silently chaining it.
 6. Finish with the result first, then concise evidence, risks, and the next smallest action.

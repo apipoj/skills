@@ -116,25 +116,25 @@
       ]
     },
     {
-      "id": "diagnosing-bugs",
+      "id": "debug",
       "tier": "core",
       "origin": {
         "repository": "mattpocock/skills",
         "skill": "diagnosing-bugs"
       },
       "sources": {
-        "th": "skills/engineering/diagnosing-bugs",
-        "en": "locales/en/skills/engineering/diagnosing-bugs"
+        "th": "skills/engineering/debug",
+        "en": "locales/en/skills/engineering/debug"
       },
       "locales": {
         "en": {
-          "displayName": "Diagnosing Bugs",
+          "displayName": "Debug",
           "description": "Diagnose a reproducible software failure by tightening the red feedback loop, testing one hypothesis at a time, and proving root cause before recommending a fix.",
           "shortDescription": "Diagnose a reproducible software failure by tightening the red feedback loop, testing one hypoth",
-          "defaultPrompt": "Use diagnosing-bugs for my current request.",
+          "defaultPrompt": "Use debug for my current request.",
           "triggers": [
-            "use diagnosing-bugs",
-            "diagnosing-bugs workflow"
+            "use debug",
+            "debug workflow"
           ],
           "negativeTriggers": [
             "the request is outside this workflow",
@@ -142,13 +142,13 @@
           ]
         },
         "th": {
-          "displayName": "วินิจฉัยบั๊ก",
-          "description": "หาต้นเหตุของบั๊กหรือ performance regression ด้วย feedback loop ที่สั้น ชัด และพิสูจน์ซ้ำได้",
-          "shortDescription": "หาต้นเหตุของบั๊กหรือ performance regression ด้วย feedback loop ที่สั้น ชัด และพิสูจน์ซ้ำได้",
-          "defaultPrompt": "ใช้ diagnosing-bugs กับคำขอนี้",
+          "displayName": "หาต้นเหตุของบั๊ก",
+          "description": "หาต้นเหตุของบั๊กหรือปัญหาความเร็วทีละสมมติฐาน และพิสูจน์สาเหตุก่อนเสนอวิธีแก้",
+          "shortDescription": "หาต้นเหตุของบั๊กหรือปัญหาความเร็วทีละสมมติฐาน และพิสูจน์สาเหตุก่อนเสนอวิธีแก้",
+          "defaultPrompt": "ใช้ debug กับคำขอนี้",
           "triggers": [
-            "ใช้ diagnosing-bugs",
-            "ทำงานแบบ diagnosing-bugs"
+            "ใช้ debug",
+            "ทำงานแบบ debug"
           ],
           "negativeTriggers": [
             "คำขออยู่นอกขอบเขต workflow นี้",
@@ -168,7 +168,7 @@
         },
         {
           "phase": "execute",
-          "instruction": "Apply the diagnosing-bugs discipline in the smallest complete slice; ask one material question only when needed."
+          "instruction": "Apply the debug discipline in the smallest complete slice; ask one material question only when needed."
         },
         {
           "phase": "verify",
@@ -176,7 +176,7 @@
         }
       ],
       "artifacts": [
-        "diagnosing-bugs result",
+        "debug result",
         "verification evidence"
       ],
       "evidence": [
@@ -191,25 +191,25 @@
       ]
     },
     {
-      "id": "grill-with-docs",
+      "id": "ask-with-docs",
       "tier": "core",
       "origin": {
         "repository": "mattpocock/skills",
         "skill": "grill-with-docs"
       },
       "sources": {
-        "th": "skills/engineering/grill-with-docs",
-        "en": "locales/en/skills/engineering/grill-with-docs"
+        "th": "skills/engineering/ask-with-docs",
+        "en": "locales/en/skills/engineering/ask-with-docs"
       },
       "locales": {
         "en": {
-          "displayName": "Grill With Docs",
+          "displayName": "Ask With Docs",
           "description": "ถามทีละ decision เพื่อทำแผนหรือ design ให้ชัด พร้อมอัปเดตศัพท์และเหตุผลสำคัญของ project",
           "shortDescription": "ถามทีละ decision เพื่อทำแผนหรือ design ให้ชัด พร้อมอัปเดตศัพท์และเหตุผลสำคัญของ project",
-          "defaultPrompt": "Use grill-with-docs for my current request.",
+          "defaultPrompt": "Use ask-with-docs for my current request.",
           "triggers": [
-            "use grill-with-docs",
-            "grill-with-docs workflow"
+            "use ask-with-docs",
+            "ask-with-docs workflow"
           ],
           "negativeTriggers": [
             "the request is outside this workflow",
@@ -217,13 +217,13 @@
           ]
         },
         "th": {
-          "displayName": "ถามให้ชัดพร้อมเก็บความรู้",
-          "description": "ถามทีละ decision เพื่อทำแผนหรือ design ให้ชัด พร้อมอัปเดตศัพท์และเหตุผลสำคัญของ project",
-          "shortDescription": "ถามทีละ decision เพื่อทำแผนหรือ design ให้ชัด พร้อมอัปเดตศัพท์และเหตุผลสำคัญของ project",
-          "defaultPrompt": "ใช้ grill-with-docs กับคำขอนี้",
+          "displayName": "ถามพร้อมเก็บความรู้",
+          "description": "ถามทีละเรื่องให้แผนหรือ design ชัด พร้อมอัปเดตคำศัพท์และเหตุผลสำคัญของโปรเจกต์",
+          "shortDescription": "ถามทีละเรื่องให้แผนหรือ design ชัด พร้อมอัปเดตคำศัพท์และเหตุผลสำคัญของโปรเจกต์",
+          "defaultPrompt": "ใช้ ask-with-docs กับคำขอนี้",
           "triggers": [
-            "ใช้ grill-with-docs",
-            "ทำงานแบบ grill-with-docs"
+            "ใช้ ask-with-docs",
+            "ทำงานแบบ ask-with-docs"
           ],
           "negativeTriggers": [
             "คำขออยู่นอกขอบเขต workflow นี้",
@@ -243,7 +243,7 @@
         },
         {
           "phase": "execute",
-          "instruction": "Apply the grill-with-docs discipline in the smallest complete slice; ask one material question only when needed."
+          "instruction": "Apply the ask-with-docs discipline in the smallest complete slice; ask one material question only when needed."
         },
         {
           "phase": "verify",
@@ -251,7 +251,7 @@
         }
       ],
       "artifacts": [
-        "grill-with-docs result",
+        "ask-with-docs result",
         "verification evidence"
       ],
       "evidence": [
@@ -341,25 +341,25 @@
       ]
     },
     {
-      "id": "improve-codebase-architecture",
+      "id": "improve-codebase",
       "tier": "core",
       "origin": {
         "repository": "mattpocock/skills",
         "skill": "improve-codebase-architecture"
       },
       "sources": {
-        "th": "skills/engineering/improve-codebase-architecture",
-        "en": "locales/en/skills/engineering/improve-codebase-architecture"
+        "th": "skills/engineering/improve-codebase",
+        "en": "locales/en/skills/engineering/improve-codebase"
       },
       "locales": {
         "en": {
-          "displayName": "Improve Codebase Architecture",
+          "displayName": "Improve Codebase",
           "description": "หาโอกาสทำ module ให้ลึกขึ้น เข้าใจง่ายขึ้น และทดสอบผ่าน interface ที่เหมาะสม",
           "shortDescription": "หาโอกาสทำ module ให้ลึกขึ้น เข้าใจง่ายขึ้น และทดสอบผ่าน interface ที่เหมาะสม",
-          "defaultPrompt": "Use improve-codebase-architecture for my current request.",
+          "defaultPrompt": "Use improve-codebase for my current request.",
           "triggers": [
-            "use improve-codebase-architecture",
-            "improve-codebase-architecture workflow"
+            "use improve-codebase",
+            "improve-codebase workflow"
           ],
           "negativeTriggers": [
             "the request is outside this workflow",
@@ -367,13 +367,13 @@
           ]
         },
         "th": {
-          "displayName": "ปรับสถาปัตยกรรม codebase",
-          "description": "หาโอกาสทำ module ให้ลึกขึ้น เข้าใจง่ายขึ้น และทดสอบผ่าน interface ที่เหมาะสม",
-          "shortDescription": "หาโอกาสทำ module ให้ลึกขึ้น เข้าใจง่ายขึ้น และทดสอบผ่าน interface ที่เหมาะสม",
-          "defaultPrompt": "ใช้ improve-codebase-architecture กับคำขอนี้",
+          "displayName": "ทำ codebase ให้ง่ายขึ้น",
+          "description": "หาและปรับส่วนของ codebase ที่ซับซ้อนเกินไป ให้เข้าใจง่าย เปลี่ยนง่าย และทดสอบผ่าน interface ที่เหมาะสม",
+          "shortDescription": "หาและปรับส่วนของ codebase ที่ซับซ้อนเกินไป ให้เข้าใจง่าย เปลี่ยนง่าย และทดสอบผ่าน interface ที่เหมาะสม",
+          "defaultPrompt": "ใช้ improve-codebase กับคำขอนี้",
           "triggers": [
-            "ใช้ improve-codebase-architecture",
-            "ทำงานแบบ improve-codebase-architecture"
+            "ใช้ improve-codebase",
+            "ทำงานแบบ improve-codebase"
           ],
           "negativeTriggers": [
             "คำขออยู่นอกขอบเขต workflow นี้",
@@ -393,7 +393,7 @@
         },
         {
           "phase": "execute",
-          "instruction": "Apply the improve-codebase-architecture discipline in the smallest complete slice; ask one material question only when needed."
+          "instruction": "Apply the improve-codebase discipline in the smallest complete slice; ask one material question only when needed."
         },
         {
           "phase": "verify",
@@ -401,7 +401,7 @@
         }
       ],
       "artifacts": [
-        "improve-codebase-architecture result",
+        "improve-codebase result",
         "verification evidence"
       ],
       "evidence": [
@@ -742,7 +742,7 @@
           ]
         },
         "th": {
-          "displayName": "นำทางงานใหญ่",
+          "displayName": "หาทางให้งานใหญ่",
           "description": "ทำแผนที่ decision สำหรับงานใหญ่ที่ยังมีหมอก แล้วคลี่คำถามทีละใบจนเส้นทางชัด",
           "shortDescription": "ทำแผนที่ decision สำหรับงานใหญ่ที่ยังมีหมอก แล้วคลี่คำถามทีละใบจนเส้นทางชัด",
           "defaultPrompt": "ใช้ wayfinder กับคำขอนี้",
@@ -791,25 +791,25 @@
       ]
     },
     {
-      "id": "implement",
+      "id": "code",
       "tier": "core",
       "origin": {
         "repository": "mattpocock/skills",
         "skill": "implement"
       },
       "sources": {
-        "th": "skills/engineering/implement",
-        "en": "locales/en/skills/engineering/implement"
+        "th": "skills/engineering/code",
+        "en": "locales/en/skills/engineering/code"
       },
       "locales": {
         "en": {
-          "displayName": "Implement",
+          "displayName": "Code",
           "description": "Implement an approved software plan in small scoped slices, verify each behavior, update documentation, and report an evidence receipt.",
           "shortDescription": "Implement an approved software plan in small scoped slices, verify each behavior, update documen",
-          "defaultPrompt": "Use implement for my current request.",
+          "defaultPrompt": "Use code for my current request.",
           "triggers": [
-            "use implement",
-            "implement workflow"
+            "use code",
+            "code workflow"
           ],
           "negativeTriggers": [
             "the request is outside this workflow",
@@ -818,12 +818,12 @@
         },
         "th": {
           "displayName": "ลงมือพัฒนาตามแผน",
-          "description": "พัฒนาแผนที่อนุมัติแล้วเป็น slice เล็กที่ผ่าน test และ review โดยไม่ commit หรือ push เอง",
-          "shortDescription": "พัฒนาแผนที่อนุมัติแล้วเป็น slice เล็กที่ผ่าน test และ review โดยไม่ commit หรือ push เอง",
-          "defaultPrompt": "ใช้ implement กับคำขอนี้",
+          "description": "ลงมือพัฒนาตามแผนที่อนุมัติแล้วทีละส่วน พร้อม test และ review โดยไม่ commit หรือ push เอง",
+          "shortDescription": "ลงมือพัฒนาตามแผนที่อนุมัติแล้วทีละส่วน พร้อม test และ review โดยไม่ commit หรือ push เอง",
+          "defaultPrompt": "ใช้ code กับคำขอนี้",
           "triggers": [
-            "ใช้ implement",
-            "ทำงานแบบ implement"
+            "ใช้ code",
+            "ทำงานแบบ code"
           ],
           "negativeTriggers": [
             "คำขออยู่นอกขอบเขต workflow นี้",
@@ -835,7 +835,7 @@
         "allowImplicitInvocation": true
       },
       "effectLevel": "workspace_write",
-      "role": "implement_workflow",
+      "role": "code_workflow",
       "workflow": [
         {
           "phase": "orient",
@@ -843,7 +843,7 @@
         },
         {
           "phase": "execute",
-          "instruction": "Apply the implement discipline in the smallest complete slice; ask one material question only when needed."
+          "instruction": "Apply the code discipline in the smallest complete slice; ask one material question only when needed."
         },
         {
           "phase": "verify",
@@ -851,7 +851,7 @@
         }
       ],
       "artifacts": [
-        "implement result",
+        "code result",
         "verification evidence"
       ],
       "evidence": [
@@ -1241,25 +1241,25 @@
       ]
     },
     {
-      "id": "resolving-merge-conflicts",
+      "id": "fix-conflicts",
       "tier": "core",
       "origin": {
         "repository": "mattpocock/skills",
         "skill": "resolving-merge-conflicts"
       },
       "sources": {
-        "th": "skills/engineering/resolving-merge-conflicts",
-        "en": "locales/en/skills/engineering/resolving-merge-conflicts"
+        "th": "skills/engineering/fix-conflicts",
+        "en": "locales/en/skills/engineering/fix-conflicts"
       },
       "locales": {
         "en": {
-          "displayName": "Resolving Merge Conflicts",
+          "displayName": "Fix Conflicts",
           "description": "แก้ merge หรือ rebase conflict ทีละ hunk โดยตามเจตนาของทั้งสองฝั่งและตรวจผลก่อนเดินต่อ",
           "shortDescription": "แก้ merge หรือ rebase conflict ทีละ hunk โดยตามเจตนาของทั้งสองฝั่งและตรวจผลก่อนเดินต่อ",
-          "defaultPrompt": "Use resolving-merge-conflicts for my current request.",
+          "defaultPrompt": "Use fix-conflicts for my current request.",
           "triggers": [
-            "use resolving-merge-conflicts",
-            "resolving-merge-conflicts workflow"
+            "use fix-conflicts",
+            "fix-conflicts workflow"
           ],
           "negativeTriggers": [
             "the request is outside this workflow",
@@ -1267,13 +1267,13 @@
           ]
         },
         "th": {
-          "displayName": "แก้ merge conflict ตามเจตนา",
-          "description": "แก้ merge หรือ rebase conflict ทีละ hunk โดยตามเจตนาของทั้งสองฝั่งและตรวจผลก่อนเดินต่อ",
-          "shortDescription": "แก้ merge หรือ rebase conflict ทีละ hunk โดยตามเจตนาของทั้งสองฝั่งและตรวจผลก่อนเดินต่อ",
-          "defaultPrompt": "ใช้ resolving-merge-conflicts กับคำขอนี้",
+          "displayName": "แก้ merge conflict",
+          "description": "แก้ merge หรือ rebase conflict ทีละจุด โดยรักษาเจตนาของทั้งสองฝั่งและตรวจผลก่อนทำต่อ",
+          "shortDescription": "แก้ merge หรือ rebase conflict ทีละจุด โดยรักษาเจตนาของทั้งสองฝั่งและตรวจผลก่อนทำต่อ",
+          "defaultPrompt": "ใช้ fix-conflicts กับคำขอนี้",
           "triggers": [
-            "ใช้ resolving-merge-conflicts",
-            "ทำงานแบบ resolving-merge-conflicts"
+            "ใช้ fix-conflicts",
+            "ทำงานแบบ fix-conflicts"
           ],
           "negativeTriggers": [
             "คำขออยู่นอกขอบเขต workflow นี้",
@@ -1293,7 +1293,7 @@
         },
         {
           "phase": "execute",
-          "instruction": "Apply the resolving-merge-conflicts discipline in the smallest complete slice; ask one material question only when needed."
+          "instruction": "Apply the fix-conflicts discipline in the smallest complete slice; ask one material question only when needed."
         },
         {
           "phase": "verify",
@@ -1301,7 +1301,7 @@
         }
       ],
       "artifacts": [
-        "resolving-merge-conflicts result",
+        "fix-conflicts result",
         "verification evidence"
       ],
       "evidence": [
@@ -1316,100 +1316,25 @@
       ]
     },
     {
-      "id": "grill-me",
-      "tier": "core",
-      "origin": {
-        "repository": "mattpocock/skills",
-        "skill": "grill-me"
-      },
-      "sources": {
-        "th": "skills/productivity/grill-me",
-        "en": "locales/en/skills/productivity/grill-me"
-      },
-      "locales": {
-        "en": {
-          "displayName": "Grill Me",
-          "description": "ถามทีละ decision เพื่อทำความคิด แผน หรือทางเลือกให้ชัดก่อนลงมือ",
-          "shortDescription": "ถามทีละ decision เพื่อทำความคิด แผน หรือทางเลือกให้ชัดก่อนลงมือ",
-          "defaultPrompt": "Use grill-me for my current request.",
-          "triggers": [
-            "use grill-me",
-            "grill-me workflow"
-          ],
-          "negativeTriggers": [
-            "the request is outside this workflow",
-            "the user selected a narrower skill"
-          ]
-        },
-        "th": {
-          "displayName": "ถามให้คิดชัด",
-          "description": "ถามทีละ decision เพื่อทำความคิด แผน หรือทางเลือกให้ชัดก่อนลงมือ",
-          "shortDescription": "ถามทีละ decision เพื่อทำความคิด แผน หรือทางเลือกให้ชัดก่อนลงมือ",
-          "defaultPrompt": "ใช้ grill-me กับคำขอนี้",
-          "triggers": [
-            "ใช้ grill-me",
-            "ทำงานแบบ grill-me"
-          ],
-          "negativeTriggers": [
-            "คำขออยู่นอกขอบเขต workflow นี้",
-            "ผู้ใช้เลือก skill ที่แคบกว่าแล้ว"
-          ]
-        }
-      },
-      "activation": {
-        "allowImplicitInvocation": false
-      },
-      "effectLevel": "read_only",
-      "role": "grill_me_workflow",
-      "workflow": [
-        {
-          "phase": "orient",
-          "instruction": "Read the request, repository evidence, Thai-first defaults, and the exact approval boundary."
-        },
-        {
-          "phase": "execute",
-          "instruction": "Apply the grill-me discipline in the smallest complete slice; ask one material question only when needed."
-        },
-        {
-          "phase": "verify",
-          "instruction": "Verify the observable outcome and return concise evidence, risks, and the next action."
-        }
-      ],
-      "artifacts": [
-        "grill-me result",
-        "verification evidence"
-      ],
-      "evidence": [
-        "inputs used",
-        "observable result",
-        "verification status"
-      ],
-      "guardrails": [
-        "Use natural concise Thai by default while preserving exact technical identifiers.",
-        "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
-        "Report evidence gaps instead of guessing."
-      ]
-    },
-    {
-      "id": "grilling",
+      "id": "asking",
       "tier": "core",
       "origin": {
         "repository": "mattpocock/skills",
         "skill": "grilling"
       },
       "sources": {
-        "th": "skills/productivity/grilling",
-        "en": "locales/en/skills/productivity/grilling"
+        "th": "skills/productivity/asking",
+        "en": "locales/en/skills/productivity/asking"
       },
       "locales": {
         "en": {
-          "displayName": "Grilling",
+          "displayName": "Asking",
           "description": "สัมภาษณ์ผู้ใช้ทีละคำถามพร้อมคำแนะนำ เพื่อคลี่ dependency ของ decision จนเข้าใจตรงกัน",
           "shortDescription": "สัมภาษณ์ผู้ใช้ทีละคำถามพร้อมคำแนะนำ เพื่อคลี่ dependency ของ decision จนเข้าใจตรงกัน",
-          "defaultPrompt": "Use grilling for my current request.",
+          "defaultPrompt": "Use asking for my current request.",
           "triggers": [
-            "use grilling",
-            "grilling workflow"
+            "use asking",
+            "asking workflow"
           ],
           "negativeTriggers": [
             "the request is outside this workflow",
@@ -1417,13 +1342,13 @@
           ]
         },
         "th": {
-          "displayName": "สัมภาษณ์ decision ทีละข้อ",
-          "description": "สัมภาษณ์ผู้ใช้ทีละคำถามพร้อมคำแนะนำ เพื่อคลี่ dependency ของ decision จนเข้าใจตรงกัน",
-          "shortDescription": "สัมภาษณ์ผู้ใช้ทีละคำถามพร้อมคำแนะนำ เพื่อคลี่ dependency ของ decision จนเข้าใจตรงกัน",
-          "defaultPrompt": "ใช้ grilling กับคำขอนี้",
+          "displayName": "ถามทีละเรื่อง",
+          "description": "สัมภาษณ์ผู้ใช้ทีละคำถามพร้อมคำแนะนำ จนเรื่องที่ต้องตัดสินใจชัดและเข้าใจตรงกัน",
+          "shortDescription": "สัมภาษณ์ผู้ใช้ทีละคำถามพร้อมคำแนะนำ จนเรื่องที่ต้องตัดสินใจชัดและเข้าใจตรงกัน",
+          "defaultPrompt": "ใช้ asking กับคำขอนี้",
           "triggers": [
-            "ใช้ grilling",
-            "ทำงานแบบ grilling"
+            "ใช้ asking",
+            "ทำงานแบบ asking"
           ],
           "negativeTriggers": [
             "คำขออยู่นอกขอบเขต workflow นี้",
@@ -1435,7 +1360,7 @@
         "allowImplicitInvocation": true
       },
       "effectLevel": "read_only",
-      "role": "grilling_workflow",
+      "role": "asking_workflow",
       "workflow": [
         {
           "phase": "orient",
@@ -1443,7 +1368,7 @@
         },
         {
           "phase": "execute",
-          "instruction": "Apply the grilling discipline in the smallest complete slice; ask one material question only when needed."
+          "instruction": "Apply the asking discipline in the smallest complete slice; ask one material question only when needed."
         },
         {
           "phase": "verify",
@@ -1451,7 +1376,7 @@
         }
       ],
       "artifacts": [
-        "grilling result",
+        "asking result",
         "verification evidence"
       ],
       "evidence": [
@@ -1616,25 +1541,25 @@
       ]
     },
     {
-      "id": "writing-great-skills",
+      "id": "write-skills",
       "tier": "core",
       "origin": {
         "repository": "mattpocock/skills",
         "skill": "writing-great-skills"
       },
       "sources": {
-        "th": "skills/productivity/writing-great-skills",
-        "en": "locales/en/skills/productivity/writing-great-skills"
+        "th": "skills/productivity/write-skills",
+        "en": "locales/en/skills/productivity/write-skills"
       },
       "locales": {
         "en": {
-          "displayName": "Writing Great Skills",
+          "displayName": "Write Skills",
           "description": "ใช้หลัก predictability, progressive disclosure และการลด prompt noise เพื่อเขียน skill ที่ไว้ใจได้",
           "shortDescription": "ใช้หลัก predictability, progressive disclosure และการลด prompt noise เพื่อเขียน skill ที่ไว้ใจได",
-          "defaultPrompt": "Use writing-great-skills for my current request.",
+          "defaultPrompt": "Use write-skills for my current request.",
           "triggers": [
-            "use writing-great-skills",
-            "writing-great-skills workflow"
+            "use write-skills",
+            "write-skills workflow"
           ],
           "negativeTriggers": [
             "the request is outside this workflow",
@@ -1642,13 +1567,13 @@
           ]
         },
         "th": {
-          "displayName": "เขียน skill ให้ทำงานสม่ำเสมอ",
-          "description": "ใช้หลัก predictability, progressive disclosure และการลด prompt noise เพื่อเขียน skill ที่ไว้ใจได้",
-          "shortDescription": "ใช้หลัก predictability, progressive disclosure และการลด prompt noise เพื่อเขียน skill ที่ไว้ใจได",
-          "defaultPrompt": "ใช้ writing-great-skills กับคำขอนี้",
+          "displayName": "เขียน skill ให้ใช้ได้จริง",
+          "description": "เขียนหรือปรับ skill ให้เรียกใช้ถูก ทำงานสม่ำเสมอ และไม่ใส่คำสั่งเกินจำเป็น",
+          "shortDescription": "เขียนหรือปรับ skill ให้เรียกใช้ถูก ทำงานสม่ำเสมอ และไม่ใส่คำสั่งเกินจำเป็น",
+          "defaultPrompt": "ใช้ write-skills กับคำขอนี้",
           "triggers": [
-            "ใช้ writing-great-skills",
-            "ทำงานแบบ writing-great-skills"
+            "ใช้ write-skills",
+            "ทำงานแบบ write-skills"
           ],
           "negativeTriggers": [
             "คำขออยู่นอกขอบเขต workflow นี้",
@@ -1668,7 +1593,7 @@
         },
         {
           "phase": "execute",
-          "instruction": "Apply the writing-great-skills discipline in the smallest complete slice; ask one material question only when needed."
+          "instruction": "Apply the write-skills discipline in the smallest complete slice; ask one material question only when needed."
         },
         {
           "phase": "verify",
@@ -1676,7 +1601,7 @@
         }
       ],
       "artifacts": [
-        "writing-great-skills result",
+        "write-skills result",
         "verification evidence"
       ],
       "evidence": [
@@ -1718,9 +1643,9 @@
           ]
         },
         "th": {
-          "displayName": "ช่วยถามฉัน",
-          "description": "สัมภาษณ์ภาษาไทยทีละ decision แบบ read-only สรุปให้ยืนยัน แล้วแนะนำงานถัดไปตาม context หรือ Plan → Dev แบบมี gate",
-          "shortDescription": "ถามให้ชัดด้วยภาษาไทยธรรมชาติ แล้วแนะนำงานถัดไป",
+          "displayName": "ถามให้ชัด",
+          "description": "ถามทีละเรื่องให้ความคิดหรือแผนชัดขึ้น สรุปให้ยืนยัน แล้วแนะนำงานถัดไปโดยยังไม่แก้ไฟล์",
+          "shortDescription": "ถามทีละเรื่องให้ความคิดหรือแผนชัดขึ้น สรุปให้ยืนยัน แล้วแนะนำงานถัดไปโดยยังไม่แก้ไฟล์",
           "defaultPrompt": "ช่วยถามฉันทีละ decision ด้วยภาษาไทยกระชับเป็นธรรมชาติ แล้วแนะนำงานถัดไปตาม context",
           "triggers": [
             "ช่วยถามฉันทีละข้อให้ไอเดียนี้ชัด",
@@ -1892,19 +1817,19 @@
       ]
     },
     {
-      "id": "design-shotgun",
+      "id": "design-options",
       "tier": "core",
       "origin": {
         "repository": "apipoj/spk",
         "skill": "design-shotgun"
       },
       "sources": {
-        "th": "skills/engineering/design-shotgun",
-        "en": "locales/en/skills/engineering/design-shotgun"
+        "th": "skills/engineering/design-options",
+        "en": "locales/en/skills/engineering/design-options"
       },
       "locales": {
         "en": {
-          "displayName": "Design Shotgun",
+          "displayName": "Design Options",
           "description": "Explore multiple genuinely distinct interface directions, compare them with realistic content, and record an approved design before production implementation.",
           "shortDescription": "Compare distinct UI directions before coding",
           "defaultPrompt": "Create distinct design directions for this interface and recommend one.",
@@ -1919,9 +1844,9 @@
           ]
         },
         "th": {
-          "displayName": "สำรวจแบบ Design Shotgun",
-          "description": "สำรวจทิศทาง interface ที่แตกต่างกันจริง เปรียบเทียบด้วยเนื้อหาสมจริง และบันทึกแบบที่อนุมัติก่อน implement ใน production",
-          "shortDescription": "เปรียบเทียบทิศทาง UI ก่อนเขียนโค้ด",
+          "displayName": "ลองหลายแบบก่อนเลือก",
+          "description": "ลอง UI หลายแนวที่ต่างกันจริง เปรียบเทียบด้วยเนื้อหาสมจริง แล้วให้ผู้ใช้เลือกก่อนเขียน production code",
+          "shortDescription": "ลอง UI หลายแนวที่ต่างกันจริง เปรียบเทียบด้วยเนื้อหาสมจริง แล้วให้ผู้ใช้เลือกก่อนเขียน production code",
           "defaultPrompt": "สร้างทิศทางงานออกแบบที่แตกต่างกันและแนะนำหนึ่งแบบ",
           "triggers": [
             "ขอ UI หลายแนว",
@@ -1962,7 +1887,7 @@
         }
       ],
       "artifacts": [
-        ".spk/design-shotgun/<screen>-<timestamp>/board.html",
+        ".spk/design-options/<screen>-<timestamp>/board.html",
         "variant prototypes",
         "approved.json after approval"
       ],
@@ -2257,24 +2182,24 @@
       ]
     },
     {
-      "id": "ingest",
+      "id": "add-knowledge",
       "tier": "core",
       "origin": {
         "repository": "apipoj/spk",
         "skill": "ingest"
       },
       "sources": {
-        "th": "skills/knowledge/ingest",
-        "en": "locales/en/skills/knowledge/ingest"
+        "th": "skills/knowledge/add-knowledge",
+        "en": "locales/en/skills/knowledge/add-knowledge"
       },
       "locales": {
         "en": {
-          "displayName": "Wiki Ingest",
+          "displayName": "Add Knowledge",
           "description": "Ingest an explicitly selected source into the local project wiki with provenance, secret checks, entity links, and an append-only change record.",
           "shortDescription": "Ingest a source into the project wiki safely",
           "defaultPrompt": "Ingest the selected source into the local wiki with provenance.",
           "triggers": [
-            "ingest this source into the wiki",
+            "add-knowledge this source into the wiki",
             "add this file to project memory",
             "extract durable project knowledge"
           ],
@@ -2284,9 +2209,9 @@
           ]
         },
         "th": {
-          "displayName": "นำเข้า Wiki",
-          "description": "นำเข้าแหล่งข้อมูลที่เลือกอย่างชัดเจนสู่ wiki ภายในโปรเจกต์ พร้อม provenance การตรวจ secrets การเชื่อม entity และบันทึกการเปลี่ยนแปลงแบบ append-only",
-          "shortDescription": "นำเข้าแหล่งข้อมูลสู่ wiki อย่างปลอดภัย",
+          "displayName": "เพิ่มความรู้ให้โปรเจกต์",
+          "description": "เพิ่มข้อมูลที่เลือกเข้า wiki ของโปรเจกต์ พร้อมที่มา การตรวจ secret และบันทึกการเปลี่ยนแปลง",
+          "shortDescription": "เพิ่มข้อมูลที่เลือกเข้า wiki ของโปรเจกต์ พร้อมที่มา การตรวจ secret และบันทึกการเปลี่ยนแปลง",
           "defaultPrompt": "นำเข้าแหล่งข้อมูลที่เลือกสู่ wiki พร้อม provenance",
           "triggers": [
             "นำเข้า source นี้เข้า wiki",
@@ -2338,29 +2263,29 @@
         "contradictions surfaced"
       ],
       "guardrails": [
-        "Never ingest ignored, credential-bearing, or unapproved private material.",
+        "Never add-knowledge ignored, credential-bearing, or unapproved private material.",
         "Never replace user-owned wiki history with a template."
       ]
     },
     {
-      "id": "prime",
+      "id": "load-project",
       "tier": "core",
       "origin": {
         "repository": "apipoj/spk",
         "skill": "prime"
       },
       "sources": {
-        "th": "skills/knowledge/prime",
-        "en": "locales/en/skills/knowledge/prime"
+        "th": "skills/knowledge/load-project",
+        "en": "locales/en/skills/knowledge/load-project"
       },
       "locales": {
         "en": {
-          "displayName": "Prime Repository",
+          "displayName": "Load Project",
           "description": "Orient agents to a repository by creating concise scoped guidance from verified source structure, commands, conventions, and code-navigation paths.",
           "shortDescription": "Create concise scoped repository guidance",
           "defaultPrompt": "Prime this repository with concise scoped guidance for engineering agents.",
           "triggers": [
-            "prime this repository",
+            "load-project this repository",
             "create repository agent guidance",
             "orient agents to this monorepo"
           ],
@@ -2370,12 +2295,12 @@
           ]
         },
         "th": {
-          "displayName": "เตรียมบริบท Repo",
-          "description": "สร้างบริบท repo สำหรับ agent แบบกระชับและมีขอบเขต จากโครงสร้าง source คำสั่ง convention และเส้นทางค้นหาโค้ดที่ตรวจสอบแล้ว",
-          "shortDescription": "สร้างคำแนะนำ repo แบบกระชับ",
+          "displayName": "รู้จักโปรเจกต์",
+          "description": "อ่านโครงสร้าง คำสั่ง และข้อตกลงของ repo แล้วสร้างบริบทสั้น ๆ ให้ agent เริ่มงานได้ถูกทาง",
+          "shortDescription": "อ่านโครงสร้าง คำสั่ง และข้อตกลงของ repo แล้วสร้างบริบทสั้น ๆ ให้ agent เริ่มงานได้ถูกทาง",
           "defaultPrompt": "เตรียม repo นี้ด้วยคำแนะนำแบบมีขอบเขตสำหรับ engineering agent",
           "triggers": [
-            "prime repo นี้",
+            "load-project repo นี้",
             "สร้าง repository agent guidance",
             "เตรียม agent สำหรับ monorepo นี้"
           ],
@@ -2425,19 +2350,19 @@
       ]
     },
     {
-      "id": "query",
+      "id": "ask-project",
       "tier": "core",
       "origin": {
         "repository": "apipoj/spk",
         "skill": "query"
       },
       "sources": {
-        "th": "skills/knowledge/query",
-        "en": "locales/en/skills/knowledge/query"
+        "th": "skills/knowledge/ask-project",
+        "en": "locales/en/skills/knowledge/ask-project"
       },
       "locales": {
         "en": {
-          "displayName": "Wiki Query",
+          "displayName": "Ask Project",
           "description": "Answer a project question from the local wiki first, cite exact evidence, and use external research only when local knowledge is insufficient.",
           "shortDescription": "Answer from project knowledge with citations",
           "defaultPrompt": "Answer this project question from the local wiki and cite the evidence.",
@@ -2452,9 +2377,9 @@
           ]
         },
         "th": {
-          "displayName": "ถาม Wiki",
-          "description": "ตอบคำถามเกี่ยวกับโปรเจกต์จาก wiki ภายในก่อน อ้างหลักฐานที่แน่นอน และใช้การค้นคว้าภายนอกเมื่อความรู้ในโปรเจกต์ไม่เพียงพอเท่านั้น",
-          "shortDescription": "ตอบจากความรู้โปรเจกต์พร้อมอ้างอิง",
+          "displayName": "ถามข้อมูลโปรเจกต์",
+          "description": "ตอบคำถามเกี่ยวกับโปรเจกต์จาก wiki ภายในพร้อมอ้างหลักฐาน และค้นภายนอกเมื่อข้อมูลในโปรเจกต์ไม่พอ",
+          "shortDescription": "ตอบคำถามเกี่ยวกับโปรเจกต์จาก wiki ภายในพร้อมอ้างหลักฐาน และค้นภายนอกเมื่อข้อมูลในโปรเจกต์ไม่พอ",
           "defaultPrompt": "ตอบคำถามนี้จาก wiki ภายในและอ้างหลักฐาน",
           "triggers": [
             "ถาม project wiki",
@@ -2505,19 +2430,19 @@
       ]
     },
     {
-      "id": "wiki-lint",
+      "id": "check-wiki",
       "tier": "core",
       "origin": {
         "repository": "apipoj/spk",
         "skill": "wiki-lint"
       },
       "sources": {
-        "th": "skills/knowledge/wiki-lint",
-        "en": "locales/en/skills/knowledge/wiki-lint"
+        "th": "skills/knowledge/check-wiki",
+        "en": "locales/en/skills/knowledge/check-wiki"
       },
       "locales": {
         "en": {
-          "displayName": "Wiki Lint",
+          "displayName": "Check Wiki",
           "description": "Audit the local project wiki for broken links, orphan pages, contradictions, stale claims, missing citations, schema drift, and secret exposure.",
           "shortDescription": "Audit project knowledge quality and safety",
           "defaultPrompt": "Audit the local project wiki and rank actionable findings.",
@@ -2532,9 +2457,9 @@
           ]
         },
         "th": {
-          "displayName": "ตรวจ Wiki",
-          "description": "ตรวจ wiki ภายในโปรเจกต์เพื่อหาลิงก์เสีย หน้า orphan ข้อขัดแย้ง ข้อมูลล้าสมัย citation ที่หาย schema drift และ secrets",
-          "shortDescription": "ตรวจคุณภาพและความปลอดภัยของ wiki",
+          "displayName": "ตรวจความรู้ในโปรเจกต์",
+          "description": "ตรวจ wiki ของโปรเจกต์เพื่อหาลิงก์เสีย ข้อมูลขัดกัน เนื้อหาล้าสมัย หลักฐานที่หาย และ secret",
+          "shortDescription": "ตรวจ wiki ของโปรเจกต์เพื่อหาลิงก์เสีย ข้อมูลขัดกัน เนื้อหาล้าสมัย หลักฐานที่หาย และ secret",
           "defaultPrompt": "ตรวจ wiki ภายในและจัดลำดับข้อค้นพบที่แก้ไขได้",
           "triggers": [
             "lint project wiki",
@@ -2674,19 +2599,19 @@
       ]
     },
     {
-      "id": "release-check",
+      "id": "check-release",
       "tier": "core",
       "origin": {
         "repository": "apipoj/spk",
         "skill": "release-check"
       },
       "sources": {
-        "th": "skills/operations/release-check",
-        "en": "locales/en/skills/operations/release-check"
+        "th": "skills/operations/check-release",
+        "en": "locales/en/skills/operations/check-release"
       },
       "locales": {
         "en": {
-          "displayName": "Release Check",
+          "displayName": "Check Release",
           "description": "Run the repository's complete release-readiness gates, inspect version and generated-artifact consistency, and report blockers without publishing.",
           "shortDescription": "Prove release readiness without publishing",
           "defaultPrompt": "Run the complete release-readiness check and report blockers.",
@@ -2701,9 +2626,9 @@
           ]
         },
         "th": {
-          "displayName": "ตรวจความพร้อม Release",
-          "description": "รัน gate ความพร้อม release ทั้งหมดของ repo ตรวจ version และ generated artifacts ให้สอดคล้อง และรายงาน blocker โดยไม่ publish",
-          "shortDescription": "พิสูจน์ความพร้อม release โดยไม่ publish",
+          "displayName": "เช็กความพร้อมก่อนปล่อย",
+          "description": "รันทุก gate ที่ต้องผ่านก่อนออก release ตรวจ version และ generated files แล้วรายงานสิ่งที่ยังติดโดยไม่ publish",
+          "shortDescription": "รันทุก gate ที่ต้องผ่านก่อนออก release ตรวจ version และ generated files แล้วรายงานสิ่งที่ยังติดโดยไม่ publish",
           "defaultPrompt": "รัน release readiness ทั้งหมดและรายงาน blocker",
           "triggers": [
             "รัน release check",
@@ -2759,19 +2684,19 @@
       ]
     },
     {
-      "id": "scoped-tests",
+      "id": "test-changes",
       "tier": "core",
       "origin": {
         "repository": "apipoj/spk",
         "skill": "scoped-tests"
       },
       "sources": {
-        "th": "skills/engineering/scoped-tests",
-        "en": "locales/en/skills/engineering/scoped-tests"
+        "th": "skills/engineering/test-changes",
+        "en": "locales/en/skills/engineering/test-changes"
       },
       "locales": {
         "en": {
-          "displayName": "Scoped Tests",
+          "displayName": "Test Changes",
           "description": "Map changed files to the smallest defensible test set, run it for fast feedback, disclose unmapped paths, and require the full suite before sign-off.",
           "shortDescription": "Run focused tests without hiding coverage gaps",
           "defaultPrompt": "Map the current changes to focused tests and report every unmapped path.",
@@ -2786,9 +2711,9 @@
           ]
         },
         "th": {
-          "displayName": "ทดสอบตามขอบเขต",
-          "description": "จับคู่ไฟล์ที่เปลี่ยนกับชุดทดสอบที่เล็กที่สุดอย่างมีเหตุผล รันเพื่อ feedback เร็ว เปิดเผย path ที่จับคู่ไม่ได้ และบังคับ full suite ก่อนจบงาน",
-          "shortDescription": "รัน focused tests โดยไม่ซ่อนช่องว่าง",
+          "displayName": "ทดสอบเฉพาะส่วนที่เปลี่ยน",
+          "description": "เลือกและรัน test ที่เกี่ยวกับไฟล์ที่เปลี่ยนเพื่อได้ผลเร็ว พร้อมบอกส่วนที่จับคู่ไม่ได้และรัน full suite ก่อนจบ",
+          "shortDescription": "เลือกและรัน test ที่เกี่ยวกับไฟล์ที่เปลี่ยนเพื่อได้ผลเร็ว พร้อมบอกส่วนที่จับคู่ไม่ได้และรัน full suite ก่อนจบ",
           "defaultPrompt": "จับคู่การเปลี่ยนแปลงปัจจุบันกับ focused tests และรายงาน path ที่จับคู่ไม่ได้",
           "triggers": [
             "รัน test ที่ diff นี้กระทบ",
@@ -3214,150 +3139,6 @@
       ]
     },
     {
-      "id": "code",
-      "tier": "compat",
-      "aliasFor": "implement",
-      "origin": {
-        "repository": "apipoj/spk",
-        "skill": "code"
-      },
-      "sources": {
-        "th": "skills/compat/code",
-        "en": "locales/en/skills/compat/code"
-      },
-      "locales": {
-        "en": {
-          "displayName": "Code",
-          "description": "Temporary compatibility alias for implement; disclose the canonical name and apply the same contract without expanding authority.",
-          "shortDescription": "Temporary compatibility alias for implement; disclose the canonical name and apply the same cont",
-          "defaultPrompt": "Use code for my current request.",
-          "triggers": [
-            "use code",
-            "code workflow"
-          ],
-          "negativeTriggers": [
-            "the request is outside this workflow",
-            "the user selected a narrower skill"
-          ]
-        },
-        "th": {
-          "displayName": "ชื่อเดิมชั่วคราวสำหรับ implement; แจ้งชื่อใหม่แล้วใช้ contract เ",
-          "description": "ชื่อเดิมชั่วคราวสำหรับ implement; แจ้งชื่อใหม่แล้วใช้ contract เดียวกันโดยไม่เพิ่มสิทธิ์หรือขยาย scope",
-          "shortDescription": "ชื่อเดิมชั่วคราวสำหรับ implement; แจ้งชื่อใหม่แล้วใช้ contract เดียวกันโดยไม่เพิ่มสิทธิ์หรือขยาย",
-          "defaultPrompt": "ใช้ code กับคำขอนี้",
-          "triggers": [
-            "ใช้ code",
-            "ทำงานแบบ code"
-          ],
-          "negativeTriggers": [
-            "คำขออยู่นอกขอบเขต workflow นี้",
-            "ผู้ใช้เลือก skill ที่แคบกว่าแล้ว"
-          ]
-        }
-      },
-      "activation": {
-        "allowImplicitInvocation": false
-      },
-      "effectLevel": "workspace_write",
-      "role": "compatibility_alias",
-      "workflow": [
-        {
-          "phase": "disclose",
-          "instruction": "Tell the user that code moved to implement."
-        },
-        {
-          "phase": "apply",
-          "instruction": "Apply the implement contract without expanding authority."
-        }
-      ],
-      "artifacts": [
-        "compatibility notice",
-        "canonical workflow result"
-      ],
-      "evidence": [
-        "inputs used",
-        "observable result",
-        "verification status"
-      ],
-      "guardrails": [
-        "Use natural concise Thai by default while preserving exact technical identifiers.",
-        "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
-        "Report evidence gaps instead of guessing."
-      ]
-    },
-    {
-      "id": "debug",
-      "tier": "compat",
-      "aliasFor": "diagnosing-bugs",
-      "origin": {
-        "repository": "apipoj/spk",
-        "skill": "debug"
-      },
-      "sources": {
-        "th": "skills/compat/debug",
-        "en": "locales/en/skills/compat/debug"
-      },
-      "locales": {
-        "en": {
-          "displayName": "Debug",
-          "description": "Temporary compatibility alias for diagnosing-bugs; disclose the canonical name and apply the same contract without expanding authority.",
-          "shortDescription": "Temporary compatibility alias for diagnosing-bugs; disclose the canonical name and apply the sam",
-          "defaultPrompt": "Use debug for my current request.",
-          "triggers": [
-            "use debug",
-            "debug workflow"
-          ],
-          "negativeTriggers": [
-            "the request is outside this workflow",
-            "the user selected a narrower skill"
-          ]
-        },
-        "th": {
-          "displayName": "ชื่อเดิมชั่วคราวสำหรับ diagnosing-bugs; แจ้งชื่อใหม่แล้วใช้ cont",
-          "description": "ชื่อเดิมชั่วคราวสำหรับ diagnosing-bugs; แจ้งชื่อใหม่แล้วใช้ contract เดียวกันโดยไม่เพิ่มสิทธิ์หรือขยาย scope",
-          "shortDescription": "ชื่อเดิมชั่วคราวสำหรับ diagnosing-bugs; แจ้งชื่อใหม่แล้วใช้ contract เดียวกันโดยไม่เพิ่มสิทธิ์หร",
-          "defaultPrompt": "ใช้ debug กับคำขอนี้",
-          "triggers": [
-            "ใช้ debug",
-            "ทำงานแบบ debug"
-          ],
-          "negativeTriggers": [
-            "คำขออยู่นอกขอบเขต workflow นี้",
-            "ผู้ใช้เลือก skill ที่แคบกว่าแล้ว"
-          ]
-        }
-      },
-      "activation": {
-        "allowImplicitInvocation": false
-      },
-      "effectLevel": "read_only",
-      "role": "compatibility_alias",
-      "workflow": [
-        {
-          "phase": "disclose",
-          "instruction": "Tell the user that debug moved to diagnosing-bugs."
-        },
-        {
-          "phase": "apply",
-          "instruction": "Apply the diagnosing-bugs contract without expanding authority."
-        }
-      ],
-      "artifacts": [
-        "compatibility notice",
-        "canonical workflow result"
-      ],
-      "evidence": [
-        "inputs used",
-        "observable result",
-        "verification status"
-      ],
-      "guardrails": [
-        "Use natural concise Thai by default while preserving exact technical identifiers.",
-        "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
-        "Report evidence gaps instead of guessing."
-      ]
-    },
-    {
       "id": "review",
       "tier": "compat",
       "aliasFor": "code-review",
@@ -3428,6 +3209,1056 @@
         "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
         "Report evidence gaps instead of guessing."
       ]
+    },
+    {
+      "id": "grill-me",
+      "tier": "compat",
+      "origin": {
+        "repository": "mattpocock/skills",
+        "skill": "grill-me"
+      },
+      "sources": {
+        "th": "skills/compat/grill-me",
+        "en": "locales/en/skills/compat/grill-me"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Legacy name: grill-me → ask-me",
+          "description": "Temporary compatibility alias for ask-me; disclose the canonical name and apply the same contract without expanding authority.",
+          "shortDescription": "Legacy name for ask-me; use the same contract without extra authority",
+          "defaultPrompt": "Use grill-me for my current request.",
+          "triggers": [
+            "use grill-me",
+            "grill-me workflow"
+          ],
+          "negativeTriggers": [
+            "the request is outside this workflow",
+            "the user selected the canonical skill"
+          ]
+        },
+        "th": {
+          "displayName": "ชื่อเดิม: grill-me → ask-me",
+          "description": "ชื่อเดิมชั่วคราวสำหรับ ask-me; แจ้งชื่อใหม่แล้วใช้ contract เดียวกันโดยไม่เพิ่มสิทธิ์หรือขยาย scope",
+          "shortDescription": "ชื่อเดิมของ ask-me; ใช้ contract เดิมโดยไม่เพิ่มสิทธิ์",
+          "defaultPrompt": "ใช้ grill-me กับคำขอนี้",
+          "triggers": [
+            "ใช้ grill-me",
+            "ทำงานแบบ grill-me"
+          ],
+          "negativeTriggers": [
+            "คำขออยู่นอกขอบเขต workflow นี้",
+            "ผู้ใช้เลือกชื่อหลักแล้ว"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": false
+      },
+      "effectLevel": "read_only",
+      "role": "compatibility_alias",
+      "workflow": [
+        {
+          "phase": "disclose",
+          "instruction": "Tell the user that grill-me is now ask-me."
+        },
+        {
+          "phase": "delegate",
+          "instruction": "Apply the ask-me contract without adding authority."
+        }
+      ],
+      "artifacts": [
+        "ask-me result",
+        "compatibility notice"
+      ],
+      "evidence": [
+        "canonical workflow evidence",
+        "compat_alias: grill-me"
+      ],
+      "guardrails": [
+        "Never broaden scope or permissions through an alias.",
+        "Do not hide the deprecation notice."
+      ],
+      "aliasFor": "ask-me"
+    },
+    {
+      "id": "grilling",
+      "tier": "compat",
+      "origin": {
+        "repository": "mattpocock/skills",
+        "skill": "grilling"
+      },
+      "sources": {
+        "th": "skills/compat/grilling",
+        "en": "locales/en/skills/compat/grilling"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Legacy name: grilling → asking",
+          "description": "Temporary compatibility alias for asking; disclose the canonical name and apply the same contract without expanding authority.",
+          "shortDescription": "Legacy name for asking; use the same contract without extra authority",
+          "defaultPrompt": "Use grilling for my current request.",
+          "triggers": [
+            "use grilling",
+            "grilling workflow"
+          ],
+          "negativeTriggers": [
+            "the request is outside this workflow",
+            "the user selected the canonical skill"
+          ]
+        },
+        "th": {
+          "displayName": "ชื่อเดิม: grilling → asking",
+          "description": "ชื่อเดิมชั่วคราวสำหรับ asking; แจ้งชื่อใหม่แล้วใช้ contract เดียวกันโดยไม่เพิ่มสิทธิ์หรือขยาย scope",
+          "shortDescription": "ชื่อเดิมของ asking; ใช้ contract เดิมโดยไม่เพิ่มสิทธิ์",
+          "defaultPrompt": "ใช้ grilling กับคำขอนี้",
+          "triggers": [
+            "ใช้ grilling",
+            "ทำงานแบบ grilling"
+          ],
+          "negativeTriggers": [
+            "คำขออยู่นอกขอบเขต workflow นี้",
+            "ผู้ใช้เลือกชื่อหลักแล้ว"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": false
+      },
+      "effectLevel": "read_only",
+      "role": "compatibility_alias",
+      "workflow": [
+        {
+          "phase": "disclose",
+          "instruction": "Tell the user that grilling is now asking."
+        },
+        {
+          "phase": "delegate",
+          "instruction": "Apply the asking contract without adding authority."
+        }
+      ],
+      "artifacts": [
+        "asking result",
+        "compatibility notice"
+      ],
+      "evidence": [
+        "canonical workflow evidence",
+        "compat_alias: grilling"
+      ],
+      "guardrails": [
+        "Never broaden scope or permissions through an alias.",
+        "Do not hide the deprecation notice."
+      ],
+      "aliasFor": "asking"
+    },
+    {
+      "id": "grill-with-docs",
+      "tier": "compat",
+      "origin": {
+        "repository": "mattpocock/skills",
+        "skill": "grill-with-docs"
+      },
+      "sources": {
+        "th": "skills/compat/grill-with-docs",
+        "en": "locales/en/skills/compat/grill-with-docs"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Legacy name: grill-with-docs → ask-with-docs",
+          "description": "Temporary compatibility alias for ask-with-docs; disclose the canonical name and apply the same contract without expanding authority.",
+          "shortDescription": "Legacy name for ask-with-docs; use the same contract without extra authority",
+          "defaultPrompt": "Use grill-with-docs for my current request.",
+          "triggers": [
+            "use grill-with-docs",
+            "grill-with-docs workflow"
+          ],
+          "negativeTriggers": [
+            "the request is outside this workflow",
+            "the user selected the canonical skill"
+          ]
+        },
+        "th": {
+          "displayName": "ชื่อเดิม: grill-with-docs → ask-with-docs",
+          "description": "ชื่อเดิมชั่วคราวสำหรับ ask-with-docs; แจ้งชื่อใหม่แล้วใช้ contract เดียวกันโดยไม่เพิ่มสิทธิ์หรือขยาย scope",
+          "shortDescription": "ชื่อเดิมของ ask-with-docs; ใช้ contract เดิมโดยไม่เพิ่มสิทธิ์",
+          "defaultPrompt": "ใช้ grill-with-docs กับคำขอนี้",
+          "triggers": [
+            "ใช้ grill-with-docs",
+            "ทำงานแบบ grill-with-docs"
+          ],
+          "negativeTriggers": [
+            "คำขออยู่นอกขอบเขต workflow นี้",
+            "ผู้ใช้เลือกชื่อหลักแล้ว"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": false
+      },
+      "effectLevel": "workspace_write",
+      "role": "compatibility_alias",
+      "workflow": [
+        {
+          "phase": "disclose",
+          "instruction": "Tell the user that grill-with-docs is now ask-with-docs."
+        },
+        {
+          "phase": "delegate",
+          "instruction": "Apply the ask-with-docs contract without adding authority."
+        }
+      ],
+      "artifacts": [
+        "ask-with-docs result",
+        "compatibility notice"
+      ],
+      "evidence": [
+        "canonical workflow evidence",
+        "compat_alias: grill-with-docs"
+      ],
+      "guardrails": [
+        "Never broaden scope or permissions through an alias.",
+        "Do not hide the deprecation notice."
+      ],
+      "aliasFor": "ask-with-docs"
+    },
+    {
+      "id": "diagnosing-bugs",
+      "tier": "compat",
+      "origin": {
+        "repository": "mattpocock/skills",
+        "skill": "diagnosing-bugs"
+      },
+      "sources": {
+        "th": "skills/compat/diagnosing-bugs",
+        "en": "locales/en/skills/compat/diagnosing-bugs"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Legacy name: diagnosing-bugs → debug",
+          "description": "Temporary compatibility alias for debug; disclose the canonical name and apply the same contract without expanding authority.",
+          "shortDescription": "Legacy name for debug; use the same contract without extra authority",
+          "defaultPrompt": "Use diagnosing-bugs for my current request.",
+          "triggers": [
+            "use diagnosing-bugs",
+            "diagnosing-bugs workflow"
+          ],
+          "negativeTriggers": [
+            "the request is outside this workflow",
+            "the user selected the canonical skill"
+          ]
+        },
+        "th": {
+          "displayName": "ชื่อเดิม: diagnosing-bugs → debug",
+          "description": "ชื่อเดิมชั่วคราวสำหรับ debug; แจ้งชื่อใหม่แล้วใช้ contract เดียวกันโดยไม่เพิ่มสิทธิ์หรือขยาย scope",
+          "shortDescription": "ชื่อเดิมของ debug; ใช้ contract เดิมโดยไม่เพิ่มสิทธิ์",
+          "defaultPrompt": "ใช้ diagnosing-bugs กับคำขอนี้",
+          "triggers": [
+            "ใช้ diagnosing-bugs",
+            "ทำงานแบบ diagnosing-bugs"
+          ],
+          "negativeTriggers": [
+            "คำขออยู่นอกขอบเขต workflow นี้",
+            "ผู้ใช้เลือกชื่อหลักแล้ว"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": false
+      },
+      "effectLevel": "read_only",
+      "role": "compatibility_alias",
+      "workflow": [
+        {
+          "phase": "disclose",
+          "instruction": "Tell the user that diagnosing-bugs is now debug."
+        },
+        {
+          "phase": "delegate",
+          "instruction": "Apply the debug contract without adding authority."
+        }
+      ],
+      "artifacts": [
+        "debug result",
+        "compatibility notice"
+      ],
+      "evidence": [
+        "canonical workflow evidence",
+        "compat_alias: diagnosing-bugs"
+      ],
+      "guardrails": [
+        "Never broaden scope or permissions through an alias.",
+        "Do not hide the deprecation notice."
+      ],
+      "aliasFor": "debug"
+    },
+    {
+      "id": "implement",
+      "tier": "compat",
+      "origin": {
+        "repository": "mattpocock/skills",
+        "skill": "implement"
+      },
+      "sources": {
+        "th": "skills/compat/implement",
+        "en": "locales/en/skills/compat/implement"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Legacy name: implement → code",
+          "description": "Temporary compatibility alias for code; disclose the canonical name and apply the same contract without expanding authority.",
+          "shortDescription": "Legacy name for code; use the same contract without extra authority",
+          "defaultPrompt": "Use implement for my current request.",
+          "triggers": [
+            "use implement",
+            "implement workflow"
+          ],
+          "negativeTriggers": [
+            "the request is outside this workflow",
+            "the user selected the canonical skill"
+          ]
+        },
+        "th": {
+          "displayName": "ชื่อเดิม: implement → code",
+          "description": "ชื่อเดิมชั่วคราวสำหรับ code; แจ้งชื่อใหม่แล้วใช้ contract เดียวกันโดยไม่เพิ่มสิทธิ์หรือขยาย scope",
+          "shortDescription": "ชื่อเดิมของ code; ใช้ contract เดิมโดยไม่เพิ่มสิทธิ์",
+          "defaultPrompt": "ใช้ implement กับคำขอนี้",
+          "triggers": [
+            "ใช้ implement",
+            "ทำงานแบบ implement"
+          ],
+          "negativeTriggers": [
+            "คำขออยู่นอกขอบเขต workflow นี้",
+            "ผู้ใช้เลือกชื่อหลักแล้ว"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": false
+      },
+      "effectLevel": "workspace_write",
+      "role": "compatibility_alias",
+      "workflow": [
+        {
+          "phase": "disclose",
+          "instruction": "Tell the user that implement is now code."
+        },
+        {
+          "phase": "delegate",
+          "instruction": "Apply the code contract without adding authority."
+        }
+      ],
+      "artifacts": [
+        "code result",
+        "compatibility notice"
+      ],
+      "evidence": [
+        "canonical workflow evidence",
+        "compat_alias: implement"
+      ],
+      "guardrails": [
+        "Never broaden scope or permissions through an alias.",
+        "Do not hide the deprecation notice."
+      ],
+      "aliasFor": "code"
+    },
+    {
+      "id": "design-shotgun",
+      "tier": "compat",
+      "origin": {
+        "repository": "apipoj/spk",
+        "skill": "design-shotgun"
+      },
+      "sources": {
+        "th": "skills/compat/design-shotgun",
+        "en": "locales/en/skills/compat/design-shotgun"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Legacy name: design-shotgun → design-options",
+          "description": "Temporary compatibility alias for design-options; disclose the canonical name and apply the same contract without expanding authority.",
+          "shortDescription": "Legacy name for design-options; use the same contract without extra authority",
+          "defaultPrompt": "Use design-shotgun for my current request.",
+          "triggers": [
+            "use design-shotgun",
+            "design-shotgun workflow"
+          ],
+          "negativeTriggers": [
+            "the request is outside this workflow",
+            "the user selected the canonical skill"
+          ]
+        },
+        "th": {
+          "displayName": "ชื่อเดิม: design-shotgun → design-options",
+          "description": "ชื่อเดิมชั่วคราวสำหรับ design-options; แจ้งชื่อใหม่แล้วใช้ contract เดียวกันโดยไม่เพิ่มสิทธิ์หรือขยาย scope",
+          "shortDescription": "ชื่อเดิมของ design-options; ใช้ contract เดิมโดยไม่เพิ่มสิทธิ์",
+          "defaultPrompt": "ใช้ design-shotgun กับคำขอนี้",
+          "triggers": [
+            "ใช้ design-shotgun",
+            "ทำงานแบบ design-shotgun"
+          ],
+          "negativeTriggers": [
+            "คำขออยู่นอกขอบเขต workflow นี้",
+            "ผู้ใช้เลือกชื่อหลักแล้ว"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": false
+      },
+      "effectLevel": "workspace_write",
+      "role": "compatibility_alias",
+      "workflow": [
+        {
+          "phase": "disclose",
+          "instruction": "Tell the user that design-shotgun is now design-options."
+        },
+        {
+          "phase": "delegate",
+          "instruction": "Apply the design-options contract without adding authority."
+        }
+      ],
+      "artifacts": [
+        "design-options result",
+        "compatibility notice"
+      ],
+      "evidence": [
+        "canonical workflow evidence",
+        "compat_alias: design-shotgun"
+      ],
+      "guardrails": [
+        "Never broaden scope or permissions through an alias.",
+        "Do not hide the deprecation notice."
+      ],
+      "aliasFor": "design-options"
+    },
+    {
+      "id": "resolving-merge-conflicts",
+      "tier": "compat",
+      "origin": {
+        "repository": "mattpocock/skills",
+        "skill": "resolving-merge-conflicts"
+      },
+      "sources": {
+        "th": "skills/compat/resolving-merge-conflicts",
+        "en": "locales/en/skills/compat/resolving-merge-conflicts"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Legacy name: resolving-merge-conflicts → fix-conflicts",
+          "description": "Temporary compatibility alias for fix-conflicts; disclose the canonical name and apply the same contract without expanding authority.",
+          "shortDescription": "Legacy name for fix-conflicts; use the same contract without extra authority",
+          "defaultPrompt": "Use resolving-merge-conflicts for my current request.",
+          "triggers": [
+            "use resolving-merge-conflicts",
+            "resolving-merge-conflicts workflow"
+          ],
+          "negativeTriggers": [
+            "the request is outside this workflow",
+            "the user selected the canonical skill"
+          ]
+        },
+        "th": {
+          "displayName": "ชื่อเดิม: resolving-merge-conflicts → fix-conflicts",
+          "description": "ชื่อเดิมชั่วคราวสำหรับ fix-conflicts; แจ้งชื่อใหม่แล้วใช้ contract เดียวกันโดยไม่เพิ่มสิทธิ์หรือขยาย scope",
+          "shortDescription": "ชื่อเดิมของ fix-conflicts; ใช้ contract เดิมโดยไม่เพิ่มสิทธิ์",
+          "defaultPrompt": "ใช้ resolving-merge-conflicts กับคำขอนี้",
+          "triggers": [
+            "ใช้ resolving-merge-conflicts",
+            "ทำงานแบบ resolving-merge-conflicts"
+          ],
+          "negativeTriggers": [
+            "คำขออยู่นอกขอบเขต workflow นี้",
+            "ผู้ใช้เลือกชื่อหลักแล้ว"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": false
+      },
+      "effectLevel": "git_write",
+      "role": "compatibility_alias",
+      "workflow": [
+        {
+          "phase": "disclose",
+          "instruction": "Tell the user that resolving-merge-conflicts is now fix-conflicts."
+        },
+        {
+          "phase": "delegate",
+          "instruction": "Apply the fix-conflicts contract without adding authority."
+        }
+      ],
+      "artifacts": [
+        "fix-conflicts result",
+        "compatibility notice"
+      ],
+      "evidence": [
+        "canonical workflow evidence",
+        "compat_alias: resolving-merge-conflicts"
+      ],
+      "guardrails": [
+        "Never broaden scope or permissions through an alias.",
+        "Do not hide the deprecation notice."
+      ],
+      "aliasFor": "fix-conflicts"
+    },
+    {
+      "id": "writing-great-skills",
+      "tier": "compat",
+      "origin": {
+        "repository": "mattpocock/skills",
+        "skill": "writing-great-skills"
+      },
+      "sources": {
+        "th": "skills/compat/writing-great-skills",
+        "en": "locales/en/skills/compat/writing-great-skills"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Legacy name: writing-great-skills → write-skills",
+          "description": "Temporary compatibility alias for write-skills; disclose the canonical name and apply the same contract without expanding authority.",
+          "shortDescription": "Legacy name for write-skills; use the same contract without extra authority",
+          "defaultPrompt": "Use writing-great-skills for my current request.",
+          "triggers": [
+            "use writing-great-skills",
+            "writing-great-skills workflow"
+          ],
+          "negativeTriggers": [
+            "the request is outside this workflow",
+            "the user selected the canonical skill"
+          ]
+        },
+        "th": {
+          "displayName": "ชื่อเดิม: writing-great-skills → write-skills",
+          "description": "ชื่อเดิมชั่วคราวสำหรับ write-skills; แจ้งชื่อใหม่แล้วใช้ contract เดียวกันโดยไม่เพิ่มสิทธิ์หรือขยาย scope",
+          "shortDescription": "ชื่อเดิมของ write-skills; ใช้ contract เดิมโดยไม่เพิ่มสิทธิ์",
+          "defaultPrompt": "ใช้ writing-great-skills กับคำขอนี้",
+          "triggers": [
+            "ใช้ writing-great-skills",
+            "ทำงานแบบ writing-great-skills"
+          ],
+          "negativeTriggers": [
+            "คำขออยู่นอกขอบเขต workflow นี้",
+            "ผู้ใช้เลือกชื่อหลักแล้ว"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": false
+      },
+      "effectLevel": "read_only",
+      "role": "compatibility_alias",
+      "workflow": [
+        {
+          "phase": "disclose",
+          "instruction": "Tell the user that writing-great-skills is now write-skills."
+        },
+        {
+          "phase": "delegate",
+          "instruction": "Apply the write-skills contract without adding authority."
+        }
+      ],
+      "artifacts": [
+        "write-skills result",
+        "compatibility notice"
+      ],
+      "evidence": [
+        "canonical workflow evidence",
+        "compat_alias: writing-great-skills"
+      ],
+      "guardrails": [
+        "Never broaden scope or permissions through an alias.",
+        "Do not hide the deprecation notice."
+      ],
+      "aliasFor": "write-skills"
+    },
+    {
+      "id": "prime",
+      "tier": "compat",
+      "origin": {
+        "repository": "apipoj/spk",
+        "skill": "prime"
+      },
+      "sources": {
+        "th": "skills/compat/prime",
+        "en": "locales/en/skills/compat/prime"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Legacy name: prime → load-project",
+          "description": "Temporary compatibility alias for load-project; disclose the canonical name and apply the same contract without expanding authority.",
+          "shortDescription": "Legacy name for load-project; use the same contract without extra authority",
+          "defaultPrompt": "Use prime for my current request.",
+          "triggers": [
+            "use prime",
+            "prime workflow"
+          ],
+          "negativeTriggers": [
+            "the request is outside this workflow",
+            "the user selected the canonical skill"
+          ]
+        },
+        "th": {
+          "displayName": "ชื่อเดิม: prime → load-project",
+          "description": "ชื่อเดิมชั่วคราวสำหรับ load-project; แจ้งชื่อใหม่แล้วใช้ contract เดียวกันโดยไม่เพิ่มสิทธิ์หรือขยาย scope",
+          "shortDescription": "ชื่อเดิมของ load-project; ใช้ contract เดิมโดยไม่เพิ่มสิทธิ์",
+          "defaultPrompt": "ใช้ prime กับคำขอนี้",
+          "triggers": [
+            "ใช้ prime",
+            "ทำงานแบบ prime"
+          ],
+          "negativeTriggers": [
+            "คำขออยู่นอกขอบเขต workflow นี้",
+            "ผู้ใช้เลือกชื่อหลักแล้ว"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": false
+      },
+      "effectLevel": "workspace_write",
+      "role": "compatibility_alias",
+      "workflow": [
+        {
+          "phase": "disclose",
+          "instruction": "Tell the user that prime is now load-project."
+        },
+        {
+          "phase": "delegate",
+          "instruction": "Apply the load-project contract without adding authority."
+        }
+      ],
+      "artifacts": [
+        "load-project result",
+        "compatibility notice"
+      ],
+      "evidence": [
+        "canonical workflow evidence",
+        "compat_alias: prime"
+      ],
+      "guardrails": [
+        "Never broaden scope or permissions through an alias.",
+        "Do not hide the deprecation notice."
+      ],
+      "aliasFor": "load-project"
+    },
+    {
+      "id": "query",
+      "tier": "compat",
+      "origin": {
+        "repository": "apipoj/spk",
+        "skill": "query"
+      },
+      "sources": {
+        "th": "skills/compat/query",
+        "en": "locales/en/skills/compat/query"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Legacy name: query → ask-project",
+          "description": "Temporary compatibility alias for ask-project; disclose the canonical name and apply the same contract without expanding authority.",
+          "shortDescription": "Legacy name for ask-project; use the same contract without extra authority",
+          "defaultPrompt": "Use query for my current request.",
+          "triggers": [
+            "use query",
+            "query workflow"
+          ],
+          "negativeTriggers": [
+            "the request is outside this workflow",
+            "the user selected the canonical skill"
+          ]
+        },
+        "th": {
+          "displayName": "ชื่อเดิม: query → ask-project",
+          "description": "ชื่อเดิมชั่วคราวสำหรับ ask-project; แจ้งชื่อใหม่แล้วใช้ contract เดียวกันโดยไม่เพิ่มสิทธิ์หรือขยาย scope",
+          "shortDescription": "ชื่อเดิมของ ask-project; ใช้ contract เดิมโดยไม่เพิ่มสิทธิ์",
+          "defaultPrompt": "ใช้ query กับคำขอนี้",
+          "triggers": [
+            "ใช้ query",
+            "ทำงานแบบ query"
+          ],
+          "negativeTriggers": [
+            "คำขออยู่นอกขอบเขต workflow นี้",
+            "ผู้ใช้เลือกชื่อหลักแล้ว"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": false
+      },
+      "effectLevel": "read_only",
+      "role": "compatibility_alias",
+      "workflow": [
+        {
+          "phase": "disclose",
+          "instruction": "Tell the user that query is now ask-project."
+        },
+        {
+          "phase": "delegate",
+          "instruction": "Apply the ask-project contract without adding authority."
+        }
+      ],
+      "artifacts": [
+        "ask-project result",
+        "compatibility notice"
+      ],
+      "evidence": [
+        "canonical workflow evidence",
+        "compat_alias: query"
+      ],
+      "guardrails": [
+        "Never broaden scope or permissions through an alias.",
+        "Do not hide the deprecation notice."
+      ],
+      "aliasFor": "ask-project"
+    },
+    {
+      "id": "ingest",
+      "tier": "compat",
+      "origin": {
+        "repository": "apipoj/spk",
+        "skill": "ingest"
+      },
+      "sources": {
+        "th": "skills/compat/ingest",
+        "en": "locales/en/skills/compat/ingest"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Legacy name: ingest → add-knowledge",
+          "description": "Temporary compatibility alias for add-knowledge; disclose the canonical name and apply the same contract without expanding authority.",
+          "shortDescription": "Legacy name for add-knowledge; use the same contract without extra authority",
+          "defaultPrompt": "Use ingest for my current request.",
+          "triggers": [
+            "use ingest",
+            "ingest workflow"
+          ],
+          "negativeTriggers": [
+            "the request is outside this workflow",
+            "the user selected the canonical skill"
+          ]
+        },
+        "th": {
+          "displayName": "ชื่อเดิม: ingest → add-knowledge",
+          "description": "ชื่อเดิมชั่วคราวสำหรับ add-knowledge; แจ้งชื่อใหม่แล้วใช้ contract เดียวกันโดยไม่เพิ่มสิทธิ์หรือขยาย scope",
+          "shortDescription": "ชื่อเดิมของ add-knowledge; ใช้ contract เดิมโดยไม่เพิ่มสิทธิ์",
+          "defaultPrompt": "ใช้ ingest กับคำขอนี้",
+          "triggers": [
+            "ใช้ ingest",
+            "ทำงานแบบ ingest"
+          ],
+          "negativeTriggers": [
+            "คำขออยู่นอกขอบเขต workflow นี้",
+            "ผู้ใช้เลือกชื่อหลักแล้ว"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": false
+      },
+      "effectLevel": "workspace_write",
+      "role": "compatibility_alias",
+      "workflow": [
+        {
+          "phase": "disclose",
+          "instruction": "Tell the user that ingest is now add-knowledge."
+        },
+        {
+          "phase": "delegate",
+          "instruction": "Apply the add-knowledge contract without adding authority."
+        }
+      ],
+      "artifacts": [
+        "add-knowledge result",
+        "compatibility notice"
+      ],
+      "evidence": [
+        "canonical workflow evidence",
+        "compat_alias: ingest"
+      ],
+      "guardrails": [
+        "Never broaden scope or permissions through an alias.",
+        "Do not hide the deprecation notice."
+      ],
+      "aliasFor": "add-knowledge"
+    },
+    {
+      "id": "wiki-lint",
+      "tier": "compat",
+      "origin": {
+        "repository": "apipoj/spk",
+        "skill": "wiki-lint"
+      },
+      "sources": {
+        "th": "skills/compat/wiki-lint",
+        "en": "locales/en/skills/compat/wiki-lint"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Legacy name: wiki-lint → check-wiki",
+          "description": "Temporary compatibility alias for check-wiki; disclose the canonical name and apply the same contract without expanding authority.",
+          "shortDescription": "Legacy name for check-wiki; use the same contract without extra authority",
+          "defaultPrompt": "Use wiki-lint for my current request.",
+          "triggers": [
+            "use wiki-lint",
+            "wiki-lint workflow"
+          ],
+          "negativeTriggers": [
+            "the request is outside this workflow",
+            "the user selected the canonical skill"
+          ]
+        },
+        "th": {
+          "displayName": "ชื่อเดิม: wiki-lint → check-wiki",
+          "description": "ชื่อเดิมชั่วคราวสำหรับ check-wiki; แจ้งชื่อใหม่แล้วใช้ contract เดียวกันโดยไม่เพิ่มสิทธิ์หรือขยาย scope",
+          "shortDescription": "ชื่อเดิมของ check-wiki; ใช้ contract เดิมโดยไม่เพิ่มสิทธิ์",
+          "defaultPrompt": "ใช้ wiki-lint กับคำขอนี้",
+          "triggers": [
+            "ใช้ wiki-lint",
+            "ทำงานแบบ wiki-lint"
+          ],
+          "negativeTriggers": [
+            "คำขออยู่นอกขอบเขต workflow นี้",
+            "ผู้ใช้เลือกชื่อหลักแล้ว"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": false
+      },
+      "effectLevel": "workspace_write",
+      "role": "compatibility_alias",
+      "workflow": [
+        {
+          "phase": "disclose",
+          "instruction": "Tell the user that wiki-lint is now check-wiki."
+        },
+        {
+          "phase": "delegate",
+          "instruction": "Apply the check-wiki contract without adding authority."
+        }
+      ],
+      "artifacts": [
+        "check-wiki result",
+        "compatibility notice"
+      ],
+      "evidence": [
+        "canonical workflow evidence",
+        "compat_alias: wiki-lint"
+      ],
+      "guardrails": [
+        "Never broaden scope or permissions through an alias.",
+        "Do not hide the deprecation notice."
+      ],
+      "aliasFor": "check-wiki"
+    },
+    {
+      "id": "improve-codebase-architecture",
+      "tier": "compat",
+      "origin": {
+        "repository": "mattpocock/skills",
+        "skill": "improve-codebase-architecture"
+      },
+      "sources": {
+        "th": "skills/compat/improve-codebase-architecture",
+        "en": "locales/en/skills/compat/improve-codebase-architecture"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Legacy name: improve-codebase-architecture → improve-codebase",
+          "description": "Temporary compatibility alias for improve-codebase; disclose the canonical name and apply the same contract without expanding authority.",
+          "shortDescription": "Legacy name for improve-codebase; use the same contract without extra authority",
+          "defaultPrompt": "Use improve-codebase-architecture for my current request.",
+          "triggers": [
+            "use improve-codebase-architecture",
+            "improve-codebase-architecture workflow"
+          ],
+          "negativeTriggers": [
+            "the request is outside this workflow",
+            "the user selected the canonical skill"
+          ]
+        },
+        "th": {
+          "displayName": "ชื่อเดิม: improve-codebase-architecture → improve-codebase",
+          "description": "ชื่อเดิมชั่วคราวสำหรับ improve-codebase; แจ้งชื่อใหม่แล้วใช้ contract เดียวกันโดยไม่เพิ่มสิทธิ์หรือขยาย scope",
+          "shortDescription": "ชื่อเดิมของ improve-codebase; ใช้ contract เดิมโดยไม่เพิ่มสิทธิ์",
+          "defaultPrompt": "ใช้ improve-codebase-architecture กับคำขอนี้",
+          "triggers": [
+            "ใช้ improve-codebase-architecture",
+            "ทำงานแบบ improve-codebase-architecture"
+          ],
+          "negativeTriggers": [
+            "คำขออยู่นอกขอบเขต workflow นี้",
+            "ผู้ใช้เลือกชื่อหลักแล้ว"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": false
+      },
+      "effectLevel": "workspace_write",
+      "role": "compatibility_alias",
+      "workflow": [
+        {
+          "phase": "disclose",
+          "instruction": "Tell the user that improve-codebase-architecture is now improve-codebase."
+        },
+        {
+          "phase": "delegate",
+          "instruction": "Apply the improve-codebase contract without adding authority."
+        }
+      ],
+      "artifacts": [
+        "improve-codebase result",
+        "compatibility notice"
+      ],
+      "evidence": [
+        "canonical workflow evidence",
+        "compat_alias: improve-codebase-architecture"
+      ],
+      "guardrails": [
+        "Never broaden scope or permissions through an alias.",
+        "Do not hide the deprecation notice."
+      ],
+      "aliasFor": "improve-codebase"
+    },
+    {
+      "id": "scoped-tests",
+      "tier": "compat",
+      "origin": {
+        "repository": "apipoj/spk",
+        "skill": "scoped-tests"
+      },
+      "sources": {
+        "th": "skills/compat/scoped-tests",
+        "en": "locales/en/skills/compat/scoped-tests"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Legacy name: scoped-tests → test-changes",
+          "description": "Temporary compatibility alias for test-changes; disclose the canonical name and apply the same contract without expanding authority.",
+          "shortDescription": "Legacy name for test-changes; use the same contract without extra authority",
+          "defaultPrompt": "Use scoped-tests for my current request.",
+          "triggers": [
+            "use scoped-tests",
+            "scoped-tests workflow"
+          ],
+          "negativeTriggers": [
+            "the request is outside this workflow",
+            "the user selected the canonical skill"
+          ]
+        },
+        "th": {
+          "displayName": "ชื่อเดิม: scoped-tests → test-changes",
+          "description": "ชื่อเดิมชั่วคราวสำหรับ test-changes; แจ้งชื่อใหม่แล้วใช้ contract เดียวกันโดยไม่เพิ่มสิทธิ์หรือขยาย scope",
+          "shortDescription": "ชื่อเดิมของ test-changes; ใช้ contract เดิมโดยไม่เพิ่มสิทธิ์",
+          "defaultPrompt": "ใช้ scoped-tests กับคำขอนี้",
+          "triggers": [
+            "ใช้ scoped-tests",
+            "ทำงานแบบ scoped-tests"
+          ],
+          "negativeTriggers": [
+            "คำขออยู่นอกขอบเขต workflow นี้",
+            "ผู้ใช้เลือกชื่อหลักแล้ว"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": false
+      },
+      "effectLevel": "read_only",
+      "role": "compatibility_alias",
+      "workflow": [
+        {
+          "phase": "disclose",
+          "instruction": "Tell the user that scoped-tests is now test-changes."
+        },
+        {
+          "phase": "delegate",
+          "instruction": "Apply the test-changes contract without adding authority."
+        }
+      ],
+      "artifacts": [
+        "test-changes result",
+        "compatibility notice"
+      ],
+      "evidence": [
+        "canonical workflow evidence",
+        "compat_alias: scoped-tests"
+      ],
+      "guardrails": [
+        "Never broaden scope or permissions through an alias.",
+        "Do not hide the deprecation notice."
+      ],
+      "aliasFor": "test-changes"
+    },
+    {
+      "id": "release-check",
+      "tier": "compat",
+      "origin": {
+        "repository": "apipoj/spk",
+        "skill": "release-check"
+      },
+      "sources": {
+        "th": "skills/compat/release-check",
+        "en": "locales/en/skills/compat/release-check"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Legacy name: release-check → check-release",
+          "description": "Temporary compatibility alias for check-release; disclose the canonical name and apply the same contract without expanding authority.",
+          "shortDescription": "Legacy name for check-release; use the same contract without extra authority",
+          "defaultPrompt": "Use release-check for my current request.",
+          "triggers": [
+            "use release-check",
+            "release-check workflow"
+          ],
+          "negativeTriggers": [
+            "the request is outside this workflow",
+            "the user selected the canonical skill"
+          ]
+        },
+        "th": {
+          "displayName": "ชื่อเดิม: release-check → check-release",
+          "description": "ชื่อเดิมชั่วคราวสำหรับ check-release; แจ้งชื่อใหม่แล้วใช้ contract เดียวกันโดยไม่เพิ่มสิทธิ์หรือขยาย scope",
+          "shortDescription": "ชื่อเดิมของ check-release; ใช้ contract เดิมโดยไม่เพิ่มสิทธิ์",
+          "defaultPrompt": "ใช้ release-check กับคำขอนี้",
+          "triggers": [
+            "ใช้ release-check",
+            "ทำงานแบบ release-check"
+          ],
+          "negativeTriggers": [
+            "คำขออยู่นอกขอบเขต workflow นี้",
+            "ผู้ใช้เลือกชื่อหลักแล้ว"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": false
+      },
+      "effectLevel": "read_only",
+      "role": "compatibility_alias",
+      "workflow": [
+        {
+          "phase": "disclose",
+          "instruction": "Tell the user that release-check is now check-release."
+        },
+        {
+          "phase": "delegate",
+          "instruction": "Apply the check-release contract without adding authority."
+        }
+      ],
+      "artifacts": [
+        "check-release result",
+        "compatibility notice"
+      ],
+      "evidence": [
+        "canonical workflow evidence",
+        "compat_alias: release-check"
+      ],
+      "guardrails": [
+        "Never broaden scope or permissions through an alias.",
+        "Do not hide the deprecation notice."
+      ],
+      "aliasFor": "check-release"
     }
   ]
 }

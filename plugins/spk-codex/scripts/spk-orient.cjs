@@ -203,7 +203,7 @@ function buildOrientation({ areas, commits, reflection }) {
   }
   if (reflection) {
     const age = reflection.ageDays === 0 ? 'today' : `${reflection.ageDays} day(s) ago`;
-    lines.push(`A session reflection is pending review at ${REVIEW_FILE.replace(/\\/g, '/')} (written ${age}) — apply its proposals with the SPK prime/ingest skills, then delete the file.`);
+    lines.push(`A session reflection is pending review at ${REVIEW_FILE.replace(/\\/g, '/')} (written ${age}) — apply its proposals with the SPK load-project/add-knowledge skills, then delete the file.`);
   }
   return lines.join(' ');
 }

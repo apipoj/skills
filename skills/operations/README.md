@@ -6,5 +6,5 @@
 - [`pr`](./pr/SKILL.md) — เตรียม pull request ที่มีขอบเขตจากงานที่ตรวจทานแล้ว ตรวจ diff และ checks ที่แน่นอน และขออนุมัติก่อน push หรือเขียนข้อมูลระยะไกล _(manual-only)_
 - [`task-to-pr`](./task-to-pr/SKILL.md) — นำงาน ticket หรือ pull request หนึ่งรายการจากต้นทางไปสู่ PR ที่ผ่านการทดสอบและ review อิสระ พร้อมให้มนุษย์ merge โดยทำต่อจากงานเดิมที่ตรงกันและขอ approval ที่ bind ก่อน Git หรือ remote write _(manual-only)_
 - [`doctor`](./doctor/SKILL.md) — วินิจฉัยสุขภาพการติดตั้งและ runtime ของ SPK บน host ที่รองรับด้วยการตรวจแบบ read-only แล้วรายงาน failure และคำสั่งแก้ไขที่แน่นอน
-- [`release-check`](./release-check/SKILL.md) — รัน gate ความพร้อม release ทั้งหมดของ repo ตรวจ version และ generated artifacts ให้สอดคล้อง และรายงาน blocker โดยไม่ publish _(manual-only)_
+- [`check-release`](./check-release/SKILL.md) — รันทุก gate ที่ต้องผ่านก่อนออก release ตรวจ version และ generated files แล้วรายงานสิ่งที่ยังติดโดยไม่ publish _(manual-only)_
 - [`uninstall`](./uninstall/SKILL.md) — ลบเฉพาะ artifact ในโปรเจกต์ที่ยืนยันว่า SPK เป็นเจ้าของ หลังแสดงเป้าหมายที่แน่นอน พร้อมรักษาความรู้โปรเจกต์และไฟล์ผู้ใช้ที่ไม่เกี่ยวข้อง _(manual-only)_

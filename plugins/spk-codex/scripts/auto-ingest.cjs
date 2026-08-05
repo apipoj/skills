@@ -91,7 +91,7 @@ function main() {
       process.stdout.write(JSON.stringify({
         hookSpecificOutput: {
           hookEventName: 'PostToolUse',
-          additionalContext: `[SPK auto-ingest] ${result.reason}. Run the SPK ingest skill (/spk:ingest in Claude Code; $spk:ingest in Codex) to process.`
+          additionalContext: `[SPK auto-ingest] ${result.reason}. Run the SPK add-knowledge skill (/spk:add-knowledge in Claude Code; $spk:add-knowledge in Codex) to process.`
         }
       }) + '\n');
     }

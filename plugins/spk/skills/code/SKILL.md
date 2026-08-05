@@ -1,22 +1,75 @@
 ---
 name: code
-description: Temporary compatibility alias for implement; disclose the canonical name and apply the same contract without expanding authority.
-disable-model-invocation: true
+description: Implement an approved software plan in small scoped slices, verify each behavior, update documentation, and report an evidence receipt.
 ---
-# Deprecated alias: code
+# Implementation
 
-Supported until 6.0.0. Tell the user this workflow moved to `implement`, then apply the canonical approval and evidence contract.
+## Thai-first Experience
+
+Respond in natural, concise Thai by default. Lead with the outcome, use familiar English technical terms when clearer, apply safe smart defaults, and ask one material question only when its answer changes scope, risk, or success.
+
+Implement the supplied approved plan without broadening its scope.
 
 ## Workflow
 
-1. Disclose the canonical skill name.
-2. Apply the implement contract directly without adding authority.
+1. Read repository instructions, the referenced plan, current diff, relevant code, and
+   codeation authority. When arriving from a plan-to-development handoff, require
+   the user's explicit approval after the exact plan was shown; otherwise stop before
+   modifying the workspace.
+2. Split work by acceptance criterion. Delegate only independent, disjoint slices; use
+   sequential work for shared files or dependent steps.
+3. For each behavior, record a failing RED test before the minimum GREEN change, then
+   refactor only while green.
+4. Run focused tests during the loop and the relevant full regression suite before
+   sign-off. Update documentation when public behavior changed.
+5. Run a separate verifier pass against the plan and repository gates. Do not describe
+   unverified work as done.
+6. Return a typed evidence receipt containing changed paths, RED/GREEN commands and
+   outcomes, full-suite result, documentation, risks, and remaining work.
+
+Budget: at most eight specialist calls, three concurrent workers with disjoint file
+ownership, and one retry for a blocked worker. Do not commit, push, or open a PR unless
+the user explicitly requested those separate actions.
+
+## Implementation Authorization
+
+Accept either of these as workspace codeation authority:
+
+- The user's current direct request explicitly asks to code an identified,
+  already-approved plan.
+- In a plan-to-development chain, the latest user answer unambiguously approves the
+  exact plan that was just presented, such as `เริ่มพัฒนาตาม plan`.
+
+Do not accept an `ask-me` summary confirmation, a choice to create a plan, or an earlier
+“plan then develop” request as approval of the unseen plan. If authority is missing or
+ambiguous, return `NEEDS_USER_INPUT` with the exact plan reference and make no changes.
 
 ## Evidence Receipt
 
-Return the canonical workflow receipt and include `compat_alias: code`.
+Return `spk.evidence/v1` with status, approved plan reference, codeation-authority
+source, changed artifacts, RED/GREEN and regression verification, documentation,
+risks, and next action.
 
 ## Guardrails
 
-- Never broaden scope or permissions through an alias.
-- Do not hide the deprecation notice.
+- Stay inside the approved plan and preserve unrelated user changes.
+- Never modify the workspace without an approved plan and current codeation
+  authority for that exact scope.
+- Never skip a failing gate, invent test results, or describe unverified work as done.
+- Do not commit, push, create a PR, or deploy without separate explicit authorization.
+
+
+## Upstream Discipline
+
+The following material is retained from the pinned Matt Pocock skill and applies unless an Apipoj Skills approval or evidence guardrail above is stricter.
+
+Implement the work described by the user in the spec or tickets.
+
+Use /tdd where possible, at pre-agreed seams.
+
+Run typechecking regularly, single test files regularly, and the full test suite once at the end.
+
+Once done, use /code-review to review the work.
+
+Prepare a clear commit message, but commit only when the user separately authorizes
+that exact Git write.

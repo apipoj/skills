@@ -543,12 +543,12 @@ AGENTS.md for every area that changed.
 For EACH area, output exactly one of:
 - \`No change needed\` — the AGENTS.md still holds; or
 - a concrete proposed edit: the specific line(s) to add, change, or remove, plus \
-one sentence on why. Apply it with the prime skill (\`/spk:prime <area>\` in \
-Claude Code or \`$spk:prime <area>\` in Codex).
+one sentence on why. Apply it with the load-project skill (\`/spk:load-project <area>\` in \
+Claude Code or \`$spk:load-project <area>\` in Codex).
 
 Then, separately, under a \`## Learnings\` heading, note any reusable decision, \
 gotcha, or pattern this session produced that is worth capturing as a wiki \
-learning via the ingest skill (\`/spk:ingest\` in Claude Code or \`$spk:ingest\` in \
+learning via the add-knowledge skill (\`/spk:add-knowledge\` in Claude Code or \`$spk:add-knowledge\` in \
 Codex) — or write \`No learnings\` if none.
 
 Only propose updates for genuine new conventions, gotchas, commands, or \
@@ -817,9 +817,9 @@ function deterministicNote(root, areas, stamp) {
     `# Session reflect — ${stamp}`,
     '',
     '_`claude` CLI unavailable — deterministic fallback. The areas below changed ' +
-      'this session; re-check their AGENTS.md with the prime skill ' +
-      '(`/spk:prime` in Claude Code or `$spk:prime` in Codex) and capture any learning ' +
-      'with the ingest skill (`/spk:ingest` or `$spk:ingest`)._',
+      'this session; re-check their AGENTS.md with the load-project skill ' +
+      '(`/spk:load-project` in Claude Code or `$spk:load-project` in Codex) and capture any learning ' +
+      'with the add-knowledge skill (`/spk:add-knowledge` or `$spk:add-knowledge`)._',
     ''
   ];
   for (const area of Object.keys(areas).sort()) {
@@ -828,7 +828,7 @@ function deterministicNote(root, areas, stamp) {
     if (fs.existsSync(file)) {
       lines.push(`- **${area}** (${count} file(s)) — re-read \`${area}/AGENTS.md\`: do its conventions still hold?`);
     } else {
-      lines.push(`- **${area}** (${count} file(s)) — no \`${area}/AGENTS.md\` exists; consider the prime skill for ${area}.`);
+      lines.push(`- **${area}** (${count} file(s)) — no \`${area}/AGENTS.md\` exists; consider the load-project skill for ${area}.`);
     }
   }
   return lines.join('\n') + '\n';

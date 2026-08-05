@@ -137,29 +137,50 @@ describe('platform artifact compiler', () => {
     expect(byId.plan.effectLevel).toBe('workspace_write');
     expect(byId.plan.workflow.find((step) => step.phase === 'handoff').instruction)
       .toMatch(/pre-plan request to develop authorizes planning only/i);
-    expect(byId.implement.effectLevel).toBe('workspace_write');
+    expect(byId.code.effectLevel).toBe('workspace_write');
     expect(fs.readFileSync(
-      path.join(REPO_ROOT, 'plugins/spk/skills/implement/SKILL.md'),
+      path.join(REPO_ROOT, 'plugins/spk/skills/code/SKILL.md'),
       'utf8',
     )).toMatch(/exact plan that was just presented/i);
 
     expect(byId['code-review'].effectLevel).toBe('read_only');
-    expect(byId['diagnosing-bugs'].effectLevel).toBe('read_only');
+    expect(byId.debug.effectLevel).toBe('read_only');
 
-    expect(byId['wiki-lint'].effectLevel).toBe('workspace_write');
-    expect(byId['wiki-lint'].activation.allowImplicitInvocation).toBe(true);
-    expect(byId['wiki-lint'].workflow.find((step) => step.phase === 'guard').instruction)
+    expect(byId['check-wiki'].effectLevel).toBe('workspace_write');
+    expect(byId['check-wiki'].activation.allowImplicitInvocation).toBe(true);
+    expect(byId['check-wiki'].workflow.find((step) => step.phase === 'guard').instruction)
       .toMatch(/only project write/i);
-    expect(byId['wiki-lint'].guardrails.join('\n'))
+    expect(byId['check-wiki'].guardrails.join('\n'))
       .toMatch(/explicit wiki-audit intent[\s\S]*bounded temporary guard marker/i);
 
     const wikiLintSkill = fs.readFileSync(
-      path.join(REPO_ROOT, 'plugins/spk/skills/wiki-lint/SKILL.md'),
+      path.join(REPO_ROOT, 'plugins/spk/skills/check-wiki/SKILL.md'),
       'utf8',
     );
     expect(wikiLintSkill).toMatch(/only permitted project write/i);
 
-    for (const id of ['ask-matt', 'setup-matt-pocock-skills', 'spk', 'jumpstart', 'code', 'debug', 'review']) {
+    for (const id of [
+      'ask-matt',
+      'setup-matt-pocock-skills',
+      'spk',
+      'jumpstart',
+      'review',
+      'grill-me',
+      'grilling',
+      'grill-with-docs',
+      'diagnosing-bugs',
+      'implement',
+      'design-shotgun',
+      'resolving-merge-conflicts',
+      'writing-great-skills',
+      'prime',
+      'query',
+      'ingest',
+      'wiki-lint',
+      'improve-codebase-architecture',
+      'scoped-tests',
+      'release-check',
+    ]) {
       expect(byId[id].tier).toBe('compat');
       expect(byId[id].activation.allowImplicitInvocation).toBe(false);
       expect(byId[id].aliasFor).toBeTruthy();

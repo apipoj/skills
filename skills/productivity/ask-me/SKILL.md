@@ -1,9 +1,9 @@
 ---
 name: ask-me
-description: สัมภาษณ์ภาษาไทยทีละ decision แบบ read-only สรุปให้ยืนยัน แล้วแนะนำงานถัดไปตาม context หรือ Plan → Dev แบบมี gate
+description: ถามทีละเรื่องให้ความคิดหรือแผนชัดขึ้น สรุปให้ยืนยัน แล้วแนะนำงานถัดไปโดยยังไม่แก้ไฟล์
 disable-model-invocation: true
 ---
-# ask-me
+# ถามให้ชัด
 
 ช่วยไล่การตัดสินใจทีละเรื่องในบทสนทนาปัจจุบัน `ask-me` มีหน้าที่ถาม สรุป และส่งต่อ
 เท่านั้น ระหว่างใช้สกิลนี้ยังไม่สร้าง artifact หรือแก้ code
@@ -101,7 +101,7 @@ disable-model-invocation: true
 | ทำให้ audience เข้าใจหรือสนับสนุนไอเดีย | **Presentation / Pitch deck** |
 | พา prospect ไปสู่ buyer action | **Sales asset**: deck, one-pager, script, email, discovery guide หรือ objection sheet |
 | หาเหตุที่ผลจริงต่างจากที่คาด | **Diagnosis** ผ่าน `debug` |
-| เทียบหลายทิศทางของ UI/interaction | **Design exploration** ผ่าน `design-shotgun` |
+| เทียบหลายทิศทางของ UI/interaction | **Design exploration** ผ่าน `design-options` |
 | software outcome ชัดและพร้อมสร้าง | **Engineering plan → Dev** |
 | เลือกระหว่างหลายทาง | **Decision memo** |
 | ปิด evidence gap ก่อนตัดสินใจ | **Research brief** |
@@ -132,7 +132,7 @@ Sales deck การพูดถึง repo, product หรือ feature อย
 
 - **Content artifact:** การเลือกสร้าง follow-up task เดียวตาม scope ค่าเริ่มต้นคือร่างในแชต
   ห้ามสร้างชื่อ workflow `/prd`, `/proposal`, `/presentation` หรือ `/sales` ขึ้นเอง
-- **Workflow ที่มีจริง:** `debug` เป็น `read_only`; `design-shotgun` และ `plan` เป็น
+- **Workflow ที่มีจริง:** `debug` เป็น `read_only`; `design-options` และ `plan` เป็น
   `workspace_write` route ได้เมื่อมีอยู่และต้องบอก effect/path ก่อน
 - **Plan → Dev:** ตัวเลือกนี้อนุญาตเฉพาะ `plan` เริ่ม `code` ได้หลังแสดง reviewed plan
   และคำยืนยันใหม่หลังเห็น plan ฉบับนั้นเท่านั้น

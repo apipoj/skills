@@ -57,31 +57,41 @@ describe('provider-neutral workflow and authority contracts', () => {
   });
 
   test('direct practical workflows do not route work to conflicting roles', () => {
-    for (const name of ['ask-me', 'ingest', 'scoped-tests']) {
+    for (const name of ['ask-me', 'add-knowledge', 'test-changes']) {
       const text = read(path.join(SHARED_SKILLS, name, 'SKILL.md'));
       expect(text).toMatch(/\bdirect(?:ly)?\b|current conversation|current thread/i);
       expect(text).not.toMatch(/spk:(?:verifier|planner|plan-orchestrator)/);
     }
-    expect(read(path.join(SHARED_SKILLS, 'ingest', 'SKILL.md')))
+    expect(read(path.join(SHARED_SKILLS, 'add-knowledge', 'SKILL.md')))
       .toMatch(/knowledge-maintenance[\s\S]*not feature planning/i);
   });
 
   test('manual-only invocation policy is equivalent across Claude and Codex payloads', () => {
     expect([...MANUAL_ONLY].sort()).toEqual([
+      'add-knowledge',
       'ask-matt',
       'ask-me',
-      'code',
-      'debug',
+      'ask-with-docs',
+      'check-release',
       'deploy',
+      'design-shotgun',
+      'diagnosing-bugs',
       'grill-me',
       'grill-with-docs',
+      'grilling',
       'handoff',
+      'implement',
+      'improve-codebase',
       'improve-codebase-architecture',
       'ingest',
       'jumpstart',
       'pr',
+      'prime',
+      'query',
       'release-check',
+      'resolving-merge-conflicts',
       'review',
+      'scoped-tests',
       'setup',
       'setup-matt-pocock-skills',
       'spk',
@@ -92,6 +102,8 @@ describe('provider-neutral workflow and authority contracts', () => {
       'triage',
       'uninstall',
       'wayfinder',
+      'wiki-lint',
+      'write-skills',
       'writing-great-skills',
     ]);
     for (const name of MANUAL_ONLY) {
@@ -152,9 +164,9 @@ describe('provider-neutral workflow and authority contracts', () => {
     expect(thai.split('\n').length).toBeLessThan(185);
   });
 
-  test('plan and implement preserve separate post-plan implementation authority', () => {
+  test('plan and code preserve separate post-plan implementation authority', () => {
     const plan = read(path.join(SHARED_SKILLS, 'plan', 'SKILL.md'));
-    const implement = read(path.join(SHARED_SKILLS, 'implement', 'SKILL.md'));
+    const implement = read(path.join(SHARED_SKILLS, 'code', 'SKILL.md'));
     const planAgent = read(path.join(AGENTS, 'plan-orchestrator.md'));
     const buildAgent = read(path.join(AGENTS, 'build-orchestrator.md'));
 
@@ -194,9 +206,9 @@ describe('provider-neutral workflow and authority contracts', () => {
 
   test('English and Thai implementation workflows never imply automatic commits', () => {
     for (const file of [
-      path.join(SHARED_SKILLS, 'implement', 'SKILL.md'),
+      path.join(SHARED_SKILLS, 'code', 'SKILL.md'),
       path.join(SHARED_SKILLS, 'tdd', 'SKILL.md'),
-      nativeSkillFile('implement'),
+      nativeSkillFile('code'),
       nativeSkillFile('tdd'),
     ]) {
       const text = read(file);

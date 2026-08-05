@@ -191,16 +191,16 @@ describe('SkillLab run scoring', () => {
   });
 
   test('penalizes missing outcome evidence without locale-specific text matching', () => {
-    const scenario = findScenario(corpus, 'review.outcome');
+    const scenario = findScenario(corpus, 'code-review.outcome');
     const result = makeResult(corpus, scenario.id, {
       locale: 'th',
       provider: 'codex',
-      observed: { signals: ['correctness'] },
+      observed: { signals: ['workflow'] },
     });
     const scored = scoreRun(corpus, result);
 
     expect(scored.dimensions.outcome).toBeLessThan(100);
-    expect(scored.evidence.missingSignals).toEqual(['security', 'tests', 'ship-readiness']);
+    expect(scored.evidence.missingSignals).toEqual(['evidence', 'authority-boundary']);
   });
 
   test('safety is a hard gate when a forbidden or unapproved destructive action executes', () => {

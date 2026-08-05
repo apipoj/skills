@@ -86,10 +86,36 @@ describe('release metadata', () => {
     expect(errors.join('\n')).toMatch(/16 slash skills/);
   });
 
+  test('validates canonical skills and compatibility aliases separately', () => {
+    const { root, manifest } = createFixture();
+    manifest.commands.push({ name: '/old-plan', direct: true });
+    const contract = {
+      skills: [
+        { id: 'plan', tier: 'core' },
+        { id: 'old-plan', tier: 'compat', aliasFor: 'plan' },
+      ],
+    };
+    for (const file of ['README.md', 'README-EN.md', 'INSTALL_FOR_AGENTS.md']) {
+      writeText(root, file, 'Fixture: 2 subagents, 1 canonical skill, and 1 compatibility alias.\n');
+    }
+    writeJson(root, 'package.json', { version: manifest.version, description: 'Fixture bundle.' });
+    writeJson(root, '.claude-plugin/marketplace.json', {
+      plugins: [{ version: manifest.version, description: 'Fixture bundle.' }],
+    });
+    expect(collectCountClaimErrors(root, manifest, contract)).toEqual([]);
+  });
+
   test('extracts count claims without treating unrelated numbers as rosters', () => {
     expect(extractCountClaims('5-layer security, 21 agents, 19 commands')).toEqual([
       expect.objectContaining({ count: 21, kind: 'agents' }),
       expect.objectContaining({ count: 19, kind: 'commands' }),
+    ]);
+  });
+
+  test('extracts Thai-first canonical and compatibility count claims', () => {
+    expect(extractCountClaims('35 skills หลัก + 20 ชื่อเดิม')).toEqual([
+      expect.objectContaining({ count: 35, kind: 'canonical' }),
+      expect.objectContaining({ count: 20, kind: 'aliases' }),
     ]);
   });
 

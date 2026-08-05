@@ -38,51 +38,70 @@ Select skills from the Thai-first `skills/` tree. Do not combine this with a nat
 ## Full shipped command list
 
 <!-- SPK-COMMANDS:start -->
-| Skill | Dispatches to subagent |
+### Canonical skills
+
+| Skill | Dispatches to |
 |---|---|
 | `/spk:start` | direct main-thread workflow |
-| `/spk:diagnosing-bugs` | debugger |
-| `/spk:grill-with-docs` | direct main-thread workflow |
+| `/spk:debug` | debugger |
+| `/spk:ask-with-docs` | direct main-thread workflow |
 | `/spk:triage` | direct main-thread workflow |
-| `/spk:improve-codebase-architecture` | direct main-thread workflow |
+| `/spk:improve-codebase` | direct main-thread workflow |
 | `/spk:setup` | direct main-thread workflow |
 | `/spk:tdd` | build-orchestrator |
 | `/spk:to-spec` | direct main-thread workflow |
 | `/spk:to-tickets` | direct main-thread workflow |
 | `/spk:wayfinder` | direct main-thread workflow |
-| `/spk:implement` | build-orchestrator |
+| `/spk:code` | build-orchestrator |
 | `/spk:prototype` | designer |
 | `/spk:research` | researcher |
 | `/spk:domain-modeling` | direct main-thread workflow |
 | `/spk:codebase-design` | direct main-thread workflow |
 | `/spk:code-review` | audit-orchestrator |
-| `/spk:resolving-merge-conflicts` | direct main-thread workflow |
-| `/spk:grill-me` | direct main-thread workflow |
-| `/spk:grilling` | direct main-thread workflow |
+| `/spk:fix-conflicts` | direct main-thread workflow |
+| `/spk:asking` | direct main-thread workflow |
 | `/spk:handoff` | direct main-thread workflow |
 | `/spk:teach` | direct main-thread workflow |
-| `/spk:writing-great-skills` | direct main-thread workflow |
+| `/spk:write-skills` | direct main-thread workflow |
 | `/spk:ask-me` | direct main-thread workflow |
 | `/spk:plan` | plan-orchestrator |
-| `/spk:design-shotgun` | designer |
+| `/spk:design-options` | designer |
 | `/spk:deploy` | deploy-orchestrator |
 | `/spk:pr` | pr-manager |
 | `/spk:task-to-pr` | direct main-thread workflow |
-| `/spk:ingest` | direct main-thread workflow |
-| `/spk:prime` | primer |
-| `/spk:query` | researcher |
-| `/spk:wiki-lint` | audit-orchestrator |
+| `/spk:add-knowledge` | direct main-thread workflow |
+| `/spk:load-project` | primer |
+| `/spk:ask-project` | researcher |
+| `/spk:check-wiki` | audit-orchestrator |
 | `/spk:doctor` | direct main-thread workflow |
-| `/spk:release-check` | verifier |
-| `/spk:scoped-tests` | direct main-thread workflow |
+| `/spk:check-release` | verifier |
+| `/spk:test-changes` | direct main-thread workflow |
 | `/spk:uninstall` | direct main-thread workflow |
-| `/spk:ask-matt` | direct main-thread workflow |
-| `/spk:setup-matt-pocock-skills` | direct main-thread workflow |
-| `/spk:spk` | direct main-thread workflow |
-| `/spk:jumpstart` | direct main-thread workflow |
-| `/spk:code` | build-orchestrator |
-| `/spk:debug` | debugger |
-| `/spk:review` | audit-orchestrator |
+
+### Compatibility aliases
+
+| Legacy name | Canonical name |
+|---|---|
+| `/spk:ask-matt` | `/spk:start` |
+| `/spk:setup-matt-pocock-skills` | `/spk:setup` |
+| `/spk:spk` | `/spk:start` |
+| `/spk:jumpstart` | `/spk:start` |
+| `/spk:review` | `/spk:code-review` |
+| `/spk:grill-me` | `/spk:ask-me` |
+| `/spk:grilling` | `/spk:asking` |
+| `/spk:grill-with-docs` | `/spk:ask-with-docs` |
+| `/spk:diagnosing-bugs` | `/spk:debug` |
+| `/spk:implement` | `/spk:code` |
+| `/spk:design-shotgun` | `/spk:design-options` |
+| `/spk:resolving-merge-conflicts` | `/spk:fix-conflicts` |
+| `/spk:writing-great-skills` | `/spk:write-skills` |
+| `/spk:prime` | `/spk:load-project` |
+| `/spk:query` | `/spk:ask-project` |
+| `/spk:ingest` | `/spk:add-knowledge` |
+| `/spk:wiki-lint` | `/spk:check-wiki` |
+| `/spk:improve-codebase-architecture` | `/spk:improve-codebase` |
+| `/spk:scoped-tests` | `/spk:test-changes` |
+| `/spk:release-check` | `/spk:check-release` |
 <!-- SPK-COMMANDS:end -->
 
 `bala` and `sunzi` are optional extras and are intentionally absent from this list.

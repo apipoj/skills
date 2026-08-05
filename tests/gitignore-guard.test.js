@@ -66,8 +66,8 @@ describe('gitignore-guard', () => {
   });
 
   test('marker file activates the guard without SPK_WIKI_BUILD env', () => {
-    // Skills can't set env vars for hooks mid-session, so /spk:ingest and
-    // /spk:wiki-lint arm the guard by touching ai_context/.spk-wiki-build.
+    // Skills can't set env vars for hooks mid-session, so /spk:add-knowledge and
+    // /spk:check-wiki arm the guard by touching ai_context/.spk-wiki-build.
     const dir = makeRepo(['.env']);
     const event = {
       tool_name: 'Read',

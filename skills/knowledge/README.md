@@ -2,7 +2,7 @@
 
 ภาษาไทยเป็นค่าเริ่มต้น ใช้ smart defaults เมื่อปลอดภัย และรักษา approval boundary ของแต่ละ workflow
 
-- [`ingest`](./ingest/SKILL.md) — นำเข้าแหล่งข้อมูลที่เลือกอย่างชัดเจนสู่ wiki ภายในโปรเจกต์ พร้อม provenance การตรวจ secrets การเชื่อม entity และบันทึกการเปลี่ยนแปลงแบบ append-only _(manual-only)_
-- [`prime`](./prime/SKILL.md) — สร้างบริบท repo สำหรับ agent แบบกระชับและมีขอบเขต จากโครงสร้าง source คำสั่ง convention และเส้นทางค้นหาโค้ดที่ตรวจสอบแล้ว
-- [`query`](./query/SKILL.md) — ตอบคำถามเกี่ยวกับโปรเจกต์จาก wiki ภายในก่อน อ้างหลักฐานที่แน่นอน และใช้การค้นคว้าภายนอกเมื่อความรู้ในโปรเจกต์ไม่เพียงพอเท่านั้น
-- [`wiki-lint`](./wiki-lint/SKILL.md) — ตรวจ wiki ภายในโปรเจกต์เพื่อหาลิงก์เสีย หน้า orphan ข้อขัดแย้ง ข้อมูลล้าสมัย citation ที่หาย schema drift และ secrets
+- [`add-knowledge`](./add-knowledge/SKILL.md) — เพิ่มข้อมูลที่เลือกเข้า wiki ของโปรเจกต์ พร้อมที่มา การตรวจ secret และบันทึกการเปลี่ยนแปลง _(manual-only)_
+- [`load-project`](./load-project/SKILL.md) — อ่านโครงสร้าง คำสั่ง และข้อตกลงของ repo แล้วสร้างบริบทสั้น ๆ ให้ agent เริ่มงานได้ถูกทาง
+- [`ask-project`](./ask-project/SKILL.md) — ตอบคำถามเกี่ยวกับโปรเจกต์จาก wiki ภายในพร้อมอ้างหลักฐาน และค้นภายนอกเมื่อข้อมูลในโปรเจกต์ไม่พอ
+- [`check-wiki`](./check-wiki/SKILL.md) — ตรวจ wiki ของโปรเจกต์เพื่อหาลิงก์เสีย ข้อมูลขัดกัน เนื้อหาล้าสมัย หลักฐานที่หาย และ secret

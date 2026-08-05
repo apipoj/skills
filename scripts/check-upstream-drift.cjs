@@ -43,11 +43,15 @@ function collectUpstreamProvenanceErrors(rootDir = REPO_ROOT) {
     errors.push(`excluded buckets must be ${EXCLUDED_BUCKETS.join(', ')}`);
   }
 
-  const imported = contract.skills.filter(
-    skill => skill.tier === 'core' && skill.origin?.repository === 'mattpocock/skills',
-  );
-  if (imported.length !== 22) errors.push(`expected 22 promoted upstream skills, found ${imported.length}`);
-  for (const skill of imported) {
+  const contractById = new Map(contract.skills.map(skill => [skill.id, skill]));
+  const promoted = contract.skills.filter(skill => {
+    if (skill.origin?.repository !== 'mattpocock/skills') return false;
+    if (skill.tier === 'core') return true;
+    const target = contractById.get(skill.aliasFor);
+    return target?.origin?.repository !== 'mattpocock/skills';
+  });
+  if (promoted.length !== 22) errors.push(`expected 22 promoted upstream skills, found ${promoted.length}`);
+  for (const skill of promoted) {
     const english = path.join(rootDir, skill.sources?.en || '', 'SKILL.md');
     const thai = path.join(rootDir, skill.sources?.th || '', 'SKILL.md');
     if (!fs.existsSync(english)) errors.push(`${skill.id}: missing English upstream mirror`);

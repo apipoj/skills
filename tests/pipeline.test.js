@@ -9,6 +9,7 @@ const REPO_ROOT = path.join(__dirname, '..');
 
 describe('pipeline smoke', () => {
   const manifest = JSON.parse(fs.readFileSync(path.join(REPO_ROOT, 'manifest.json'), 'utf-8'));
+  const contract = JSON.parse(fs.readFileSync(path.join(REPO_ROOT, 'contracts/workflows.json'), 'utf-8'));
 
   test('manifest.json validates against schema', () => {
     const result = validateManifest(manifest);
@@ -21,7 +22,8 @@ describe('pipeline smoke', () => {
     expect(files.length).toBeGreaterThan(0);
     for (const file of files) {
       const original = fs.readFileSync(file, 'utf-8');
-      const regenerated = regenerateContent(original, manifest);
+      const relative = path.relative(REPO_ROOT, file).replace(/\\/g, '/');
+      const regenerated = regenerateContent(original, manifest, contract, relative);
       expect(regenerated).toBe(original);
     }
   });
@@ -39,7 +41,8 @@ describe('pipeline smoke', () => {
     const match = readme.match(/<!-- SPK-COUNTS:start -->\n(.+?)\n<!-- SPK-COUNTS:end -->/s);
     expect(match).not.toBeNull();
     expect(match[1]).toMatch(/\*\*\d+ subagents\*\*/);
-    expect(match[1]).toMatch(/\*\*\d+ skills\*\*/);
+    expect(match[1]).toMatch(/\*\*35 skills หลัก\*\*/);
+    expect(match[1]).toMatch(/\*\*20 ชื่อเดิม\*\*/);
   });
 
   test('every agent in manifest has unique name', () => {

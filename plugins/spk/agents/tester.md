@@ -25,7 +25,7 @@ module(s).
    - Happy path for each exported function
    - Edge cases (empty input, null, large input, boundary values)
    - Error paths (what happens when expected exceptions fire)
-4. Run tests — all must pass. For the inner loop, apply the `scoped-tests` skill,
+4. Run tests — all must pass. For the inner loop, apply the `test-changes` skill,
    which resolves SPK's packaged planner rather than assuming the project has
    `scripts/scoped-tests.cjs`. Any unmapped changed path forces the full suite.
 5. Check coverage. If < 80%, add tests for uncovered branches.

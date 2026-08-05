@@ -148,10 +148,10 @@ describe('session-reflect-run.cjs (reflector)', () => {
         '2026-01-01T00:00:00Z'
       );
       for (const text of [prompt, fallback]) {
-        expect(text).toContain('/spk:prime');
-        expect(text).toContain('$spk:prime');
-        expect(text).toContain('/spk:ingest');
-        expect(text).toContain('$spk:ingest');
+        expect(text).toContain('/spk:load-project');
+        expect(text).toContain('$spk:load-project');
+        expect(text).toContain('/spk:add-knowledge');
+        expect(text).toContain('$spk:add-knowledge');
       }
     } finally { fs.rmSync(dir, { recursive: true, force: true }); }
   });

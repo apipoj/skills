@@ -26,7 +26,7 @@ describe('bucketed Thai-first skills', () => {
   });
 
   test('docs cover exact namespaced commands', () => {
-    expect(missingFromDocs(['pr'], 'Use `/spk:prime` only')).toEqual(['pr']);
+    expect(missingFromDocs(['pr'], 'Use `/spk:load-project` only')).toEqual(['pr']);
     expect(missingFromDocs(['pr'], 'Use `/spk:pr`')).toEqual([]);
   });
 

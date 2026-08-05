@@ -94,12 +94,14 @@ function collectRosterErrors(manifest) {
 
 function extractCountClaims(content) {
   const claims = [];
-  const pattern = /\b(\d+)\s+(?:(slash)\s+)?(subagents?|agents?|orchestrators?|specialists?|skills?|commands?)\b/gi;
+  const pattern = /\b(\d+)\s+(?:(slash)\s+)?(canonical\s+skills?|compatibility\s+aliases?|skills?\s+หลัก|ชื่อเดิม|subagents?|agents?|orchestrators?|specialists?|skills?|commands?)/gi;
   let match;
   while ((match = pattern.exec(content)) !== null) {
     const rawKind = match[3].toLowerCase();
     let kind;
-    if (rawKind.startsWith('orchestrator')) kind = 'orchestrators';
+    if (rawKind.startsWith('canonical') || rawKind.includes('หลัก')) kind = 'canonical';
+    else if (rawKind.startsWith('compatibility') || rawKind === 'ชื่อเดิม') kind = 'aliases';
+    else if (rawKind.startsWith('orchestrator')) kind = 'orchestrators';
     else if (rawKind.startsWith('specialist')) kind = 'specialists';
     else if (rawKind === 'agent' || rawKind === 'agents' || rawKind.startsWith('subagent')) kind = 'agents';
     else kind = 'commands';
@@ -126,13 +128,32 @@ function descriptionStrings(value, label, output = []) {
   return output;
 }
 
-function collectCountClaimErrors(rootDir = REPO_ROOT, manifest) {
+function collectCountClaimErrors(rootDir = REPO_ROOT, manifest, suppliedContract) {
   const errors = [];
+  let contract = suppliedContract;
+  if (!contract) {
+    const contractFile = path.join(rootDir, 'contracts/workflows.json');
+    if (fs.existsSync(contractFile)) {
+      try {
+        contract = readJson(contractFile);
+      } catch (error) {
+        errors.push(`contracts/workflows.json: ${error.message}`);
+      }
+    }
+  }
+  const canonical = Array.isArray(contract?.skills)
+    ? contract.skills.filter(skill => skill.tier === 'core').length
+    : manifest.commands.length;
+  const aliases = Array.isArray(contract?.skills)
+    ? contract.skills.filter(skill => skill.tier === 'compat').length
+    : 0;
   const expected = {
     orchestrators: manifest.agents.orchestrators.length,
     specialists: manifest.agents.specialists.length,
     agents: manifest.agents.orchestrators.length + manifest.agents.specialists.length,
     commands: manifest.commands.length,
+    canonical,
+    aliases,
   };
   const sources = [];
 

@@ -48,7 +48,7 @@ maxTurns: 14
    - Fill the `## Code Navigation` section pointing agents at SPK's own `mcp__spk-codebase-search__*` tools for this subtree, with a Grep/Glob fallback when those tools are absent. Note the hot paths and the generated/vendor paths to skip.
    - Keep each `AGENTS.md` short and operational: aim for 80-150 lines max.
    - **Do not bake volatile facts into prose.** Never hardcode version numbers, release dates, or counts (skills, agents, commands, files, tests) that already live in a source-of-truth file — they go stale the moment anything changes and contradict the very file that owns them. Instead name the source and let agents read it live: write "see `manifest.json` for the authoritative version and command/agent roster", not "v3.2.0, 17 skills, 21 agents". State durable facts (architecture, ownership, conventions, commands); point at the manifest/package file for anything that changes per release.
-   - End each generated `AGENTS.md` with a one-line staleness note: re-run `/spk:prime <scope>` after a structural change (new package, moved dirs, changed test/build commands) so this file does not silently rot.
+   - End each generated `AGENTS.md` with a one-line staleness note: re-run `/spk:load-project <scope>` after a structural change (new package, moved dirs, changed test/build commands) so this file does not silently rot.
 
 5. **ROOT SUMMARY** — If the repository root lacks global context, create or update root `AGENTS.md` with a repository map and pointers to subtree files, and write `CLAUDE.md` as `@AGENTS.md`. Also create or update a root `.claudeignore` listing high-volume generated/vendor/build paths so code-navigation tools skip search noise (see the `.claudeignore` template below).
 

@@ -24,17 +24,17 @@ description: เริ่มงานกับ AI แบบไทยเป็น
    - `external_write` — เปลี่ยน GitHub, issue tracker, deployment หรือระบบภายนอกหลังได้ approval
    - `destructive` — ลบข้อมูลหลังแสดง target ที่แน่นอนและได้รับอนุมัติ
 4. Route ตาม outcome:
-   - ทำ idea หรือ decision ให้ชัด → `ask-me`, `grill-me`, `grill-with-docs`
+   - ทำ idea หรือเรื่องที่ต้องตัดสินใจให้ชัด → `ask-me`, `asking`, `ask-with-docs`
    - ทำ engineering plan → `plan`; สรุป discussion เป็น spec → `to-spec`
    - แตกงาน → `to-tickets`; งานใหญ่ที่ยังมีหมอก → `wayfinder`
-   - พัฒนา approved plan → `implement`; ต้องการ RED-GREEN ชัด → `tdd`
-   - failure ที่ยังไม่รู้ต้นเหตุ → `diagnosing-bugs`; ตรวจ diff → `code-review`; feedback จาก test แบบเร็ว → `scoped-tests`
-   - ตอบคำถามด้วยของทดลอง → `prototype`; เทียบ UI หลายทาง → `design-shotgun`
-   - ปรับรูปทรง module → `codebase-design`, `improve-codebase-architecture`
-   - คัดกรองงานเข้า → `triage`; แก้ Git conflict → `resolving-merge-conflicts`
-   - ใช้หรือเพิ่ม project knowledge → `query`, `research`, `ingest`, `domain-modeling`, `wiki-lint`
-   - ตั้งค่าหรือทำความรู้จัก repo → `setup`, `prime`; ตรวจ installation → `doctor`
-   - เตรียมส่งงาน → `release-check`, `pr`, `task-to-pr`, `deploy`; ถอนระบบ → `uninstall`
+   - พัฒนาแผนที่อนุมัติแล้ว → `code`; ต้องการ RED-GREEN ชัด → `tdd`
+   - failure ที่ยังไม่รู้ต้นเหตุ → `debug`; ตรวจ diff → `code-review`; feedback จาก test แบบเร็ว → `test-changes`
+   - ตอบคำถามด้วยของทดลอง → `prototype`; เทียบ UI หลายทาง → `design-options`
+   - ปรับรูปทรง module → `codebase-design`, `improve-codebase`
+   - คัดกรองงานเข้า → `triage`; แก้ Git conflict → `fix-conflicts`
+   - ใช้หรือเพิ่มความรู้โปรเจกต์ → `ask-project`, `research`, `add-knowledge`, `domain-modeling`, `check-wiki`
+   - ตั้งค่าหรือทำความรู้จัก repo → `setup`, `load-project`; ตรวจ installation → `doctor`
+   - เตรียมส่งงาน → `check-release`, `pr`, `task-to-pr`, `deploy`; ถอนระบบ → `uninstall`
    - ส่งต่อ context → `handoff`; เรียนรู้เรื่องใหม่ → `teach`
 5. รันเฉพาะ workflow ที่เลือกและอยู่ใน authority ถ้ามีงานข้างเคียงให้แนะนำเป็น next action แทนการ chain เอง
 6. จบด้วยผลลัพธ์ก่อน ตามด้วยหลักฐาน ความเสี่ยง และ next action ที่เล็กที่สุด

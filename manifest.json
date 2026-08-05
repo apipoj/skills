@@ -142,11 +142,11 @@
       "direct": true
     },
     {
-      "name": "/diagnosing-bugs",
+      "name": "/debug",
       "agent": "debugger"
     },
     {
-      "name": "/grill-with-docs",
+      "name": "/ask-with-docs",
       "direct": true
     },
     {
@@ -154,7 +154,7 @@
       "direct": true
     },
     {
-      "name": "/improve-codebase-architecture",
+      "name": "/improve-codebase",
       "direct": true
     },
     {
@@ -178,7 +178,7 @@
       "direct": true
     },
     {
-      "name": "/implement",
+      "name": "/code",
       "orchestrator": "build-orchestrator"
     },
     {
@@ -202,15 +202,11 @@
       "orchestrator": "audit-orchestrator"
     },
     {
-      "name": "/resolving-merge-conflicts",
+      "name": "/fix-conflicts",
       "direct": true
     },
     {
-      "name": "/grill-me",
-      "direct": true
-    },
-    {
-      "name": "/grilling",
+      "name": "/asking",
       "direct": true
     },
     {
@@ -222,7 +218,7 @@
       "direct": true
     },
     {
-      "name": "/writing-great-skills",
+      "name": "/write-skills",
       "direct": true
     },
     {
@@ -234,7 +230,7 @@
       "orchestrator": "plan-orchestrator"
     },
     {
-      "name": "/design-shotgun",
+      "name": "/design-options",
       "agent": "designer"
     },
     {
@@ -250,19 +246,19 @@
       "direct": true
     },
     {
-      "name": "/ingest",
+      "name": "/add-knowledge",
       "direct": true
     },
     {
-      "name": "/prime",
+      "name": "/load-project",
       "agent": "primer"
     },
     {
-      "name": "/query",
+      "name": "/ask-project",
       "agent": "researcher"
     },
     {
-      "name": "/wiki-lint",
+      "name": "/check-wiki",
       "orchestrator": "audit-orchestrator"
     },
     {
@@ -270,11 +266,11 @@
       "direct": true
     },
     {
-      "name": "/release-check",
+      "name": "/check-release",
       "agent": "verifier"
     },
     {
-      "name": "/scoped-tests",
+      "name": "/test-changes",
       "direct": true
     },
     {
@@ -298,16 +294,68 @@
       "direct": true
     },
     {
-      "name": "/code",
-      "orchestrator": "build-orchestrator"
+      "name": "/review",
+      "orchestrator": "audit-orchestrator"
     },
     {
-      "name": "/debug",
+      "name": "/grill-me",
+      "direct": true
+    },
+    {
+      "name": "/grilling",
+      "direct": true
+    },
+    {
+      "name": "/grill-with-docs",
+      "direct": true
+    },
+    {
+      "name": "/diagnosing-bugs",
       "agent": "debugger"
     },
     {
-      "name": "/review",
+      "name": "/implement",
+      "orchestrator": "build-orchestrator"
+    },
+    {
+      "name": "/design-shotgun",
+      "agent": "designer"
+    },
+    {
+      "name": "/resolving-merge-conflicts",
+      "direct": true
+    },
+    {
+      "name": "/writing-great-skills",
+      "direct": true
+    },
+    {
+      "name": "/prime",
+      "agent": "primer"
+    },
+    {
+      "name": "/query",
+      "agent": "researcher"
+    },
+    {
+      "name": "/ingest",
+      "direct": true
+    },
+    {
+      "name": "/wiki-lint",
       "orchestrator": "audit-orchestrator"
+    },
+    {
+      "name": "/improve-codebase-architecture",
+      "direct": true
+    },
+    {
+      "name": "/scoped-tests",
+      "direct": true
+    },
+    {
+      "name": "/release-check",
+      "agent": "verifier"
     }
   ]
 }

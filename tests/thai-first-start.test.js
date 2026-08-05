@@ -23,9 +23,11 @@ describe('Thai-first instant-start router', () => {
 
   test('uses canonical workflow names and omits optional strategy skills', () => {
     for (const text of [runtime, thai]) {
-      expect(text).toContain('implement');
-      expect(text).toContain('diagnosing-bugs');
+      expect(text).toContain('code');
+      expect(text).toContain('debug');
       expect(text).toContain('code-review');
+      expect(text).toContain('load-project');
+      expect(text).not.toMatch(/`implement`|`diagnosing-bugs`|`prime`/);
       expect(text).not.toMatch(/\bjumpstart\b|\bBala\b|\bSunzi\b/);
     }
   });

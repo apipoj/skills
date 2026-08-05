@@ -101,7 +101,7 @@ Choose the smallest output that unlocks the next real decision:
 | Help a defined audience understand or support an idea | **Presentation / Pitch deck** |
 | Move a prospect toward a buyer action | **Sales asset**: deck, one-pager, script, email, discovery guide, or objection sheet |
 | Find why observed and expected behavior differ | **Diagnosis** via `debug` |
-| Compare UI or interaction directions | **Design exploration** via `design-shotgun` |
+| Compare UI or interaction directions | **Design exploration** via `design-options` |
 | Build a settled software outcome | **Engineering plan → Dev** |
 | Choose between alternatives | **Decision memo** |
 | Close an evidence gap before deciding | **Research brief** |
@@ -132,7 +132,7 @@ local file changes whose format and path must be shown first.
 
 - Direct artifacts become one scoped follow-up task; default to an in-chat draft. Never invent
   `/prd`, `/proposal`, `/presentation`, or `/sales` workflows.
-- Route only to available workflows: `debug` is `read_only`; `design-shotgun` and `plan` are
+- Route only to available workflows: `debug` is `read_only`; `design-options` and `plan` are
   `workspace_write`. Disclose effect and paths.
 - Engineering selection authorizes `plan` only. Start `code` only after the reviewed plan and
   a new, explicit post-plan confirmation for that exact plan.
