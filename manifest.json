@@ -1,0 +1,361 @@
+{
+  "version": "5.0.0",
+  "released": "2026-08-05",
+  "brand": "Apipoj Skills",
+  "slug": "spk",
+  "tagline": "Thai-first, ready-to-use engineering skills with evidence and safe defaults",
+  "agents": {
+    "orchestrators": [
+      {
+        "name": "plan-orchestrator",
+        "model": "claude-opus-4-8",
+        "color": "green",
+        "phase": "planning"
+      },
+      {
+        "name": "build-orchestrator",
+        "model": "claude-opus-4-8",
+        "color": "blue",
+        "phase": "building"
+      },
+      {
+        "name": "audit-orchestrator",
+        "model": "claude-opus-4-8",
+        "color": "purple",
+        "phase": "auditing"
+      },
+      {
+        "name": "deploy-orchestrator",
+        "model": "claude-opus-4-8",
+        "color": "orange",
+        "phase": "shipping"
+      }
+    ],
+    "specialists": [
+      {
+        "name": "prd-writer",
+        "model": "claude-opus-4-8",
+        "color": "green",
+        "phase": "planning"
+      },
+      {
+        "name": "business-analyst",
+        "model": "claude-opus-4-8",
+        "color": "green",
+        "phase": "planning"
+      },
+      {
+        "name": "architect",
+        "model": "claude-opus-4-8",
+        "color": "green",
+        "phase": "planning"
+      },
+      {
+        "name": "planner",
+        "model": "claude-opus-4-8",
+        "color": "green",
+        "phase": "planning"
+      },
+      {
+        "name": "designer",
+        "model": "claude-sonnet-5",
+        "color": "green",
+        "phase": "planning"
+      },
+      {
+        "name": "primer",
+        "model": "claude-sonnet-5",
+        "color": "green",
+        "phase": "planning"
+      },
+      {
+        "name": "debugger",
+        "model": "claude-opus-4-8",
+        "color": "purple",
+        "phase": "auditing"
+      },
+      {
+        "name": "code-auditor",
+        "model": "claude-opus-4-8",
+        "color": "purple",
+        "phase": "auditing"
+      },
+      {
+        "name": "implementer",
+        "model": "claude-sonnet-5",
+        "color": "blue",
+        "phase": "building"
+      },
+      {
+        "name": "tester",
+        "model": "claude-sonnet-5",
+        "color": "blue",
+        "phase": "building"
+      },
+      {
+        "name": "docs",
+        "model": "claude-sonnet-5",
+        "color": "blue",
+        "phase": "building"
+      },
+      {
+        "name": "researcher",
+        "model": "claude-sonnet-5",
+        "color": "blue",
+        "phase": "building"
+      },
+      {
+        "name": "verifier",
+        "model": "claude-sonnet-5",
+        "color": "purple",
+        "phase": "auditing"
+      },
+      {
+        "name": "pr-manager",
+        "model": "claude-sonnet-5",
+        "color": "orange",
+        "phase": "shipping"
+      },
+      {
+        "name": "devops",
+        "model": "claude-sonnet-5",
+        "color": "orange",
+        "phase": "shipping"
+      },
+      {
+        "name": "deployment-smoke",
+        "model": "claude-sonnet-5",
+        "color": "orange",
+        "phase": "shipping"
+      },
+      {
+        "name": "browser-tester",
+        "model": "claude-sonnet-5",
+        "color": "orange",
+        "phase": "shipping"
+      }
+    ]
+  },
+  "commands": [
+    {
+      "name": "/start",
+      "direct": true
+    },
+    {
+      "name": "/debug",
+      "agent": "debugger"
+    },
+    {
+      "name": "/ask-with-docs",
+      "direct": true
+    },
+    {
+      "name": "/triage",
+      "direct": true
+    },
+    {
+      "name": "/improve-codebase",
+      "direct": true
+    },
+    {
+      "name": "/setup",
+      "direct": true
+    },
+    {
+      "name": "/tdd",
+      "orchestrator": "build-orchestrator"
+    },
+    {
+      "name": "/to-spec",
+      "direct": true
+    },
+    {
+      "name": "/to-tickets",
+      "direct": true
+    },
+    {
+      "name": "/wayfinder",
+      "direct": true
+    },
+    {
+      "name": "/code",
+      "orchestrator": "build-orchestrator"
+    },
+    {
+      "name": "/prototype",
+      "agent": "designer"
+    },
+    {
+      "name": "/research",
+      "agent": "researcher"
+    },
+    {
+      "name": "/domain-modeling",
+      "direct": true
+    },
+    {
+      "name": "/codebase-design",
+      "direct": true
+    },
+    {
+      "name": "/code-review",
+      "orchestrator": "audit-orchestrator"
+    },
+    {
+      "name": "/fix-conflicts",
+      "direct": true
+    },
+    {
+      "name": "/asking",
+      "direct": true
+    },
+    {
+      "name": "/handoff",
+      "direct": true
+    },
+    {
+      "name": "/teach",
+      "direct": true
+    },
+    {
+      "name": "/write-skills",
+      "direct": true
+    },
+    {
+      "name": "/ask-me",
+      "direct": true
+    },
+    {
+      "name": "/plan",
+      "orchestrator": "plan-orchestrator"
+    },
+    {
+      "name": "/design-options",
+      "agent": "designer"
+    },
+    {
+      "name": "/deploy",
+      "orchestrator": "deploy-orchestrator"
+    },
+    {
+      "name": "/pr",
+      "agent": "pr-manager"
+    },
+    {
+      "name": "/task-to-pr",
+      "direct": true
+    },
+    {
+      "name": "/add-knowledge",
+      "direct": true
+    },
+    {
+      "name": "/load-project",
+      "agent": "primer"
+    },
+    {
+      "name": "/ask-project",
+      "agent": "researcher"
+    },
+    {
+      "name": "/check-wiki",
+      "orchestrator": "audit-orchestrator"
+    },
+    {
+      "name": "/doctor",
+      "direct": true
+    },
+    {
+      "name": "/check-release",
+      "agent": "verifier"
+    },
+    {
+      "name": "/test-changes",
+      "direct": true
+    },
+    {
+      "name": "/uninstall",
+      "direct": true
+    },
+    {
+      "name": "/ask-matt",
+      "direct": true
+    },
+    {
+      "name": "/setup-matt-pocock-skills",
+      "direct": true
+    },
+    {
+      "name": "/spk",
+      "direct": true
+    },
+    {
+      "name": "/jumpstart",
+      "direct": true
+    },
+    {
+      "name": "/review",
+      "orchestrator": "audit-orchestrator"
+    },
+    {
+      "name": "/grill-me",
+      "direct": true
+    },
+    {
+      "name": "/grilling",
+      "direct": true
+    },
+    {
+      "name": "/grill-with-docs",
+      "direct": true
+    },
+    {
+      "name": "/diagnosing-bugs",
+      "agent": "debugger"
+    },
+    {
+      "name": "/implement",
+      "orchestrator": "build-orchestrator"
+    },
+    {
+      "name": "/design-shotgun",
+      "agent": "designer"
+    },
+    {
+      "name": "/resolving-merge-conflicts",
+      "direct": true
+    },
+    {
+      "name": "/writing-great-skills",
+      "direct": true
+    },
+    {
+      "name": "/prime",
+      "agent": "primer"
+    },
+    {
+      "name": "/query",
+      "agent": "researcher"
+    },
+    {
+      "name": "/ingest",
+      "direct": true
+    },
+    {
+      "name": "/wiki-lint",
+      "orchestrator": "audit-orchestrator"
+    },
+    {
+      "name": "/improve-codebase-architecture",
+      "direct": true
+    },
+    {
+      "name": "/scoped-tests",
+      "direct": true
+    },
+    {
+      "name": "/release-check",
+      "agent": "verifier"
+    }
+  ]
+}

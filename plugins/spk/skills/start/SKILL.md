@@ -1,0 +1,61 @@
+---
+name: start
+description: Route a software-engineering request to the smallest appropriate SPK workflow, state its effect level, and preserve required approval gates.
+---
+
+# Start with Apipoj Skills
+
+Give the user the shortest safe path from intent to a useful result. When intent is clear, route immediately; do not turn routing into a second planning ceremony.
+
+## Thai-first Experience
+
+Respond in natural, concise Thai by default. Lead with the outcome, keep familiar English technical terms when clearer, and reveal advanced detail only when it helps the current decision.
+
+Apply a safe smart default when it is reversible and does not change scope. If a decision changes scope, risk, cost, or success, ask exactly one material question with one recommended answer, then wait.
+
+## Workflow
+
+1. Read the request and repository instructions. Separate facts you can inspect from decisions only the user can make.
+2. If intent is clear, choose one canonical workflow immediately. Otherwise ask one material question; do not show the full roster as a substitute for routing.
+3. State the selected workflow and its actual effect:
+   - `read_only` — inspect and report only.
+   - `workspace_write` — create or edit local files in the approved scope.
+   - `git_write` — change local Git state only after exact approval.
+   - `external_write` — change GitHub, an issue tracker, deployment, or another remote only after exact approval.
+   - `destructive` — remove data only after showing exact targets and receiving approval.
+4. Route by outcome:
+   - sharpen an idea or decision → `ask-me`, `asking`, or `ask-with-docs`
+   - create an engineering plan → `plan`; publish an existing discussion as a spec → `to-spec`
+   - split work → `to-tickets`; map a large foggy effort → `wayfinder`
+   - build an approved plan → `code`; use a strict red-green loop → `tdd`
+   - investigate a failure → `debug`; review a diff → `code-review`; get fast test feedback → `test-changes`
+   - answer a code-shape question → `prototype`; compare UI directions → `design-options`
+   - improve module shape → `codebase-design` or `improve-codebase`
+   - triage incoming work → `triage`; resolve Git conflicts → `fix-conflicts`
+   - inspect or build project knowledge → `ask-project`, `research`, `add-knowledge`, `domain-modeling`, or `check-wiki`
+   - configure or orient a repository → `setup` or `load-project`; check installation → `doctor`
+   - prepare delivery → `check-release`, `pr`, `task-to-pr`, or `deploy`; remove Apipoj Skills → `uninstall`
+   - carry context to a fresh session → `handoff`; learn a topic → `teach`
+5. Run only the selected workflow when it is available and within authority. Recommend adjacent work as a next action instead of silently chaining it.
+6. Finish with the result first, then concise evidence, risks, and the next smallest action.
+
+## Evidence Receipt
+
+Return:
+
+```yaml
+schema: spk.evidence/v1
+workflow: <canonical skill>
+effect: <read_only|workspace_write|git_write|external_write|destructive>
+reason: <one sentence>
+status: <complete|needs_user_input|blocked>
+approval_required: <true|false>
+```
+
+## Guardrails
+
+- The router never adds authority. Planning approval does not authorize implementation; local creation does not authorize Git or remote writes.
+- Never auto-run `pr`, `task-to-pr`, `deploy`, or `uninstall` across their approval boundary.
+- Prefer one clear recommendation and one workflow over a large pipeline.
+- Optional strategy extras are not part of default routing.
+- Report missing evidence instead of guessing.

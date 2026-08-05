@@ -1,3 +1,5 @@
+> **Upstream reference:** หน้านี้เก็บเนื้อหาจาก `mattpocock/skills` ที่ pin ไว้เพื่อการเทียบ provenance คำสั่งติดตั้งด้านล่างไม่ใช่คำสั่งติดตั้ง Apipoj Skills; ใช้ `README.md` หรือ `INSTALL_FOR_AGENTS.md` ที่ root
+
 Quickstart:
 
 ```bash

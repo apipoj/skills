@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/apipoj/skills/plugins/spk/spk.config.schema.json",
+  "title": "Apipoj Skills project configuration",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "const": 1
+    },
+    "features": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "sessionReflection": {
+          "type": "boolean",
+          "default": false,
+          "description": "Project policy only. false vetoes session reflection; true never grants user consent."
+        },
+        "webfetchCache": {
+          "type": "boolean",
+          "default": true
+        },
+        "autoIngest": {
+          "type": "boolean",
+          "default": true
+        }
+      }
+    },
+    "limits": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "maxReflectionChars": {
+          "type": "integer",
+          "minimum": 1000,
+          "maximum": 50000,
+          "default": 12000
+        },
+        "hookTimeoutMs": {
+          "type": "integer",
+          "minimum": 1000,
+          "maximum": 120000,
+          "default": 30000
+        }
+      }
+    }
+  }
+}

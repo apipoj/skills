@@ -1,4 +1,17 @@
-# mattpocock-skills
+# Apipoj Skills
+
+## 5.0.0 - 2026-08-05
+
+### Major Changes
+
+- Fork `mattpocock/skills` at `2ab958093e83e0ec752e6c1c5932da465bf23e0c` as the composable workflow base.
+- Rebrand the product to Apipoj Skills while retaining the short `spk` plugin namespace.
+- Add a Thai-first `/spk:start` router, native Thai bucketed sources, and an English compatibility mirror.
+- Preserve SPK evidence receipts, approval gates, project memory, security hooks, and generated Claude/Codex payloads.
+- Ship 35 canonical skills and 20 temporary compatibility aliases; move `bala` and `sunzi` to optional extras.
+- Make public commands easier to understand for Thai users: `grill-me` becomes `ask-me`, `diagnosing-bugs` becomes `debug`, `implement` becomes `code`, and 12 more long or specialist names gain short action-led replacements while their old names keep working until v6.
+
+## Upstream history
 
 ## 1.1.0
 

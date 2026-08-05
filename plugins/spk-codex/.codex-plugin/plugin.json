@@ -1,0 +1,54 @@
+{
+  "name": "spk",
+  "version": "5.0.0",
+  "description": "Thai-first, ready-to-use engineering skills for Claude Code, Codex, and skills.sh.",
+  "author": {
+    "name": "Apipoj Piasak",
+    "url": "https://github.com/apipoj"
+  },
+  "homepage": "https://github.com/apipoj/skills",
+  "repository": "https://github.com/apipoj/skills",
+  "license": "MIT",
+  "keywords": [
+    "thai-first",
+    "engineering",
+    "skills",
+    "tdd",
+    "code-review",
+    "developer-tools"
+  ],
+  "skills": "./skills/",
+  "mcpServers": {
+    "spk-codebase-search": {
+      "command": "node",
+      "args": [
+        "mcp/codebase-search.cjs"
+      ],
+      "cwd": "."
+    }
+  },
+  "interface": {
+    "displayName": "Apipoj Skills",
+    "shortDescription": "Thai-first engineering skills",
+    "longDescription": "Apipoj Skills combines Matt Pocock’s composable engineering workflows with SPK evidence gates, safe approvals, project memory, and Thai-first smart defaults.",
+    "developerName": "Apipoj Piasak",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Thai-first smart routing",
+      "Evidence-gated planning",
+      "Test-driven implementation",
+      "Root-cause debugging",
+      "Code review",
+      "Safe delivery"
+    ],
+    "websiteURL": "https://github.com/apipoj/skills",
+    "privacyPolicyURL": "https://github.com/apipoj/skills/blob/main/PRIVACY.md",
+    "termsOfServiceURL": "https://github.com/apipoj/skills/blob/main/TERMS.md",
+    "defaultPrompt": [
+      "Use Apipoj Skills to choose the simplest safe workflow for this task.",
+      "เริ่มงานนี้แบบพร้อมใช้และอธิบายเป็นภาษาไทย",
+      "Review this change and show the evidence before shipping."
+    ],
+    "brandColor": "#6D28D9"
+  }
+}

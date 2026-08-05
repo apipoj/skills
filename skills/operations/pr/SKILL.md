@@ -1,0 +1,57 @@
+---
+name: pr
+description: เตรียม pull request ที่มีขอบเขตจากงานที่ตรวจทานแล้ว ตรวจ diff และ checks ที่แน่นอน และขออนุมัติก่อน push หรือเขียนข้อมูลระยะไกล
+disable-model-invocation: true
+---
+# pr
+
+Skill นี้เป็น manual-only โหมด default คือ **prepare-only**: สร้าง PR body และ safety report โดยไม่ stage, commit, push หรือสร้าง PR
+
+## รวบรวม Context
+
+- ถ้าอยู่ใน git worktree ให้รัน `git status --short --branch --untracked-files=all`
+- ถ้าอยู่ใน git worktree ให้รัน `git remote get-url origin` และ `git rev-list --left-right --count HEAD...origin/main`; ถ้า remote/main ไม่มี ให้บันทึกว่าไม่มีข้อมูลเปรียบเทียบ
+- ถ้าอยู่ใน git worktree ให้รัน `git log --oneline --decorate -8` และ `git diff --stat`; ถ้าไม่ใช่ git repo ให้รายงานว่า PR context ไม่พร้อมแทนการหยุดด้วย error
+- เช็ค `gh auth status`
+
+## Workflow
+
+1. **Prepare-only เป็น default** ตรวจ branch, remote, dirty/untracked files, diff, outgoing commits, review, gates และ auth แล้วสร้าง title/body, exact paths, test plan, risks โดยห้าม local/remote write
+2. **Resolve writes** ถ้า user ขอ commit/push/open/update ให้ list exact paths, commit message, outgoing commits, remote/ref, API operations, title/body digest และ force mode
+3. **Verify** secret-scan proposed staged diff ที่แน่นอนและรัน gates ถ้า auth หายหรือ gate fail ให้ `BLOCKED`
+4. **Bind intent** canonicalize proposed write object แบบ stable key ordering แล้วใช้ SHA-256 lowercase hex ครบ 64 ตัว
+5. **ขอ approval** ถ้า latest message ไม่มี exact `spk-approve:<intent_digest>` ให้คืน envelope และหยุด ห้าม delegate mutating step
+6. **Resume + revalidate** คำนวณ state/digest ใหม่ drift ใด ๆ ทำให้ token เป็นโมฆะ
+7. **Execute exact intent** ส่ง approved intent + token ให้ PR worker หรือทำ sequential stage เฉพาะ paths ที่ list, commit/push/API write เฉพาะที่อนุมัติ
+8. **Verify outcome** รายงาน commit SHA, remote ref, PR URL และ CI state การแก้ CI ที่ write/push ต้อง approval ใหม่
+
+## Approval Protocol
+
+```json
+{
+  "schema": "spk.approval/v1",
+  "status": "NEEDS_USER_INPUT",
+  "operation": "pull_request_write",
+  "intent_digest": "<64 lowercase hex>",
+  "approval_token": "spk-approve:<intent_digest>",
+  "target": {"remote": "<remote>", "branch": "<branch>", "repository": "<owner/repo>"},
+  "paths": ["<reviewed path>"],
+  "commits": ["<outgoing หรือ proposed commit>"],
+  "commands": ["<exact git/API command + argv>"],
+  "resume_instruction": "Reply exactly: approve spk-approve:<intent_digest>"
+}
+```
+
+## Evidence Receipt
+
+คืน `spk.evidence/v1` ที่มี mode, approval digest, paths, commit/ref, PR URL, commands/gates, files ที่ตั้งใจไม่ stage, risks และ next action
+
+## Safety Rules
+
+- Default เป็น prepare-only: อย่า stage, commit, push หรือ create/update PR เว้นแต่ถูกขออย่างชัดเจน
+- อย่า force-push เว้นแต่ถูกสั่งและใช้ `--force-with-lease`
+- ห้าม network/local write จน exact approval token ผ่าน revalidation
+- อย่า push จาก dirty `main` โดยไม่ระบุ commit ทั้งหมดที่จะออกไป
+- Stage เฉพาะ paths ที่ review แล้ว อย่า `git add .` เมื่อมี untracked/generated/operator files
+- Secret-scan staged diff ก่อน commit
+- ถ้า GitHub auth ไม่มี ให้เตรียม PR body ไว้ที่เครื่องแล้วรายงาน setup steps

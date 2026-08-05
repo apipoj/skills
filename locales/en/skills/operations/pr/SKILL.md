@@ -1,0 +1,65 @@
+---
+name: pr
+description: Prepare a focused pull request from reviewed changes, verify the exact diff and checks, and require approval before any push or remote write.
+disable-model-invocation: true
+---
+
+# Pull Request Workflow
+
+Prepare a GitHub pull request for the current branch or reviewed local changes. Default mode is **prepare-only**: produce the PR body/checklist and safety report without staging, committing, pushing, or creating/updating a PR.
+
+This skill is manual-only. Use it after review passes, or when the user explicitly asks
+to prepare or open a pull request.
+
+## Workflow
+
+1. **Prepare-only by default.** Inspect branch, remote, dirty/untracked files, diff,
+   outgoing commits, review result, gates, and repository authentication. Produce a
+   conventional title/body, exact candidate paths, test plan, risk/rollback notes, and
+   safety findings. Do not stage or write locally/remotely in this mode.
+2. **Resolve requested writes.** If the user asked to commit, push, open, or update a
+   pull request, enumerate exact paths, commit message, outgoing commits, remote/ref,
+   repository API operations, title/body digest, and force mode.
+3. **Verify.** Secret-scan the exact proposed staged diff and run required gates.
+   Missing auth or failed gates produces `BLOCKED`, not a reduced-safety workflow.
+4. **Bind intent.** Canonicalize the proposed write object with stable key ordering and
+   use its complete 64-character lowercase SHA-256 hex digest as `intent_digest`.
+5. **Request approval.** Without exact `spk-approve:<intent_digest>` in the latest user
+   message, return the envelope below and stop. Do not delegate a mutating step.
+6. **Resume and revalidate.** Recompute branch state, file list, outgoing commits,
+   title/body, commands, auth, and digest. Any drift invalidates the token.
+7. **Execute exact intent.** Delegate to an available PR worker or run sequentially.
+   Pass the approved intent and token. Stage only listed paths, commit only if listed,
+   push only the approved ref, then perform only listed API writes.
+8. **Verify outcome.** Report commit SHA, remote ref, pull-request URL, and CI state.
+   CI repairs are a new change and require a new approval if they write or push.
+
+## Approval Protocol
+
+```json
+{
+  "schema": "spk.approval/v1",
+  "status": "NEEDS_USER_INPUT",
+  "operation": "pull_request_write",
+  "intent_digest": "<64 lowercase hex>",
+  "approval_token": "spk-approve:<intent_digest>",
+  "target": {"remote": "<remote>", "branch": "<branch>", "repository": "<owner/repo>"},
+  "paths": ["<reviewed path>"],
+  "commits": ["<outgoing or proposed commit>"],
+  "commands": ["<exact git/API command and argv>"],
+  "resume_instruction": "Reply exactly: approve spk-approve:<intent_digest>"
+}
+```
+
+## Evidence Receipt
+
+Return `spk.evidence/v1` with mode, approval digest, paths, commit/ref, pull-request URL,
+commands and gate results, deliberately unstaged files, risks, and next action.
+
+## Guardrails
+
+- Prepare-only never stages, commits, pushes, or calls a write API.
+- Never use `git add .`; stage only the approved explicit path list.
+- Never force-push unless the bound intent says `--force-with-lease`.
+- Never merge, deploy, or modify unrelated files.
+- Never expose credentials or include raw private sources.

@@ -1,0 +1,22 @@
+#!/usr/bin/env sh
+
+# Regenerate host-specific manifests and skill metadata from the canonical contract
+npm run generate:platforms
+
+# Regenerate docs from manifest.json; fail if anything changed without re-staging
+npm run regen
+
+# Re-stage any regenerated artifacts that were already in the commit
+git update-index --again
+
+# Run gates
+npm run verify:gates
+
+# Validate manifest
+npm run validate:manifest
+
+# Verify generated host artifacts and shared skill portability
+npm run verify:platforms
+
+# Verify files in sync with manifest
+npm run verify:sync
