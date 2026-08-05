@@ -1,0 +1,3433 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "name": "spk",
+    "displayName": "Apipoj Skills",
+    "description": "Thai-first, ready-to-use engineering skills for Claude Code, Codex, and skills.sh.",
+    "longDescription": "Apipoj Skills combines Matt Pocock’s composable engineering workflows with SPK evidence gates, safe approvals, project memory, and Thai-first smart defaults.",
+    "developerName": "Apipoj Piasak",
+    "homepage": "https://github.com/apipoj/skills",
+    "repository": "https://github.com/apipoj/skills",
+    "license": "MIT",
+    "keywords": [
+      "thai-first",
+      "engineering",
+      "skills",
+      "tdd",
+      "code-review",
+      "developer-tools"
+    ],
+    "category": "Developer Tools",
+    "capabilities": [
+      "Thai-first smart routing",
+      "Evidence-gated planning",
+      "Test-driven implementation",
+      "Root-cause debugging",
+      "Code review",
+      "Safe delivery"
+    ],
+    "defaultPrompts": [
+      "Use Apipoj Skills to choose the simplest safe workflow for this task.",
+      "เริ่มงานนี้แบบพร้อมใช้และอธิบายเป็นภาษาไทย",
+      "Review this change and show the evidence before shipping."
+    ]
+  },
+  "effectLevels": {
+    "read_only": "May inspect local project state but must not change files or external systems.",
+    "workspace_write": "May create or edit project files inside the requested scope.",
+    "git_write": "May change Git state only after the workflow's explicit approval gate.",
+    "external_write": "May change a remote system only after explicit approval for the exact target.",
+    "destructive": "May remove data only after showing exact targets and receiving explicit approval."
+  },
+  "skills": [
+    {
+      "id": "start",
+      "tier": "core",
+      "origin": {
+        "repository": "mattpocock/skills",
+        "skill": "ask-matt"
+      },
+      "sources": {
+        "th": "skills/engineering/start",
+        "en": "locales/en/skills/engineering/start"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Start",
+          "description": "Route a software-engineering request to the smallest appropriate SPK workflow, state its effect level, and preserve required approval gates.",
+          "shortDescription": "Route a software-engineering request to the smallest appropriate SPK workflow, state its effect ",
+          "defaultPrompt": "Start my current request with the simplest safe workflow.",
+          "triggers": [
+            "use start",
+            "start workflow"
+          ],
+          "negativeTriggers": [
+            "the request is outside this workflow",
+            "the user selected a narrower skill"
+          ]
+        },
+        "th": {
+          "displayName": "เริ่มงานแบบพร้อมใช้",
+          "description": "เริ่มงานกับ AI แบบไทยเป็นหลัก โดยเลือก workflow ที่เล็กและตรงที่สุดให้ผู้ใช้ ไม่ต้องจำรายชื่อ skill",
+          "shortDescription": "เริ่มงานกับ AI แบบไทยเป็นหลัก โดยเลือก workflow ที่เล็กและตรงที่สุดให้ผู้ใช้ ไม่ต้องจำรายชื่อ skill",
+          "defaultPrompt": "เริ่มงานนี้แบบพร้อมใช้ด้วย workflow ที่ง่ายและปลอดภัยที่สุด",
+          "triggers": [
+            "ใช้ start",
+            "ทำงานแบบ start"
+          ],
+          "negativeTriggers": [
+            "คำขออยู่นอกขอบเขต workflow นี้",
+            "ผู้ใช้เลือก skill ที่แคบกว่าแล้ว"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": true
+      },
+      "effectLevel": "workspace_write",
+      "role": "start_workflow",
+      "workflow": [
+        {
+          "phase": "orient",
+          "instruction": "Read the request, repository evidence, Thai-first defaults, and the exact approval boundary."
+        },
+        {
+          "phase": "execute",
+          "instruction": "Apply the start discipline in the smallest complete slice; ask one material question only when needed."
+        },
+        {
+          "phase": "verify",
+          "instruction": "Verify the observable outcome and return concise evidence, risks, and the next action."
+        }
+      ],
+      "artifacts": [
+        "start result",
+        "verification evidence"
+      ],
+      "evidence": [
+        "inputs used",
+        "observable result",
+        "verification status"
+      ],
+      "guardrails": [
+        "Use natural concise Thai by default while preserving exact technical identifiers.",
+        "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
+        "Report evidence gaps instead of guessing."
+      ]
+    },
+    {
+      "id": "diagnosing-bugs",
+      "tier": "core",
+      "origin": {
+        "repository": "mattpocock/skills",
+        "skill": "diagnosing-bugs"
+      },
+      "sources": {
+        "th": "skills/engineering/diagnosing-bugs",
+        "en": "locales/en/skills/engineering/diagnosing-bugs"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Diagnosing Bugs",
+          "description": "Diagnose a reproducible software failure by tightening the red feedback loop, testing one hypothesis at a time, and proving root cause before recommending a fix.",
+          "shortDescription": "Diagnose a reproducible software failure by tightening the red feedback loop, testing one hypoth",
+          "defaultPrompt": "Use diagnosing-bugs for my current request.",
+          "triggers": [
+            "use diagnosing-bugs",
+            "diagnosing-bugs workflow"
+          ],
+          "negativeTriggers": [
+            "the request is outside this workflow",
+            "the user selected a narrower skill"
+          ]
+        },
+        "th": {
+          "displayName": "วินิจฉัยบั๊ก",
+          "description": "หาต้นเหตุของบั๊กหรือ performance regression ด้วย feedback loop ที่สั้น ชัด และพิสูจน์ซ้ำได้",
+          "shortDescription": "หาต้นเหตุของบั๊กหรือ performance regression ด้วย feedback loop ที่สั้น ชัด และพิสูจน์ซ้ำได้",
+          "defaultPrompt": "ใช้ diagnosing-bugs กับคำขอนี้",
+          "triggers": [
+            "ใช้ diagnosing-bugs",
+            "ทำงานแบบ diagnosing-bugs"
+          ],
+          "negativeTriggers": [
+            "คำขออยู่นอกขอบเขต workflow นี้",
+            "ผู้ใช้เลือก skill ที่แคบกว่าแล้ว"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": true
+      },
+      "effectLevel": "read_only",
+      "role": "diagnosing_bugs_workflow",
+      "workflow": [
+        {
+          "phase": "orient",
+          "instruction": "Read the request, repository evidence, Thai-first defaults, and the exact approval boundary."
+        },
+        {
+          "phase": "execute",
+          "instruction": "Apply the diagnosing-bugs discipline in the smallest complete slice; ask one material question only when needed."
+        },
+        {
+          "phase": "verify",
+          "instruction": "Verify the observable outcome and return concise evidence, risks, and the next action."
+        }
+      ],
+      "artifacts": [
+        "diagnosing-bugs result",
+        "verification evidence"
+      ],
+      "evidence": [
+        "inputs used",
+        "observable result",
+        "verification status"
+      ],
+      "guardrails": [
+        "Use natural concise Thai by default while preserving exact technical identifiers.",
+        "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
+        "Report evidence gaps instead of guessing."
+      ]
+    },
+    {
+      "id": "grill-with-docs",
+      "tier": "core",
+      "origin": {
+        "repository": "mattpocock/skills",
+        "skill": "grill-with-docs"
+      },
+      "sources": {
+        "th": "skills/engineering/grill-with-docs",
+        "en": "locales/en/skills/engineering/grill-with-docs"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Grill With Docs",
+          "description": "ถามทีละ decision เพื่อทำแผนหรือ design ให้ชัด พร้อมอัปเดตศัพท์และเหตุผลสำคัญของ project",
+          "shortDescription": "ถามทีละ decision เพื่อทำแผนหรือ design ให้ชัด พร้อมอัปเดตศัพท์และเหตุผลสำคัญของ project",
+          "defaultPrompt": "Use grill-with-docs for my current request.",
+          "triggers": [
+            "use grill-with-docs",
+            "grill-with-docs workflow"
+          ],
+          "negativeTriggers": [
+            "the request is outside this workflow",
+            "the user selected a narrower skill"
+          ]
+        },
+        "th": {
+          "displayName": "ถามให้ชัดพร้อมเก็บความรู้",
+          "description": "ถามทีละ decision เพื่อทำแผนหรือ design ให้ชัด พร้อมอัปเดตศัพท์และเหตุผลสำคัญของ project",
+          "shortDescription": "ถามทีละ decision เพื่อทำแผนหรือ design ให้ชัด พร้อมอัปเดตศัพท์และเหตุผลสำคัญของ project",
+          "defaultPrompt": "ใช้ grill-with-docs กับคำขอนี้",
+          "triggers": [
+            "ใช้ grill-with-docs",
+            "ทำงานแบบ grill-with-docs"
+          ],
+          "negativeTriggers": [
+            "คำขออยู่นอกขอบเขต workflow นี้",
+            "ผู้ใช้เลือก skill ที่แคบกว่าแล้ว"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": false
+      },
+      "effectLevel": "workspace_write",
+      "role": "grill_with_docs_workflow",
+      "workflow": [
+        {
+          "phase": "orient",
+          "instruction": "Read the request, repository evidence, Thai-first defaults, and the exact approval boundary."
+        },
+        {
+          "phase": "execute",
+          "instruction": "Apply the grill-with-docs discipline in the smallest complete slice; ask one material question only when needed."
+        },
+        {
+          "phase": "verify",
+          "instruction": "Verify the observable outcome and return concise evidence, risks, and the next action."
+        }
+      ],
+      "artifacts": [
+        "grill-with-docs result",
+        "verification evidence"
+      ],
+      "evidence": [
+        "inputs used",
+        "observable result",
+        "verification status"
+      ],
+      "guardrails": [
+        "Use natural concise Thai by default while preserving exact technical identifiers.",
+        "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
+        "Report evidence gaps instead of guessing."
+      ]
+    },
+    {
+      "id": "triage",
+      "tier": "core",
+      "origin": {
+        "repository": "mattpocock/skills",
+        "skill": "triage"
+      },
+      "sources": {
+        "th": "skills/engineering/triage",
+        "en": "locales/en/skills/engineering/triage"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Triage",
+          "description": "คัดกรอง issue และ pull request ให้พร้อมตัดสินใจหรือพร้อมส่งต่อให้ agent ทำงาน",
+          "shortDescription": "คัดกรอง issue และ pull request ให้พร้อมตัดสินใจหรือพร้อมส่งต่อให้ agent ทำงาน",
+          "defaultPrompt": "Use triage for my current request.",
+          "triggers": [
+            "use triage",
+            "triage workflow"
+          ],
+          "negativeTriggers": [
+            "the request is outside this workflow",
+            "the user selected a narrower skill"
+          ]
+        },
+        "th": {
+          "displayName": "คัดกรองงาน",
+          "description": "คัดกรอง issue และ pull request ให้พร้อมตัดสินใจหรือพร้อมส่งต่อให้ agent ทำงาน",
+          "shortDescription": "คัดกรอง issue และ pull request ให้พร้อมตัดสินใจหรือพร้อมส่งต่อให้ agent ทำงาน",
+          "defaultPrompt": "ใช้ triage กับคำขอนี้",
+          "triggers": [
+            "ใช้ triage",
+            "ทำงานแบบ triage"
+          ],
+          "negativeTriggers": [
+            "คำขออยู่นอกขอบเขต workflow นี้",
+            "ผู้ใช้เลือก skill ที่แคบกว่าแล้ว"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": false
+      },
+      "effectLevel": "external_write",
+      "role": "triage_workflow",
+      "workflow": [
+        {
+          "phase": "orient",
+          "instruction": "Read the request, repository evidence, Thai-first defaults, and the exact approval boundary."
+        },
+        {
+          "phase": "execute",
+          "instruction": "Apply the triage discipline in the smallest complete slice; ask one material question only when needed."
+        },
+        {
+          "phase": "verify",
+          "instruction": "Verify the observable outcome and return concise evidence, risks, and the next action."
+        }
+      ],
+      "artifacts": [
+        "triage result",
+        "verification evidence"
+      ],
+      "evidence": [
+        "inputs used",
+        "observable result",
+        "verification status"
+      ],
+      "guardrails": [
+        "Use natural concise Thai by default while preserving exact technical identifiers.",
+        "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
+        "Report evidence gaps instead of guessing."
+      ]
+    },
+    {
+      "id": "improve-codebase-architecture",
+      "tier": "core",
+      "origin": {
+        "repository": "mattpocock/skills",
+        "skill": "improve-codebase-architecture"
+      },
+      "sources": {
+        "th": "skills/engineering/improve-codebase-architecture",
+        "en": "locales/en/skills/engineering/improve-codebase-architecture"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Improve Codebase Architecture",
+          "description": "หาโอกาสทำ module ให้ลึกขึ้น เข้าใจง่ายขึ้น และทดสอบผ่าน interface ที่เหมาะสม",
+          "shortDescription": "หาโอกาสทำ module ให้ลึกขึ้น เข้าใจง่ายขึ้น และทดสอบผ่าน interface ที่เหมาะสม",
+          "defaultPrompt": "Use improve-codebase-architecture for my current request.",
+          "triggers": [
+            "use improve-codebase-architecture",
+            "improve-codebase-architecture workflow"
+          ],
+          "negativeTriggers": [
+            "the request is outside this workflow",
+            "the user selected a narrower skill"
+          ]
+        },
+        "th": {
+          "displayName": "ปรับสถาปัตยกรรม codebase",
+          "description": "หาโอกาสทำ module ให้ลึกขึ้น เข้าใจง่ายขึ้น และทดสอบผ่าน interface ที่เหมาะสม",
+          "shortDescription": "หาโอกาสทำ module ให้ลึกขึ้น เข้าใจง่ายขึ้น และทดสอบผ่าน interface ที่เหมาะสม",
+          "defaultPrompt": "ใช้ improve-codebase-architecture กับคำขอนี้",
+          "triggers": [
+            "ใช้ improve-codebase-architecture",
+            "ทำงานแบบ improve-codebase-architecture"
+          ],
+          "negativeTriggers": [
+            "คำขออยู่นอกขอบเขต workflow นี้",
+            "ผู้ใช้เลือก skill ที่แคบกว่าแล้ว"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": false
+      },
+      "effectLevel": "workspace_write",
+      "role": "improve_codebase_architecture_workflow",
+      "workflow": [
+        {
+          "phase": "orient",
+          "instruction": "Read the request, repository evidence, Thai-first defaults, and the exact approval boundary."
+        },
+        {
+          "phase": "execute",
+          "instruction": "Apply the improve-codebase-architecture discipline in the smallest complete slice; ask one material question only when needed."
+        },
+        {
+          "phase": "verify",
+          "instruction": "Verify the observable outcome and return concise evidence, risks, and the next action."
+        }
+      ],
+      "artifacts": [
+        "improve-codebase-architecture result",
+        "verification evidence"
+      ],
+      "evidence": [
+        "inputs used",
+        "observable result",
+        "verification status"
+      ],
+      "guardrails": [
+        "Use natural concise Thai by default while preserving exact technical identifiers.",
+        "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
+        "Report evidence gaps instead of guessing."
+      ]
+    },
+    {
+      "id": "setup",
+      "tier": "core",
+      "origin": {
+        "repository": "mattpocock/skills",
+        "skill": "setup-matt-pocock-skills"
+      },
+      "sources": {
+        "th": "skills/engineering/setup",
+        "en": "locales/en/skills/engineering/setup"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Setup",
+          "description": "Configure this repo for the engineering skills — set up its issue tracker, triage label vocabulary, and domain doc layout. Run once before first use of the other engineering skills.",
+          "shortDescription": "Configure this repo for the engineering skills — set up its issue tracker, triage label vocabula",
+          "defaultPrompt": "Use setup for my current request.",
+          "triggers": [
+            "use setup",
+            "setup workflow"
+          ],
+          "negativeTriggers": [
+            "the request is outside this workflow",
+            "the user selected a narrower skill"
+          ]
+        },
+        "th": {
+          "displayName": "ตั้งค่า Apipoj Skills",
+          "description": "ตั้งค่า issue tracker, domain docs และ defaults ที่ skill อื่นใช้ร่วมกันใน repository นี้",
+          "shortDescription": "ตั้งค่า issue tracker, domain docs และ defaults ที่ skill อื่นใช้ร่วมกันใน repository นี้",
+          "defaultPrompt": "ใช้ setup กับคำขอนี้",
+          "triggers": [
+            "ใช้ setup",
+            "ทำงานแบบ setup"
+          ],
+          "negativeTriggers": [
+            "คำขออยู่นอกขอบเขต workflow นี้",
+            "ผู้ใช้เลือก skill ที่แคบกว่าแล้ว"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": false
+      },
+      "effectLevel": "workspace_write",
+      "role": "setup_workflow",
+      "workflow": [
+        {
+          "phase": "orient",
+          "instruction": "Read the request, repository evidence, Thai-first defaults, and the exact approval boundary."
+        },
+        {
+          "phase": "execute",
+          "instruction": "Apply the setup discipline in the smallest complete slice; ask one material question only when needed."
+        },
+        {
+          "phase": "verify",
+          "instruction": "Verify the observable outcome and return concise evidence, risks, and the next action."
+        }
+      ],
+      "artifacts": [
+        "setup result",
+        "verification evidence"
+      ],
+      "evidence": [
+        "inputs used",
+        "observable result",
+        "verification status"
+      ],
+      "guardrails": [
+        "Use natural concise Thai by default while preserving exact technical identifiers.",
+        "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
+        "Report evidence gaps instead of guessing."
+      ]
+    },
+    {
+      "id": "tdd",
+      "tier": "core",
+      "origin": {
+        "repository": "mattpocock/skills",
+        "skill": "tdd"
+      },
+      "sources": {
+        "th": "skills/engineering/tdd",
+        "en": "locales/en/skills/engineering/tdd"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Tdd",
+          "description": "Implement behavior through strict red, green, and refactor cycles with a verified failing test first and regression evidence before completion.",
+          "shortDescription": "Implement behavior through strict red, green, and refactor cycles with a verified failing test f",
+          "defaultPrompt": "Use tdd for my current request.",
+          "triggers": [
+            "use tdd",
+            "tdd workflow"
+          ],
+          "negativeTriggers": [
+            "the request is outside this workflow",
+            "the user selected a narrower skill"
+          ]
+        },
+        "th": {
+          "displayName": "พัฒนาแบบ TDD",
+          "description": "พัฒนา behavior ทีละ slice ด้วยวงจร RED, GREEN และ refactor พร้อมหลักฐานจาก test จริง",
+          "shortDescription": "พัฒนา behavior ทีละ slice ด้วยวงจร RED, GREEN และ refactor พร้อมหลักฐานจาก test จริง",
+          "defaultPrompt": "ใช้ tdd กับคำขอนี้",
+          "triggers": [
+            "ใช้ tdd",
+            "ทำงานแบบ tdd"
+          ],
+          "negativeTriggers": [
+            "คำขออยู่นอกขอบเขต workflow นี้",
+            "ผู้ใช้เลือก skill ที่แคบกว่าแล้ว"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": true
+      },
+      "effectLevel": "workspace_write",
+      "role": "tdd_workflow",
+      "workflow": [
+        {
+          "phase": "orient",
+          "instruction": "Read the request, repository evidence, Thai-first defaults, and the exact approval boundary."
+        },
+        {
+          "phase": "execute",
+          "instruction": "Apply the tdd discipline in the smallest complete slice; ask one material question only when needed."
+        },
+        {
+          "phase": "verify",
+          "instruction": "Verify the observable outcome and return concise evidence, risks, and the next action."
+        }
+      ],
+      "artifacts": [
+        "tdd result",
+        "verification evidence"
+      ],
+      "evidence": [
+        "inputs used",
+        "observable result",
+        "verification status"
+      ],
+      "guardrails": [
+        "Use natural concise Thai by default while preserving exact technical identifiers.",
+        "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
+        "Report evidence gaps instead of guessing."
+      ]
+    },
+    {
+      "id": "to-spec",
+      "tier": "core",
+      "origin": {
+        "repository": "mattpocock/skills",
+        "skill": "to-spec"
+      },
+      "sources": {
+        "th": "skills/engineering/to-spec",
+        "en": "locales/en/skills/engineering/to-spec"
+      },
+      "locales": {
+        "en": {
+          "displayName": "To Spec",
+          "description": "สรุปบทสนทนาและหลักฐานจาก codebase เป็นสเปกที่พร้อมตรวจและนำไปวางแผนต่อ",
+          "shortDescription": "สรุปบทสนทนาและหลักฐานจาก codebase เป็นสเปกที่พร้อมตรวจและนำไปวางแผนต่อ",
+          "defaultPrompt": "Use to-spec for my current request.",
+          "triggers": [
+            "use to-spec",
+            "to-spec workflow"
+          ],
+          "negativeTriggers": [
+            "the request is outside this workflow",
+            "the user selected a narrower skill"
+          ]
+        },
+        "th": {
+          "displayName": "สรุปเป็นสเปก",
+          "description": "สรุปบทสนทนาและหลักฐานจาก codebase เป็นสเปกที่พร้อมตรวจและนำไปวางแผนต่อ",
+          "shortDescription": "สรุปบทสนทนาและหลักฐานจาก codebase เป็นสเปกที่พร้อมตรวจและนำไปวางแผนต่อ",
+          "defaultPrompt": "ใช้ to-spec กับคำขอนี้",
+          "triggers": [
+            "ใช้ to-spec",
+            "ทำงานแบบ to-spec"
+          ],
+          "negativeTriggers": [
+            "คำขออยู่นอกขอบเขต workflow นี้",
+            "ผู้ใช้เลือก skill ที่แคบกว่าแล้ว"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": false
+      },
+      "effectLevel": "workspace_write",
+      "role": "to_spec_workflow",
+      "workflow": [
+        {
+          "phase": "orient",
+          "instruction": "Read the request, repository evidence, Thai-first defaults, and the exact approval boundary."
+        },
+        {
+          "phase": "execute",
+          "instruction": "Apply the to-spec discipline in the smallest complete slice; ask one material question only when needed."
+        },
+        {
+          "phase": "verify",
+          "instruction": "Verify the observable outcome and return concise evidence, risks, and the next action."
+        }
+      ],
+      "artifacts": [
+        "to-spec result",
+        "verification evidence"
+      ],
+      "evidence": [
+        "inputs used",
+        "observable result",
+        "verification status"
+      ],
+      "guardrails": [
+        "Use natural concise Thai by default while preserving exact technical identifiers.",
+        "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
+        "Report evidence gaps instead of guessing."
+      ]
+    },
+    {
+      "id": "to-tickets",
+      "tier": "core",
+      "origin": {
+        "repository": "mattpocock/skills",
+        "skill": "to-tickets"
+      },
+      "sources": {
+        "th": "skills/engineering/to-tickets",
+        "en": "locales/en/skills/engineering/to-tickets"
+      },
+      "locales": {
+        "en": {
+          "displayName": "To Tickets",
+          "description": "แตกสเปกหรือแผนเป็น vertical slices พร้อม blocking edges ที่ทำต่อได้จริง",
+          "shortDescription": "แตกสเปกหรือแผนเป็น vertical slices พร้อม blocking edges ที่ทำต่อได้จริง",
+          "defaultPrompt": "Use to-tickets for my current request.",
+          "triggers": [
+            "use to-tickets",
+            "to-tickets workflow"
+          ],
+          "negativeTriggers": [
+            "the request is outside this workflow",
+            "the user selected a narrower skill"
+          ]
+        },
+        "th": {
+          "displayName": "แตกงานเป็น ticket",
+          "description": "แตกสเปกหรือแผนเป็น vertical slices พร้อม blocking edges ที่ทำต่อได้จริง",
+          "shortDescription": "แตกสเปกหรือแผนเป็น vertical slices พร้อม blocking edges ที่ทำต่อได้จริง",
+          "defaultPrompt": "ใช้ to-tickets กับคำขอนี้",
+          "triggers": [
+            "ใช้ to-tickets",
+            "ทำงานแบบ to-tickets"
+          ],
+          "negativeTriggers": [
+            "คำขออยู่นอกขอบเขต workflow นี้",
+            "ผู้ใช้เลือก skill ที่แคบกว่าแล้ว"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": false
+      },
+      "effectLevel": "workspace_write",
+      "role": "to_tickets_workflow",
+      "workflow": [
+        {
+          "phase": "orient",
+          "instruction": "Read the request, repository evidence, Thai-first defaults, and the exact approval boundary."
+        },
+        {
+          "phase": "execute",
+          "instruction": "Apply the to-tickets discipline in the smallest complete slice; ask one material question only when needed."
+        },
+        {
+          "phase": "verify",
+          "instruction": "Verify the observable outcome and return concise evidence, risks, and the next action."
+        }
+      ],
+      "artifacts": [
+        "to-tickets result",
+        "verification evidence"
+      ],
+      "evidence": [
+        "inputs used",
+        "observable result",
+        "verification status"
+      ],
+      "guardrails": [
+        "Use natural concise Thai by default while preserving exact technical identifiers.",
+        "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
+        "Report evidence gaps instead of guessing."
+      ]
+    },
+    {
+      "id": "wayfinder",
+      "tier": "core",
+      "origin": {
+        "repository": "mattpocock/skills",
+        "skill": "wayfinder"
+      },
+      "sources": {
+        "th": "skills/engineering/wayfinder",
+        "en": "locales/en/skills/engineering/wayfinder"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Wayfinder",
+          "description": "ทำแผนที่ decision สำหรับงานใหญ่ที่ยังมีหมอก แล้วคลี่คำถามทีละใบจนเส้นทางชัด",
+          "shortDescription": "ทำแผนที่ decision สำหรับงานใหญ่ที่ยังมีหมอก แล้วคลี่คำถามทีละใบจนเส้นทางชัด",
+          "defaultPrompt": "Use wayfinder for my current request.",
+          "triggers": [
+            "use wayfinder",
+            "wayfinder workflow"
+          ],
+          "negativeTriggers": [
+            "the request is outside this workflow",
+            "the user selected a narrower skill"
+          ]
+        },
+        "th": {
+          "displayName": "นำทางงานใหญ่",
+          "description": "ทำแผนที่ decision สำหรับงานใหญ่ที่ยังมีหมอก แล้วคลี่คำถามทีละใบจนเส้นทางชัด",
+          "shortDescription": "ทำแผนที่ decision สำหรับงานใหญ่ที่ยังมีหมอก แล้วคลี่คำถามทีละใบจนเส้นทางชัด",
+          "defaultPrompt": "ใช้ wayfinder กับคำขอนี้",
+          "triggers": [
+            "ใช้ wayfinder",
+            "ทำงานแบบ wayfinder"
+          ],
+          "negativeTriggers": [
+            "คำขออยู่นอกขอบเขต workflow นี้",
+            "ผู้ใช้เลือก skill ที่แคบกว่าแล้ว"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": false
+      },
+      "effectLevel": "workspace_write",
+      "role": "wayfinder_workflow",
+      "workflow": [
+        {
+          "phase": "orient",
+          "instruction": "Read the request, repository evidence, Thai-first defaults, and the exact approval boundary."
+        },
+        {
+          "phase": "execute",
+          "instruction": "Apply the wayfinder discipline in the smallest complete slice; ask one material question only when needed."
+        },
+        {
+          "phase": "verify",
+          "instruction": "Verify the observable outcome and return concise evidence, risks, and the next action."
+        }
+      ],
+      "artifacts": [
+        "wayfinder result",
+        "verification evidence"
+      ],
+      "evidence": [
+        "inputs used",
+        "observable result",
+        "verification status"
+      ],
+      "guardrails": [
+        "Use natural concise Thai by default while preserving exact technical identifiers.",
+        "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
+        "Report evidence gaps instead of guessing."
+      ]
+    },
+    {
+      "id": "implement",
+      "tier": "core",
+      "origin": {
+        "repository": "mattpocock/skills",
+        "skill": "implement"
+      },
+      "sources": {
+        "th": "skills/engineering/implement",
+        "en": "locales/en/skills/engineering/implement"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Implement",
+          "description": "Implement an approved software plan in small scoped slices, verify each behavior, update documentation, and report an evidence receipt.",
+          "shortDescription": "Implement an approved software plan in small scoped slices, verify each behavior, update documen",
+          "defaultPrompt": "Use implement for my current request.",
+          "triggers": [
+            "use implement",
+            "implement workflow"
+          ],
+          "negativeTriggers": [
+            "the request is outside this workflow",
+            "the user selected a narrower skill"
+          ]
+        },
+        "th": {
+          "displayName": "ลงมือพัฒนาตามแผน",
+          "description": "พัฒนาแผนที่อนุมัติแล้วเป็น slice เล็กที่ผ่าน test และ review โดยไม่ commit หรือ push เอง",
+          "shortDescription": "พัฒนาแผนที่อนุมัติแล้วเป็น slice เล็กที่ผ่าน test และ review โดยไม่ commit หรือ push เอง",
+          "defaultPrompt": "ใช้ implement กับคำขอนี้",
+          "triggers": [
+            "ใช้ implement",
+            "ทำงานแบบ implement"
+          ],
+          "negativeTriggers": [
+            "คำขออยู่นอกขอบเขต workflow นี้",
+            "ผู้ใช้เลือก skill ที่แคบกว่าแล้ว"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": true
+      },
+      "effectLevel": "workspace_write",
+      "role": "implement_workflow",
+      "workflow": [
+        {
+          "phase": "orient",
+          "instruction": "Read the request, repository evidence, Thai-first defaults, and the exact approval boundary."
+        },
+        {
+          "phase": "execute",
+          "instruction": "Apply the implement discipline in the smallest complete slice; ask one material question only when needed."
+        },
+        {
+          "phase": "verify",
+          "instruction": "Verify the observable outcome and return concise evidence, risks, and the next action."
+        }
+      ],
+      "artifacts": [
+        "implement result",
+        "verification evidence"
+      ],
+      "evidence": [
+        "inputs used",
+        "observable result",
+        "verification status"
+      ],
+      "guardrails": [
+        "Use natural concise Thai by default while preserving exact technical identifiers.",
+        "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
+        "Report evidence gaps instead of guessing."
+      ]
+    },
+    {
+      "id": "prototype",
+      "tier": "core",
+      "origin": {
+        "repository": "mattpocock/skills",
+        "skill": "prototype"
+      },
+      "sources": {
+        "th": "skills/engineering/prototype",
+        "en": "locales/en/skills/engineering/prototype"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Prototype",
+          "description": "สร้าง prototype แบบทิ้งได้เพื่อพิสูจน์คำถามด้าน logic, state หรือ UI ก่อนลงทุนทำ production",
+          "shortDescription": "สร้าง prototype แบบทิ้งได้เพื่อพิสูจน์คำถามด้าน logic, state หรือ UI ก่อนลงทุนทำ production",
+          "defaultPrompt": "Use prototype for my current request.",
+          "triggers": [
+            "use prototype",
+            "prototype workflow"
+          ],
+          "negativeTriggers": [
+            "the request is outside this workflow",
+            "the user selected a narrower skill"
+          ]
+        },
+        "th": {
+          "displayName": "ทำ prototype เพื่อตอบคำถาม",
+          "description": "สร้าง prototype แบบทิ้งได้เพื่อพิสูจน์คำถามด้าน logic, state หรือ UI ก่อนลงทุนทำ production",
+          "shortDescription": "สร้าง prototype แบบทิ้งได้เพื่อพิสูจน์คำถามด้าน logic, state หรือ UI ก่อนลงทุนทำ production",
+          "defaultPrompt": "ใช้ prototype กับคำขอนี้",
+          "triggers": [
+            "ใช้ prototype",
+            "ทำงานแบบ prototype"
+          ],
+          "negativeTriggers": [
+            "คำขออยู่นอกขอบเขต workflow นี้",
+            "ผู้ใช้เลือก skill ที่แคบกว่าแล้ว"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": true
+      },
+      "effectLevel": "workspace_write",
+      "role": "prototype_workflow",
+      "workflow": [
+        {
+          "phase": "orient",
+          "instruction": "Read the request, repository evidence, Thai-first defaults, and the exact approval boundary."
+        },
+        {
+          "phase": "execute",
+          "instruction": "Apply the prototype discipline in the smallest complete slice; ask one material question only when needed."
+        },
+        {
+          "phase": "verify",
+          "instruction": "Verify the observable outcome and return concise evidence, risks, and the next action."
+        }
+      ],
+      "artifacts": [
+        "prototype result",
+        "verification evidence"
+      ],
+      "evidence": [
+        "inputs used",
+        "observable result",
+        "verification status"
+      ],
+      "guardrails": [
+        "Use natural concise Thai by default while preserving exact technical identifiers.",
+        "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
+        "Report evidence gaps instead of guessing."
+      ]
+    },
+    {
+      "id": "research",
+      "tier": "core",
+      "origin": {
+        "repository": "mattpocock/skills",
+        "skill": "research"
+      },
+      "sources": {
+        "th": "skills/engineering/research",
+        "en": "locales/en/skills/engineering/research"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Research",
+          "description": "ค้นคว้าคำถามจาก primary sources และเก็บข้อค้นพบพร้อม citation ที่ตรวจย้อนกลับได้",
+          "shortDescription": "ค้นคว้าคำถามจาก primary sources และเก็บข้อค้นพบพร้อม citation ที่ตรวจย้อนกลับได้",
+          "defaultPrompt": "Use research for my current request.",
+          "triggers": [
+            "use research",
+            "research workflow"
+          ],
+          "negativeTriggers": [
+            "the request is outside this workflow",
+            "the user selected a narrower skill"
+          ]
+        },
+        "th": {
+          "displayName": "ค้นคว้าจากแหล่งหลัก",
+          "description": "ค้นคว้าคำถามจาก primary sources และเก็บข้อค้นพบพร้อม citation ที่ตรวจย้อนกลับได้",
+          "shortDescription": "ค้นคว้าคำถามจาก primary sources และเก็บข้อค้นพบพร้อม citation ที่ตรวจย้อนกลับได้",
+          "defaultPrompt": "ใช้ research กับคำขอนี้",
+          "triggers": [
+            "ใช้ research",
+            "ทำงานแบบ research"
+          ],
+          "negativeTriggers": [
+            "คำขออยู่นอกขอบเขต workflow นี้",
+            "ผู้ใช้เลือก skill ที่แคบกว่าแล้ว"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": true
+      },
+      "effectLevel": "workspace_write",
+      "role": "research_workflow",
+      "workflow": [
+        {
+          "phase": "orient",
+          "instruction": "Read the request, repository evidence, Thai-first defaults, and the exact approval boundary."
+        },
+        {
+          "phase": "execute",
+          "instruction": "Apply the research discipline in the smallest complete slice; ask one material question only when needed."
+        },
+        {
+          "phase": "verify",
+          "instruction": "Verify the observable outcome and return concise evidence, risks, and the next action."
+        }
+      ],
+      "artifacts": [
+        "research result",
+        "verification evidence"
+      ],
+      "evidence": [
+        "inputs used",
+        "observable result",
+        "verification status"
+      ],
+      "guardrails": [
+        "Use natural concise Thai by default while preserving exact technical identifiers.",
+        "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
+        "Report evidence gaps instead of guessing."
+      ]
+    },
+    {
+      "id": "domain-modeling",
+      "tier": "core",
+      "origin": {
+        "repository": "mattpocock/skills",
+        "skill": "domain-modeling"
+      },
+      "sources": {
+        "th": "skills/engineering/domain-modeling",
+        "en": "locales/en/skills/engineering/domain-modeling"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Domain Modeling",
+          "description": "สร้างและปรับภาษากลางของ project พร้อมทดสอบคำศัพท์กับกรณีขอบและบันทึก decision ที่ควรจำ",
+          "shortDescription": "สร้างและปรับภาษากลางของ project พร้อมทดสอบคำศัพท์กับกรณีขอบและบันทึก decision ที่ควรจำ",
+          "defaultPrompt": "Use domain-modeling for my current request.",
+          "triggers": [
+            "use domain-modeling",
+            "domain-modeling workflow"
+          ],
+          "negativeTriggers": [
+            "the request is outside this workflow",
+            "the user selected a narrower skill"
+          ]
+        },
+        "th": {
+          "displayName": "จัดภาษา domain ให้ชัด",
+          "description": "สร้างและปรับภาษากลางของ project พร้อมทดสอบคำศัพท์กับกรณีขอบและบันทึก decision ที่ควรจำ",
+          "shortDescription": "สร้างและปรับภาษากลางของ project พร้อมทดสอบคำศัพท์กับกรณีขอบและบันทึก decision ที่ควรจำ",
+          "defaultPrompt": "ใช้ domain-modeling กับคำขอนี้",
+          "triggers": [
+            "ใช้ domain-modeling",
+            "ทำงานแบบ domain-modeling"
+          ],
+          "negativeTriggers": [
+            "คำขออยู่นอกขอบเขต workflow นี้",
+            "ผู้ใช้เลือก skill ที่แคบกว่าแล้ว"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": true
+      },
+      "effectLevel": "workspace_write",
+      "role": "domain_modeling_workflow",
+      "workflow": [
+        {
+          "phase": "orient",
+          "instruction": "Read the request, repository evidence, Thai-first defaults, and the exact approval boundary."
+        },
+        {
+          "phase": "execute",
+          "instruction": "Apply the domain-modeling discipline in the smallest complete slice; ask one material question only when needed."
+        },
+        {
+          "phase": "verify",
+          "instruction": "Verify the observable outcome and return concise evidence, risks, and the next action."
+        }
+      ],
+      "artifacts": [
+        "domain-modeling result",
+        "verification evidence"
+      ],
+      "evidence": [
+        "inputs used",
+        "observable result",
+        "verification status"
+      ],
+      "guardrails": [
+        "Use natural concise Thai by default while preserving exact technical identifiers.",
+        "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
+        "Report evidence gaps instead of guessing."
+      ]
+    },
+    {
+      "id": "codebase-design",
+      "tier": "core",
+      "origin": {
+        "repository": "mattpocock/skills",
+        "skill": "codebase-design"
+      },
+      "sources": {
+        "th": "skills/engineering/codebase-design",
+        "en": "locales/en/skills/engineering/codebase-design"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Codebase Design",
+          "description": "ใช้แนวคิด deep module, interface, seam, adapter, leverage และ locality เพื่อออกแบบ code ที่เปลี่ยนง่าย",
+          "shortDescription": "ใช้แนวคิด deep module, interface, seam, adapter, leverage และ locality เพื่อออกแบบ code ที่เปลี่",
+          "defaultPrompt": "Use codebase-design for my current request.",
+          "triggers": [
+            "use codebase-design",
+            "codebase-design workflow"
+          ],
+          "negativeTriggers": [
+            "the request is outside this workflow",
+            "the user selected a narrower skill"
+          ]
+        },
+        "th": {
+          "displayName": "ออกแบบ module ให้ลึก",
+          "description": "ใช้แนวคิด deep module, interface, seam, adapter, leverage และ locality เพื่อออกแบบ code ที่เปลี่ยนง่าย",
+          "shortDescription": "ใช้แนวคิด deep module, interface, seam, adapter, leverage และ locality เพื่อออกแบบ code ที่เปลี่",
+          "defaultPrompt": "ใช้ codebase-design กับคำขอนี้",
+          "triggers": [
+            "ใช้ codebase-design",
+            "ทำงานแบบ codebase-design"
+          ],
+          "negativeTriggers": [
+            "คำขออยู่นอกขอบเขต workflow นี้",
+            "ผู้ใช้เลือก skill ที่แคบกว่าแล้ว"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": true
+      },
+      "effectLevel": "workspace_write",
+      "role": "codebase_design_workflow",
+      "workflow": [
+        {
+          "phase": "orient",
+          "instruction": "Read the request, repository evidence, Thai-first defaults, and the exact approval boundary."
+        },
+        {
+          "phase": "execute",
+          "instruction": "Apply the codebase-design discipline in the smallest complete slice; ask one material question only when needed."
+        },
+        {
+          "phase": "verify",
+          "instruction": "Verify the observable outcome and return concise evidence, risks, and the next action."
+        }
+      ],
+      "artifacts": [
+        "codebase-design result",
+        "verification evidence"
+      ],
+      "evidence": [
+        "inputs used",
+        "observable result",
+        "verification status"
+      ],
+      "guardrails": [
+        "Use natural concise Thai by default while preserving exact technical identifiers.",
+        "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
+        "Report evidence gaps instead of guessing."
+      ]
+    },
+    {
+      "id": "code-review",
+      "tier": "core",
+      "origin": {
+        "repository": "mattpocock/skills",
+        "skill": "code-review"
+      },
+      "sources": {
+        "th": "skills/engineering/code-review",
+        "en": "locales/en/skills/engineering/code-review"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Code Review",
+          "description": "Review a requested diff or branch in independent correctness, security, maintainability, test, documentation, and ship-readiness passes.",
+          "shortDescription": "Review a requested diff or branch in independent correctness, security, maintainability, test, d",
+          "defaultPrompt": "Use code-review for my current request.",
+          "triggers": [
+            "use code-review",
+            "code-review workflow"
+          ],
+          "negativeTriggers": [
+            "the request is outside this workflow",
+            "the user selected a narrower skill"
+          ]
+        },
+        "th": {
+          "displayName": "รีวิว code เทียบมาตรฐานและสเปก",
+          "description": "รีวิว diff แยกด้านมาตรฐาน สเปก ความถูกต้อง security tests และความพร้อมส่งมอบ",
+          "shortDescription": "รีวิว diff แยกด้านมาตรฐาน สเปก ความถูกต้อง security tests และความพร้อมส่งมอบ",
+          "defaultPrompt": "ใช้ code-review กับคำขอนี้",
+          "triggers": [
+            "ใช้ code-review",
+            "ทำงานแบบ code-review"
+          ],
+          "negativeTriggers": [
+            "คำขออยู่นอกขอบเขต workflow นี้",
+            "ผู้ใช้เลือก skill ที่แคบกว่าแล้ว"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": true
+      },
+      "effectLevel": "read_only",
+      "role": "code_review_workflow",
+      "workflow": [
+        {
+          "phase": "orient",
+          "instruction": "Read the request, repository evidence, Thai-first defaults, and the exact approval boundary."
+        },
+        {
+          "phase": "execute",
+          "instruction": "Apply the code-review discipline in the smallest complete slice; ask one material question only when needed."
+        },
+        {
+          "phase": "verify",
+          "instruction": "Verify the observable outcome and return concise evidence, risks, and the next action."
+        }
+      ],
+      "artifacts": [
+        "code-review result",
+        "verification evidence"
+      ],
+      "evidence": [
+        "inputs used",
+        "observable result",
+        "verification status"
+      ],
+      "guardrails": [
+        "Use natural concise Thai by default while preserving exact technical identifiers.",
+        "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
+        "Report evidence gaps instead of guessing."
+      ]
+    },
+    {
+      "id": "resolving-merge-conflicts",
+      "tier": "core",
+      "origin": {
+        "repository": "mattpocock/skills",
+        "skill": "resolving-merge-conflicts"
+      },
+      "sources": {
+        "th": "skills/engineering/resolving-merge-conflicts",
+        "en": "locales/en/skills/engineering/resolving-merge-conflicts"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Resolving Merge Conflicts",
+          "description": "แก้ merge หรือ rebase conflict ทีละ hunk โดยตามเจตนาของทั้งสองฝั่งและตรวจผลก่อนเดินต่อ",
+          "shortDescription": "แก้ merge หรือ rebase conflict ทีละ hunk โดยตามเจตนาของทั้งสองฝั่งและตรวจผลก่อนเดินต่อ",
+          "defaultPrompt": "Use resolving-merge-conflicts for my current request.",
+          "triggers": [
+            "use resolving-merge-conflicts",
+            "resolving-merge-conflicts workflow"
+          ],
+          "negativeTriggers": [
+            "the request is outside this workflow",
+            "the user selected a narrower skill"
+          ]
+        },
+        "th": {
+          "displayName": "แก้ merge conflict ตามเจตนา",
+          "description": "แก้ merge หรือ rebase conflict ทีละ hunk โดยตามเจตนาของทั้งสองฝั่งและตรวจผลก่อนเดินต่อ",
+          "shortDescription": "แก้ merge หรือ rebase conflict ทีละ hunk โดยตามเจตนาของทั้งสองฝั่งและตรวจผลก่อนเดินต่อ",
+          "defaultPrompt": "ใช้ resolving-merge-conflicts กับคำขอนี้",
+          "triggers": [
+            "ใช้ resolving-merge-conflicts",
+            "ทำงานแบบ resolving-merge-conflicts"
+          ],
+          "negativeTriggers": [
+            "คำขออยู่นอกขอบเขต workflow นี้",
+            "ผู้ใช้เลือก skill ที่แคบกว่าแล้ว"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": true
+      },
+      "effectLevel": "git_write",
+      "role": "resolving_merge_conflicts_workflow",
+      "workflow": [
+        {
+          "phase": "orient",
+          "instruction": "Read the request, repository evidence, Thai-first defaults, and the exact approval boundary."
+        },
+        {
+          "phase": "execute",
+          "instruction": "Apply the resolving-merge-conflicts discipline in the smallest complete slice; ask one material question only when needed."
+        },
+        {
+          "phase": "verify",
+          "instruction": "Verify the observable outcome and return concise evidence, risks, and the next action."
+        }
+      ],
+      "artifacts": [
+        "resolving-merge-conflicts result",
+        "verification evidence"
+      ],
+      "evidence": [
+        "inputs used",
+        "observable result",
+        "verification status"
+      ],
+      "guardrails": [
+        "Use natural concise Thai by default while preserving exact technical identifiers.",
+        "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
+        "Report evidence gaps instead of guessing."
+      ]
+    },
+    {
+      "id": "grill-me",
+      "tier": "core",
+      "origin": {
+        "repository": "mattpocock/skills",
+        "skill": "grill-me"
+      },
+      "sources": {
+        "th": "skills/productivity/grill-me",
+        "en": "locales/en/skills/productivity/grill-me"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Grill Me",
+          "description": "ถามทีละ decision เพื่อทำความคิด แผน หรือทางเลือกให้ชัดก่อนลงมือ",
+          "shortDescription": "ถามทีละ decision เพื่อทำความคิด แผน หรือทางเลือกให้ชัดก่อนลงมือ",
+          "defaultPrompt": "Use grill-me for my current request.",
+          "triggers": [
+            "use grill-me",
+            "grill-me workflow"
+          ],
+          "negativeTriggers": [
+            "the request is outside this workflow",
+            "the user selected a narrower skill"
+          ]
+        },
+        "th": {
+          "displayName": "ถามให้คิดชัด",
+          "description": "ถามทีละ decision เพื่อทำความคิด แผน หรือทางเลือกให้ชัดก่อนลงมือ",
+          "shortDescription": "ถามทีละ decision เพื่อทำความคิด แผน หรือทางเลือกให้ชัดก่อนลงมือ",
+          "defaultPrompt": "ใช้ grill-me กับคำขอนี้",
+          "triggers": [
+            "ใช้ grill-me",
+            "ทำงานแบบ grill-me"
+          ],
+          "negativeTriggers": [
+            "คำขออยู่นอกขอบเขต workflow นี้",
+            "ผู้ใช้เลือก skill ที่แคบกว่าแล้ว"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": false
+      },
+      "effectLevel": "read_only",
+      "role": "grill_me_workflow",
+      "workflow": [
+        {
+          "phase": "orient",
+          "instruction": "Read the request, repository evidence, Thai-first defaults, and the exact approval boundary."
+        },
+        {
+          "phase": "execute",
+          "instruction": "Apply the grill-me discipline in the smallest complete slice; ask one material question only when needed."
+        },
+        {
+          "phase": "verify",
+          "instruction": "Verify the observable outcome and return concise evidence, risks, and the next action."
+        }
+      ],
+      "artifacts": [
+        "grill-me result",
+        "verification evidence"
+      ],
+      "evidence": [
+        "inputs used",
+        "observable result",
+        "verification status"
+      ],
+      "guardrails": [
+        "Use natural concise Thai by default while preserving exact technical identifiers.",
+        "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
+        "Report evidence gaps instead of guessing."
+      ]
+    },
+    {
+      "id": "grilling",
+      "tier": "core",
+      "origin": {
+        "repository": "mattpocock/skills",
+        "skill": "grilling"
+      },
+      "sources": {
+        "th": "skills/productivity/grilling",
+        "en": "locales/en/skills/productivity/grilling"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Grilling",
+          "description": "สัมภาษณ์ผู้ใช้ทีละคำถามพร้อมคำแนะนำ เพื่อคลี่ dependency ของ decision จนเข้าใจตรงกัน",
+          "shortDescription": "สัมภาษณ์ผู้ใช้ทีละคำถามพร้อมคำแนะนำ เพื่อคลี่ dependency ของ decision จนเข้าใจตรงกัน",
+          "defaultPrompt": "Use grilling for my current request.",
+          "triggers": [
+            "use grilling",
+            "grilling workflow"
+          ],
+          "negativeTriggers": [
+            "the request is outside this workflow",
+            "the user selected a narrower skill"
+          ]
+        },
+        "th": {
+          "displayName": "สัมภาษณ์ decision ทีละข้อ",
+          "description": "สัมภาษณ์ผู้ใช้ทีละคำถามพร้อมคำแนะนำ เพื่อคลี่ dependency ของ decision จนเข้าใจตรงกัน",
+          "shortDescription": "สัมภาษณ์ผู้ใช้ทีละคำถามพร้อมคำแนะนำ เพื่อคลี่ dependency ของ decision จนเข้าใจตรงกัน",
+          "defaultPrompt": "ใช้ grilling กับคำขอนี้",
+          "triggers": [
+            "ใช้ grilling",
+            "ทำงานแบบ grilling"
+          ],
+          "negativeTriggers": [
+            "คำขออยู่นอกขอบเขต workflow นี้",
+            "ผู้ใช้เลือก skill ที่แคบกว่าแล้ว"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": true
+      },
+      "effectLevel": "read_only",
+      "role": "grilling_workflow",
+      "workflow": [
+        {
+          "phase": "orient",
+          "instruction": "Read the request, repository evidence, Thai-first defaults, and the exact approval boundary."
+        },
+        {
+          "phase": "execute",
+          "instruction": "Apply the grilling discipline in the smallest complete slice; ask one material question only when needed."
+        },
+        {
+          "phase": "verify",
+          "instruction": "Verify the observable outcome and return concise evidence, risks, and the next action."
+        }
+      ],
+      "artifacts": [
+        "grilling result",
+        "verification evidence"
+      ],
+      "evidence": [
+        "inputs used",
+        "observable result",
+        "verification status"
+      ],
+      "guardrails": [
+        "Use natural concise Thai by default while preserving exact technical identifiers.",
+        "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
+        "Report evidence gaps instead of guessing."
+      ]
+    },
+    {
+      "id": "handoff",
+      "tier": "core",
+      "origin": {
+        "repository": "mattpocock/skills",
+        "skill": "handoff"
+      },
+      "sources": {
+        "th": "skills/productivity/handoff",
+        "en": "locales/en/skills/productivity/handoff"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Handoff",
+          "description": "ย่อบริบทที่จำเป็นเป็น handoff ซึ่ง session ใหม่อ่านแล้วทำงานต่อได้โดยไม่เดา",
+          "shortDescription": "ย่อบริบทที่จำเป็นเป็น handoff ซึ่ง session ใหม่อ่านแล้วทำงานต่อได้โดยไม่เดา",
+          "defaultPrompt": "Use handoff for my current request.",
+          "triggers": [
+            "use handoff",
+            "handoff workflow"
+          ],
+          "negativeTriggers": [
+            "the request is outside this workflow",
+            "the user selected a narrower skill"
+          ]
+        },
+        "th": {
+          "displayName": "ส่งต่องานข้าม session",
+          "description": "ย่อบริบทที่จำเป็นเป็น handoff ซึ่ง session ใหม่อ่านแล้วทำงานต่อได้โดยไม่เดา",
+          "shortDescription": "ย่อบริบทที่จำเป็นเป็น handoff ซึ่ง session ใหม่อ่านแล้วทำงานต่อได้โดยไม่เดา",
+          "defaultPrompt": "ใช้ handoff กับคำขอนี้",
+          "triggers": [
+            "ใช้ handoff",
+            "ทำงานแบบ handoff"
+          ],
+          "negativeTriggers": [
+            "คำขออยู่นอกขอบเขต workflow นี้",
+            "ผู้ใช้เลือก skill ที่แคบกว่าแล้ว"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": false
+      },
+      "effectLevel": "workspace_write",
+      "role": "handoff_workflow",
+      "workflow": [
+        {
+          "phase": "orient",
+          "instruction": "Read the request, repository evidence, Thai-first defaults, and the exact approval boundary."
+        },
+        {
+          "phase": "execute",
+          "instruction": "Apply the handoff discipline in the smallest complete slice; ask one material question only when needed."
+        },
+        {
+          "phase": "verify",
+          "instruction": "Verify the observable outcome and return concise evidence, risks, and the next action."
+        }
+      ],
+      "artifacts": [
+        "handoff result",
+        "verification evidence"
+      ],
+      "evidence": [
+        "inputs used",
+        "observable result",
+        "verification status"
+      ],
+      "guardrails": [
+        "Use natural concise Thai by default while preserving exact technical identifiers.",
+        "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
+        "Report evidence gaps instead of guessing."
+      ]
+    },
+    {
+      "id": "teach",
+      "tier": "core",
+      "origin": {
+        "repository": "mattpocock/skills",
+        "skill": "teach"
+      },
+      "sources": {
+        "th": "skills/productivity/teach",
+        "en": "locales/en/skills/productivity/teach"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Teach",
+          "description": "สอนแนวคิดหรือทักษะเป็นลำดับสั้น ๆ พร้อมภารกิจและหลักฐานความเข้าใจที่ใช้ต่อข้าม session ได้",
+          "shortDescription": "สอนแนวคิดหรือทักษะเป็นลำดับสั้น ๆ พร้อมภารกิจและหลักฐานความเข้าใจที่ใช้ต่อข้าม session ได้",
+          "defaultPrompt": "Use teach for my current request.",
+          "triggers": [
+            "use teach",
+            "teach workflow"
+          ],
+          "negativeTriggers": [
+            "the request is outside this workflow",
+            "the user selected a narrower skill"
+          ]
+        },
+        "th": {
+          "displayName": "เรียนรู้แบบลงมือทำ",
+          "description": "สอนแนวคิดหรือทักษะเป็นลำดับสั้น ๆ พร้อมภารกิจและหลักฐานความเข้าใจที่ใช้ต่อข้าม session ได้",
+          "shortDescription": "สอนแนวคิดหรือทักษะเป็นลำดับสั้น ๆ พร้อมภารกิจและหลักฐานความเข้าใจที่ใช้ต่อข้าม session ได้",
+          "defaultPrompt": "ใช้ teach กับคำขอนี้",
+          "triggers": [
+            "ใช้ teach",
+            "ทำงานแบบ teach"
+          ],
+          "negativeTriggers": [
+            "คำขออยู่นอกขอบเขต workflow นี้",
+            "ผู้ใช้เลือก skill ที่แคบกว่าแล้ว"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": false
+      },
+      "effectLevel": "workspace_write",
+      "role": "teach_workflow",
+      "workflow": [
+        {
+          "phase": "orient",
+          "instruction": "Read the request, repository evidence, Thai-first defaults, and the exact approval boundary."
+        },
+        {
+          "phase": "execute",
+          "instruction": "Apply the teach discipline in the smallest complete slice; ask one material question only when needed."
+        },
+        {
+          "phase": "verify",
+          "instruction": "Verify the observable outcome and return concise evidence, risks, and the next action."
+        }
+      ],
+      "artifacts": [
+        "teach result",
+        "verification evidence"
+      ],
+      "evidence": [
+        "inputs used",
+        "observable result",
+        "verification status"
+      ],
+      "guardrails": [
+        "Use natural concise Thai by default while preserving exact technical identifiers.",
+        "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
+        "Report evidence gaps instead of guessing."
+      ]
+    },
+    {
+      "id": "writing-great-skills",
+      "tier": "core",
+      "origin": {
+        "repository": "mattpocock/skills",
+        "skill": "writing-great-skills"
+      },
+      "sources": {
+        "th": "skills/productivity/writing-great-skills",
+        "en": "locales/en/skills/productivity/writing-great-skills"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Writing Great Skills",
+          "description": "ใช้หลัก predictability, progressive disclosure และการลด prompt noise เพื่อเขียน skill ที่ไว้ใจได้",
+          "shortDescription": "ใช้หลัก predictability, progressive disclosure และการลด prompt noise เพื่อเขียน skill ที่ไว้ใจได",
+          "defaultPrompt": "Use writing-great-skills for my current request.",
+          "triggers": [
+            "use writing-great-skills",
+            "writing-great-skills workflow"
+          ],
+          "negativeTriggers": [
+            "the request is outside this workflow",
+            "the user selected a narrower skill"
+          ]
+        },
+        "th": {
+          "displayName": "เขียน skill ให้ทำงานสม่ำเสมอ",
+          "description": "ใช้หลัก predictability, progressive disclosure และการลด prompt noise เพื่อเขียน skill ที่ไว้ใจได้",
+          "shortDescription": "ใช้หลัก predictability, progressive disclosure และการลด prompt noise เพื่อเขียน skill ที่ไว้ใจได",
+          "defaultPrompt": "ใช้ writing-great-skills กับคำขอนี้",
+          "triggers": [
+            "ใช้ writing-great-skills",
+            "ทำงานแบบ writing-great-skills"
+          ],
+          "negativeTriggers": [
+            "คำขออยู่นอกขอบเขต workflow นี้",
+            "ผู้ใช้เลือก skill ที่แคบกว่าแล้ว"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": false
+      },
+      "effectLevel": "read_only",
+      "role": "writing_great_skills_workflow",
+      "workflow": [
+        {
+          "phase": "orient",
+          "instruction": "Read the request, repository evidence, Thai-first defaults, and the exact approval boundary."
+        },
+        {
+          "phase": "execute",
+          "instruction": "Apply the writing-great-skills discipline in the smallest complete slice; ask one material question only when needed."
+        },
+        {
+          "phase": "verify",
+          "instruction": "Verify the observable outcome and return concise evidence, risks, and the next action."
+        }
+      ],
+      "artifacts": [
+        "writing-great-skills result",
+        "verification evidence"
+      ],
+      "evidence": [
+        "inputs used",
+        "observable result",
+        "verification status"
+      ],
+      "guardrails": [
+        "Use natural concise Thai by default while preserving exact technical identifiers.",
+        "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
+        "Report evidence gaps instead of guessing."
+      ]
+    },
+    {
+      "id": "ask-me",
+      "tier": "core",
+      "origin": {
+        "repository": "apipoj/spk",
+        "skill": "ask-me"
+      },
+      "sources": {
+        "th": "skills/productivity/ask-me",
+        "en": "locales/en/skills/productivity/ask-me"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Ask Me",
+          "description": "Run a manual Thai-first, read-only decision interview, confirm a compact brief, then recommend one context-fit deliverable or a gated plan-to-development handoff.",
+          "shortDescription": "Clarify naturally in Thai and route the next output",
+          "defaultPrompt": "Interview me in concise, natural Thai, then recommend the next context-fit deliverable.",
+          "triggers": [
+            "ask me questions to sharpen this idea",
+            "interview me in Thai about this plan",
+            "stress-test my decision one question at a time"
+          ],
+          "negativeTriggers": [
+            "an ordinary factual question or clarification without an interview request",
+            "the user requests immediate planning or implementation and explicitly declines questions"
+          ]
+        },
+        "th": {
+          "displayName": "ช่วยถามฉัน",
+          "description": "สัมภาษณ์ภาษาไทยทีละ decision แบบ read-only สรุปให้ยืนยัน แล้วแนะนำงานถัดไปตาม context หรือ Plan → Dev แบบมี gate",
+          "shortDescription": "ถามให้ชัดด้วยภาษาไทยธรรมชาติ แล้วแนะนำงานถัดไป",
+          "defaultPrompt": "ช่วยถามฉันทีละ decision ด้วยภาษาไทยกระชับเป็นธรรมชาติ แล้วแนะนำงานถัดไปตาม context",
+          "triggers": [
+            "ช่วยถามฉันทีละข้อให้ไอเดียนี้ชัด",
+            "ช่วยสัมภาษณ์ฉันเรื่องแผนนี้เป็นภาษาไทย",
+            "ช่วยทดสอบการตัดสินใจนี้ทีละคำถาม"
+          ],
+          "negativeTriggers": [
+            "คำถามข้อเท็จจริงหรือ clarification ปกติที่ไม่ได้ขอการสัมภาษณ์",
+            "ผู้ใช้ขอให้วางแผนหรือลงมือทันทีและระบุว่าไม่ต้องถาม"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": false
+      },
+      "effectLevel": "read_only",
+      "role": "thai_discovery_interviewer",
+      "workflow": [
+        {
+          "phase": "frame",
+          "instruction": "Start from the supplied topic and conversation context, use Thai by default, and identify the goal without turning the opening into a questionnaire."
+        },
+        {
+          "phase": "voice",
+          "instruction": "Use dense, native, semi-formal Thai: short sentences, two to four sentences per paragraph, natural Thai-English work terms with unfamiliar terms explained once, one to three bold keywords, and no literal translationese. Use a work analogy only when it saves explanation. Use 💡 only for a genuine personal take, at most once, and no other emoji."
+        },
+        {
+          "phase": "inspect",
+          "instruction": "Separate facts from decisions. Resolve available facts through supplied context, repository evidence, or read-only tools; reserve product, scope, and tradeoff choices for the user."
+        },
+        {
+          "phase": "traverse",
+          "instruction": "Build an internal decision tree and select the earliest unresolved material decision before any branch that depends on it."
+        },
+        {
+          "phase": "ask",
+          "instruction": "Ask exactly one decision question per message in natural Thai. Lead with the decision, stay within eight non-option lines, provide exactly one recommended answer with its tradeoff, avoid repeating settled context, and wait."
+        },
+        {
+          "phase": "adapt",
+          "instruction": "Record the answer, clarify only genuine ambiguity, reopen dependent choices when an earlier answer changes, and raise Thai-local considerations only when relevant and verified."
+        },
+        {
+          "phase": "confirm",
+          "instruction": "When material branches are resolved or deferred, present a compact brief of at most eight one-line bullets, then obtain explicit confirmation that authorizes only that brief."
+        },
+        {
+          "phase": "recommend",
+          "instruction": "After summary confirmation, classify purpose, audience action, format, and effect; respect an explicitly requested artifact before inference. Rank the smallest outputs that unlock the next real decision. Show only two or three context-relevant candidates from PRD, proposal, presentation or pitch deck, a concrete sales asset, diagnosis, design exploration, engineering plan to development, decision memo, and research brief; mark exactly one recommendation and explain it from the confirmed audience, decision, and stage."
+        },
+        {
+          "phase": "handoff",
+          "instruction": "Ask one separate selection and end ask-me before creating anything. A non-engineering selection becomes a new scoped artifact request whose output and effect must be disclosed; default to an in-conversation draft. Route diagnosis or design only through an available registered workflow and never invent a deliverable workflow. Engineering authorizes only planning; development needs separate post-plan confirmation against the exact reviewed plan. Creating content never authorizes sending or publishing. Return a compact receipt that references rather than repeats the confirmed brief."
+        }
+      ],
+      "artifacts": [
+        "compact in-conversation shared-understanding brief",
+        "decision ledger and deferred-question list",
+        "context-ranked next-deliverable menu"
+      ],
+      "evidence": [
+        "confirmed compact brief with goal, audience, decisions, scope, constraints, success evidence, and open items",
+        "recommended and selected deliverables with handoff kind, next workflow, and effect",
+        "receipt reference to the confirmed brief without repeating it",
+        "development and external-write authorization states"
+      ],
+      "guardrails": [
+        "Use only after explicit invocation, ask one material decision at a time, and wait for each answer.",
+        "Use concise, natural, semi-formal Thai; avoid literal translationese, repeated context, and any emoji other than an optional single 💡 for genuine personal perspective.",
+        "Ask-me remains read-only; summary confirmation authorizes no artifact or workflow, and the separate deliverable selection creates a new boundary.",
+        "Recommend only context-relevant outputs, exactly one as the default, and never generate every catalog candidate.",
+        "Do not invent unavailable workflows, evidence, customer claims, metrics, pricing, testimonials, or case studies.",
+        "Do not auto-chain one selected deliverable into another; each additional outcome requires a new user choice.",
+        "Never begin development until a reviewed plan has been shown and the user gives a separate explicit post-plan confirmation for that exact scope.",
+        "Handoff authority never includes commit, push, pull-request, deployment, sending, publishing, or another Git or remote write; external delivery requires separate approval after the exact artifact, recipients, and channel are visible.",
+        "Recommendations are proposals; the user owns every decision and may stop at any time.",
+        "Do not request secrets or unnecessary personal data, stereotype Thai users, or guess changing local facts."
+      ]
+    },
+    {
+      "id": "plan",
+      "tier": "core",
+      "origin": {
+        "repository": "apipoj/spk",
+        "skill": "plan"
+      },
+      "sources": {
+        "th": "skills/engineering/plan",
+        "en": "locales/en/skills/engineering/plan"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Engineering Plan",
+          "description": "Plan a software change from repository evidence into scoped requirements, architecture, dependency-ordered tasks, verification gates, and rollback notes.",
+          "shortDescription": "Create an evidence-backed implementation plan",
+          "defaultPrompt": "Plan this change into small verified implementation slices.",
+          "triggers": [
+            "plan a feature",
+            "turn this requirement into implementation tasks",
+            "design the technical approach"
+          ],
+          "negativeTriggers": [
+            "the user asked to implement an already approved plan",
+            "the issue first requires root-cause diagnosis"
+          ]
+        },
+        "th": {
+          "displayName": "แผนวิศวกรรม",
+          "description": "วางแผนการเปลี่ยนแปลงซอฟต์แวร์จากหลักฐานใน repo เป็นความต้องการ สถาปัตยกรรม งานตามลำดับ dependency จุดตรวจสอบ และแผนย้อนกลับ",
+          "shortDescription": "สร้างแผนลงมือทำจากหลักฐาน",
+          "defaultPrompt": "วางแผนการเปลี่ยนแปลงนี้เป็นงานย่อยที่ตรวจสอบได้",
+          "triggers": [
+            "วางแผน feature",
+            "แตก requirement เป็นงาน implementation",
+            "ออกแบบแนวทางเทคนิค"
+          ],
+          "negativeTriggers": [
+            "ผู้ใช้ขอ implement แผนที่อนุมัติแล้ว",
+            "ปัญหาต้องวินิจฉัย root cause ก่อน"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": true
+      },
+      "effectLevel": "workspace_write",
+      "role": "planner",
+      "workflow": [
+        {
+          "phase": "discover",
+          "instruction": "Inspect repository guidance, relevant code paths, tests, history, and constraints before proposing a design."
+        },
+        {
+          "phase": "specify",
+          "instruction": "Define the goal, user value, acceptance criteria, non-goals, assumptions, and open questions."
+        },
+        {
+          "phase": "design",
+          "instruction": "Choose the smallest architecture that follows existing seams and record alternatives and risks."
+        },
+        {
+          "phase": "decompose",
+          "instruction": "Create dependency-ordered vertical slices with exact files and red-green verification."
+        },
+        {
+          "phase": "gate",
+          "instruction": "Define tests, documentation, rollout, rollback, and completion evidence."
+        },
+        {
+          "phase": "handoff",
+          "instruction": "When the current request carries a plan-to-development intent, show the reviewed plan and ask for separate explicit implementation approval. A pre-plan request to develop authorizes planning only; never begin code until the user approves the exact presented plan after verification."
+        }
+      ],
+      "artifacts": [
+        "ai_context/wiki/plans/YYYY-MM-DD-<slug>.md",
+        "dependency-ordered task graph"
+      ],
+      "evidence": [
+        "source paths inspected",
+        "acceptance criteria",
+        "per-task verification commands",
+        "risk and rollback notes",
+        "handoff intent and post-plan implementation-approval state"
+      ],
+      "guardrails": [
+        "Do not implement while planning.",
+        "Do not treat ask-me summary confirmation or a pre-plan request to develop as approval of an unseen plan.",
+        "Do not invent repository facts; label assumptions and unresolved questions."
+      ]
+    },
+    {
+      "id": "design-shotgun",
+      "tier": "core",
+      "origin": {
+        "repository": "apipoj/spk",
+        "skill": "design-shotgun"
+      },
+      "sources": {
+        "th": "skills/engineering/design-shotgun",
+        "en": "locales/en/skills/engineering/design-shotgun"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Design Shotgun",
+          "description": "Explore multiple genuinely distinct interface directions, compare them with realistic content, and record an approved design before production implementation.",
+          "shortDescription": "Compare distinct UI directions before coding",
+          "defaultPrompt": "Create distinct design directions for this interface and recommend one.",
+          "triggers": [
+            "show multiple UI directions",
+            "run a design shotgun",
+            "explore visual alternatives before implementation"
+          ],
+          "negativeTriggers": [
+            "the user already approved a precise design for implementation",
+            "the task has no visual or interaction-design component"
+          ]
+        },
+        "th": {
+          "displayName": "สำรวจแบบ Design Shotgun",
+          "description": "สำรวจทิศทาง interface ที่แตกต่างกันจริง เปรียบเทียบด้วยเนื้อหาสมจริง และบันทึกแบบที่อนุมัติก่อน implement ใน production",
+          "shortDescription": "เปรียบเทียบทิศทาง UI ก่อนเขียนโค้ด",
+          "defaultPrompt": "สร้างทิศทางงานออกแบบที่แตกต่างกันและแนะนำหนึ่งแบบ",
+          "triggers": [
+            "ขอ UI หลายแนว",
+            "ทำ design shotgun",
+            "สำรวจภาพลักษณ์ก่อน implement"
+          ],
+          "negativeTriggers": [
+            "ผู้ใช้อนุมัติแบบที่ชัดเจนเพื่อ implement แล้ว",
+            "งานไม่มีส่วนของภาพหรือ interaction design"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": true
+      },
+      "effectLevel": "workspace_write",
+      "role": "designer",
+      "workflow": [
+        {
+          "phase": "context",
+          "instruction": "Inspect the design system, current interface, target audience, job to be done, constraints, and prior approved directions."
+        },
+        {
+          "phase": "diverge",
+          "instruction": "Create at least three concepts that differ in layout, typography, palette, density, and product emphasis."
+        },
+        {
+          "phase": "prototype",
+          "instruction": "Build disposable comparison artifacts with realistic copy and important edge states."
+        },
+        {
+          "phase": "verify",
+          "instruction": "Visually inspect each variant and fix obvious rendering failures when suitable tools are available."
+        },
+        {
+          "phase": "approve",
+          "instruction": "Compare variants, recommend one, and record approval only after the user selects a direction."
+        }
+      ],
+      "artifacts": [
+        ".spk/design-shotgun/<screen>-<timestamp>/board.html",
+        "variant prototypes",
+        "approved.json after approval"
+      ],
+      "evidence": [
+        "head-to-head comparison",
+        "visual verification notes",
+        "approval state"
+      ],
+      "guardrails": [
+        "Do not modify production source during exploration.",
+        "Do not present near-identical variants as distinct directions."
+      ]
+    },
+    {
+      "id": "deploy",
+      "tier": "core",
+      "origin": {
+        "repository": "apipoj/spk",
+        "skill": "deploy"
+      },
+      "sources": {
+        "th": "skills/operations/deploy",
+        "en": "locales/en/skills/operations/deploy"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Safe Deployment",
+          "description": "Deploy an explicitly approved revision to a named environment, verify smoke and user-visible behavior, and preserve a tested rollback path.",
+          "shortDescription": "Deploy with approval, smoke tests, and rollback",
+          "defaultPrompt": "Prepare a deployment plan for the named environment and stop for approval.",
+          "triggers": [
+            "deploy this revision",
+            "ship to staging or production",
+            "run deployment smoke tests"
+          ],
+          "negativeTriggers": [
+            "the user asks only for release-readiness checks",
+            "the target environment or revision is unknown"
+          ]
+        },
+        "th": {
+          "displayName": "Deploy อย่างปลอดภัย",
+          "description": "Deploy revision ที่อนุมัติอย่างชัดเจนไปยัง environment ที่ระบุ ตรวจ smoke test และพฤติกรรมที่ผู้ใช้เห็น พร้อมรักษาทาง rollback ที่ทดสอบแล้ว",
+          "shortDescription": "Deploy พร้อมอนุมัติ smoke test และ rollback",
+          "defaultPrompt": "เตรียมแผน deploy สำหรับ environment ที่ระบุแล้วหยุดรออนุมัติ",
+          "triggers": [
+            "deploy revision นี้",
+            "ส่งขึ้น staging หรือ production",
+            "รัน deployment smoke test"
+          ],
+          "negativeTriggers": [
+            "ผู้ใช้ขอเฉพาะ release readiness",
+            "ไม่ทราบ environment หรือ revision เป้าหมาย"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": false
+      },
+      "effectLevel": "external_write",
+      "role": "deployment_operator",
+      "workflow": [
+        {
+          "phase": "preflight",
+          "instruction": "Resolve the exact revision, environment, credentials state, checks, observability, and rollback command."
+        },
+        {
+          "phase": "approve",
+          "instruction": "Show the deployment and rollback plan and obtain explicit approval for the exact target."
+        },
+        {
+          "phase": "deploy",
+          "instruction": "Run the repository's documented deployment path without widening scope."
+        },
+        {
+          "phase": "smoke",
+          "instruction": "Verify health, critical paths, and user-visible behavior against predeclared checks."
+        },
+        {
+          "phase": "close",
+          "instruction": "Return revision, destination, evidence, observations, and rollback status."
+        }
+      ],
+      "artifacts": [
+        "deployment record",
+        "smoke-test verdict",
+        "rollback record"
+      ],
+      "evidence": [
+        "deployed revision and environment",
+        "approval",
+        "health and smoke outputs",
+        "rollback readiness"
+      ],
+      "guardrails": [
+        "Never deploy without approval for the exact revision and environment.",
+        "Stop when rollback, credentials, or required preflight evidence is missing."
+      ]
+    },
+    {
+      "id": "pr",
+      "tier": "core",
+      "origin": {
+        "repository": "apipoj/spk",
+        "skill": "pr"
+      },
+      "sources": {
+        "th": "skills/operations/pr",
+        "en": "locales/en/skills/operations/pr"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Pull Request",
+          "description": "Prepare a focused pull request from reviewed changes, verify the exact diff and checks, and require approval before any push or remote write.",
+          "shortDescription": "Prepare and safely open a pull request",
+          "defaultPrompt": "Prepare this change as a pull request and stop before remote writes.",
+          "triggers": [
+            "prepare a pull request",
+            "open a PR for these reviewed changes",
+            "update the current PR"
+          ],
+          "negativeTriggers": [
+            "the user asks only for code review",
+            "the change is unverified or its intended file scope is unknown",
+            "the user wants one task implemented, tested, reviewed, and delivered end to end"
+          ]
+        },
+        "th": {
+          "displayName": "Pull Request",
+          "description": "เตรียม pull request ที่มีขอบเขตจากงานที่ตรวจทานแล้ว ตรวจ diff และ checks ที่แน่นอน และขออนุมัติก่อน push หรือเขียนข้อมูลระยะไกล",
+          "shortDescription": "เตรียมและเปิด pull request อย่างปลอดภัย",
+          "defaultPrompt": "เตรียมงานนี้เป็น pull request และหยุดก่อนเขียนข้อมูลระยะไกล",
+          "triggers": [
+            "เตรียม pull request",
+            "เปิด PR สำหรับงานที่ review แล้ว",
+            "อัปเดต PR ปัจจุบัน"
+          ],
+          "negativeTriggers": [
+            "ผู้ใช้ขอเฉพาะ code review",
+            "งานยังไม่ verify หรือไม่ทราบขอบเขตไฟล์",
+            "ผู้ใช้ต้องการให้ทำหนึ่งงานตั้งแต่ implement ทดสอบ review จนส่งมอบ"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": false
+      },
+      "effectLevel": "external_write",
+      "role": "pr_operator",
+      "workflow": [
+        {
+          "phase": "inspect",
+          "instruction": "Resolve branch, base, dirty state, outgoing commits, reviewed paths, and repository pull-request rules."
+        },
+        {
+          "phase": "verify",
+          "instruction": "Run required checks and secret-scan the exact proposed diff."
+        },
+        {
+          "phase": "prepare",
+          "instruction": "Draft a conventional title, body, test evidence, risks, and reviewer notes."
+        },
+        {
+          "phase": "approve",
+          "instruction": "Show every intended Git and remote write and obtain explicit approval."
+        },
+        {
+          "phase": "publish",
+          "instruction": "Perform only approved staging, commit, push, or pull-request actions and report the resulting URL."
+        }
+      ],
+      "artifacts": [
+        "pull-request title and body",
+        "reviewed commit",
+        "pull-request URL after approval"
+      ],
+      "evidence": [
+        "exact diff and paths",
+        "test commands and results",
+        "secret-scan result",
+        "approval and remote URL"
+      ],
+      "guardrails": [
+        "Prepare only by default; do not stage, commit, push, or open a pull request implicitly.",
+        "Never force-push without explicit instruction and a lease-protected command."
+      ]
+    },
+    {
+      "id": "task-to-pr",
+      "tier": "core",
+      "origin": {
+        "repository": "apipoj/spk",
+        "skill": "task-to-pr"
+      },
+      "sources": {
+        "th": "skills/operations/task-to-pr",
+        "en": "locales/en/skills/operations/task-to-pr"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Task to PR",
+          "description": "Take one task, ticket, or existing pull request from its source to a tested, independently reviewed pull request ready for human merge; resume exact existing work and require bound approval for Git and remote writes.",
+          "shortDescription": "Deliver one task to a merge-ready PR",
+          "defaultPrompt": "Take this task to a tested pull request ready for human merge.",
+          "triggers": [
+            "take this task to a pull request",
+            "implement this ticket end to end",
+            "finish or repair this existing pull request"
+          ],
+          "negativeTriggers": [
+            "the user asks only for local implementation without pull-request delivery",
+            "the user asks only to prepare a pull request from already reviewed changes",
+            "the request combines several independent tickets"
+          ]
+        },
+        "th": {
+          "displayName": "นำงานไปสู่ Pull Request",
+          "description": "นำงาน ticket หรือ pull request หนึ่งรายการจากต้นทางไปสู่ PR ที่ผ่านการทดสอบและ review อิสระ พร้อมให้มนุษย์ merge โดยทำต่อจากงานเดิมที่ตรงกันและขอ approval ที่ bind ก่อน Git หรือ remote write",
+          "shortDescription": "ส่งมอบหนึ่งงานเป็น PR ที่พร้อม merge",
+          "defaultPrompt": "นำงานนี้ไปสู่ pull request ที่ทดสอบแล้วและพร้อมให้มนุษย์ merge",
+          "triggers": [
+            "ทำ task นี้ให้จบเป็น pull request",
+            "implement ticket นี้ตั้งแต่ต้นจนพร้อม merge",
+            "ทำต่อหรือแก้ pull request นี้ให้พร้อม merge"
+          ],
+          "negativeTriggers": [
+            "ผู้ใช้ขอเฉพาะ implementation ในเครื่องโดยไม่ส่งเป็น pull request",
+            "ผู้ใช้ขอเพียงเตรียม pull request จากงานที่ review แล้ว",
+            "คำขอรวม ticket อิสระหลายรายการ"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": false
+      },
+      "effectLevel": "external_write",
+      "role": "delivery_orchestrator",
+      "workflow": [
+        {
+          "phase": "resolve",
+          "instruction": "Read repository guidance and resolve exactly one task, ticket, or pull request. Resume only an unambiguous existing pull request, branch, or worktree, and bind an immutable task snapshot digest plus repository, base, head, and workspace identity."
+        },
+        {
+          "phase": "isolate",
+          "instruction": "Reuse a clean checkout already dedicated to the exact task; otherwise use a dedicated worktree. If fetch, branch, checkout, or worktree creation would change Git state, preview a task_to_pr_isolate approval envelope, stop for its exact token, and revalidate before executing."
+        },
+        {
+          "phase": "implement",
+          "instruction": "Define the smallest complete outcome and its acceptance proof, implement it with RED-GREEN evidence where behavior changes, update required documentation, and preserve unrelated user work. A selected worktree containing unrelated changes or a file mixing task and unrelated hunks is BLOCKED."
+        },
+        {
+          "phase": "review",
+          "instruction": "Run focused checks and the full required gate, then give the immutable task, complete diff, and evidence to a fresh independent reviewer and acceptance verifier. Fix valid Critical or Important findings and repeat for at most two local repair rounds."
+        },
+        {
+          "phase": "approve",
+          "instruction": "Secret-scan and bind the reproducible raw-byte task-only patch and staged-diff digest, path hashes, existing outgoing commits, proposed commit parent/tree/message/resolved author and committer/signing/hook policy, expected remote old SHA, ref, optional pull-request state/title/body write, complete semantic ticket-write payload digests with transport identity and non-null conditional/idempotency preconditions, and structured command argv in spk.approval/v1. Without the exact current token, return NEEDS_USER_INPUT and stop."
+        },
+        {
+          "phase": "publish",
+          "instruction": "Revalidate state and digest, then stage only approved paths and commit. Before any remote write, verify the resulting commit parent, tree/task patch, exact message, resolved identities, and signing state against the approved intent; mismatch requires fresh approval. Revalidate every complete ticket request immediately before sending and require a server-enforced conditional write or bound idempotency key; otherwise block. Push and create or update only the approved pull request. Never merge or deploy."
+        },
+        {
+          "phase": "observe",
+          "instruction": "Observe required CI, any check relevant to task behavior, automated review, mergeability, and currently available comments for the published head. Do not remotely rerun or cancel checks. Each valid code repair repeats tests and fresh review, requires a new publication approval, and is limited to two post-publication repair rounds and three CI observations per head."
+        },
+        {
+          "phase": "finish",
+          "instruction": "Return READY_FOR_HUMAN_MERGE only when the latest head is mergeable, required CI passes or is not configured, every task-relevant check passes or is proven not applicable, current actionable feedback is handled, and no required change remains. Otherwise return BLOCKED with exact evidence and a resumable next action."
+        }
+      ],
+      "artifacts": [
+        "task and delivery identity",
+        "verified implementation and independent review",
+        "pull-request URL and final readiness verdict"
+      ],
+      "evidence": [
+        "source task and acceptance criteria",
+        "base and head revisions, worktree, exact paths, and diff",
+        "focused and full test commands and results",
+        "independent review findings and repair rounds",
+        "approval digests and exact Git and remote writes",
+        "CI, mergeability, automated review, and current-comment state"
+      ],
+      "guardrails": [
+        "Invocation authorizes only bounded workspace edits for the named task; every Git-state or remote write requires a current exact approval envelope.",
+        "Do not duplicate a ticket, branch, worktree, or pull request when an unambiguous existing one matches.",
+        "Any state drift or code change invalidates publication approval.",
+        "Never stage a file that mixes task and unrelated hunks; block instead of absorbing or exposing unrelated content.",
+        "Never use git add ., push directly to a default or protected branch, force-push without an approved lease bound to the expected old SHA, merge, deploy, remove worktrees, or absorb unrelated user changes.",
+        "Stop BLOCKED rather than expanding scope, skipping gates, exceeding loop budgets, or publishing uncertain work."
+      ]
+    },
+    {
+      "id": "ingest",
+      "tier": "core",
+      "origin": {
+        "repository": "apipoj/spk",
+        "skill": "ingest"
+      },
+      "sources": {
+        "th": "skills/knowledge/ingest",
+        "en": "locales/en/skills/knowledge/ingest"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Wiki Ingest",
+          "description": "Ingest an explicitly selected source into the local project wiki with provenance, secret checks, entity links, and an append-only change record.",
+          "shortDescription": "Ingest a source into the project wiki safely",
+          "defaultPrompt": "Ingest the selected source into the local wiki with provenance.",
+          "triggers": [
+            "ingest this source into the wiki",
+            "add this file to project memory",
+            "extract durable project knowledge"
+          ],
+          "negativeTriggers": [
+            "the user only wants a one-time answer",
+            "the source contains credentials or is outside the approved scope"
+          ]
+        },
+        "th": {
+          "displayName": "นำเข้า Wiki",
+          "description": "นำเข้าแหล่งข้อมูลที่เลือกอย่างชัดเจนสู่ wiki ภายในโปรเจกต์ พร้อม provenance การตรวจ secrets การเชื่อม entity และบันทึกการเปลี่ยนแปลงแบบ append-only",
+          "shortDescription": "นำเข้าแหล่งข้อมูลสู่ wiki อย่างปลอดภัย",
+          "defaultPrompt": "นำเข้าแหล่งข้อมูลที่เลือกสู่ wiki พร้อม provenance",
+          "triggers": [
+            "นำเข้า source นี้เข้า wiki",
+            "เพิ่มไฟล์นี้ใน project memory",
+            "สกัดความรู้ถาวรของโปรเจกต์"
+          ],
+          "negativeTriggers": [
+            "ผู้ใช้ต้องการเพียงคำตอบครั้งเดียว",
+            "source มี credential หรืออยู่นอกขอบเขตที่อนุมัติ"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": false
+      },
+      "effectLevel": "workspace_write",
+      "role": "knowledge_curator",
+      "workflow": [
+        {
+          "phase": "authorize",
+          "instruction": "Resolve the exact source, confirm it is allowed, and refuse ignored, secret-bearing, or out-of-scope material."
+        },
+        {
+          "phase": "extract",
+          "instruction": "Separate durable facts, decisions, concepts, entities, dates, and unresolved claims."
+        },
+        {
+          "phase": "reconcile",
+          "instruction": "Compare existing wiki pages, preserve newer evidence, and surface contradictions."
+        },
+        {
+          "phase": "write",
+          "instruction": "Write source provenance and minimal page updates without overwriting unrelated user content."
+        },
+        {
+          "phase": "verify",
+          "instruction": "Check links, secret safety, index consistency, and append the change record."
+        }
+      ],
+      "artifacts": [
+        "source provenance record",
+        "wiki page updates",
+        "index and append-only log updates"
+      ],
+      "evidence": [
+        "authorized source path or URL",
+        "secret-scan result",
+        "created and updated pages",
+        "contradictions surfaced"
+      ],
+      "guardrails": [
+        "Never ingest ignored, credential-bearing, or unapproved private material.",
+        "Never replace user-owned wiki history with a template."
+      ]
+    },
+    {
+      "id": "prime",
+      "tier": "core",
+      "origin": {
+        "repository": "apipoj/spk",
+        "skill": "prime"
+      },
+      "sources": {
+        "th": "skills/knowledge/prime",
+        "en": "locales/en/skills/knowledge/prime"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Prime Repository",
+          "description": "Orient agents to a repository by creating concise scoped guidance from verified source structure, commands, conventions, and code-navigation paths.",
+          "shortDescription": "Create concise scoped repository guidance",
+          "defaultPrompt": "Prime this repository with concise scoped guidance for engineering agents.",
+          "triggers": [
+            "prime this repository",
+            "create repository agent guidance",
+            "orient agents to this monorepo"
+          ],
+          "negativeTriggers": [
+            "the repository guidance is already current for the requested scope",
+            "the user asks to modify product behavior"
+          ]
+        },
+        "th": {
+          "displayName": "เตรียมบริบท Repo",
+          "description": "สร้างบริบท repo สำหรับ agent แบบกระชับและมีขอบเขต จากโครงสร้าง source คำสั่ง convention และเส้นทางค้นหาโค้ดที่ตรวจสอบแล้ว",
+          "shortDescription": "สร้างคำแนะนำ repo แบบกระชับ",
+          "defaultPrompt": "เตรียม repo นี้ด้วยคำแนะนำแบบมีขอบเขตสำหรับ engineering agent",
+          "triggers": [
+            "prime repo นี้",
+            "สร้าง repository agent guidance",
+            "เตรียม agent สำหรับ monorepo นี้"
+          ],
+          "negativeTriggers": [
+            "คำแนะนำ repo ยังเป็นปัจจุบันในขอบเขตที่ขอ",
+            "ผู้ใช้ขอเปลี่ยนพฤติกรรม product"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": true
+      },
+      "effectLevel": "workspace_write",
+      "role": "repository_cartographer",
+      "workflow": [
+        {
+          "phase": "scan",
+          "instruction": "Inspect repository guidance, manifests, source roots, tests, generated paths, and local conventions."
+        },
+        {
+          "phase": "partition",
+          "instruction": "Identify meaningful non-overlapping subtrees that need scoped guidance."
+        },
+        {
+          "phase": "write",
+          "instruction": "Create or update concise guidance with scoped commands and code-navigation notes while preserving human content."
+        },
+        {
+          "phase": "verify",
+          "instruction": "Check paths and commands, confirm no product source or secrets changed, and report every context file touched."
+        }
+      ],
+      "artifacts": [
+        "root and scoped AGENTS.md files",
+        "compatible host pointer files when required",
+        "high-volume path exclusions"
+      ],
+      "evidence": [
+        "source map",
+        "commands verified per scope",
+        "context files changed",
+        "product-source safety check"
+      ],
+      "guardrails": [
+        "Preserve human-authored guidance and unrelated files.",
+        "Do not copy secrets or generated/vendor content into agent context."
+      ]
+    },
+    {
+      "id": "query",
+      "tier": "core",
+      "origin": {
+        "repository": "apipoj/spk",
+        "skill": "query"
+      },
+      "sources": {
+        "th": "skills/knowledge/query",
+        "en": "locales/en/skills/knowledge/query"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Wiki Query",
+          "description": "Answer a project question from the local wiki first, cite exact evidence, and use external research only when local knowledge is insufficient.",
+          "shortDescription": "Answer from project knowledge with citations",
+          "defaultPrompt": "Answer this project question from the local wiki and cite the evidence.",
+          "triggers": [
+            "ask the project wiki",
+            "find what this repository knows",
+            "answer from project memory"
+          ],
+          "negativeTriggers": [
+            "the question is unrelated to the project",
+            "the user explicitly requests only current external research"
+          ]
+        },
+        "th": {
+          "displayName": "ถาม Wiki",
+          "description": "ตอบคำถามเกี่ยวกับโปรเจกต์จาก wiki ภายในก่อน อ้างหลักฐานที่แน่นอน และใช้การค้นคว้าภายนอกเมื่อความรู้ในโปรเจกต์ไม่เพียงพอเท่านั้น",
+          "shortDescription": "ตอบจากความรู้โปรเจกต์พร้อมอ้างอิง",
+          "defaultPrompt": "ตอบคำถามนี้จาก wiki ภายในและอ้างหลักฐาน",
+          "triggers": [
+            "ถาม project wiki",
+            "ค้นว่า repo นี้รู้อะไร",
+            "ตอบจาก project memory"
+          ],
+          "negativeTriggers": [
+            "คำถามไม่เกี่ยวกับโปรเจกต์",
+            "ผู้ใช้ขอเฉพาะข้อมูลภายนอกล่าสุด"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": true
+      },
+      "effectLevel": "read_only",
+      "role": "researcher",
+      "workflow": [
+        {
+          "phase": "search",
+          "instruction": "Read the wiki index, follow the smallest relevant page set, and preserve source boundaries."
+        },
+        {
+          "phase": "assess",
+          "instruction": "Separate supported facts, conflicts, stale claims, and missing knowledge."
+        },
+        {
+          "phase": "research",
+          "instruction": "Use current authoritative external sources only when the wiki cannot answer the question."
+        },
+        {
+          "phase": "answer",
+          "instruction": "Answer directly with nearby citations and label inferences or unresolved conflicts."
+        }
+      ],
+      "artifacts": [
+        "cited answer",
+        "knowledge-gap note when applicable"
+      ],
+      "evidence": [
+        "wiki pages consulted",
+        "external sources when used",
+        "freshness and conflict notes"
+      ],
+      "guardrails": [
+        "Do not treat absent wiki content as evidence.",
+        "Do not make external calls when local evidence fully answers the question."
+      ]
+    },
+    {
+      "id": "wiki-lint",
+      "tier": "core",
+      "origin": {
+        "repository": "apipoj/spk",
+        "skill": "wiki-lint"
+      },
+      "sources": {
+        "th": "skills/knowledge/wiki-lint",
+        "en": "locales/en/skills/knowledge/wiki-lint"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Wiki Lint",
+          "description": "Audit the local project wiki for broken links, orphan pages, contradictions, stale claims, missing citations, schema drift, and secret exposure.",
+          "shortDescription": "Audit project knowledge quality and safety",
+          "defaultPrompt": "Audit the local project wiki and rank actionable findings.",
+          "triggers": [
+            "lint the project wiki",
+            "audit project knowledge quality",
+            "find stale or contradictory wiki content"
+          ],
+          "negativeTriggers": [
+            "the user asks to ingest a new source",
+            "the target is product code rather than the project wiki"
+          ]
+        },
+        "th": {
+          "displayName": "ตรวจ Wiki",
+          "description": "ตรวจ wiki ภายในโปรเจกต์เพื่อหาลิงก์เสีย หน้า orphan ข้อขัดแย้ง ข้อมูลล้าสมัย citation ที่หาย schema drift และ secrets",
+          "shortDescription": "ตรวจคุณภาพและความปลอดภัยของ wiki",
+          "defaultPrompt": "ตรวจ wiki ภายในและจัดลำดับข้อค้นพบที่แก้ไขได้",
+          "triggers": [
+            "lint project wiki",
+            "ตรวจคุณภาพ project knowledge",
+            "หาข้อมูล wiki ที่ล้าสมัยหรือขัดแย้ง"
+          ],
+          "negativeTriggers": [
+            "ผู้ใช้ขอนำเข้า source ใหม่",
+            "เป้าหมายเป็น product code ไม่ใช่ project wiki"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": true
+      },
+      "effectLevel": "workspace_write",
+      "role": "knowledge_auditor",
+      "workflow": [
+        {
+          "phase": "inventory",
+          "instruction": "Enumerate wiki pages, index entries, links, citations, provenance, schema expectations, and allowed private-source boundaries."
+        },
+        {
+          "phase": "guard",
+          "instruction": "When the repository provides the wiki-build guard, create its bounded marker before inspection and remove it in finally-style cleanup; this marker is the workflow's only project write."
+        },
+        {
+          "phase": "analyze",
+          "instruction": "Detect orphans, dead links, conflicting claims, stale evidence, missing citations, schema drift, and secret-shaped content."
+        },
+        {
+          "phase": "rank",
+          "instruction": "Rank findings by data exposure, correctness impact, and repair cost."
+        },
+        {
+          "phase": "recommend",
+          "instruction": "Propose minimal repairs without applying them unless the user separately authorizes changes."
+        }
+      ],
+      "artifacts": [
+        "severity-ranked wiki audit",
+        "repair proposals"
+      ],
+      "evidence": [
+        "affected wiki paths",
+        "broken or conflicting references",
+        "secret-scan result",
+        "temporary guard cleanup result",
+        "recommended repair"
+      ],
+      "guardrails": [
+        "Do not read ignored private sources.",
+        "Do not auto-fix historical knowledge without explicit authorization.",
+        "Invoke implicitly only for a current explicit wiki-audit intent, never as an adjacent cleanup step.",
+        "Do not write project state other than the bounded temporary guard marker, and always remove that marker."
+      ]
+    },
+    {
+      "id": "doctor",
+      "tier": "core",
+      "origin": {
+        "repository": "apipoj/spk",
+        "skill": "doctor"
+      },
+      "sources": {
+        "th": "skills/operations/doctor",
+        "en": "locales/en/skills/operations/doctor"
+      },
+      "locales": {
+        "en": {
+          "displayName": "SPK Doctor",
+          "description": "Diagnose SPK installation and runtime health across supported hosts using read-only checks, then report exact failures and repair commands.",
+          "shortDescription": "Diagnose SPK installation and runtime health",
+          "defaultPrompt": "Check this SPK installation and report exact repair steps.",
+          "triggers": [
+            "check whether SPK is installed correctly",
+            "diagnose an SPK runtime problem",
+            "run SPK health checks"
+          ],
+          "negativeTriggers": [
+            "the user asks to repair files automatically",
+            "the failure is a product-code bug unrelated to SPK"
+          ]
+        },
+        "th": {
+          "displayName": "ตรวจสุขภาพ SPK",
+          "description": "วินิจฉัยสุขภาพการติดตั้งและ runtime ของ SPK บน host ที่รองรับด้วยการตรวจแบบ read-only แล้วรายงาน failure และคำสั่งแก้ไขที่แน่นอน",
+          "shortDescription": "วินิจฉัยการติดตั้งและ runtime ของ SPK",
+          "defaultPrompt": "ตรวจการติดตั้ง SPK นี้และรายงานขั้นตอนแก้ไขที่แน่นอน",
+          "triggers": [
+            "ตรวจว่า SPK ติดตั้งถูกต้องไหม",
+            "วินิจฉัยปัญหา runtime ของ SPK",
+            "รัน SPK health check"
+          ],
+          "negativeTriggers": [
+            "ผู้ใช้ขอให้แก้ไฟล์อัตโนมัติ",
+            "failure เป็น bug ของ product code ที่ไม่เกี่ยวกับ SPK"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": true
+      },
+      "effectLevel": "read_only",
+      "role": "runtime_diagnostician",
+      "workflow": [
+        {
+          "phase": "detect",
+          "instruction": "Identify the active host, SPK version, installed plugin root, repository state, and available runtime dependencies."
+        },
+        {
+          "phase": "inspect",
+          "instruction": "Check skill discovery, plugin metadata, MCP startup, hook trust and compatibility, wiki scaffold state, and required commands without changing state."
+        },
+        {
+          "phase": "isolate",
+          "instruction": "Separate missing installation, version drift, configuration, dependency, permission, and workflow failures."
+        },
+        {
+          "phase": "report",
+          "instruction": "Return PASS, DEGRADED, or FAIL per subsystem with exact evidence and the smallest repair command."
+        }
+      ],
+      "artifacts": [
+        "runtime health report",
+        "repair command list"
+      ],
+      "evidence": [
+        "host and SPK version",
+        "skill and MCP discovery",
+        "hook trust and compatibility state",
+        "per-check command and result"
+      ],
+      "guardrails": [
+        "Do not mutate project, Git, plugin, or user configuration state.",
+        "Do not claim a subsystem is healthy when its check was unavailable or skipped."
+      ]
+    },
+    {
+      "id": "release-check",
+      "tier": "core",
+      "origin": {
+        "repository": "apipoj/spk",
+        "skill": "release-check"
+      },
+      "sources": {
+        "th": "skills/operations/release-check",
+        "en": "locales/en/skills/operations/release-check"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Release Check",
+          "description": "Run the repository's complete release-readiness gates, inspect version and generated-artifact consistency, and report blockers without publishing.",
+          "shortDescription": "Prove release readiness without publishing",
+          "defaultPrompt": "Run the complete release-readiness check and report blockers.",
+          "triggers": [
+            "run the release check",
+            "verify this repository before tagging",
+            "check release readiness"
+          ],
+          "negativeTriggers": [
+            "the user asks to deploy an approved release",
+            "the user asks only for one focused test"
+          ]
+        },
+        "th": {
+          "displayName": "ตรวจความพร้อม Release",
+          "description": "รัน gate ความพร้อม release ทั้งหมดของ repo ตรวจ version และ generated artifacts ให้สอดคล้อง และรายงาน blocker โดยไม่ publish",
+          "shortDescription": "พิสูจน์ความพร้อม release โดยไม่ publish",
+          "defaultPrompt": "รัน release readiness ทั้งหมดและรายงาน blocker",
+          "triggers": [
+            "รัน release check",
+            "ตรวจ repo ก่อน tag",
+            "เช็กความพร้อม release"
+          ],
+          "negativeTriggers": [
+            "ผู้ใช้ขอ deploy release ที่อนุมัติแล้ว",
+            "ผู้ใช้ขอเพียง focused test หนึ่งชุด"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": false
+      },
+      "effectLevel": "read_only",
+      "role": "release_verifier",
+      "workflow": [
+        {
+          "phase": "inventory",
+          "instruction": "Read repository release guidance, version sources, generated artifacts, current Git state, and required commands."
+        },
+        {
+          "phase": "gates",
+          "instruction": "Run every documented release gate and record any justified skip as a blocker or risk."
+        },
+        {
+          "phase": "security",
+          "instruction": "Inspect the exact proposed release diff for secrets, unsafe generated content, and dependency findings."
+        },
+        {
+          "phase": "readiness",
+          "instruction": "Check branch, outgoing commits, release metadata, rollback notes, and publish prerequisites."
+        },
+        {
+          "phase": "verdict",
+          "instruction": "Return READY or BLOCKED with exact commands, failures, and the next safe action."
+        }
+      ],
+      "artifacts": [
+        "release-readiness report",
+        "ready or blocked verdict"
+      ],
+      "evidence": [
+        "all gate commands and exit status",
+        "version and generated-artifact consistency",
+        "secret-scan result",
+        "Git readiness"
+      ],
+      "guardrails": [
+        "Do not commit, tag, push, publish, or deploy.",
+        "Do not mark ready when a required gate was skipped or failed."
+      ]
+    },
+    {
+      "id": "scoped-tests",
+      "tier": "core",
+      "origin": {
+        "repository": "apipoj/spk",
+        "skill": "scoped-tests"
+      },
+      "sources": {
+        "th": "skills/engineering/scoped-tests",
+        "en": "locales/en/skills/engineering/scoped-tests"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Scoped Tests",
+          "description": "Map changed files to the smallest defensible test set, run it for fast feedback, disclose unmapped paths, and require the full suite before sign-off.",
+          "shortDescription": "Run focused tests without hiding coverage gaps",
+          "defaultPrompt": "Map the current changes to focused tests and report every unmapped path.",
+          "triggers": [
+            "run tests affected by this diff",
+            "find the smallest relevant test set",
+            "speed up the TDD feedback loop"
+          ],
+          "negativeTriggers": [
+            "the user requests the complete release gate",
+            "no changed paths can be identified"
+          ]
+        },
+        "th": {
+          "displayName": "ทดสอบตามขอบเขต",
+          "description": "จับคู่ไฟล์ที่เปลี่ยนกับชุดทดสอบที่เล็กที่สุดอย่างมีเหตุผล รันเพื่อ feedback เร็ว เปิดเผย path ที่จับคู่ไม่ได้ และบังคับ full suite ก่อนจบงาน",
+          "shortDescription": "รัน focused tests โดยไม่ซ่อนช่องว่าง",
+          "defaultPrompt": "จับคู่การเปลี่ยนแปลงปัจจุบันกับ focused tests และรายงาน path ที่จับคู่ไม่ได้",
+          "triggers": [
+            "รัน test ที่ diff นี้กระทบ",
+            "หาชุด test ที่เกี่ยวข้องเล็กที่สุด",
+            "เร่ง feedback loop ของ TDD"
+          ],
+          "negativeTriggers": [
+            "ผู้ใช้ขอ release gate ทั้งหมด",
+            "ระบุ changed paths ไม่ได้"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": true
+      },
+      "effectLevel": "read_only",
+      "role": "test_selector",
+      "workflow": [
+        {
+          "phase": "detect",
+          "instruction": "Identify the test runner, changed paths, repository mapping conventions, and required full-suite command."
+        },
+        {
+          "phase": "map",
+          "instruction": "Map every changed path to relevant suites and mark each uncertain or unmapped path."
+        },
+        {
+          "phase": "run",
+          "instruction": "Run the focused command, falling back to the full suite when confident scoping is impossible."
+        },
+        {
+          "phase": "report",
+          "instruction": "Report selected suites, unmapped paths, results, and the full-suite requirement before sign-off."
+        }
+      ],
+      "artifacts": [
+        "file-to-test mapping",
+        "focused test result"
+      ],
+      "evidence": [
+        "changed paths",
+        "selected and unmapped suites",
+        "exact command and result",
+        "full-suite status"
+      ],
+      "guardrails": [
+        "Never present a partial test run as complete coverage.",
+        "Fall back to the full suite when mapping confidence is insufficient."
+      ]
+    },
+    {
+      "id": "uninstall",
+      "tier": "core",
+      "origin": {
+        "repository": "apipoj/spk",
+        "skill": "uninstall"
+      },
+      "sources": {
+        "th": "skills/operations/uninstall",
+        "en": "locales/en/skills/operations/uninstall"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Uninstall SPK",
+          "description": "Remove only verified SPK-owned project artifacts after showing exact targets, while preserving project knowledge and unrelated user files.",
+          "shortDescription": "Safely remove SPK-owned project artifacts",
+          "defaultPrompt": "Inspect what SPK owns, show the removal plan, and wait for approval.",
+          "triggers": [
+            "uninstall SPK from this project",
+            "remove SPK-owned files",
+            "clean up this SPK installation"
+          ],
+          "negativeTriggers": [
+            "the user asks to disable one skill or hook",
+            "ownership of the target files cannot be verified"
+          ]
+        },
+        "th": {
+          "displayName": "ถอนการติดตั้ง SPK",
+          "description": "ลบเฉพาะ artifact ในโปรเจกต์ที่ยืนยันว่า SPK เป็นเจ้าของ หลังแสดงเป้าหมายที่แน่นอน พร้อมรักษาความรู้โปรเจกต์และไฟล์ผู้ใช้ที่ไม่เกี่ยวข้อง",
+          "shortDescription": "ลบ artifact ของ SPK อย่างปลอดภัย",
+          "defaultPrompt": "ตรวจสิ่งที่ SPK เป็นเจ้าของ แสดงแผนลบ และรออนุมัติ",
+          "triggers": [
+            "ถอนการติดตั้ง SPK จากโปรเจกต์",
+            "ลบไฟล์ที่ SPK เป็นเจ้าของ",
+            "cleanup การติดตั้ง SPK"
+          ],
+          "negativeTriggers": [
+            "ผู้ใช้ขอปิดเพียง skill หรือ hook เดียว",
+            "ยืนยัน ownership ของไฟล์เป้าหมายไม่ได้"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": false
+      },
+      "effectLevel": "destructive",
+      "role": "uninstaller",
+      "workflow": [
+        {
+          "phase": "inventory",
+          "instruction": "Read installation records and resolve every SPK-owned target without broad globs."
+        },
+        {
+          "phase": "preserve",
+          "instruction": "Classify project knowledge and unrelated user files as preserved data."
+        },
+        {
+          "phase": "approve",
+          "instruction": "Show exact removal and preservation lists and obtain explicit approval."
+        },
+        {
+          "phase": "remove",
+          "instruction": "Remove only approved SPK-owned targets using recoverable operations when possible."
+        },
+        {
+          "phase": "verify",
+          "instruction": "Confirm each removal, list preserved data, and report recovery options."
+        }
+      ],
+      "artifacts": [
+        "removal plan",
+        "preservation list",
+        "uninstall receipt"
+      ],
+      "evidence": [
+        "ownership record",
+        "exact approved targets",
+        "removed and preserved paths",
+        "recovery status"
+      ],
+      "guardrails": [
+        "Never remove project knowledge, private sources, or unrelated user files.",
+        "Never use unresolved variables, broad roots, or unverified recursive deletion targets."
+      ]
+    },
+    {
+      "id": "ask-matt",
+      "tier": "compat",
+      "aliasFor": "start",
+      "origin": {
+        "repository": "mattpocock/skills",
+        "skill": "start"
+      },
+      "sources": {
+        "th": "skills/compat/ask-matt",
+        "en": "locales/en/skills/compat/ask-matt"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Ask Matt",
+          "description": "Temporary compatibility alias for start; disclose the canonical name and apply the same contract without expanding authority.",
+          "shortDescription": "Temporary compatibility alias for start; disclose the canonical name and apply the same contract",
+          "defaultPrompt": "Use ask-matt for my current request.",
+          "triggers": [
+            "use ask-matt",
+            "ask-matt workflow"
+          ],
+          "negativeTriggers": [
+            "the request is outside this workflow",
+            "the user selected a narrower skill"
+          ]
+        },
+        "th": {
+          "displayName": "ชื่อเดิมชั่วคราวสำหรับ start; แจ้งชื่อใหม่แล้วใช้ contract เดียว",
+          "description": "ชื่อเดิมชั่วคราวสำหรับ start; แจ้งชื่อใหม่แล้วใช้ contract เดียวกันโดยไม่เพิ่มสิทธิ์หรือขยาย scope",
+          "shortDescription": "ชื่อเดิมชั่วคราวสำหรับ start; แจ้งชื่อใหม่แล้วใช้ contract เดียวกันโดยไม่เพิ่มสิทธิ์หรือขยาย sco",
+          "defaultPrompt": "ใช้ ask-matt กับคำขอนี้",
+          "triggers": [
+            "ใช้ ask-matt",
+            "ทำงานแบบ ask-matt"
+          ],
+          "negativeTriggers": [
+            "คำขออยู่นอกขอบเขต workflow นี้",
+            "ผู้ใช้เลือก skill ที่แคบกว่าแล้ว"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": false
+      },
+      "effectLevel": "workspace_write",
+      "role": "compatibility_alias",
+      "workflow": [
+        {
+          "phase": "disclose",
+          "instruction": "Tell the user that ask-matt moved to start."
+        },
+        {
+          "phase": "apply",
+          "instruction": "Apply the start contract without expanding authority."
+        }
+      ],
+      "artifacts": [
+        "compatibility notice",
+        "canonical workflow result"
+      ],
+      "evidence": [
+        "inputs used",
+        "observable result",
+        "verification status"
+      ],
+      "guardrails": [
+        "Use natural concise Thai by default while preserving exact technical identifiers.",
+        "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
+        "Report evidence gaps instead of guessing."
+      ]
+    },
+    {
+      "id": "setup-matt-pocock-skills",
+      "tier": "compat",
+      "aliasFor": "setup",
+      "origin": {
+        "repository": "mattpocock/skills",
+        "skill": "setup"
+      },
+      "sources": {
+        "th": "skills/compat/setup-matt-pocock-skills",
+        "en": "locales/en/skills/compat/setup-matt-pocock-skills"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Setup Matt Pocock Skills",
+          "description": "Temporary compatibility alias for setup; disclose the canonical name and apply the same contract without expanding authority.",
+          "shortDescription": "Temporary compatibility alias for setup; disclose the canonical name and apply the same contract",
+          "defaultPrompt": "Use setup-matt-pocock-skills for my current request.",
+          "triggers": [
+            "use setup-matt-pocock-skills",
+            "setup-matt-pocock-skills workflow"
+          ],
+          "negativeTriggers": [
+            "the request is outside this workflow",
+            "the user selected a narrower skill"
+          ]
+        },
+        "th": {
+          "displayName": "ชื่อเดิมชั่วคราวสำหรับ setup; แจ้งชื่อใหม่แล้วใช้ contract เดียว",
+          "description": "ชื่อเดิมชั่วคราวสำหรับ setup; แจ้งชื่อใหม่แล้วใช้ contract เดียวกันโดยไม่เพิ่มสิทธิ์หรือขยาย scope",
+          "shortDescription": "ชื่อเดิมชั่วคราวสำหรับ setup; แจ้งชื่อใหม่แล้วใช้ contract เดียวกันโดยไม่เพิ่มสิทธิ์หรือขยาย sco",
+          "defaultPrompt": "ใช้ setup-matt-pocock-skills กับคำขอนี้",
+          "triggers": [
+            "ใช้ setup-matt-pocock-skills",
+            "ทำงานแบบ setup-matt-pocock-skills"
+          ],
+          "negativeTriggers": [
+            "คำขออยู่นอกขอบเขต workflow นี้",
+            "ผู้ใช้เลือก skill ที่แคบกว่าแล้ว"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": false
+      },
+      "effectLevel": "workspace_write",
+      "role": "compatibility_alias",
+      "workflow": [
+        {
+          "phase": "disclose",
+          "instruction": "Tell the user that setup-matt-pocock-skills moved to setup."
+        },
+        {
+          "phase": "apply",
+          "instruction": "Apply the setup contract without expanding authority."
+        }
+      ],
+      "artifacts": [
+        "compatibility notice",
+        "canonical workflow result"
+      ],
+      "evidence": [
+        "inputs used",
+        "observable result",
+        "verification status"
+      ],
+      "guardrails": [
+        "Use natural concise Thai by default while preserving exact technical identifiers.",
+        "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
+        "Report evidence gaps instead of guessing."
+      ]
+    },
+    {
+      "id": "spk",
+      "tier": "compat",
+      "aliasFor": "start",
+      "origin": {
+        "repository": "apipoj/spk",
+        "skill": "spk"
+      },
+      "sources": {
+        "th": "skills/compat/spk",
+        "en": "locales/en/skills/compat/spk"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Spk",
+          "description": "Temporary compatibility alias for start; disclose the canonical name and apply the same contract without expanding authority.",
+          "shortDescription": "Temporary compatibility alias for start; disclose the canonical name and apply the same contract",
+          "defaultPrompt": "Use spk for my current request.",
+          "triggers": [
+            "use spk",
+            "spk workflow"
+          ],
+          "negativeTriggers": [
+            "the request is outside this workflow",
+            "the user selected a narrower skill"
+          ]
+        },
+        "th": {
+          "displayName": "ชื่อเดิมชั่วคราวสำหรับ start; แจ้งชื่อใหม่แล้วใช้ contract เดียว",
+          "description": "ชื่อเดิมชั่วคราวสำหรับ start; แจ้งชื่อใหม่แล้วใช้ contract เดียวกันโดยไม่เพิ่มสิทธิ์หรือขยาย scope",
+          "shortDescription": "ชื่อเดิมชั่วคราวสำหรับ start; แจ้งชื่อใหม่แล้วใช้ contract เดียวกันโดยไม่เพิ่มสิทธิ์หรือขยาย sco",
+          "defaultPrompt": "ใช้ spk กับคำขอนี้",
+          "triggers": [
+            "ใช้ spk",
+            "ทำงานแบบ spk"
+          ],
+          "negativeTriggers": [
+            "คำขออยู่นอกขอบเขต workflow นี้",
+            "ผู้ใช้เลือก skill ที่แคบกว่าแล้ว"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": false
+      },
+      "effectLevel": "workspace_write",
+      "role": "compatibility_alias",
+      "workflow": [
+        {
+          "phase": "disclose",
+          "instruction": "Tell the user that spk moved to start."
+        },
+        {
+          "phase": "apply",
+          "instruction": "Apply the start contract without expanding authority."
+        }
+      ],
+      "artifacts": [
+        "compatibility notice",
+        "canonical workflow result"
+      ],
+      "evidence": [
+        "inputs used",
+        "observable result",
+        "verification status"
+      ],
+      "guardrails": [
+        "Use natural concise Thai by default while preserving exact technical identifiers.",
+        "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
+        "Report evidence gaps instead of guessing."
+      ]
+    },
+    {
+      "id": "jumpstart",
+      "tier": "compat",
+      "aliasFor": "start",
+      "origin": {
+        "repository": "apipoj/spk",
+        "skill": "jumpstart"
+      },
+      "sources": {
+        "th": "skills/compat/jumpstart",
+        "en": "locales/en/skills/compat/jumpstart"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Jumpstart",
+          "description": "Temporary compatibility alias for start; disclose the canonical name and apply the same contract without expanding authority.",
+          "shortDescription": "Temporary compatibility alias for start; disclose the canonical name and apply the same contract",
+          "defaultPrompt": "Use jumpstart for my current request.",
+          "triggers": [
+            "use jumpstart",
+            "jumpstart workflow"
+          ],
+          "negativeTriggers": [
+            "the request is outside this workflow",
+            "the user selected a narrower skill"
+          ]
+        },
+        "th": {
+          "displayName": "ชื่อเดิมชั่วคราวสำหรับ start; แจ้งชื่อใหม่แล้วใช้ contract เดียว",
+          "description": "ชื่อเดิมชั่วคราวสำหรับ start; แจ้งชื่อใหม่แล้วใช้ contract เดียวกันโดยไม่เพิ่มสิทธิ์หรือขยาย scope",
+          "shortDescription": "ชื่อเดิมชั่วคราวสำหรับ start; แจ้งชื่อใหม่แล้วใช้ contract เดียวกันโดยไม่เพิ่มสิทธิ์หรือขยาย sco",
+          "defaultPrompt": "ใช้ jumpstart กับคำขอนี้",
+          "triggers": [
+            "ใช้ jumpstart",
+            "ทำงานแบบ jumpstart"
+          ],
+          "negativeTriggers": [
+            "คำขออยู่นอกขอบเขต workflow นี้",
+            "ผู้ใช้เลือก skill ที่แคบกว่าแล้ว"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": false
+      },
+      "effectLevel": "workspace_write",
+      "role": "compatibility_alias",
+      "workflow": [
+        {
+          "phase": "disclose",
+          "instruction": "Tell the user that jumpstart moved to start."
+        },
+        {
+          "phase": "apply",
+          "instruction": "Apply the start contract without expanding authority."
+        }
+      ],
+      "artifacts": [
+        "compatibility notice",
+        "canonical workflow result"
+      ],
+      "evidence": [
+        "inputs used",
+        "observable result",
+        "verification status"
+      ],
+      "guardrails": [
+        "Use natural concise Thai by default while preserving exact technical identifiers.",
+        "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
+        "Report evidence gaps instead of guessing."
+      ]
+    },
+    {
+      "id": "code",
+      "tier": "compat",
+      "aliasFor": "implement",
+      "origin": {
+        "repository": "apipoj/spk",
+        "skill": "code"
+      },
+      "sources": {
+        "th": "skills/compat/code",
+        "en": "locales/en/skills/compat/code"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Code",
+          "description": "Temporary compatibility alias for implement; disclose the canonical name and apply the same contract without expanding authority.",
+          "shortDescription": "Temporary compatibility alias for implement; disclose the canonical name and apply the same cont",
+          "defaultPrompt": "Use code for my current request.",
+          "triggers": [
+            "use code",
+            "code workflow"
+          ],
+          "negativeTriggers": [
+            "the request is outside this workflow",
+            "the user selected a narrower skill"
+          ]
+        },
+        "th": {
+          "displayName": "ชื่อเดิมชั่วคราวสำหรับ implement; แจ้งชื่อใหม่แล้วใช้ contract เ",
+          "description": "ชื่อเดิมชั่วคราวสำหรับ implement; แจ้งชื่อใหม่แล้วใช้ contract เดียวกันโดยไม่เพิ่มสิทธิ์หรือขยาย scope",
+          "shortDescription": "ชื่อเดิมชั่วคราวสำหรับ implement; แจ้งชื่อใหม่แล้วใช้ contract เดียวกันโดยไม่เพิ่มสิทธิ์หรือขยาย",
+          "defaultPrompt": "ใช้ code กับคำขอนี้",
+          "triggers": [
+            "ใช้ code",
+            "ทำงานแบบ code"
+          ],
+          "negativeTriggers": [
+            "คำขออยู่นอกขอบเขต workflow นี้",
+            "ผู้ใช้เลือก skill ที่แคบกว่าแล้ว"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": false
+      },
+      "effectLevel": "workspace_write",
+      "role": "compatibility_alias",
+      "workflow": [
+        {
+          "phase": "disclose",
+          "instruction": "Tell the user that code moved to implement."
+        },
+        {
+          "phase": "apply",
+          "instruction": "Apply the implement contract without expanding authority."
+        }
+      ],
+      "artifacts": [
+        "compatibility notice",
+        "canonical workflow result"
+      ],
+      "evidence": [
+        "inputs used",
+        "observable result",
+        "verification status"
+      ],
+      "guardrails": [
+        "Use natural concise Thai by default while preserving exact technical identifiers.",
+        "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
+        "Report evidence gaps instead of guessing."
+      ]
+    },
+    {
+      "id": "debug",
+      "tier": "compat",
+      "aliasFor": "diagnosing-bugs",
+      "origin": {
+        "repository": "apipoj/spk",
+        "skill": "debug"
+      },
+      "sources": {
+        "th": "skills/compat/debug",
+        "en": "locales/en/skills/compat/debug"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Debug",
+          "description": "Temporary compatibility alias for diagnosing-bugs; disclose the canonical name and apply the same contract without expanding authority.",
+          "shortDescription": "Temporary compatibility alias for diagnosing-bugs; disclose the canonical name and apply the sam",
+          "defaultPrompt": "Use debug for my current request.",
+          "triggers": [
+            "use debug",
+            "debug workflow"
+          ],
+          "negativeTriggers": [
+            "the request is outside this workflow",
+            "the user selected a narrower skill"
+          ]
+        },
+        "th": {
+          "displayName": "ชื่อเดิมชั่วคราวสำหรับ diagnosing-bugs; แจ้งชื่อใหม่แล้วใช้ cont",
+          "description": "ชื่อเดิมชั่วคราวสำหรับ diagnosing-bugs; แจ้งชื่อใหม่แล้วใช้ contract เดียวกันโดยไม่เพิ่มสิทธิ์หรือขยาย scope",
+          "shortDescription": "ชื่อเดิมชั่วคราวสำหรับ diagnosing-bugs; แจ้งชื่อใหม่แล้วใช้ contract เดียวกันโดยไม่เพิ่มสิทธิ์หร",
+          "defaultPrompt": "ใช้ debug กับคำขอนี้",
+          "triggers": [
+            "ใช้ debug",
+            "ทำงานแบบ debug"
+          ],
+          "negativeTriggers": [
+            "คำขออยู่นอกขอบเขต workflow นี้",
+            "ผู้ใช้เลือก skill ที่แคบกว่าแล้ว"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": false
+      },
+      "effectLevel": "read_only",
+      "role": "compatibility_alias",
+      "workflow": [
+        {
+          "phase": "disclose",
+          "instruction": "Tell the user that debug moved to diagnosing-bugs."
+        },
+        {
+          "phase": "apply",
+          "instruction": "Apply the diagnosing-bugs contract without expanding authority."
+        }
+      ],
+      "artifacts": [
+        "compatibility notice",
+        "canonical workflow result"
+      ],
+      "evidence": [
+        "inputs used",
+        "observable result",
+        "verification status"
+      ],
+      "guardrails": [
+        "Use natural concise Thai by default while preserving exact technical identifiers.",
+        "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
+        "Report evidence gaps instead of guessing."
+      ]
+    },
+    {
+      "id": "review",
+      "tier": "compat",
+      "aliasFor": "code-review",
+      "origin": {
+        "repository": "apipoj/spk",
+        "skill": "review"
+      },
+      "sources": {
+        "th": "skills/compat/review",
+        "en": "locales/en/skills/compat/review"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Review",
+          "description": "Temporary compatibility alias for code-review; disclose the canonical name and apply the same contract without expanding authority.",
+          "shortDescription": "Temporary compatibility alias for code-review; disclose the canonical name and apply the same co",
+          "defaultPrompt": "Use review for my current request.",
+          "triggers": [
+            "use review",
+            "review workflow"
+          ],
+          "negativeTriggers": [
+            "the request is outside this workflow",
+            "the user selected a narrower skill"
+          ]
+        },
+        "th": {
+          "displayName": "ชื่อเดิมชั่วคราวสำหรับ code-review; แจ้งชื่อใหม่แล้วใช้ contract",
+          "description": "ชื่อเดิมชั่วคราวสำหรับ code-review; แจ้งชื่อใหม่แล้วใช้ contract เดียวกันโดยไม่เพิ่มสิทธิ์หรือขยาย scope",
+          "shortDescription": "ชื่อเดิมชั่วคราวสำหรับ code-review; แจ้งชื่อใหม่แล้วใช้ contract เดียวกันโดยไม่เพิ่มสิทธิ์หรือขย",
+          "defaultPrompt": "ใช้ review กับคำขอนี้",
+          "triggers": [
+            "ใช้ review",
+            "ทำงานแบบ review"
+          ],
+          "negativeTriggers": [
+            "คำขออยู่นอกขอบเขต workflow นี้",
+            "ผู้ใช้เลือก skill ที่แคบกว่าแล้ว"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": false
+      },
+      "effectLevel": "read_only",
+      "role": "compatibility_alias",
+      "workflow": [
+        {
+          "phase": "disclose",
+          "instruction": "Tell the user that review moved to code-review."
+        },
+        {
+          "phase": "apply",
+          "instruction": "Apply the code-review contract without expanding authority."
+        }
+      ],
+      "artifacts": [
+        "compatibility notice",
+        "canonical workflow result"
+      ],
+      "evidence": [
+        "inputs used",
+        "observable result",
+        "verification status"
+      ],
+      "guardrails": [
+        "Use natural concise Thai by default while preserving exact technical identifiers.",
+        "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
+        "Report evidence gaps instead of guessing."
+      ]
+    }
+  ]
+}

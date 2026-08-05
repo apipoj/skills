@@ -1,0 +1,171 @@
+name: verify
+
+on:
+  push:
+    branches: [main, 'v*']
+    tags: ['v*.*.*']
+  pull_request:
+    branches: [main]
+  schedule:
+    # Only the scheduled client canary consumes unpinned "latest" CLIs.
+    - cron: '0 3 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: verify-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Unit and release gates (${{ matrix.os }}, Node ${{ matrix.node }})
+    timeout-minutes: 15
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        node: ['20', '22']
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run the full release gate
+        run: npm run verify:release
+
+  release-integrity:
+    name: Release metadata, secrets, dependencies, and tag
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Verify public metadata and scan tracked files for secrets
+        run: node scripts/verify-release-metadata.cjs
+
+      - name: Require a manifest-matching release tag
+        if: startsWith(github.ref, 'refs/tags/')
+        run: node scripts/verify-release-metadata.cjs --require-tag --tag "${{ github.ref_name }}"
+
+      - name: Audit all dependencies
+        run: npm audit --audit-level=high
+
+  plugin-install-pinned:
+    name: Plugin install smoke (pinned clients)
+    if: github.event_name != 'schedule'
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '20'
+
+      - name: Install pinned Claude Code and Codex clients
+        run: npm install -g @anthropic-ai/claude-code@2.1.220 @openai/codex@0.146.0
+
+      - name: Verify pinned client versions
+        run: |
+          claude --version | grep -q '^2\.1\.220 '
+          codex --version | grep -q '0\.146\.0$'
+
+      - name: Validate and install with Claude Code
+        run: |
+          claude plugin validate --strict .
+          claude plugin marketplace add ./
+          claude plugin install spk@spk --config node_path="$(node -p 'process.execPath')"
+          claude plugin list > claude-plugins.txt
+          grep -q 'spk@spk' claude-plugins.txt
+          grep -q 'enabled' claude-plugins.txt
+          VERSION=$(node -p "require('./manifest.json').version")
+          grep -q "Version: $VERSION" claude-plugins.txt
+
+      - name: Discover and install with Codex
+        run: |
+          test -f .agents/plugins/marketplace.json
+          test -f plugins/spk-codex/.codex-plugin/plugin.json
+          test ! -e plugins/spk/.codex-plugin/plugin.json
+          test -f plugins/spk-codex/skills/task-to-pr/agents/openai.yaml
+          codex plugin marketplace add ./ --json
+          codex plugin list --available --json > codex-available.json
+          node - <<'NODE'
+          const result = require('./codex-available.json');
+          const plugin = result.available.find(item => item.pluginId === 'spk@spk');
+          if (!plugin) throw new Error('Codex did not discover spk@spk');
+          NODE
+          codex plugin add spk@spk --json
+          codex plugin list --json > codex-installed.json
+          node - <<'NODE'
+          const manifest = require('./manifest.json');
+          const result = require('./codex-installed.json');
+          const plugin = result.installed.find(item => item.pluginId === 'spk@spk');
+          if (!plugin?.installed || !plugin?.enabled) {
+            throw new Error('Codex did not install and enable spk@spk');
+          }
+          if (plugin.version !== manifest.version) {
+            throw new Error(`Codex plugin version ${plugin.version} != ${manifest.version}`);
+          }
+          NODE
+
+  plugin-install-latest:
+    name: Weekly upstream client canary
+    if: github.event_name == 'schedule'
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '20'
+
+      - name: Install latest Claude Code and Codex clients
+        run: npm install -g @anthropic-ai/claude-code@latest @openai/codex@latest
+
+      - name: Validate and install with latest Claude Code
+        run: |
+          claude --version
+          claude plugin validate --strict .
+          claude plugin marketplace add ./
+          claude plugin install spk@spk --config node_path="$(node -p 'process.execPath')"
+          claude plugin list | grep -q 'spk@spk'
+
+      - name: Discover and install with latest Codex
+        run: |
+          codex --version
+          test -f .agents/plugins/marketplace.json
+          test -f plugins/spk-codex/.codex-plugin/plugin.json
+          test ! -e plugins/spk/.codex-plugin/plugin.json
+          codex plugin marketplace add ./ --json
+          codex plugin list --available --json > codex-available.json
+          node -e "const x=require('./codex-available.json'); if(!x.available.some(p=>p.pluginId==='spk@spk')) process.exit(1)"
+          codex plugin add spk@spk --json
+          codex plugin list --json > codex-installed.json
+          node -e "const x=require('./codex-installed.json'); if(!x.installed.some(p=>p.pluginId==='spk@spk'&&p.installed&&p.enabled)) process.exit(1)"

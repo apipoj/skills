@@ -1,0 +1,20 @@
+{
+  "name": "spk",
+  "interface": {
+    "displayName": "Apipoj Skills"
+  },
+  "plugins": [
+    {
+      "name": "spk",
+      "source": {
+        "source": "local",
+        "path": "./plugins/spk-codex"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    }
+  ]
+}

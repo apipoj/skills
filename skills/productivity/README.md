@@ -1,18 +1,10 @@
-# Productivity
+# Productivity — คิดและสื่อสารให้ชัด
 
-General workflow tools, not code-specific.
+ภาษาไทยเป็นค่าเริ่มต้น ใช้ smart defaults เมื่อปลอดภัย และรักษา approval boundary ของแต่ละ workflow
 
-## User-invoked
-
-Reachable only when you type them (Claude Code: `disable-model-invocation: true`; Codex: `policy.allow_implicit_invocation: false` in `agents/openai.yaml`).
-
-- **[grill-me](./grill-me/SKILL.md)** — Get relentlessly interviewed about a plan or design until every branch of the decision tree is resolved.
-- **[handoff](./handoff/SKILL.md)** — Compact the current conversation into a handoff document so another agent can continue the work.
-- **[teach](./teach/SKILL.md)** — Teach the user a new skill or concept over multiple sessions, using the current directory as a stateful teaching workspace.
-- **[writing-great-skills](./writing-great-skills/SKILL.md)** — Reference for writing and editing skills well: the vocabulary and principles that make a skill predictable.
-
-## Model-invoked
-
-Model- or user-reachable (rich trigger phrasing so the model can reach for them).
-
-- **[grilling](./grilling/SKILL.md)** — Interview the user relentlessly about a plan, decision, or idea until every branch of the decision tree is resolved.
+- [`grill-me`](./grill-me/SKILL.md) — ถามทีละ decision เพื่อทำความคิด แผน หรือทางเลือกให้ชัดก่อนลงมือ _(manual-only)_
+- [`grilling`](./grilling/SKILL.md) — สัมภาษณ์ผู้ใช้ทีละคำถามพร้อมคำแนะนำ เพื่อคลี่ dependency ของ decision จนเข้าใจตรงกัน
+- [`handoff`](./handoff/SKILL.md) — ย่อบริบทที่จำเป็นเป็น handoff ซึ่ง session ใหม่อ่านแล้วทำงานต่อได้โดยไม่เดา _(manual-only)_
+- [`teach`](./teach/SKILL.md) — สอนแนวคิดหรือทักษะเป็นลำดับสั้น ๆ พร้อมภารกิจและหลักฐานความเข้าใจที่ใช้ต่อข้าม session ได้ _(manual-only)_
+- [`writing-great-skills`](./writing-great-skills/SKILL.md) — ใช้หลัก predictability, progressive disclosure และการลด prompt noise เพื่อเขียน skill ที่ไว้ใจได้ _(manual-only)_
+- [`ask-me`](./ask-me/SKILL.md) — สัมภาษณ์ภาษาไทยทีละ decision แบบ read-only สรุปให้ยืนยัน แล้วแนะนำงานถัดไปตาม context หรือ Plan → Dev แบบมี gate _(manual-only)_

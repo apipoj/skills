@@ -1,20 +1,61 @@
 {
-  "name": "mattpocock-skills",
-  "version": "1.1.0",
-  "private": true,
-  "description": "Matt Pocock's agent skills for real engineering",
+  "name": "apipoj-skills",
+  "version": "5.0.0",
+  "description": "Thai-first, ready-to-use engineering skills for Claude Code, Codex, and skills.sh",
   "repository": {
     "type": "git",
-    "url": "https://github.com/mattpocock/skills"
+    "url": "git+https://github.com/apipoj/skills.git"
   },
   "license": "MIT",
+  "author": "Apipoj Piasak",
+  "private": true,
+  "type": "commonjs",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
-    "changeset": "changeset",
-    "version": "changeset version"
+    "test": "jest",
+    "generate:platforms": "node scripts/generate-platform-artifacts.cjs",
+    "verify:platforms": "node scripts/generate-platform-artifacts.cjs --check",
+    "regen": "node scripts/regenerate-docs.cjs",
+    "regen:check": "node scripts/regenerate-docs.cjs --check",
+    "validate:manifest": "node scripts/validate-manifest.cjs",
+    "verify:gates": "node scripts/verify-grep-gates.cjs",
+    "verify:native": "node scripts/verify-native-skills.cjs",
+    "verify:upstream": "node scripts/check-upstream-drift.cjs",
+    "verify:sync": "node scripts/verify-manifest-sync.cjs",
+    "verify:refs": "node scripts/verify-reference-integrity.cjs",
+    "verify:descriptions": "node scripts/verify-skill-descriptions.cjs",
+    "verify:agents": "node scripts/verify-agent-contracts.cjs",
+    "eval:skilllab": "node scripts/skilllab.cjs validate",
+    "verify:metadata": "node scripts/verify-release-metadata.cjs",
+    "verify:security": "npm audit --audit-level=high",
+    "verify:coverage": "jest --coverage --runInBand",
+    "verify:release": "npm run validate:manifest && npm run verify:platforms && npm run regen:check && npm run verify:sync && npm run verify:refs && npm run verify:descriptions && npm run verify:agents && npm run verify:gates && npm run verify:native && npm run verify:upstream && npm run eval:skilllab && npm run verify:metadata && npm run verify:security && npm run verify:coverage",
+    "prepare": "husky"
   },
   "devDependencies": {
-    "@changesets/changelog-github": "^0.7.0",
-    "@changesets/cli": "^2.30.0"
+    "ajv": "^8.20.0",
+    "ajv-formats": "^3.0.1",
+    "husky": "^9.1.0",
+    "jest": "^30.4.2"
   },
-  "packageManager": "npm@10.9.4"
+  "overrides": {
+    "brace-expansion": "^5.0.9"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "scripts/**/*.cjs",
+      "plugins/spk/scripts/**/*.cjs",
+      "plugins/spk/mcp/**/*.cjs"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 55,
+        "functions": 60,
+        "lines": 70,
+        "statements": 65
+      }
+    }
+  }
 }

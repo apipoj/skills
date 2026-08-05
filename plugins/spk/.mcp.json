@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "spk-codebase-search": {
+      "command": "${user_config.node_path}",
+      "args": ["${CLAUDE_PLUGIN_ROOT}/mcp/codebase-search.cjs"]
+    }
+  }
+}

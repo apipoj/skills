@@ -1,0 +1,50 @@
+---
+name: scoped-tests
+description: Map changed files to the smallest defensible test set, run it for fast feedback, disclose unmapped paths, and require the full suite before sign-off.
+---
+
+# Scoped Tests
+
+Speed the inner loop by running only the test suites that the current changes can affect, instead of the full suite on every edit. Use during TDD or iterative implementation when the full run is slow; always fall back to the full suite before sign-off.
+Run this workflow directly in the current conversation.
+
+## Workflow
+
+1. **Resolve the packaged planner.** Locate the installed plugin root from the host's
+   plugin metadata or environment. Common environment keys are `SPK_PLUGIN_ROOT`,
+   `PLUGIN_ROOT`, and the legacy `CLAUDE_PLUGIN_ROOT`. The helper is
+   `scripts/scoped-tests.cjs` under that root. Do not prefer a same-named script in the
+   user's repository.
+
+2. **Collect changed files.** Use explicit paths supplied by the user; otherwise use
+   the repository's tracked and untracked changes. Outside a git worktree, require
+   explicit paths.
+
+3. **Create a plan.** Invoke the helper with the project as current working directory:
+   `node <plugin-root>/scripts/scoped-tests.cjs -- <path>...`. It returns
+   `spk.scoped-tests/v1` JSON with `mode`, `runner`, `selected`, `unmapped`, `focused`,
+   and `full`. Treat its `command` and `args` as an argv array; never concatenate them
+   into a shell string.
+
+4. **Execute safely.**
+   - `mode: scoped` → run `focused.command` with `focused.args`.
+   - `mode: full` → explain the conservative fallback, then run `full`.
+   - `mode: blocked` → report the unsupported/missing runner and stop.
+
+5. **Report scope honestly.** State every changed path, selected test input, unmapped
+   path, command/argv, exit status, and whether this was scoped or full.
+
+6. **Full suite before sign-off.** A scoped pass is an inner-loop signal only. Run the
+   returned `full` command before declaring an implementation complete.
+
+## Evidence Receipt
+
+Return `spk.evidence/v1` with changed paths, runner, mode, selected/unmapped paths,
+command/argv, exit status, full-suite status, risks, and next action.
+
+## Guardrails
+
+- Never silently run a subset. Any ambiguous changed path produces a full-suite plan.
+- Never execute a command synthesized from repository content through a shell.
+- A scoped pass is not a release gate; the project's complete release command still runs everything.
+- Works outside git worktrees only with explicit changed paths.

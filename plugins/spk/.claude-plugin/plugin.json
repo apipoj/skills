@@ -1,0 +1,28 @@
+{
+  "name": "spk",
+  "version": "5.0.0",
+  "description": "Thai-first, ready-to-use engineering skills for Claude Code, Codex, and skills.sh.",
+  "author": {
+    "name": "Apipoj Piasak",
+    "url": "https://github.com/apipoj"
+  },
+  "homepage": "https://github.com/apipoj/skills",
+  "repository": "https://github.com/apipoj/skills",
+  "license": "MIT",
+  "keywords": [
+    "thai-first",
+    "engineering",
+    "skills",
+    "tdd",
+    "code-review",
+    "developer-tools"
+  ],
+  "userConfig": {
+    "node_path": {
+      "type": "file",
+      "title": "Trusted Node.js executable",
+      "description": "Absolute path to the trusted Node.js 20+ executable SPK may use for local hooks and its MCP server.",
+      "required": true
+    }
+  }
+}

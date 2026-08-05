@@ -1,24 +1,43 @@
-Skills are organized into bucket folders under `skills/`:
+# Apipoj Skills Repository Context
 
-- `engineering/` — daily code work
-- `productivity/` — daily non-code workflow tools
-- `misc/` — kept around but rarely used, not promoted
-- `personal/` — tied to my own setup, not promoted
-- `in-progress/` — drafts not yet ready to ship
-- `deprecated/` — no longer used
+## Purpose
 
-Every skill in `engineering/` or `productivity/` (the **promoted** buckets) must have a reference in the top-level `README.md` and an entry in `.claude-plugin/plugin.json`'s `skills` array (the Claude Code plugin ships exactly the promoted set). Skills in `misc/`, `personal/`, `in-progress/`, and `deprecated/` must not appear in either.
+- Source repository for **Apipoj Skills 5**, a Thai-first skill distribution for Claude Code, Codex, and skills.sh.
+- The public plugin namespace stays `spk`; the primary router is `/spk:start` (Codex: `$spk:start`).
+- Built from the reviewed `mattpocock/skills` snapshot pinned in `docs/upstream/upstream-lock.json`, plus SPK's evidence, approval, memory, security, and multi-platform tooling.
 
-The repo is also its own single-plugin Claude Code marketplace: `.claude-plugin/marketplace.json` lists the one `mattpocock-skills` plugin. When bumping the release version, keep `.claude-plugin/plugin.json`'s `version` in sync with `package.json`'s — Claude uses the plugin `version` to decide when installed users see an update. Run `claude plugin validate . --strict` after touching either manifest. Why a Claude plugin but not (yet) a Codex one lives in [.agents/adr/0002-ship-as-a-claude-code-plugin.md](./.agents/adr/0002-ship-as-a-claude-code-plugin.md).
+## Sources of truth
 
-Each skill entry in the top-level `README.md` must link the skill name to its `SKILL.md`.
+- `manifest.json` — version, release date, command roster, and agent roster.
+- `contracts/workflows.json` — workflow IDs, Thai/English sources, activation policy, effects, evidence, and guardrails.
+- `skills/<bucket>/<name>/` — native Thai source. Buckets are `engineering`, `productivity`, `operations`, `knowledge`, and `compat`.
+- `locales/en/skills/<bucket>/<name>/` — English source mirror.
+- `plugins/spk/` — canonical Claude runtime payload.
+- `plugins/spk-codex/` — generated Codex payload; never hand-edit.
+- `extras/skills/` — optional skills that are not part of the default roster.
 
-Each bucket folder has a `README.md` that lists every skill in the bucket with a one-line description, with the skill name linked to its `SKILL.md`. The promoted buckets' `README.md`s and the top-level `README.md` group entries into **User-invoked** and **Model-invoked**; non-promoted bucket `README.md`s (`misc/`, `personal/`) use a flat list.
+## Commands
 
-Skills in `engineering/` and `productivity/` also have a human-facing docs page at `docs/<bucket>/<skill-name>.md` (the docs tree mirrors those two bucket folders under `skills/`). The published URL is `https://aihero.dev/skills-<skill-name>` regardless of bucket — the docs path is repo organisation only. When you add, rename, or change the behaviour of a skill in `engineering/` or `productivity/`, create or re-sync its docs page following [.agents/writing-docs.md](./.agents/writing-docs.md). Skills in the non-promoted buckets (`misc/`, `personal/`, `in-progress/`, `deprecated/`) get **no** docs page.
+- Test: `npm test`
+- Full release gate: `npm run verify:release`
+- Regenerate platform artifacts: `npm run generate:platforms`
+- Regenerate docs: `npm run regen`
+- Validate manifest and roster sync: `npm run validate:manifest && npm run verify:sync`
+- Verify reviewed upstream pin: `npm run verify:upstream`
 
-Every `SKILL.md` is either user-invoked (`disable-model-invocation: true` plus `policy.allow_implicit_invocation: false` in `agents/openai.yaml`, reachable only by the human) or model-invoked (model- or user-reachable). See [.agents/invocation.md](./.agents/invocation.md).
+## Conventions
 
-[`ask-matt`](./skills/engineering/ask-matt/SKILL.md) is the router that maps every user-reachable skill and how they relate. The same trigger that re-syncs a docs page applies to it: whenever you add, rename, remove, or change how a user-reachable skill fits the flows, re-read `ask-matt`'s `SKILL.md` and update it so the map stays accurate — a new skill it never mentions, or a stale one it still routes to, is a router that lies.
+- Thai is the canonical user experience: natural, concise, familiar technical English where clearer, smart defaults for reversible low-risk choices, and one material question when a decision changes scope or risk.
+- Canonical branded renames are `ask-matt -> start` and `setup-matt-pocock-skills -> setup`.
+- Compatibility aliases are temporary, manual-only, disclose the canonical name, and never add authority.
+- All Git writes, remote writes, publishing, deployment, and destructive effects require exact approval for the current target and payload.
+- Every workflow reports observable evidence and gaps; never convert an unverified result into a success claim.
 
-To (re)link every skill into the local harness skill directories (`~/.claude/skills`, `~/.agents/skills`), run `scripts/link-skills.sh`. Each entry is a symlink into this repo, so a `git pull` keeps installed skills current; re-run the script after adding, removing, or renaming a skill.
+## Editing guardrails
+
+- Do not edit generated files under `plugins/spk-codex/`; run `npm run generate:platforms`.
+- Keep every version-bearing file equal to `manifest.json`.version.
+- Adding or renaming a skill requires updating the workflow contract, both locale sources, manifest roster, generated payloads, and SkillLab corpus.
+- Do not restore upstream `misc`, `personal`, `in-progress`, or `deprecated` buckets to the default distribution.
+- Do not auto-merge upstream changes. Compare against the pinned snapshot and review behavior, Thai localization, safety, and evidence before updating the lock.
+- Never weaken the secret scanners or approval envelopes to make a gate pass.

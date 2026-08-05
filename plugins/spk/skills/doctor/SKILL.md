@@ -1,0 +1,48 @@
+---
+name: doctor
+description: Diagnose SPK installation and runtime health across supported hosts using read-only checks, then report exact failures and repair commands.
+---
+
+# SPK Doctor
+
+Diagnose the installed plugin without changing project or plugin state.
+
+## Workflow
+
+1. Resolve the installed plugin root from trusted host metadata. Prefer
+   `CLAUDE_PLUGIN_ROOT` when the host supplies it; use `PLUGIN_ROOT` and then
+   `SPK_PLUGIN_ROOT` only as direct-development fallbacks. Reject a root outside
+   the installed plugin location and do not prefer a same-named project file.
+2. Locate `scripts/spk-doctor.cjs` under that root. Run it with Node from the target
+   project as the current working directory. If structured output is supported,
+   request it; otherwise parse only documented key/value output.
+3. Inspect its diagnostics for manifest discovery, skill/agent counts, hooks, MCP,
+   runtime prerequisites, scaffold state, permissions, host compatibility, and
+   version drift.
+4. Independently verify only failed or ambiguous read-only checks. Do not install,
+   regenerate, rewrite configuration, authenticate, or restart services.
+5. Rank findings as `ERROR`, `WARN`, or `OK`. Give an exact repair command for each
+   failure, but do not execute it.
+
+## Evidence Receipt
+
+Return:
+
+```json
+{
+  "schema": "spk.doctor/v1",
+  "status": "OK | DEGRADED | BROKEN",
+  "host": "<detected host>",
+  "plugin_root": "<resolved path>",
+  "checks": [{"name": "<check>", "status": "OK | WARN | ERROR", "evidence": "<fact>"}],
+  "repair_commands": ["<exact command and argv>"]
+}
+```
+
+## Guardrails
+
+- Doctor is read-only and may not repair, install, authenticate, or delete.
+- Never expose environment values, credentials, tokens, or raw private sources.
+- Treat missing optional capabilities as `WARN`, not `ERROR`.
+- If the runtime script is missing, report installation corruption and the safe
+  reinstall command instead of downloading or inventing a replacement.
