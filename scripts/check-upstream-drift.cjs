@@ -6,7 +6,7 @@ const fs = require('fs');
 const path = require('path');
 
 const REPO_ROOT = path.join(__dirname, '..');
-const PINNED_UPSTREAM_COMMIT = '2ab958093e83e0ec752e6c1c5932da465bf23e0c';
+const PINNED_UPSTREAM_COMMIT = '6acc160e4e0cd062dbbbd7a1b26ae92855edf07e';
 const EXPECTED_BUCKETS = ['engineering', 'productivity'];
 const EXCLUDED_BUCKETS = ['misc', 'personal', 'in-progress', 'deprecated'];
 
