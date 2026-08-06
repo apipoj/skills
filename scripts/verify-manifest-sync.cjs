@@ -9,7 +9,8 @@ function readJson(file) {
 }
 
 function parseFrontmatter(content) {
-  const m = content.match(/^---\n([\s\S]+?)\n---/);
+  const normalized = content.replace(/\r\n/g, '\n');
+  const m = normalized.match(/^---\n([\s\S]+?)\n---/);
   if (!m) return null;
   const fm = {};
   for (const line of m[1].split('\n')) {

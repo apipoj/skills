@@ -10,7 +10,8 @@ const FORBIDDEN_DESCRIPTION_RE = /\b(TODO|FIXME|XXX|WIP)\b/i;
 const INSTRUCTIONAL_PREFIX_RE = /^\s*['"]?Use\s+this\s+(when|skill|for|to)\b/i;
 
 function parseFrontmatter(content) {
-  const m = content.match(/^---\s*\n([\s\S]+?)\n---/);
+  const normalized = content.replace(/\r\n/g, '\n');
+  const m = normalized.match(/^---\s*\n([\s\S]+?)\n---/);
   if (!m) return null;
   const fm = {};
   for (const line of m[1].split('\n')) {

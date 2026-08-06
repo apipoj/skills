@@ -85,6 +85,21 @@ OLD
     expect(regenerateContent(input, manifest)).toBe(input);
   });
 
+  test('preserves CRLF line endings used by Windows checkouts', () => {
+    const input = [
+      '# Header',
+      '<!-- SPK-COUNTS:start -->',
+      'OLD',
+      '<!-- SPK-COUNTS:end -->',
+      '# Footer',
+    ].join('\r\n');
+
+    const output = regenerateContent(input, manifest);
+
+    expect(output).toContain('**4 subagents**');
+    expect(output.replace(/\r\n/g, '')).not.toContain('\n');
+  });
+
   test('separates canonical skills from compatibility aliases', () => {
     const input = `<!-- SPK-COMMANDS:start -->
 OLD

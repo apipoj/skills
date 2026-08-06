@@ -3,7 +3,11 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 
-const { collectVersionSyncErrors, collectReleaseDateErrors } = require('../scripts/verify-manifest-sync.cjs');
+const {
+  collectVersionSyncErrors,
+  collectReleaseDateErrors,
+  parseFrontmatter,
+} = require('../scripts/verify-manifest-sync.cjs');
 
 function writeJson(file, data) {
   fs.mkdirSync(path.dirname(file), { recursive: true });
@@ -27,6 +31,24 @@ function makeFixtureRoot(version = '3.1.4') {
 }
 
 describe('manifest version sync', () => {
+  test('parses agent frontmatter from Windows CRLF checkouts', () => {
+    const content = [
+      '---',
+      'name: planner',
+      'description: Planning agent',
+      'model: claude-sonnet-4-6',
+      'color: green',
+      '---',
+    ].join('\r\n');
+
+    expect(parseFrontmatter(content)).toMatchObject({
+      name: 'planner',
+      description: 'Planning agent',
+      model: 'claude-sonnet-4-6',
+      color: 'green',
+    });
+  });
+
   test('passes when package, lockfile, plugin, and marketplace versions match manifest', () => {
     const root = makeFixtureRoot('3.1.4');
     try {

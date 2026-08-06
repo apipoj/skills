@@ -2,8 +2,10 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
-const runtime = fs.readFileSync(path.join(ROOT, 'plugins/spk/skills/start/SKILL.md'), 'utf8');
-const thai = fs.readFileSync(path.join(ROOT, 'skills/engineering/start/SKILL.md'), 'utf8');
+const runtime = fs.readFileSync(path.join(ROOT, 'plugins/spk/skills/start/SKILL.md'), 'utf8')
+  .replace(/\r\n/g, '\n');
+const thai = fs.readFileSync(path.join(ROOT, 'skills/engineering/start/SKILL.md'), 'utf8')
+  .replace(/\r\n/g, '\n');
 const contract = require('../contracts/workflows.json');
 
 describe('Thai-first instant-start router', () => {
