@@ -3,7 +3,10 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 
-const { collectSkillDescriptionErrors } = require('../scripts/verify-skill-descriptions.cjs');
+const {
+  collectSkillDescriptionErrors,
+  parseFrontmatter,
+} = require('../scripts/verify-skill-descriptions.cjs');
 
 function writeSkill(root, slug, description) {
   const file = path.join(root, 'plugins/spk/skills', slug, 'SKILL.md');
@@ -13,6 +16,18 @@ function writeSkill(root, slug, description) {
 }
 
 describe('skill description lint', () => {
+  test('parses skill frontmatter from Windows CRLF checkouts', () => {
+    const content = [
+      '---',
+      'description: Plan implementation work with requirements, tests, and verification gates.',
+      '---',
+    ].join('\r\n');
+
+    expect(parseFrontmatter(content)).toMatchObject({
+      description: 'Plan implementation work with requirements, tests, and verification gates.',
+    });
+  });
+
   test('accepts concise capability-led descriptions', () => {
     const root = fs.mkdtempSync(path.join(os.tmpdir(), 'spk-skill-desc-'));
     try {

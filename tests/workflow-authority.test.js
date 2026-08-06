@@ -24,7 +24,8 @@ function nativeSkillFile(id) {
 }
 
 function frontmatter(text) {
-  const match = text.match(/^---\n([\s\S]*?)\n---/);
+  const normalized = text.replace(/\r\n/g, '\n');
+  const match = normalized.match(/^---\n([\s\S]*?)\n---/);
   if (!match) return {};
   return Object.fromEntries(match[1].split('\n').flatMap(line => {
     const hit = line.match(/^([A-Za-z][A-Za-z-]*):\s*(.+)$/);

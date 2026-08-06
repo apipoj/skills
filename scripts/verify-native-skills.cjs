@@ -22,7 +22,8 @@ function missingFromDocs(ids, content) {
 }
 
 function parseFrontmatter(content) {
-  const match = content.match(/^---\n([\s\S]+?)\n---/);
+  const normalized = content.replace(/\r\n/g, '\n');
+  const match = normalized.match(/^---\n([\s\S]+?)\n---/);
   if (!match) return null;
   const fields = {};
   for (const line of match[1].split('\n')) {
@@ -71,7 +72,7 @@ function collectNativeSkillErrors(rootDir = REPO_ROOT, contract = CONTRACT) {
       if (metadata.name !== skill.id) errors.push(`${relative}: name must be ${skill.id}`);
       if (!metadata.description) errors.push(`${relative}: missing description`);
     }
-    const body = content.replace(/^---\n[\s\S]+?\n---/, '');
+    const body = content.replace(/\r\n/g, '\n').replace(/^---\n[\s\S]+?\n---/, '');
     if (!THAI_CHAR_RE.test(body)) errors.push(`${relative}: body lacks native Thai content`);
     for (const hit of checkForbiddenTokens(content)) {
       errors.push(`${relative}:${hit.line}: forbidden token "${hit.token}"`);

@@ -12,12 +12,27 @@ const ROOT = path.join(__dirname, '..');
 const contract = require('../contracts/workflows.json');
 
 describe('bucketed Thai-first skills', () => {
+  test('parses native skill frontmatter from Windows CRLF checkouts', () => {
+    const content = [
+      '---',
+      'name: debug',
+      'description: หาต้นเหตุของบั๊ก',
+      '---',
+      '# Debug',
+    ].join('\r\n');
+
+    expect(parseFrontmatter(content)).toMatchObject({
+      name: 'debug',
+      description: 'หาต้นเหตุของบั๊ก',
+    });
+  });
+
   test.each(contract.skills.map(skill => [skill.id, skill.sources.th]))('%s has its declared Thai source', (id, source) => {
     const file = path.join(ROOT, source, 'SKILL.md');
     expect(fs.existsSync(file)).toBe(true);
     const content = fs.readFileSync(file, 'utf8');
     expect(parseFrontmatter(content)).toMatchObject({ name: id });
-    expect(content.replace(/^---\n[\s\S]+?\n---/, '')).toMatch(THAI_CHAR_RE);
+    expect(content.replace(/\r\n/g, '\n').replace(/^---\n[\s\S]+?\n---/, '')).toMatch(THAI_CHAR_RE);
   });
 
   test('every discovered Thai SKILL.md is declared by the contract', () => {

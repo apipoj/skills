@@ -5,17 +5,7 @@ const path = require('path');
 const REPO_ROOT = path.join(__dirname, '..');
 const PLUGIN_ROOT = path.join(REPO_ROOT, 'plugins', 'spk');
 const manifest = JSON.parse(fs.readFileSync(path.join(REPO_ROOT, 'manifest.json'), 'utf-8'));
-
-function parseFrontmatter(content) {
-  const m = content.match(/^---\n([\s\S]+?)\n---/);
-  if (!m) return null;
-  const fm = {};
-  for (const line of m[1].split('\n')) {
-    const kv = line.match(/^([a-z]+):\s*(.+)$/);
-    if (kv) fm[kv[1]] = kv[2].trim();
-  }
-  return fm;
-}
+const { parseFrontmatter } = require('../scripts/verify-manifest-sync.cjs');
 
 describe('agent manifest sync', () => {
   const allAgents = [
