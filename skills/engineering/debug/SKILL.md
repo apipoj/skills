@@ -8,6 +8,12 @@ description: หาต้นเหตุของบั๊กหรือปั�
 
 ใช้ตอน test fail, production bug, build error, regression, behavior ไม่ตามที่คาด หรือทุกสถานการณ์ที่การเดาจะเสียเวลา
 
+## ปกปิดความลับก่อนแสดง
+
+skill นี้บังคับให้แสดง command, output และ artifact ที่เก็บมา **ปกปิดความลับทุกตัวก่อนเสมอ** โดยเขียน `<REDACTED>` แทนที่ค่าจริง สร้าง feedback loop โดยอ้างผ่าน env var เพื่อให้ credential อยู่ใน environment ไม่ใช่อยู่ในสิ่งที่แสดง artifact ที่เก็บมามักมี auth header ติดมาด้วย ให้ยกมาเฉพาะบรรทัดที่เป็นสัญญาณจริง
+
+ถ้า output ที่ปกปิดแล้วไม่พอสำหรับวินิจฉัย ให้บอกตรง ๆ แล้วถามผู้ใช้
+
 ## รวบรวม Context
 
 - ถ้าอยู่ใน git worktree ให้รัน `git status --short`, `git log -5 --oneline` และ `git diff --stat`; ถ้าไม่ใช่ git repo ให้ข้าม git context และใช้ข้อมูลที่มีแทน
