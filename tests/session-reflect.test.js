@@ -28,13 +28,23 @@ let trustedTestNodeRoot;
 let trustedTestNode;
 
 beforeAll(() => {
+  const realNode = fs.realpathSync(process.execPath);
   trustedTestNodeRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'spk-reflect-test-node-'));
   trustedTestNode = path.join(
     trustedTestNodeRoot,
     process.platform === 'win32' ? 'node.exe' : 'node',
   );
-  fs.copyFileSync(fs.realpathSync(process.execPath), trustedTestNode);
+  fs.copyFileSync(realNode, trustedTestNode);
   if (process.platform !== 'win32') fs.chmodSync(trustedTestNode, 0o755);
+  // A dynamically linked Node (Homebrew, most distro packages) resolves
+  // libnode via an @rpath relative to the executable, so the copy above cannot
+  // start once it leaves the install prefix. Fall back to the real binary
+  // there: the copy only exists to dodge host toolcache ownership and mode,
+  // which `validateExternalFile` rejects, and that hardening is worthless if
+  // the double cannot execute at all.
+  if (spawnSync(trustedTestNode, ['-e', '0'], { timeout: 10000 }).status !== 0) {
+    trustedTestNode = realNode;
+  }
 });
 
 afterAll(() => {
