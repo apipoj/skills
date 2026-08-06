@@ -49,7 +49,7 @@ npx skills@latest add apipoj/skills
 ## ภาพรวม
 
 <!-- SPK-COUNTS:start -->
-**21 subagents** (4 orchestrators + 17 specialists) · **37 skills หลัก** + **20 ชื่อเดิม**
+**21 subagents** (4 orchestrators + 17 specialists) · **38 skills หลัก** + **20 ชื่อเดิม**
 <!-- SPK-COUNTS:end -->
 
 ### Agents
@@ -112,6 +112,7 @@ Aliases ในตารางเป็นชื่อเดิมชั่วค
 | `/spk:teach` | direct main-thread workflow |
 | `/spk:write-skills` | direct main-thread workflow |
 | `/spk:ask-me` | direct main-thread workflow |
+| `/spk:wait-what` | direct main-thread workflow |
 | `/spk:plan` | plan-orchestrator |
 | `/spk:design-options` | designer |
 | `/spk:deploy` | deploy-orchestrator |

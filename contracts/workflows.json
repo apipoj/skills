@@ -1802,6 +1802,75 @@
       ]
     },
     {
+      "id": "wait-what",
+      "tier": "core",
+      "origin": {
+        "repository": "mattpocock/skills",
+        "skill": "wait-what"
+      },
+      "sources": {
+        "th": "skills/productivity/wait-what",
+        "en": "locales/en/skills/productivity/wait-what"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Wait What",
+          "description": "Stop and re-pitch the last message that did not land: add the missing context, drop the jargon, and use the project's own vocabulary from CONTEXT.md.",
+          "shortDescription": "Re-pitch the last message in plain language with the missing context",
+          "defaultPrompt": "Use wait-what for my current request.",
+          "triggers": [
+            "use wait-what",
+            "wait-what workflow"
+          ],
+          "negativeTriggers": [
+            "the user asked a new question instead",
+            "the user selected a narrower skill"
+          ]
+        },
+        "th": {
+          "displayName": "งงตรงไหน",
+          "description": "หยุดแล้วอธิบายข้อความล่าสุดใหม่ให้เข้าใจ เติม context ที่ขาด เลี่ยงศัพท์เทคนิคที่ไม่จำเป็น และใช้คำศัพท์ของโปรเจกต์จาก CONTEXT.md",
+          "shortDescription": "อธิบายข้อความล่าสุดใหม่ด้วยภาษาที่เข้าใจง่ายและ context ที่ขาดไป",
+          "defaultPrompt": "ใช้ wait-what กับข้อความล่าสุด",
+          "triggers": [
+            "ใช้ wait-what",
+            "ทำงานแบบ wait-what"
+          ],
+          "negativeTriggers": [
+            "ผู้ใช้ถามคำถามใหม่แทน",
+            "ผู้ใช้เลือก skill ที่แคบกว่าแล้ว"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": false
+      },
+      "effectLevel": "read_only",
+      "role": "wait_what_workflow",
+      "workflow": [
+        {
+          "phase": "locate",
+          "instruction": "Identify the exact message that did not land and name the assumed knowledge that made it opaque."
+        },
+        {
+          "phase": "repitch",
+          "instruction": "Say it again with the missing context first, in plain language, using the project's own vocabulary from CONTEXT.md when it exists."
+        }
+      ],
+      "artifacts": [
+        "re-pitched explanation"
+      ],
+      "evidence": [
+        "the message being re-pitched",
+        "the context that was missing"
+      ],
+      "guardrails": [
+        "Explain again; never change the work or any file.",
+        "Use natural concise Thai and the project's own vocabulary instead of borrowed jargon.",
+        "Say plainly when the confusion came from a wrong assumption rather than from wording."
+      ]
+    },
+    {
       "id": "plan",
       "tier": "core",
       "origin": {

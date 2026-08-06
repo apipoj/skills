@@ -230,6 +230,10 @@
       "direct": true
     },
     {
+      "name": "/wait-what",
+      "direct": true
+    },
+    {
       "name": "/plan",
       "orchestrator": "plan-orchestrator"
     },

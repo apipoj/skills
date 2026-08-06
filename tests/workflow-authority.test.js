@@ -103,6 +103,7 @@ describe('provider-neutral workflow and authority contracts', () => {
       'to-tickets',
       'triage',
       'uninstall',
+      'wait-what',
       'wayfinder',
       'wiki-lint',
       'write-skills',
