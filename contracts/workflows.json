@@ -1621,7 +1621,7 @@
       "tier": "core",
       "origin": {
         "repository": "mattpocock/skills",
-        "skill": "writing-great-skills"
+        "skill": "writing-for-agents"
       },
       "sources": {
         "th": "skills/productivity/write-skills",
@@ -1630,8 +1630,8 @@
       "locales": {
         "en": {
           "displayName": "Write Skills",
-          "description": "ใช้หลัก predictability, progressive disclosure และการลด prompt noise เพื่อเขียน skill ที่ไว้ใจได้",
-          "shortDescription": "ใช้หลัก predictability, progressive disclosure และการลด prompt noise เพื่อเขียน skill ที่ไว้ใจได",
+          "description": "Write and edit any document an agent consumes - a skill, AGENTS.md, CLAUDE.md, or a doc reached by a pointer - so it is reached at the right moment and runs the same way every time.",
+          "shortDescription": "Write any document an agent consumes so it is reached at the right moment",
           "defaultPrompt": "Use write-skills for my current request.",
           "triggers": [
             "use write-skills",
@@ -1643,9 +1643,9 @@
           ]
         },
         "th": {
-          "displayName": "เขียน skill ให้ใช้ได้จริง",
-          "description": "เขียนหรือปรับ skill ให้เรียกใช้ถูก ทำงานสม่ำเสมอ และไม่ใส่คำสั่งเกินจำเป็น",
-          "shortDescription": "เขียนหรือปรับ skill ให้เรียกใช้ถูก ทำงานสม่ำเสมอ และไม่ใส่คำสั่งเกินจำเป็น",
+          "displayName": "เขียนเอกสารให้ agent อ่าน",
+          "description": "เขียนหรือปรับเอกสารที่ agent ต้องอ่าน ทั้ง skill, AGENTS.md, CLAUDE.md และ doc ที่ถูกชี้ถึง ให้เรียกใช้ถูกและทำงานสม่ำเสมอ",
+          "shortDescription": "เขียนเอกสารที่ agent ต้องอ่านให้เรียกใช้ถูกและทำงานสม่ำเสมอ",
           "defaultPrompt": "ใช้ write-skills กับคำขอนี้",
           "triggers": [
             "ใช้ write-skills",
@@ -3989,6 +3989,76 @@
       "guardrails": [
         "Never broaden scope or permissions through an alias.",
         "Do not hide the deprecation notice."
+      ],
+      "aliasFor": "write-skills"
+    },
+    {
+      "id": "writing-for-agents",
+      "tier": "compat",
+      "origin": {
+        "repository": "mattpocock/skills",
+        "skill": "writing-for-agents"
+      },
+      "sources": {
+        "th": "skills/compat/writing-for-agents",
+        "en": "locales/en/skills/compat/writing-for-agents"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Upstream name: writing-for-agents → write-skills",
+          "description": "Compatibility alias for write-skills under its upstream name; disclose the canonical name and apply the same contract without expanding authority.",
+          "shortDescription": "Upstream name for write-skills; use the same contract without extra authority",
+          "defaultPrompt": "Use writing-for-agents for my current request.",
+          "triggers": [
+            "use writing-for-agents",
+            "writing-for-agents workflow"
+          ],
+          "negativeTriggers": [
+            "the request is outside this workflow",
+            "the user selected the canonical skill"
+          ]
+        },
+        "th": {
+          "displayName": "ชื่อ upstream: writing-for-agents → write-skills",
+          "description": "ชื่อจาก upstream สำหรับ write-skills; แจ้งชื่อหลักแล้วใช้ contract เดียวกันโดยไม่เพิ่มสิทธิ์หรือขยาย scope",
+          "shortDescription": "ชื่อ upstream ของ write-skills; ใช้ contract เดิมโดยไม่เพิ่มสิทธิ์",
+          "defaultPrompt": "ใช้ writing-for-agents กับคำขอนี้",
+          "triggers": [
+            "ใช้ writing-for-agents",
+            "ทำงานแบบ writing-for-agents"
+          ],
+          "negativeTriggers": [
+            "คำขออยู่นอกขอบเขต workflow นี้",
+            "ผู้ใช้เลือกชื่อหลักแล้ว"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": false
+      },
+      "effectLevel": "read_only",
+      "role": "compatibility_alias",
+      "workflow": [
+        {
+          "phase": "disclose",
+          "instruction": "Tell the user that the Apipoj Skills name for writing-for-agents is write-skills."
+        },
+        {
+          "phase": "delegate",
+          "instruction": "Apply the write-skills contract without adding authority."
+        }
+      ],
+      "artifacts": [
+        "write-skills result",
+        "compatibility notice"
+      ],
+      "evidence": [
+        "canonical workflow evidence",
+        "compat_alias: writing-for-agents"
+      ],
+      "guardrails": [
+        "Never broaden scope or permissions through an alias.",
+        "Do not hide the compatibility notice."
       ],
       "aliasFor": "write-skills"
     },

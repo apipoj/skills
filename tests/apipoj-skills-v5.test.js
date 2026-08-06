@@ -63,6 +63,7 @@ const aliases = {
   'design-shotgun': 'design-options',
   'resolving-merge-conflicts': 'fix-conflicts',
   'writing-great-skills': 'write-skills',
+  'writing-for-agents': 'write-skills',
   prime: 'load-project',
   query: 'ask-project',
   ingest: 'add-knowledge',
@@ -86,13 +87,13 @@ describe('Apipoj Skills v5 migration contract', () => {
     });
   });
 
-  test('declares 38 canonical skills and 20 temporary aliases', () => {
+  test('declares 38 canonical skills and 21 temporary aliases', () => {
     const skills = new Map(contract.skills.map(skill => [skill.id, skill]));
     const canonical = [...upstreamCanonical, ...spkCore];
 
     expect(new Set(canonical).size).toBe(38);
-    expect(contract.skills).toHaveLength(58);
-    expect(manifest.commands).toHaveLength(58);
+    expect(contract.skills).toHaveLength(59);
+    expect(manifest.commands).toHaveLength(59);
 
     for (const id of canonical) {
       expect(skills.get(id)).toMatchObject({ tier: 'core' });

@@ -98,6 +98,7 @@ Select skills from the Thai-first `skills/` tree. Do not combine this with a nat
 | `/spk:design-shotgun` | `/spk:design-options` |
 | `/spk:resolving-merge-conflicts` | `/spk:fix-conflicts` |
 | `/spk:writing-great-skills` | `/spk:write-skills` |
+| `/spk:writing-for-agents` | `/spk:write-skills` |
 | `/spk:prime` | `/spk:load-project` |
 | `/spk:query` | `/spk:ask-project` |
 | `/spk:ingest` | `/spk:add-knowledge` |

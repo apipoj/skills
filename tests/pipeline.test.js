@@ -43,7 +43,7 @@ describe('pipeline smoke', () => {
     expect(match).not.toBeNull();
     expect(match[1]).toMatch(/\*\*\d+ subagents\*\*/);
     expect(match[1]).toMatch(/\*\*38 skills หลัก\*\*/);
-    expect(match[1]).toMatch(/\*\*20 ชื่อเดิม\*\*/);
+    expect(match[1]).toMatch(/\*\*21 ชื่อเดิม\*\*/);
   });
 
   test('every agent in manifest has unique name', () => {

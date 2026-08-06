@@ -107,6 +107,7 @@ describe('provider-neutral workflow and authority contracts', () => {
       'wayfinder',
       'wiki-lint',
       'write-skills',
+      'writing-for-agents',
       'writing-great-skills',
     ]);
     for (const name of MANUAL_ONLY) {

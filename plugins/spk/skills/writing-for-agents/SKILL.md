@@ -1,0 +1,22 @@
+---
+name: writing-for-agents
+description: Compatibility alias for write-skills under its upstream name; disclose the canonical name and apply the same contract without expanding authority.
+disable-model-invocation: true
+---
+# Upstream alias: writing-for-agents
+
+`writing-for-agents` is this skill's name in the Matt Pocock upstream; the Apipoj Skills name is `write-skills`. Supported until 6.0.0. Tell the user the canonical name, then apply the canonical approval and evidence contract.
+
+## Workflow
+
+1. Disclose the canonical skill name.
+2. Apply the write-skills contract directly without adding authority.
+
+## Evidence Receipt
+
+Return the canonical workflow receipt and include `compat_alias: writing-for-agents`.
+
+## Guardrails
+
+- Never broaden scope or permissions through an alias.
+- Do not hide the compatibility notice.
