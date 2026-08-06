@@ -51,6 +51,7 @@ Select skills from the Thai-first `skills/` tree. Do not combine this with a nat
 | `/spk:tdd` | build-orchestrator |
 | `/spk:to-spec` | direct main-thread workflow |
 | `/spk:to-tickets` | direct main-thread workflow |
+| `/spk:to-questionnaire` | direct main-thread workflow |
 | `/spk:wayfinder` | direct main-thread workflow |
 | `/spk:code` | build-orchestrator |
 | `/spk:prototype` | designer |

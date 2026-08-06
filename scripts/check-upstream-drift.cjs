@@ -10,7 +10,7 @@ const PINNED_UPSTREAM_COMMIT = '6acc160e4e0cd062dbbbd7a1b26ae92855edf07e';
 const EXPECTED_BUCKETS = ['engineering', 'productivity'];
 // Canonical upstream skills we ship, plus aliases whose target is not itself
 // upstream-derived. Raise this deliberately when a review promotes a new skill.
-const EXPECTED_PROMOTED_SKILLS = 23;
+const EXPECTED_PROMOTED_SKILLS = 24;
 const EXCLUDED_BUCKETS = ['misc', 'personal', 'in-progress', 'deprecated'];
 
 function readJson(file) {

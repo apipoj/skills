@@ -98,6 +98,7 @@ describe('provider-neutral workflow and authority contracts', () => {
       'spk',
       'task-to-pr',
       'teach',
+      'to-questionnaire',
       'to-spec',
       'to-tickets',
       'triage',

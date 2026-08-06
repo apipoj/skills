@@ -49,7 +49,7 @@ Use one installation method per project to avoid duplicate skills.
 ## Inventory
 
 <!-- SPK-COUNTS:start -->
-**21 subagents** (4 orchestrators + 17 specialists) · **36 canonical skills** + **20 compatibility aliases**
+**21 subagents** (4 orchestrators + 17 specialists) · **37 canonical skills** + **20 compatibility aliases**
 <!-- SPK-COUNTS:end -->
 
 ### Agents
@@ -98,6 +98,7 @@ Compatibility aliases are supported until v6 and always disclose the canonical r
 | `/spk:tdd` | build-orchestrator |
 | `/spk:to-spec` | direct main-thread workflow |
 | `/spk:to-tickets` | direct main-thread workflow |
+| `/spk:to-questionnaire` | direct main-thread workflow |
 | `/spk:wayfinder` | direct main-thread workflow |
 | `/spk:code` | build-orchestrator |
 | `/spk:prototype` | designer |
