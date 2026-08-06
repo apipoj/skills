@@ -37,7 +37,8 @@ describe('pipeline smoke', () => {
   });
 
   test('README has SPK-COUNTS filled from manifest', () => {
-    const readme = fs.readFileSync(path.join(REPO_ROOT, 'README.md'), 'utf-8');
+    const readme = fs.readFileSync(path.join(REPO_ROOT, 'README.md'), 'utf-8')
+      .replace(/\r\n/g, '\n');
     const match = readme.match(/<!-- SPK-COUNTS:start -->\n(.+?)\n<!-- SPK-COUNTS:end -->/s);
     expect(match).not.toBeNull();
     expect(match[1]).toMatch(/\*\*\d+ subagents\*\*/);

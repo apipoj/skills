@@ -21,6 +21,10 @@ const {
 
 const REPO_ROOT = path.resolve(__dirname, '..');
 
+function normalizeLineEndings(content) {
+  return content.replace(/\r\n/g, '\n');
+}
+
 function writeFile(root, relativePath, content) {
   const filePath = path.join(root, relativePath);
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
@@ -321,17 +325,23 @@ describe('platform artifact compiler', () => {
         category: 'Developer Tools',
       },
     ]);
-    expect(artifacts.get(
+    expect(normalizeLineEndings(artifacts.get(
       path.join(CODEX_PLUGIN_ROOT_RELATIVE, 'scripts', 'spk-doctor.cjs'),
-    )).toBe(
-      fs.readFileSync(path.join(REPO_ROOT, 'plugins/spk/scripts/spk-doctor.cjs'), 'utf8'),
+    ))).toBe(
+      normalizeLineEndings(fs.readFileSync(
+        path.join(REPO_ROOT, 'plugins/spk/scripts/spk-doctor.cjs'),
+        'utf8',
+      )),
     );
-    expect(artifacts.get(
+    expect(normalizeLineEndings(artifacts.get(
       path.join(CODEX_PLUGIN_ROOT_RELATIVE, 'mcp', 'codebase-search.cjs'),
-    )).toBe(
-      fs.readFileSync(path.join(REPO_ROOT, 'plugins/spk/mcp/codebase-search.cjs'), 'utf8'),
+    ))).toBe(
+      normalizeLineEndings(fs.readFileSync(
+        path.join(REPO_ROOT, 'plugins/spk/mcp/codebase-search.cjs'),
+        'utf8',
+      )),
     );
-    expect(artifacts.get(
+    expect(normalizeLineEndings(artifacts.get(
       path.join(
         CODEX_PLUGIN_ROOT_RELATIVE,
         'templates',
@@ -339,11 +349,11 @@ describe('platform artifact compiler', () => {
         'wiki',
         'SCHEMA.md',
       ),
-    )).toBe(
-      fs.readFileSync(
+    ))).toBe(
+      normalizeLineEndings(fs.readFileSync(
         path.join(REPO_ROOT, 'plugins/spk/templates/ai_context/wiki/SCHEMA.md'),
         'utf8',
-      ),
+      )),
     );
 
     const deploy = contract.skills.find((skill) => skill.id === 'deploy');
