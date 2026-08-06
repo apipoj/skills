@@ -1988,6 +1988,83 @@
       ]
     },
     {
+      "id": "wizard",
+      "tier": "core",
+      "origin": {
+        "repository": "mattpocock/skills",
+        "skill": "wizard"
+      },
+      "sources": {
+        "th": "skills/operations/wizard",
+        "en": "locales/en/skills/operations/wizard"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Wizard",
+          "description": "Author an interactive bash wizard for the steps only a human can perform - provisioning, credentials, CI secrets, dashboards, one-off migrations - then verify it statically and hand it over without running it.",
+          "shortDescription": "Author a bash wizard for human-only setup steps, verify it, and hand it over",
+          "defaultPrompt": "Use wizard for my current request.",
+          "triggers": [
+            "use wizard",
+            "wizard workflow"
+          ],
+          "negativeTriggers": [
+            "the agent can perform the step itself",
+            "the user selected a narrower skill"
+          ]
+        },
+        "th": {
+          "displayName": "สร้างตัวช่วยตั้งค่า",
+          "description": "เขียน bash wizard แบบโต้ตอบสำหรับขั้นตอนที่มีแต่คนทำได้ เช่น ตั้งค่า infrastructure, credential, CI secret หรือ migration ครั้งเดียว แล้วตรวจสอบให้เรียบร้อยและส่งให้ผู้ใช้รันเอง",
+          "shortDescription": "เขียน bash wizard สำหรับขั้นตอนที่มีแต่คนทำได้ ตรวจสอบแล้วส่งให้รันเอง",
+          "defaultPrompt": "ใช้ wizard กับคำขอนี้",
+          "triggers": [
+            "ใช้ wizard",
+            "ทำงานแบบ wizard"
+          ],
+          "negativeTriggers": [
+            "งานนี้ agent ทำเองได้",
+            "ผู้ใช้เลือก skill ที่แคบกว่าแล้ว"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": true
+      },
+      "effectLevel": "workspace_write",
+      "role": "wizard_workflow",
+      "workflow": [
+        {
+          "phase": "scope",
+          "instruction": "Read .env files, README, compose files, and .github/workflows for every secrets.* and vars.* reference, then confirm the ordered stage list and the value each stage produces."
+        },
+        {
+          "phase": "author",
+          "instruction": "Copy the shipped template, write one stage per step in dependency order using only the library helpers, and set TOTAL_STAGES."
+        },
+        {
+          "phase": "verify",
+          "instruction": "Run bash -n and shellcheck when available, chmod +x, trace every value statically, and hand the path to the human without running the script."
+        }
+      ],
+      "artifacts": [
+        "wizard script",
+        "stage-to-value map"
+      ],
+      "evidence": [
+        "inputs used",
+        "syntax check result",
+        "verification status"
+      ],
+      "guardrails": [
+        "Never execute the generated wizard; the human runs it.",
+        "Never echo a captured value into the transcript; write <REDACTED> instead.",
+        "Never hand-edit the library above the STAGES marker.",
+        "Confirm before every irreversible stage in the generated script.",
+        "Report evidence gaps instead of guessing at a dashboard's current UI."
+      ]
+    },
+    {
       "id": "pr",
       "tier": "core",
       "origin": {

@@ -238,6 +238,10 @@
       "orchestrator": "deploy-orchestrator"
     },
     {
+      "name": "/wizard",
+      "direct": true
+    },
+    {
       "name": "/pr",
       "agent": "pr-manager"
     },

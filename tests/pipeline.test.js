@@ -42,7 +42,7 @@ describe('pipeline smoke', () => {
     const match = readme.match(/<!-- SPK-COUNTS:start -->\n(.+?)\n<!-- SPK-COUNTS:end -->/s);
     expect(match).not.toBeNull();
     expect(match[1]).toMatch(/\*\*\d+ subagents\*\*/);
-    expect(match[1]).toMatch(/\*\*35 skills หลัก\*\*/);
+    expect(match[1]).toMatch(/\*\*36 skills หลัก\*\*/);
     expect(match[1]).toMatch(/\*\*20 ชื่อเดิม\*\*/);
   });
 
