@@ -572,14 +572,9 @@ function addCodexRuntimeArtifacts(artifacts, repoRoot) {
     const source = path.join(sourceRoot, entry);
     for (const file of regularFilesRecursively(source)) {
       const relative = path.relative(sourceRoot, file);
-      // Claude resolves this value only from user/managed plugin configuration;
-      // Codex has no equivalent userConfig contract, so its isolated payload uses
-      // the host runtime lookup and never receives the Claude-only placeholder.
-      const normalizedRelative = relative.replace(/\\/g, '/');
-      let content = fs.readFileSync(file, 'utf8').replace(/\r\n/g, '\n');
-      if (normalizedRelative === '.mcp.json' || normalizedRelative === 'hooks/hooks.json') {
-        content = content.replaceAll('${user_config.node_path}', 'node');
-      }
+      // Both payloads now launch hooks and the MCP server with `node` from the
+      // host lookup, so the Codex copy is byte-identical to the Claude source.
+      const content = fs.readFileSync(file, 'utf8').replace(/\r\n/g, '\n');
       artifacts.set(
         path.join(CODEX_PLUGIN_ROOT_RELATIVE, relative),
         content,

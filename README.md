@@ -23,6 +23,8 @@ Apipoj Skills ใช้ skill ที่เล็กและ composable จา�
 /plugin install spk@spk
 ```
 
+ใช้ได้เลยหลังติดตั้ง ไม่ต้องตั้งค่าอะไรเพิ่ม ขอแค่มี Node.js 20 ขึ้นไปอยู่ใน `PATH` (เช็กด้วย `node --version`)
+
 ### Codex
 
 ```bash
@@ -87,48 +89,52 @@ Aliases ในตารางเป็นชื่อเดิมชั่วค
 <!-- SPK-COMMANDS:start -->
 ### ชื่อหลัก
 
-| Skill | ทำงานผ่าน |
-|---|---|
-| `/spk:start` | direct main-thread workflow |
-| `/spk:debug` | debugger |
-| `/spk:ask-with-docs` | direct main-thread workflow |
-| `/spk:triage` | direct main-thread workflow |
-| `/spk:improve-codebase` | direct main-thread workflow |
-| `/spk:setup` | direct main-thread workflow |
-| `/spk:tdd` | build-orchestrator |
-| `/spk:to-spec` | direct main-thread workflow |
-| `/spk:to-tickets` | direct main-thread workflow |
-| `/spk:to-questionnaire` | direct main-thread workflow |
-| `/spk:wayfinder` | direct main-thread workflow |
-| `/spk:code` | build-orchestrator |
-| `/spk:prototype` | designer |
-| `/spk:research` | researcher |
-| `/spk:domain-modeling` | direct main-thread workflow |
-| `/spk:codebase-design` | direct main-thread workflow |
-| `/spk:code-review` | audit-orchestrator |
-| `/spk:fix-conflicts` | direct main-thread workflow |
-| `/spk:asking` | direct main-thread workflow |
-| `/spk:handoff` | direct main-thread workflow |
-| `/spk:teach` | direct main-thread workflow |
-| `/spk:write-skills` | direct main-thread workflow |
-| `/spk:ask-me` | direct main-thread workflow |
-| `/spk:wait-what` | direct main-thread workflow |
-| `/spk:plan` | plan-orchestrator |
-| `/spk:design-options` | designer |
-| `/spk:deploy` | deploy-orchestrator |
-| `/spk:wizard` | direct main-thread workflow |
-| `/spk:pr` | pr-manager |
-| `/spk:task-to-pr` | direct main-thread workflow |
-| `/spk:add-knowledge` | direct main-thread workflow |
-| `/spk:load-project` | primer |
-| `/spk:ask-project` | researcher |
-| `/spk:check-wiki` | audit-orchestrator |
-| `/spk:doctor` | direct main-thread workflow |
-| `/spk:check-release` | verifier |
-| `/spk:test-changes` | direct main-thread workflow |
-| `/spk:uninstall` | direct main-thread workflow |
+`พิมพ์เอง` = agent มองไม่เห็น ต้องพิมพ์คำสั่งเองเท่านั้น
+
+| Skill | ทำงานผ่าน | การเรียก |
+|---|---|---|
+| `/spk:start` | direct main-thread workflow | agent เรียกเองได้ |
+| `/spk:debug` | debugger | agent เรียกเองได้ |
+| `/spk:ask-with-docs` | direct main-thread workflow | พิมพ์เอง |
+| `/spk:triage` | direct main-thread workflow | พิมพ์เอง |
+| `/spk:improve-codebase` | direct main-thread workflow | พิมพ์เอง |
+| `/spk:setup` | direct main-thread workflow | พิมพ์เอง |
+| `/spk:tdd` | build-orchestrator | agent เรียกเองได้ |
+| `/spk:to-spec` | direct main-thread workflow | พิมพ์เอง |
+| `/spk:to-tickets` | direct main-thread workflow | พิมพ์เอง |
+| `/spk:to-questionnaire` | direct main-thread workflow | พิมพ์เอง |
+| `/spk:wayfinder` | direct main-thread workflow | พิมพ์เอง |
+| `/spk:code` | build-orchestrator | agent เรียกเองได้ |
+| `/spk:prototype` | designer | agent เรียกเองได้ |
+| `/spk:research` | researcher | agent เรียกเองได้ |
+| `/spk:domain-modeling` | direct main-thread workflow | agent เรียกเองได้ |
+| `/spk:codebase-design` | direct main-thread workflow | agent เรียกเองได้ |
+| `/spk:code-review` | audit-orchestrator | agent เรียกเองได้ |
+| `/spk:fix-conflicts` | direct main-thread workflow | agent เรียกเองได้ |
+| `/spk:asking` | direct main-thread workflow | agent เรียกเองได้ |
+| `/spk:handoff` | direct main-thread workflow | พิมพ์เอง |
+| `/spk:teach` | direct main-thread workflow | พิมพ์เอง |
+| `/spk:write-skills` | direct main-thread workflow | พิมพ์เอง |
+| `/spk:ask-me` | direct main-thread workflow | พิมพ์เอง |
+| `/spk:wait-what` | direct main-thread workflow | พิมพ์เอง |
+| `/spk:plan` | plan-orchestrator | agent เรียกเองได้ |
+| `/spk:design-options` | designer | agent เรียกเองได้ |
+| `/spk:deploy` | deploy-orchestrator | พิมพ์เอง |
+| `/spk:wizard` | direct main-thread workflow | agent เรียกเองได้ |
+| `/spk:pr` | pr-manager | พิมพ์เอง |
+| `/spk:task-to-pr` | direct main-thread workflow | พิมพ์เอง |
+| `/spk:add-knowledge` | direct main-thread workflow | พิมพ์เอง |
+| `/spk:load-project` | primer | agent เรียกเองได้ |
+| `/spk:ask-project` | researcher | agent เรียกเองได้ |
+| `/spk:check-wiki` | audit-orchestrator | agent เรียกเองได้ |
+| `/spk:doctor` | direct main-thread workflow | agent เรียกเองได้ |
+| `/spk:check-release` | verifier | พิมพ์เอง |
+| `/spk:test-changes` | direct main-thread workflow | agent เรียกเองได้ |
+| `/spk:uninstall` | direct main-thread workflow | พิมพ์เอง |
 
 ### ชื่อเดิมที่ยังใช้ได้
+
+ชื่อเดิมทุกตัวเป็นแบบพิมพ์เองเท่านั้น
 
 | ชื่อเดิม | ใช้ชื่อหลักนี้ |
 |---|---|
@@ -177,4 +183,4 @@ Version และ roster ใช้ `manifest.json` เป็น source of truth 
 
 ## Upstream และ license
 
-ฐาน upstream คือ `mattpocock/skills@2ab958093e83e0ec752e6c1c5932da465bf23e0c` ภายใต้ MIT License การ sync รอบถัดไปต้อง review และ localize ก่อนเสมอ ดู `NOTICE` และ `docs/upstream/`
+ฐาน upstream คือ `mattpocock/skills@6acc160e4e0cd062dbbbd7a1b26ae92855edf07e` ภายใต้ MIT License การ sync รอบถัดไปต้อง review และ localize ก่อนเสมอ ดู `NOTICE` และ `docs/upstream/`

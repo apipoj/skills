@@ -11,10 +11,10 @@ describe('plugin .mcp.json', () => {
     mcp = JSON.parse(fs.readFileSync(MCP_JSON, 'utf-8'));
   });
 
-  test('declares spk-codebase-search over the user-owned trusted Node entry', () => {
+  test('declares spk-codebase-search over the host Node lookup', () => {
     const s = mcp.mcpServers['spk-codebase-search'];
     expect(s).toBeTruthy();
-    expect(s.command).toBe('${user_config.node_path}');
+    expect(s.command).toBe('node');
     expect(s.args[0]).toMatch(/\$\{CLAUDE_PLUGIN_ROOT\}\/mcp\/codebase-search\.cjs/);
   });
 
