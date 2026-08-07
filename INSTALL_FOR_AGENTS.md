@@ -51,6 +51,7 @@ Select skills from the Thai-first `skills/` tree. Do not combine this with a nat
 | `/spk:tdd` | build-orchestrator |
 | `/spk:to-spec` | direct main-thread workflow |
 | `/spk:to-tickets` | direct main-thread workflow |
+| `/spk:to-questionnaire` | direct main-thread workflow |
 | `/spk:wayfinder` | direct main-thread workflow |
 | `/spk:code` | build-orchestrator |
 | `/spk:prototype` | designer |
@@ -64,9 +65,11 @@ Select skills from the Thai-first `skills/` tree. Do not combine this with a nat
 | `/spk:teach` | direct main-thread workflow |
 | `/spk:write-skills` | direct main-thread workflow |
 | `/spk:ask-me` | direct main-thread workflow |
+| `/spk:wait-what` | direct main-thread workflow |
 | `/spk:plan` | plan-orchestrator |
 | `/spk:design-options` | designer |
 | `/spk:deploy` | deploy-orchestrator |
+| `/spk:wizard` | direct main-thread workflow |
 | `/spk:pr` | pr-manager |
 | `/spk:task-to-pr` | direct main-thread workflow |
 | `/spk:add-knowledge` | direct main-thread workflow |
@@ -95,6 +98,7 @@ Select skills from the Thai-first `skills/` tree. Do not combine this with a nat
 | `/spk:design-shotgun` | `/spk:design-options` |
 | `/spk:resolving-merge-conflicts` | `/spk:fix-conflicts` |
 | `/spk:writing-great-skills` | `/spk:write-skills` |
+| `/spk:writing-for-agents` | `/spk:write-skills` |
 | `/spk:prime` | `/spk:load-project` |
 | `/spk:query` | `/spk:ask-project` |
 | `/spk:ingest` | `/spk:add-knowledge` |

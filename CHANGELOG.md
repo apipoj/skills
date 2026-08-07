@@ -1,5 +1,30 @@
 # Apipoj Skills
 
+## 5.1.0 - 2026-08-07
+
+### Upstream
+
+- Re-pinned the reviewed `mattpocock/skills` source at `6acc160e4e0cd062dbbbd7a1b26ae92855edf07e`, up from `2ab958093e83e0ec752e6c1c5932da465bf23e0c`.
+
+### Added
+
+- `/wizard` — author an interactive bash wizard for the setup steps only a human can perform, then verify it statically and hand it over. Apipoj Skills never runs the generated script.
+- `/to-questionnaire` — turn a decision you cannot answer alone into a Markdown questionnaire for the person who can.
+- `/wait-what` — re-pitch the last message that did not land, in plain language, using the project's own vocabulary.
+- `/writing-for-agents` — compatibility alias disclosing the canonical `/write-skills`.
+
+### Changed
+
+- `/write-skills` now covers writing any document an agent consumes — skills, `AGENTS.md`/`CLAUDE.md`, and docs reached by a pointer — with context-pointer and two-loads guidance in a new `SKILL-MECHANICS.md` reference.
+- `/start` replaces the handoff-versus-compact advice with the five-option phase-boundary tree, and raises the smart zone to 150k tokens.
+- `/prototype` answers logic and state-model questions with a single shareable HTML file instead of a terminal app.
+- `/asking` interviews in rounds over a frontier of settled prerequisites instead of one question at a time.
+- `/tdd` points at `codebase-design` when the shape of the interface is itself the open question.
+
+### Fixed
+
+- `session-reflect` tests no longer fail on hosts whose Node is dynamically linked: the harness verifies its relocated copy can execute and falls back to the real binary.
+
 ## 5.0.0 - 2026-08-05
 
 ### Major Changes

@@ -98,13 +98,16 @@ describe('provider-neutral workflow and authority contracts', () => {
       'spk',
       'task-to-pr',
       'teach',
+      'to-questionnaire',
       'to-spec',
       'to-tickets',
       'triage',
       'uninstall',
+      'wait-what',
       'wayfinder',
       'wiki-lint',
       'write-skills',
+      'writing-for-agents',
       'writing-great-skills',
     ]);
     for (const name of MANUAL_ONLY) {

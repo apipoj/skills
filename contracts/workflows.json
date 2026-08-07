@@ -716,6 +716,82 @@
       ]
     },
     {
+      "id": "to-questionnaire",
+      "tier": "core",
+      "origin": {
+        "repository": "mattpocock/skills",
+        "skill": "to-questionnaire"
+      },
+      "sources": {
+        "th": "skills/productivity/to-questionnaire",
+        "en": "locales/en/skills/productivity/to-questionnaire"
+      },
+      "locales": {
+        "en": {
+          "displayName": "To Questionnaire",
+          "description": "Turn a decision the user cannot answer alone into a Markdown questionnaire aimed at the person who holds the missing knowledge, by interviewing the user about the send rather than the subject.",
+          "shortDescription": "Turn a decision you cannot answer alone into a questionnaire for the person who can",
+          "defaultPrompt": "Use to-questionnaire for my current request.",
+          "triggers": [
+            "use to-questionnaire",
+            "to-questionnaire workflow"
+          ],
+          "negativeTriggers": [
+            "the user can answer the question themselves",
+            "the user selected a narrower skill"
+          ]
+        },
+        "th": {
+          "displayName": "สร้างชุดคำถาม",
+          "description": "เปลี่ยนเรื่องที่ผู้ใช้ตอบเองไม่ได้ให้เป็นชุดคำถาม Markdown สำหรับส่งให้คนที่รู้จริง โดยสัมภาษณ์ผู้ใช้เรื่องการส่ง ไม่ใช่เรื่องเนื้อหา",
+          "shortDescription": "เปลี่ยนเรื่องที่ตอบเองไม่ได้ให้เป็นชุดคำถามสำหรับคนที่รู้จริง",
+          "defaultPrompt": "ใช้ to-questionnaire กับคำขอนี้",
+          "triggers": [
+            "ใช้ to-questionnaire",
+            "ทำงานแบบ to-questionnaire"
+          ],
+          "negativeTriggers": [
+            "ผู้ใช้ตอบคำถามนี้เองได้",
+            "ผู้ใช้เลือก skill ที่แคบกว่าแล้ว"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": false
+      },
+      "effectLevel": "workspace_write",
+      "role": "to_questionnaire_workflow",
+      "workflow": [
+        {
+          "phase": "recipient",
+          "instruction": "Ask in one exchange who receives this - their role, expertise, and relationship to the user - which fixes tone and how much context the document carries."
+        },
+        {
+          "phase": "need",
+          "instruction": "Ask in one exchange which decisions or facts the user cannot resolve alone and needs back from this person."
+        },
+        {
+          "phase": "write",
+          "instruction": "Write questions aimed at the gap, most important first, to to-questionnaire-<slug>.md in the current directory and report the path."
+        }
+      ],
+      "artifacts": [
+        "questionnaire file",
+        "recipient and need summary"
+      ],
+      "evidence": [
+        "inputs used",
+        "written file path",
+        "coverage of every item the user named"
+      ],
+      "guardrails": [
+        "Interview the user about the send, never about the subject they cannot answer.",
+        "Use natural concise Thai by default while preserving exact technical identifiers.",
+        "Write only the questionnaire file; do not change other project files.",
+        "Report evidence gaps instead of guessing at what the recipient knows."
+      ]
+    },
+    {
       "id": "wayfinder",
       "tier": "core",
       "origin": {
@@ -1329,8 +1405,8 @@
       "locales": {
         "en": {
           "displayName": "Asking",
-          "description": "สัมภาษณ์ผู้ใช้ทีละคำถามพร้อมคำแนะนำ เพื่อคลี่ dependency ของ decision จนเข้าใจตรงกัน",
-          "shortDescription": "สัมภาษณ์ผู้ใช้ทีละคำถามพร้อมคำแนะนำ เพื่อคลี่ dependency ของ decision จนเข้าใจตรงกัน",
+          "description": "Interview the user in rounds, asking every question whose prerequisites are already settled in one go with a recommendation each, until the design tree is fully resolved.",
+          "shortDescription": "Interview in rounds over the settled frontier until the design tree resolves",
           "defaultPrompt": "Use asking for my current request.",
           "triggers": [
             "use asking",
@@ -1342,9 +1418,9 @@
           ]
         },
         "th": {
-          "displayName": "ถามทีละเรื่อง",
-          "description": "สัมภาษณ์ผู้ใช้ทีละคำถามพร้อมคำแนะนำ จนเรื่องที่ต้องตัดสินใจชัดและเข้าใจตรงกัน",
-          "shortDescription": "สัมภาษณ์ผู้ใช้ทีละคำถามพร้อมคำแนะนำ จนเรื่องที่ต้องตัดสินใจชัดและเข้าใจตรงกัน",
+          "displayName": "ถามเป็นรอบจนเคลียร์",
+          "description": "สัมภาษณ์ผู้ใช้เป็นรอบ ๆ ถามทุกคำถามที่พร้อมตอบในรอบเดียวพร้อมคำแนะนำ จนต้นไม้ decision คลี่หมดและเข้าใจตรงกัน",
+          "shortDescription": "ถามเป็นรอบ ๆ ทุกคำถามที่พร้อมตอบในรอบเดียว จนต้นไม้ decision คลี่หมด",
           "defaultPrompt": "ใช้ asking กับคำขอนี้",
           "triggers": [
             "ใช้ asking",
@@ -1545,7 +1621,7 @@
       "tier": "core",
       "origin": {
         "repository": "mattpocock/skills",
-        "skill": "writing-great-skills"
+        "skill": "writing-for-agents"
       },
       "sources": {
         "th": "skills/productivity/write-skills",
@@ -1554,8 +1630,8 @@
       "locales": {
         "en": {
           "displayName": "Write Skills",
-          "description": "ใช้หลัก predictability, progressive disclosure และการลด prompt noise เพื่อเขียน skill ที่ไว้ใจได้",
-          "shortDescription": "ใช้หลัก predictability, progressive disclosure และการลด prompt noise เพื่อเขียน skill ที่ไว้ใจได",
+          "description": "Write and edit any document an agent consumes - a skill, AGENTS.md, CLAUDE.md, or a doc reached by a pointer - so it is reached at the right moment and runs the same way every time.",
+          "shortDescription": "Write any document an agent consumes so it is reached at the right moment",
           "defaultPrompt": "Use write-skills for my current request.",
           "triggers": [
             "use write-skills",
@@ -1567,9 +1643,9 @@
           ]
         },
         "th": {
-          "displayName": "เขียน skill ให้ใช้ได้จริง",
-          "description": "เขียนหรือปรับ skill ให้เรียกใช้ถูก ทำงานสม่ำเสมอ และไม่ใส่คำสั่งเกินจำเป็น",
-          "shortDescription": "เขียนหรือปรับ skill ให้เรียกใช้ถูก ทำงานสม่ำเสมอ และไม่ใส่คำสั่งเกินจำเป็น",
+          "displayName": "เขียนเอกสารให้ agent อ่าน",
+          "description": "เขียนหรือปรับเอกสารที่ agent ต้องอ่าน ทั้ง skill, AGENTS.md, CLAUDE.md และ doc ที่ถูกชี้ถึง ให้เรียกใช้ถูกและทำงานสม่ำเสมอ",
+          "shortDescription": "เขียนเอกสารที่ agent ต้องอ่านให้เรียกใช้ถูกและทำงานสม่ำเสมอ",
           "defaultPrompt": "ใช้ write-skills กับคำขอนี้",
           "triggers": [
             "ใช้ write-skills",
@@ -1723,6 +1799,75 @@
         "Handoff authority never includes commit, push, pull-request, deployment, sending, publishing, or another Git or remote write; external delivery requires separate approval after the exact artifact, recipients, and channel are visible.",
         "Recommendations are proposals; the user owns every decision and may stop at any time.",
         "Do not request secrets or unnecessary personal data, stereotype Thai users, or guess changing local facts."
+      ]
+    },
+    {
+      "id": "wait-what",
+      "tier": "core",
+      "origin": {
+        "repository": "mattpocock/skills",
+        "skill": "wait-what"
+      },
+      "sources": {
+        "th": "skills/productivity/wait-what",
+        "en": "locales/en/skills/productivity/wait-what"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Wait What",
+          "description": "Stop and re-pitch the last message that did not land: add the missing context, drop the jargon, and use the project's own vocabulary from CONTEXT.md.",
+          "shortDescription": "Re-pitch the last message in plain language with the missing context",
+          "defaultPrompt": "Use wait-what for my current request.",
+          "triggers": [
+            "use wait-what",
+            "wait-what workflow"
+          ],
+          "negativeTriggers": [
+            "the user asked a new question instead",
+            "the user selected a narrower skill"
+          ]
+        },
+        "th": {
+          "displayName": "งงตรงไหน",
+          "description": "หยุดแล้วอธิบายข้อความล่าสุดใหม่ให้เข้าใจ เติม context ที่ขาด เลี่ยงศัพท์เทคนิคที่ไม่จำเป็น และใช้คำศัพท์ของโปรเจกต์จาก CONTEXT.md",
+          "shortDescription": "อธิบายข้อความล่าสุดใหม่ด้วยภาษาที่เข้าใจง่ายและ context ที่ขาดไป",
+          "defaultPrompt": "ใช้ wait-what กับข้อความล่าสุด",
+          "triggers": [
+            "ใช้ wait-what",
+            "ทำงานแบบ wait-what"
+          ],
+          "negativeTriggers": [
+            "ผู้ใช้ถามคำถามใหม่แทน",
+            "ผู้ใช้เลือก skill ที่แคบกว่าแล้ว"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": false
+      },
+      "effectLevel": "read_only",
+      "role": "wait_what_workflow",
+      "workflow": [
+        {
+          "phase": "locate",
+          "instruction": "Identify the exact message that did not land and name the assumed knowledge that made it opaque."
+        },
+        {
+          "phase": "repitch",
+          "instruction": "Say it again with the missing context first, in plain language, using the project's own vocabulary from CONTEXT.md when it exists."
+        }
+      ],
+      "artifacts": [
+        "re-pitched explanation"
+      ],
+      "evidence": [
+        "the message being re-pitched",
+        "the context that was missing"
+      ],
+      "guardrails": [
+        "Explain again; never change the work or any file.",
+        "Use natural concise Thai and the project's own vocabulary instead of borrowed jargon.",
+        "Say plainly when the confusion came from a wrong assumption rather than from wording."
       ]
     },
     {
@@ -1985,6 +2130,83 @@
       "guardrails": [
         "Never deploy without approval for the exact revision and environment.",
         "Stop when rollback, credentials, or required preflight evidence is missing."
+      ]
+    },
+    {
+      "id": "wizard",
+      "tier": "core",
+      "origin": {
+        "repository": "mattpocock/skills",
+        "skill": "wizard"
+      },
+      "sources": {
+        "th": "skills/operations/wizard",
+        "en": "locales/en/skills/operations/wizard"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Wizard",
+          "description": "Author an interactive bash wizard for the steps only a human can perform - provisioning, credentials, CI secrets, dashboards, one-off migrations - then verify it statically and hand it over without running it.",
+          "shortDescription": "Author a bash wizard for human-only setup steps, verify it, and hand it over",
+          "defaultPrompt": "Use wizard for my current request.",
+          "triggers": [
+            "use wizard",
+            "wizard workflow"
+          ],
+          "negativeTriggers": [
+            "the agent can perform the step itself",
+            "the user selected a narrower skill"
+          ]
+        },
+        "th": {
+          "displayName": "สร้างตัวช่วยตั้งค่า",
+          "description": "เขียน bash wizard แบบโต้ตอบสำหรับขั้นตอนที่มีแต่คนทำได้ เช่น ตั้งค่า infrastructure, credential, CI secret หรือ migration ครั้งเดียว แล้วตรวจสอบให้เรียบร้อยและส่งให้ผู้ใช้รันเอง",
+          "shortDescription": "เขียน bash wizard สำหรับขั้นตอนที่มีแต่คนทำได้ ตรวจสอบแล้วส่งให้รันเอง",
+          "defaultPrompt": "ใช้ wizard กับคำขอนี้",
+          "triggers": [
+            "ใช้ wizard",
+            "ทำงานแบบ wizard"
+          ],
+          "negativeTriggers": [
+            "งานนี้ agent ทำเองได้",
+            "ผู้ใช้เลือก skill ที่แคบกว่าแล้ว"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": true
+      },
+      "effectLevel": "workspace_write",
+      "role": "wizard_workflow",
+      "workflow": [
+        {
+          "phase": "scope",
+          "instruction": "Read .env files, README, compose files, and .github/workflows for every secrets.* and vars.* reference, then confirm the ordered stage list and the value each stage produces."
+        },
+        {
+          "phase": "author",
+          "instruction": "Copy the shipped template, write one stage per step in dependency order using only the library helpers, and set TOTAL_STAGES."
+        },
+        {
+          "phase": "verify",
+          "instruction": "Run bash -n and shellcheck when available, chmod +x, trace every value statically, and hand the path to the human without running the script."
+        }
+      ],
+      "artifacts": [
+        "wizard script",
+        "stage-to-value map"
+      ],
+      "evidence": [
+        "inputs used",
+        "syntax check result",
+        "verification status"
+      ],
+      "guardrails": [
+        "Never execute the generated wizard; the human runs it.",
+        "Never echo a captured value into the transcript; write <REDACTED> instead.",
+        "Never hand-edit the library above the STAGES marker.",
+        "Confirm before every irreversible stage in the generated script.",
+        "Report evidence gaps instead of guessing at a dashboard's current UI."
       ]
     },
     {
@@ -3767,6 +3989,76 @@
       "guardrails": [
         "Never broaden scope or permissions through an alias.",
         "Do not hide the deprecation notice."
+      ],
+      "aliasFor": "write-skills"
+    },
+    {
+      "id": "writing-for-agents",
+      "tier": "compat",
+      "origin": {
+        "repository": "mattpocock/skills",
+        "skill": "writing-for-agents"
+      },
+      "sources": {
+        "th": "skills/compat/writing-for-agents",
+        "en": "locales/en/skills/compat/writing-for-agents"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Upstream name: writing-for-agents → write-skills",
+          "description": "Compatibility alias for write-skills under its upstream name; disclose the canonical name and apply the same contract without expanding authority.",
+          "shortDescription": "Upstream name for write-skills; use the same contract without extra authority",
+          "defaultPrompt": "Use writing-for-agents for my current request.",
+          "triggers": [
+            "use writing-for-agents",
+            "writing-for-agents workflow"
+          ],
+          "negativeTriggers": [
+            "the request is outside this workflow",
+            "the user selected the canonical skill"
+          ]
+        },
+        "th": {
+          "displayName": "ชื่อ upstream: writing-for-agents → write-skills",
+          "description": "ชื่อจาก upstream สำหรับ write-skills; แจ้งชื่อหลักแล้วใช้ contract เดียวกันโดยไม่เพิ่มสิทธิ์หรือขยาย scope",
+          "shortDescription": "ชื่อ upstream ของ write-skills; ใช้ contract เดิมโดยไม่เพิ่มสิทธิ์",
+          "defaultPrompt": "ใช้ writing-for-agents กับคำขอนี้",
+          "triggers": [
+            "ใช้ writing-for-agents",
+            "ทำงานแบบ writing-for-agents"
+          ],
+          "negativeTriggers": [
+            "คำขออยู่นอกขอบเขต workflow นี้",
+            "ผู้ใช้เลือกชื่อหลักแล้ว"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": false
+      },
+      "effectLevel": "read_only",
+      "role": "compatibility_alias",
+      "workflow": [
+        {
+          "phase": "disclose",
+          "instruction": "Tell the user that the Apipoj Skills name for writing-for-agents is write-skills."
+        },
+        {
+          "phase": "delegate",
+          "instruction": "Apply the write-skills contract without adding authority."
+        }
+      ],
+      "artifacts": [
+        "write-skills result",
+        "compatibility notice"
+      ],
+      "evidence": [
+        "canonical workflow evidence",
+        "compat_alias: writing-for-agents"
+      ],
+      "guardrails": [
+        "Never broaden scope or permissions through an alias.",
+        "Do not hide the compatibility notice."
       ],
       "aliasFor": "write-skills"
     },

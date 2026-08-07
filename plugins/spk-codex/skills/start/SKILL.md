@@ -41,6 +41,25 @@ Apply a safe smart default when it is reversible and does not change scope. If a
 5. Run only the selected workflow when it is available and within authority. Recommend adjacent work as a next action instead of silently chaining it.
 6. Finish with the result first, then concise evidence, risks, and the next smallest action.
 
+### Phase boundaries
+
+A phase is a chunk of work inside a session. At the boundary between two of them, work these five
+options top to bottom; the first yes wins. Decide only at a boundary — mid-phase, continue or split
+the rest into subagents.
+
+1. **Continue** — the next phase needs this one as a primary source, or ~150k tokens of smart zone
+   remain. Costs nothing and loses nothing, so rule it out first.
+2. **`/clear`** — everything here is disposable. The cheapest move, and the old session stays
+   resumable. Getting it wrong is one-way: you lose the *why*, and the diff will not give it back.
+3. **`handoff`** — only for a new harness, a new directory, a colleague, or forking a side task found
+   mid-phase. What it buys is portability; if nothing is travelling, skip it.
+4. **Subagent** — the task is scoped tightly enough to run unattended.
+5. **`/compact`** — otherwise. Pass an instruction so the summary keeps what the next phase needs.
+   The default, at the bottom of the tree rather than the first reach.
+
+Every move except Continue turns a primary source into a lossy secondary one, which is why the first
+question comes first.
+
 ## Evidence Receipt
 
 Return:

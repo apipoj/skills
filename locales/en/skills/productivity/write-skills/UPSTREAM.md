@@ -1,9 +1,9 @@
 ---
-name: writing-great-skills
+name: writing-for-agents
 description: ใช้หลัก predictability, progressive disclosure และการลด prompt noise เพื่อเขียน skill ที่ไว้ใจได้
 disable-model-invocation: true
 ---
-# เขียน skill ให้ทำงานสม่ำเสมอ
+# writing-for-agents
 
 ตอบเป็นภาษาไทยธรรมชาติแบบเพื่อนร่วมงานเป็นค่าเริ่มต้น ใช้ศัพท์เทคนิคภาษาอังกฤษเมื่อทำให้อ่านง่ายกว่า และเริ่มจากผลลัพธ์หรือ decision ที่ผู้ใช้ต้องรู้ก่อน
 

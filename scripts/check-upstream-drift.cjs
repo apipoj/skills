@@ -6,8 +6,11 @@ const fs = require('fs');
 const path = require('path');
 
 const REPO_ROOT = path.join(__dirname, '..');
-const PINNED_UPSTREAM_COMMIT = '2ab958093e83e0ec752e6c1c5932da465bf23e0c';
+const PINNED_UPSTREAM_COMMIT = '6acc160e4e0cd062dbbbd7a1b26ae92855edf07e';
 const EXPECTED_BUCKETS = ['engineering', 'productivity'];
+// Canonical upstream skills we ship, plus aliases whose target is not itself
+// upstream-derived. Raise this deliberately when a review promotes a new skill.
+const EXPECTED_PROMOTED_SKILLS = 25;
 const EXCLUDED_BUCKETS = ['misc', 'personal', 'in-progress', 'deprecated'];
 
 function readJson(file) {
@@ -50,7 +53,9 @@ function collectUpstreamProvenanceErrors(rootDir = REPO_ROOT) {
     const target = contractById.get(skill.aliasFor);
     return target?.origin?.repository !== 'mattpocock/skills';
   });
-  if (promoted.length !== 22) errors.push(`expected 22 promoted upstream skills, found ${promoted.length}`);
+  if (promoted.length !== EXPECTED_PROMOTED_SKILLS) {
+    errors.push(`expected ${EXPECTED_PROMOTED_SKILLS} promoted upstream skills, found ${promoted.length}`);
+  }
   for (const skill of promoted) {
     const english = path.join(rootDir, skill.sources?.en || '', 'SKILL.md');
     const thai = path.join(rootDir, skill.sources?.th || '', 'SKILL.md');
@@ -97,7 +102,9 @@ function main() {
       return;
     }
   }
-  console.log(`Upstream provenance OK (22 skills pinned at ${PINNED_UPSTREAM_COMMIT.slice(0, 7)})`);
+  console.log(
+    `Upstream provenance OK (${EXPECTED_PROMOTED_SKILLS} skills pinned at ${PINNED_UPSTREAM_COMMIT.slice(0, 7)})`,
+  );
 }
 
 if (require.main === module) main();
@@ -105,6 +112,7 @@ if (require.main === module) main();
 module.exports = {
   EXCLUDED_BUCKETS,
   EXPECTED_BUCKETS,
+  EXPECTED_PROMOTED_SKILLS,
   PINNED_UPSTREAM_COMMIT,
   changedPromotedPaths,
   collectUpstreamProvenanceErrors,

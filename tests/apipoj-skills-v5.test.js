@@ -27,6 +27,9 @@ const upstreamCanonical = [
   'handoff',
   'teach',
   'write-skills',
+  'wizard',
+  'to-questionnaire',
+  'wait-what',
 ];
 
 const spkCore = [
@@ -60,6 +63,7 @@ const aliases = {
   'design-shotgun': 'design-options',
   'resolving-merge-conflicts': 'fix-conflicts',
   'writing-great-skills': 'write-skills',
+  'writing-for-agents': 'write-skills',
   prime: 'load-project',
   query: 'ask-project',
   ingest: 'add-knowledge',
@@ -72,7 +76,7 @@ const aliases = {
 describe('Apipoj Skills v5 migration contract', () => {
   test('uses the approved product identity and version', () => {
     expect(manifest).toMatchObject({
-      version: '5.0.0',
+      version: '5.1.0',
       brand: 'Apipoj Skills',
       slug: 'spk',
     });
@@ -83,13 +87,13 @@ describe('Apipoj Skills v5 migration contract', () => {
     });
   });
 
-  test('declares 35 canonical skills and 20 temporary aliases', () => {
+  test('declares 38 canonical skills and 21 temporary aliases', () => {
     const skills = new Map(contract.skills.map(skill => [skill.id, skill]));
     const canonical = [...upstreamCanonical, ...spkCore];
 
-    expect(new Set(canonical).size).toBe(35);
-    expect(contract.skills).toHaveLength(55);
-    expect(manifest.commands).toHaveLength(55);
+    expect(new Set(canonical).size).toBe(38);
+    expect(contract.skills).toHaveLength(59);
+    expect(manifest.commands).toHaveLength(59);
 
     for (const id of canonical) {
       expect(skills.get(id)).toMatchObject({ tier: 'core' });
