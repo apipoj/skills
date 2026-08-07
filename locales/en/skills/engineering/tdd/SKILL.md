@@ -17,6 +17,8 @@ description: พัฒนา behavior ทีละ slice ด้วยวงจ�
 1. เขียน behavior test ขั้นต่ำที่กำหนด expected behavior
 2. Test ต้องเจาะจงและโฟกัสที่ behavior เดียว
 
+ถ้ารูปทรงของ interface เองยังเป็นคำถาม — module ควรลึกแค่ไหน seam ควรอยู่ตรงไหน interface ควรเปิดอะไรออกมา — ให้ใช้ skill `codebase-design` เป็นคลังคำศัพท์ มันเป็นแหล่งเดียวของคำว่า module, interface, depth, seam, adapter, leverage และ locality และเป็นเอกสารอ้างอิงที่เอาไว้เปิดอ่าน ไม่ใช่ session ที่ต้องรัน
+
 ### Verify RED
 3. รัน focused test และยืนยันว่า fail **ด้วยเหตุผลที่คาดไว้**
 4. ถ้า test pass ทันที ให้แก้ test ก่อน code (มัน test สิ่งผิด)
