@@ -98,7 +98,7 @@ jobs:
         run: |
           claude plugin validate --strict .
           claude plugin marketplace add ./
-          claude plugin install spk@spk --config node_path="$(node -p 'process.execPath')"
+          claude plugin install spk@spk
           claude plugin list > claude-plugins.txt
           grep -q 'spk@spk' claude-plugins.txt
           grep -q 'enabled' claude-plugins.txt
@@ -154,7 +154,7 @@ jobs:
           claude --version
           claude plugin validate --strict .
           claude plugin marketplace add ./
-          claude plugin install spk@spk --config node_path="$(node -p 'process.execPath')"
+          claude plugin install spk@spk
           claude plugin list | grep -q 'spk@spk'
 
       - name: Discover and install with latest Codex

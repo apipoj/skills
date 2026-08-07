@@ -28,11 +28,14 @@ function referencesScript(hook, script) {
 }
 
 describe('hook output contract', () => {
-  test('trusted runtime is required from non-project plugin configuration', () => {
-    expect(PLUGIN_MANIFEST.userConfig.node_path).toEqual(expect.objectContaining({
-      type: 'file',
-      required: true,
-    }));
+  test('installs with no user configuration', () => {
+    // A required userConfig option with no default made every SessionStart hook
+    // fail on a plain `/plugin install`. Hooks now launch `node` from the host
+    // lookup, so nothing may reintroduce an install-time prompt.
+    expect(PLUGIN_MANIFEST.userConfig).toBeUndefined();
+
+    const payload = JSON.stringify(HOOKS_CONFIG);
+    expect(payload).not.toMatch(/\$\{user_config\./);
   });
 
   test('every command hook declares a short positive timeout', () => {
@@ -76,7 +79,7 @@ describe('hook output contract', () => {
       .flatMap(entry => entry.hooks || [])
       .filter(hook => hook.type === 'command');
     for (const hook of commandHooks) {
-      expect(hook.command).toBe('${user_config.node_path}');
+      expect(hook.command).toBe('node');
       expect(hook.args[0]).toMatch(
         /^\$\{CLAUDE_PLUGIN_ROOT\}\/scripts\/[^/]+\.cjs$/
       );

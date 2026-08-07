@@ -1,5 +1,13 @@
 # Apipoj Skills
 
+## 5.1.1 - 2026-08-07
+
+### Fixed
+
+- Installing the plugin no longer requires configuration. `node_path` was a required `userConfig` option with no default, so a plain `/plugin install spk@spk` left every SessionStart hook failing with `Plugin option "node_path" isn't set`. Hooks and the MCP server now launch `node` from the host lookup, matching what the Codex payload already did. Present since 5.0.0.
+- The CI plugin smoke test installed with `--config node_path=...`, so it passed while the documented install path was broken. It now installs exactly as the README instructs.
+- `README.md` and `README-EN.md` cited the pre-5.1 upstream commit in their licensing note.
+
 ## 5.1.0 - 2026-08-07
 
 ### Upstream

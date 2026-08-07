@@ -23,17 +23,7 @@ Describe the outcome normally. The router chooses the smallest fitting workflow,
 /plugin install spk@spk
 ```
 
-Then **set `node_path`**, or every hook fails with `Plugin option "node_path" isn't set`.
-
-Open `/plugin manage` and enter the absolute path to a Node.js 20+ executable. Find it with `node -p "process.execPath"` (Homebrew on macOS is usually `/opt/homebrew/bin/node`).
-
-Installing from a terminal sets it in one line:
-
-```bash
-claude plugin install spk@spk --config node_path="$(node -p 'process.execPath')"
-```
-
-SPK asks for an absolute path rather than calling `node` from `PATH` because the hooks and the MCP server validate the executable they resolve before running it.
+Works immediately after install with no configuration. It only needs Node.js 20+ on your `PATH` (check with `node --version`).
 
 ### Codex
 
@@ -189,4 +179,4 @@ npm run verify:release
 
 ## Upstream and license
 
-The pinned base is `mattpocock/skills@2ab958093e83e0ec752e6c1c5932da465bf23e0c`, licensed under MIT. Future updates are reviewed and localized before release. See `NOTICE` and `docs/upstream/`.
+The pinned base is `mattpocock/skills@6acc160e4e0cd062dbbbd7a1b26ae92855edf07e`, licensed under MIT. Future updates are reviewed and localized before release. See `NOTICE` and `docs/upstream/`.

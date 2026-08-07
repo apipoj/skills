@@ -23,17 +23,7 @@ Apipoj Skills ใช้ skill ที่เล็กและ composable จา�
 /plugin install spk@spk
 ```
 
-จากนั้น **ต้องตั้งค่า `node_path` ก่อน** ไม่งั้น hook ทุกตัวจะขึ้น error ว่า `Plugin option "node_path" isn't set`
-
-เปิด `/plugin manage` แล้วใส่ path เต็มของ Node.js 20 ขึ้นไป หา path ได้ด้วย `node -p "process.execPath"` (macOS ที่ลงผ่าน Homebrew มักเป็น `/opt/homebrew/bin/node`)
-
-ถ้าติดตั้งจาก terminal จะใส่มาพร้อมกันในบรรทัดเดียวได้เลย
-
-```bash
-claude plugin install spk@spk --config node_path="$(node -p 'process.execPath')"
-```
-
-SPK ขอ path เต็มแทนที่จะเรียก `node` ตรง ๆ เพราะ hook และ MCP server ตรวจสอบไฟล์ที่รันจริงก่อนใช้งาน
+ใช้ได้เลยหลังติดตั้ง ไม่ต้องตั้งค่าอะไรเพิ่ม ขอแค่มี Node.js 20 ขึ้นไปอยู่ใน `PATH` (เช็กด้วย `node --version`)
 
 ### Codex
 
@@ -189,4 +179,4 @@ Version และ roster ใช้ `manifest.json` เป็น source of truth 
 
 ## Upstream และ license
 
-ฐาน upstream คือ `mattpocock/skills@2ab958093e83e0ec752e6c1c5932da465bf23e0c` ภายใต้ MIT License การ sync รอบถัดไปต้อง review และ localize ก่อนเสมอ ดู `NOTICE` และ `docs/upstream/`
+ฐาน upstream คือ `mattpocock/skills@6acc160e4e0cd062dbbbd7a1b26ae92855edf07e` ภายใต้ MIT License การ sync รอบถัดไปต้อง review และ localize ก่อนเสมอ ดู `NOTICE` และ `docs/upstream/`

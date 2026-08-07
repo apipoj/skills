@@ -35,7 +35,7 @@ function writePluginFixture(plugin, version = '3.5.0') {
     matcher: `Fixture${index}`,
     hooks: [{
       type: 'command',
-      command: '${user_config.node_path}',
+      command: 'node',
       args: [`\${CLAUDE_PLUGIN_ROOT}/${relative}`],
     }],
   }));

@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "${user_config.node_path}",
+            "command": "node",
             "args": ["${CLAUDE_PLUGIN_ROOT}/scripts/wiki-secret-scan.cjs"],
             "timeout": 10
           }
@@ -17,7 +17,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "${user_config.node_path}",
+            "command": "node",
             "args": ["${CLAUDE_PLUGIN_ROOT}/scripts/gitignore-guard.cjs"],
             "timeout": 10
           }
@@ -28,7 +28,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "${user_config.node_path}",
+            "command": "node",
             "args": ["${CLAUDE_PLUGIN_ROOT}/scripts/webfetch-cache.cjs", "pre"],
             "timeout": 10
           }
@@ -41,7 +41,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "${user_config.node_path}",
+            "command": "node",
             "args": ["${CLAUDE_PLUGIN_ROOT}/scripts/auto-ingest.cjs"],
             "timeout": 10
           }
@@ -52,7 +52,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "${user_config.node_path}",
+            "command": "node",
             "args": ["${CLAUDE_PLUGIN_ROOT}/scripts/webfetch-cache.cjs", "post"],
             "timeout": 10
           }
@@ -64,13 +64,13 @@
         "hooks": [
           {
             "type": "command",
-            "command": "${user_config.node_path}",
+            "command": "node",
             "args": ["${CLAUDE_PLUGIN_ROOT}/scripts/init-ai-context.cjs"],
             "timeout": 15
           },
           {
             "type": "command",
-            "command": "${user_config.node_path}",
+            "command": "node",
             "args": ["${CLAUDE_PLUGIN_ROOT}/scripts/spk-orient.cjs"],
             "timeout": 15
           }
@@ -82,7 +82,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "${user_config.node_path}",
+            "command": "node",
             "args": ["${CLAUDE_PLUGIN_ROOT}/scripts/session-reflect.cjs"],
             "timeout": 10
           }

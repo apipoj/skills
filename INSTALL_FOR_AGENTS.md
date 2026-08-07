@@ -9,14 +9,8 @@ Apipoj Skills is Thai-first and uses the short `spk` plugin namespace.
 /plugin install spk@spk
 ```
 
-`node_path` is a required plugin option with no default. Set it in `/plugin manage` to the absolute
-path of a Node.js 20+ executable, or install from a terminal so it is set in one step:
-
-```bash
-claude plugin install spk@spk --config node_path="$(node -p 'process.execPath')"
-```
-
-Skipping it makes every SessionStart hook fail with `Plugin option "node_path" isn't set`.
+No plugin configuration is required. Hooks and the MCP server launch `node` from the host lookup, so
+Node.js 20+ on `PATH` is the only prerequisite.
 
 Start with `/spk:start`.
 
