@@ -1,0 +1,4 @@
+# Shell scripts must stay LF in the working tree on every platform. A CRLF
+# checkout produces a script bash refuses to run, and plugins/spk/templates/
+# ships its contents to users.
+*.sh text eol=lf
