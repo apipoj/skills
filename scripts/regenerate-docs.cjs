@@ -31,6 +31,16 @@ function commandTarget(command) {
     (command.direct === true ? 'direct main-thread workflow' : '(invalid target)');
 }
 
+// 40 of 59 skills are typed-only (`disable-model-invocation: true`), so an
+// agent asked to "use ask-with-docs" reports it does not exist — it genuinely
+// cannot see it. Publish the distinction rather than leaving users to hit it.
+function invocationLabel(skill, thai) {
+  if (!skill) return thai ? 'พิมพ์เอง' : 'typed only';
+  return skill.activation?.allowImplicitInvocation
+    ? (thai ? 'agent เรียกเองได้' : 'model or typed')
+    : (thai ? 'พิมพ์เอง' : 'typed only');
+}
+
 function splitCommands(manifest, contract) {
   if (!contract || !Array.isArray(contract.skills)) {
     return { canonical: manifest.commands, aliases: [] };
@@ -85,17 +95,27 @@ function renderBlock(name, manifest, contract = null, relativePath = '') {
           }),
         ].join('\n');
       }
+      const byId = new Map((contract?.skills || []).map(skill => [skill.id, skill]));
       const rows = [
         thai ? '### ชื่อหลัก' : '### Canonical skills',
         '',
-        thai ? '| Skill | ทำงานผ่าน |' : '| Skill | Dispatches to |',
-        '|---|---|',
+        thai
+          ? '`พิมพ์เอง` = agent มองไม่เห็น ต้องพิมพ์คำสั่งเองเท่านั้น'
+          : '`typed only` = the agent cannot see it; you must type the command yourself.',
+        '',
+        thai ? '| Skill | ทำงานผ่าน | การเรียก |' : '| Skill | Dispatches to | Invocation |',
+        '|---|---|---|',
         ...canonical.map(command => {
           const slug = command.name.replace(/^\//, '');
-          return `| \`/spk:${slug}\` | ${commandTarget(command)} |`;
+          const label = invocationLabel(byId.get(slug), thai);
+          return `| \`/spk:${slug}\` | ${commandTarget(command)} | ${label} |`;
         }),
         '',
         thai ? '### ชื่อเดิมที่ยังใช้ได้' : '### Compatibility aliases',
+        '',
+        thai
+          ? 'ชื่อเดิมทุกตัวเป็นแบบพิมพ์เองเท่านั้น'
+          : 'Every alias is typed only.',
         '',
         thai ? '| ชื่อเดิม | ใช้ชื่อหลักนี้ |' : '| Legacy name | Canonical name |',
         '|---|---|',

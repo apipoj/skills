@@ -8,6 +8,10 @@
 - The CI plugin smoke test installed with `--config node_path=...`, so it passed while the documented install path was broken. It now installs exactly as the README instructs.
 - `README.md` and `README-EN.md` cited the pre-5.1 upstream commit in their licensing note.
 
+### Changed
+
+- The generated skill tables now carry an invocation column. 40 of 59 skills are typed-only, so an agent asked to "use `/spk:ask-with-docs`" correctly reports it does not exist — it cannot see the skill at all. The published roster now says which skills the agent can reach and which you must type yourself.
+
 ## 5.1.0 - 2026-08-07
 
 ### Upstream

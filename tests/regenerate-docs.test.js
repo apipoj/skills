@@ -143,3 +143,49 @@ describe('generated marker contract', () => {
     );
   });
 });
+
+describe('SPK-COMMANDS invocation column', () => {
+  // A typed-only skill is invisible to the agent, so "use ask-with-docs" gets
+  // reported as "no such skill". The published table has to say which is which.
+  const manifest = {
+    version: '1.0.0',
+    agents: { orchestrators: [], specialists: [] },
+    commands: [
+      { name: '/ask-with-docs', direct: true },
+      { name: '/debug', agent: 'debugger' },
+      { name: '/grill-with-docs', direct: true },
+    ],
+  };
+  const contract = {
+    skills: [
+      { id: 'ask-with-docs', tier: 'core', activation: { allowImplicitInvocation: false } },
+      { id: 'debug', tier: 'core', activation: { allowImplicitInvocation: true } },
+      {
+        id: 'grill-with-docs',
+        tier: 'compat',
+        aliasFor: 'ask-with-docs',
+        activation: { allowImplicitInvocation: false },
+      },
+    ],
+  };
+
+  const render = (relativePath) => regenerateContent(
+    '<!-- SPK-COMMANDS:start -->old<!-- SPK-COMMANDS:end -->',
+    manifest,
+    contract,
+    relativePath,
+  );
+
+  test('marks typed-only and model-invocable skills in English', () => {
+    const out = render('README-EN.md');
+    expect(out).toMatch(/\| `\/spk:ask-with-docs` \|[^|]+\| typed only \|/);
+    expect(out).toMatch(/\| `\/spk:debug` \|[^|]+\| model or typed \|/);
+    expect(out).toContain('Every alias is typed only.');
+  });
+
+  test('marks typed-only and model-invocable skills in Thai', () => {
+    const out = render('README.md');
+    expect(out).toMatch(/\| `\/spk:ask-with-docs` \|[^|]+\| พิมพ์เอง \|/);
+    expect(out).toMatch(/\| `\/spk:debug` \|[^|]+\| agent เรียกเองได้ \|/);
+  });
+});

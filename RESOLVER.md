@@ -13,48 +13,52 @@ Rules:
 <!-- SPK-COMMANDS:start -->
 ### Canonical skills
 
-| Skill | Dispatches to |
-|---|---|
-| `/spk:start` | direct main-thread workflow |
-| `/spk:debug` | debugger |
-| `/spk:ask-with-docs` | direct main-thread workflow |
-| `/spk:triage` | direct main-thread workflow |
-| `/spk:improve-codebase` | direct main-thread workflow |
-| `/spk:setup` | direct main-thread workflow |
-| `/spk:tdd` | build-orchestrator |
-| `/spk:to-spec` | direct main-thread workflow |
-| `/spk:to-tickets` | direct main-thread workflow |
-| `/spk:to-questionnaire` | direct main-thread workflow |
-| `/spk:wayfinder` | direct main-thread workflow |
-| `/spk:code` | build-orchestrator |
-| `/spk:prototype` | designer |
-| `/spk:research` | researcher |
-| `/spk:domain-modeling` | direct main-thread workflow |
-| `/spk:codebase-design` | direct main-thread workflow |
-| `/spk:code-review` | audit-orchestrator |
-| `/spk:fix-conflicts` | direct main-thread workflow |
-| `/spk:asking` | direct main-thread workflow |
-| `/spk:handoff` | direct main-thread workflow |
-| `/spk:teach` | direct main-thread workflow |
-| `/spk:write-skills` | direct main-thread workflow |
-| `/spk:ask-me` | direct main-thread workflow |
-| `/spk:wait-what` | direct main-thread workflow |
-| `/spk:plan` | plan-orchestrator |
-| `/spk:design-options` | designer |
-| `/spk:deploy` | deploy-orchestrator |
-| `/spk:wizard` | direct main-thread workflow |
-| `/spk:pr` | pr-manager |
-| `/spk:task-to-pr` | direct main-thread workflow |
-| `/spk:add-knowledge` | direct main-thread workflow |
-| `/spk:load-project` | primer |
-| `/spk:ask-project` | researcher |
-| `/spk:check-wiki` | audit-orchestrator |
-| `/spk:doctor` | direct main-thread workflow |
-| `/spk:check-release` | verifier |
-| `/spk:test-changes` | direct main-thread workflow |
-| `/spk:uninstall` | direct main-thread workflow |
+`typed only` = the agent cannot see it; you must type the command yourself.
+
+| Skill | Dispatches to | Invocation |
+|---|---|---|
+| `/spk:start` | direct main-thread workflow | model or typed |
+| `/spk:debug` | debugger | model or typed |
+| `/spk:ask-with-docs` | direct main-thread workflow | typed only |
+| `/spk:triage` | direct main-thread workflow | typed only |
+| `/spk:improve-codebase` | direct main-thread workflow | typed only |
+| `/spk:setup` | direct main-thread workflow | typed only |
+| `/spk:tdd` | build-orchestrator | model or typed |
+| `/spk:to-spec` | direct main-thread workflow | typed only |
+| `/spk:to-tickets` | direct main-thread workflow | typed only |
+| `/spk:to-questionnaire` | direct main-thread workflow | typed only |
+| `/spk:wayfinder` | direct main-thread workflow | typed only |
+| `/spk:code` | build-orchestrator | model or typed |
+| `/spk:prototype` | designer | model or typed |
+| `/spk:research` | researcher | model or typed |
+| `/spk:domain-modeling` | direct main-thread workflow | model or typed |
+| `/spk:codebase-design` | direct main-thread workflow | model or typed |
+| `/spk:code-review` | audit-orchestrator | model or typed |
+| `/spk:fix-conflicts` | direct main-thread workflow | model or typed |
+| `/spk:asking` | direct main-thread workflow | model or typed |
+| `/spk:handoff` | direct main-thread workflow | typed only |
+| `/spk:teach` | direct main-thread workflow | typed only |
+| `/spk:write-skills` | direct main-thread workflow | typed only |
+| `/spk:ask-me` | direct main-thread workflow | typed only |
+| `/spk:wait-what` | direct main-thread workflow | typed only |
+| `/spk:plan` | plan-orchestrator | model or typed |
+| `/spk:design-options` | designer | model or typed |
+| `/spk:deploy` | deploy-orchestrator | typed only |
+| `/spk:wizard` | direct main-thread workflow | model or typed |
+| `/spk:pr` | pr-manager | typed only |
+| `/spk:task-to-pr` | direct main-thread workflow | typed only |
+| `/spk:add-knowledge` | direct main-thread workflow | typed only |
+| `/spk:load-project` | primer | model or typed |
+| `/spk:ask-project` | researcher | model or typed |
+| `/spk:check-wiki` | audit-orchestrator | model or typed |
+| `/spk:doctor` | direct main-thread workflow | model or typed |
+| `/spk:check-release` | verifier | typed only |
+| `/spk:test-changes` | direct main-thread workflow | model or typed |
+| `/spk:uninstall` | direct main-thread workflow | typed only |
 
 ### Compatibility aliases
+
+Every alias is typed only.
 
 | Legacy name | Canonical name |
 |---|---|
