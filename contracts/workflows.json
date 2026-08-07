@@ -1405,8 +1405,8 @@
       "locales": {
         "en": {
           "displayName": "Asking",
-          "description": "สัมภาษณ์ผู้ใช้ทีละคำถามพร้อมคำแนะนำ เพื่อคลี่ dependency ของ decision จนเข้าใจตรงกัน",
-          "shortDescription": "สัมภาษณ์ผู้ใช้ทีละคำถามพร้อมคำแนะนำ เพื่อคลี่ dependency ของ decision จนเข้าใจตรงกัน",
+          "description": "Interview the user in rounds, asking every question whose prerequisites are already settled in one go with a recommendation each, until the design tree is fully resolved.",
+          "shortDescription": "Interview in rounds over the settled frontier until the design tree resolves",
           "defaultPrompt": "Use asking for my current request.",
           "triggers": [
             "use asking",
@@ -1418,9 +1418,9 @@
           ]
         },
         "th": {
-          "displayName": "ถามทีละเรื่อง",
-          "description": "สัมภาษณ์ผู้ใช้ทีละคำถามพร้อมคำแนะนำ จนเรื่องที่ต้องตัดสินใจชัดและเข้าใจตรงกัน",
-          "shortDescription": "สัมภาษณ์ผู้ใช้ทีละคำถามพร้อมคำแนะนำ จนเรื่องที่ต้องตัดสินใจชัดและเข้าใจตรงกัน",
+          "displayName": "ถามเป็นรอบจนเคลียร์",
+          "description": "สัมภาษณ์ผู้ใช้เป็นรอบ ๆ ถามทุกคำถามที่พร้อมตอบในรอบเดียวพร้อมคำแนะนำ จนต้นไม้ decision คลี่หมดและเข้าใจตรงกัน",
+          "shortDescription": "ถามเป็นรอบ ๆ ทุกคำถามที่พร้อมตอบในรอบเดียว จนต้นไม้ decision คลี่หมด",
           "defaultPrompt": "ใช้ asking กับคำขอนี้",
           "triggers": [
             "ใช้ asking",
