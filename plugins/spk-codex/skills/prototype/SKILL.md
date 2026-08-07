@@ -24,6 +24,25 @@ Respond in natural, concise Thai by default. Lead with the outcome, use familiar
 
 สร้าง prototype แบบทิ้งได้เพื่อพิสูจน์คำถามด้าน logic, state หรือ UI ก่อนลงทุนทำ production
 
+Identify which question is being answered before writing anything — getting this wrong wastes the
+whole prototype:
+
+- **"Does this logic or state model feel right?"** — build a **single shareable HTML file**: free-play
+  buttons plus tabbed guided walkthroughs, driving the state model through the cases that are hard to
+  reason about on paper. One file, no framework, no bundler, no server, everything inline so it opens
+  by double-click and survives being emailed. Write every label in domain language so a
+  non-developer can drive it. Keep the logic in a pure module the page calls into and nothing flows
+  back — that module is what lifts into the real codebase once the question is answered.
+- **"What should this look like?"** — generate several radically different UI variations on a single
+  route, switchable via a URL search param and a floating bottom bar.
+
+If the question is genuinely ambiguous and the user is unreachable, default to whichever branch
+matches the surrounding code (a backend module → logic, a page or component → UI) and state the
+assumption at the top of the prototype.
+
+**Trivial to run.** A UI prototype starts from one command in the project's task runner; a logic demo
+is a single HTML file the user double-clicks. Either way, no thinking required to start it.
+
 ## Evidence Receipt
 
 รายงาน artifact, คำสั่งตรวจสอบ, ผลจริง, ความเสี่ยง และ next action ที่เล็กที่สุด
