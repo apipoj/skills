@@ -15,6 +15,8 @@ const REPO_ROOT = path.join(__dirname, '..');
 const PUBLIC_TEXT_FILES = [
   'README.md',
   'README-EN.md',
+  'USER_GUIDE.md',
+  'USER_GUIDE-EN.md',
   'INSTALL_FOR_AGENTS.md',
 ];
 
@@ -351,6 +353,7 @@ function main() {
 if (require.main === module) main();
 
 module.exports = {
+  PUBLIC_TEXT_FILES,
   SECRET_SCAN_EXCLUSIONS,
   collectChangelogErrors,
   collectCountClaimErrors,

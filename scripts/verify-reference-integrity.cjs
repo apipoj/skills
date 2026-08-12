@@ -10,6 +10,8 @@ const SPK_REF_RE = /(?<!\/)\bspk:([a-z][a-z0-9-]*)/g;
 const DEFAULT_SCAN_ROOTS = [
   'README.md',
   'README-EN.md',
+  'USER_GUIDE.md',
+  'USER_GUIDE-EN.md',
   'CHANGELOG.md',
   'INSTALL_FOR_AGENTS.md',
   'RESOLVER.md',

@@ -3073,6 +3073,168 @@
       ]
     },
     {
+      "id": "bala",
+      "tier": "core",
+      "origin": {
+        "repository": "apipoj/spk",
+        "skill": "bala"
+      },
+      "sources": {
+        "th": "skills/productivity/bala",
+        "en": "locales/en/skills/productivity/bala"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Bala 5 Check",
+          "description": "Assess an engineering plan, change, incident, or decision through the five Bala strengths, identify the dominant imbalance, and recommend the smallest evidence-producing next action.",
+          "shortDescription": "Balance five strengths before choosing the next action",
+          "defaultPrompt": "Check this work with Bala 5 and recommend the smallest evidence-producing next action.",
+          "triggers": [
+            "check this plan with Bala 5",
+            "balance confidence effort awareness focus and judgment",
+            "identify the dominant workflow imbalance"
+          ],
+          "negativeTriggers": [
+            "a general question about Buddhist history or doctrine",
+            "the user asks for implementation without requesting a balance check"
+          ]
+        },
+        "th": {
+          "displayName": "ตรวจสมดุลด้วยพละ 5",
+          "description": "ใช้หลักพละ 5 เป็นเครื่องมือตรวจสอบสมดุลก่อนเริ่มงาน plan, code, review หรือแก้ปัญหา",
+          "shortDescription": "ตรวจสมดุลห้าด้านก่อนเลือก action ถัดไป",
+          "defaultPrompt": "ตรวจงานนี้ด้วยพละ 5 แล้วแนะนำ action เล็กที่สุดที่สร้างหลักฐานได้",
+          "triggers": [
+            "ตรวจแผนนี้ด้วยพละ 5",
+            "เช็กสมดุลศรัทธา วิริยะ สติ สมาธิ และปัญญา",
+            "หา imbalance หลักของ workflow นี้"
+          ],
+          "negativeTriggers": [
+            "คำถามทั่วไปเกี่ยวกับประวัติศาสตร์หรือหลักธรรมทางพุทธศาสนา",
+            "ผู้ใช้ขอ implementation โดยไม่ได้ขอ balance check"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": false
+      },
+      "effectLevel": "read_only",
+      "role": "bala_balance_lens",
+      "workflow": [
+        {
+          "phase": "inspect",
+          "instruction": "Inspect the supplied scope and only the repository context that can change the assessment."
+        },
+        {
+          "phase": "balance",
+          "instruction": "Rate confidence, energy, awareness, concentration, and judgment from concrete evidence."
+        },
+        {
+          "phase": "focus",
+          "instruction": "Identify the single dominant imbalance and the smallest safe action that reduces uncertainty."
+        },
+        {
+          "phase": "prove",
+          "instruction": "Define the test, log, review signal, or other evidence that proves the action worked."
+        }
+      ],
+      "artifacts": [
+        "Bala 5 check",
+        "smallest next-action recommendation"
+      ],
+      "evidence": [
+        "five ratings with concrete evidence",
+        "dominant imbalance",
+        "proof signal and next action"
+      ],
+      "guardrails": [
+        "Keep the assessment secular, practical, engineering-focused, and testable.",
+        "Report imbalance as a workflow signal and never blame or diagnose the user.",
+        "Do not modify files unless the user separately requests implementation."
+      ]
+    },
+    {
+      "id": "sunzi",
+      "tier": "core",
+      "origin": {
+        "repository": "apipoj/spk",
+        "skill": "sunzi"
+      },
+      "sources": {
+        "th": "skills/productivity/sunzi",
+        "en": "locales/en/skills/productivity/sunzi"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Sunzi Strategy Lens",
+          "description": "Apply Sun Tzu as a practical engineering strategy lens for terrain, leverage, sequencing, battles to avoid, and the smallest winning move.",
+          "shortDescription": "Choose terrain, leverage, and the smallest winning move",
+          "defaultPrompt": "Apply the Sunzi strategy lens and recommend the smallest winning move with proof.",
+          "triggers": [
+            "use Sunzi to choose the strategy",
+            "find leverage and battles to avoid",
+            "choose the smallest winning move before implementation"
+          ],
+          "negativeTriggers": [
+            "a general question about Sun Tzu or ancient Chinese history",
+            "the user asks for implementation without requesting a strategy lens"
+          ]
+        },
+        "th": {
+          "displayName": "เลือกกลยุทธ์ด้วยซุนวู",
+          "description": "ใช้หลักซุนวูเป็น strategy lens ก่อนเลือก battle, architecture, rollout หรือ competitive move",
+          "shortDescription": "เลือก terrain, leverage และ move ที่เล็กแต่ชนะ",
+          "defaultPrompt": "ใช้หลักซุนวูประเมินสถานการณ์นี้ แล้วแนะนำ smallest winning move พร้อมหลักฐาน",
+          "triggers": [
+            "ใช้ซุนวูช่วยเลือกกลยุทธ์",
+            "หา leverage และ battle ที่ควรเลี่ยง",
+            "เลือก smallest winning move ก่อน implement"
+          ],
+          "negativeTriggers": [
+            "คำถามทั่วไปเกี่ยวกับซุนวูหรือประวัติศาสตร์จีนโบราณ",
+            "ผู้ใช้ขอ implementation โดยไม่ได้ขอ strategy lens"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": false
+      },
+      "effectLevel": "read_only",
+      "role": "sunzi_strategy_lens",
+      "workflow": [
+        {
+          "phase": "orient",
+          "instruction": "Inspect the goal and only the repository or product context that can change the strategic decision."
+        },
+        {
+          "phase": "map",
+          "instruction": "Define the objective, terrain, capabilities, constraints, leverage, timing, and costly battles."
+        },
+        {
+          "phase": "choose",
+          "instruction": "Recommend the smallest move that improves the option set or produces decisive evidence."
+        },
+        {
+          "phase": "prove",
+          "instruction": "Define a verification signal and rollback or exit path."
+        }
+      ],
+      "artifacts": [
+        "Sunzi strategy brief",
+        "smallest winning-move recommendation"
+      ],
+      "evidence": [
+        "objective and terrain",
+        "capabilities, constraints, leverage, and avoided battle",
+        "proof signal, rollback, and next action"
+      ],
+      "guardrails": [
+        "Keep the lens practical, engineering or product focused, and testable.",
+        "Reinterpret conflict as constraints or uncertainty and never recommend harmful deception or manipulation.",
+        "Do not modify files unless the user separately requests implementation."
+      ]
+    },
+    {
       "id": "ask-matt",
       "tier": "compat",
       "aliasFor": "start",

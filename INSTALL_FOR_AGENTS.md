@@ -85,6 +85,8 @@ Select skills from the Thai-first `skills/` tree. Do not combine this with a nat
 | `/spk:check-release` | verifier | typed only |
 | `/spk:test-changes` | direct main-thread workflow | model or typed |
 | `/spk:uninstall` | direct main-thread workflow | typed only |
+| `/spk:bala` | direct main-thread workflow | typed only |
+| `/spk:sunzi` | direct main-thread workflow | typed only |
 
 ### Compatibility aliases
 
@@ -114,5 +116,3 @@ Every alias is typed only.
 | `/spk:scoped-tests` | `/spk:test-changes` |
 | `/spk:release-check` | `/spk:check-release` |
 <!-- SPK-COMMANDS:end -->
-
-`bala` and `sunzi` are optional extras and are intentionally absent from this list.

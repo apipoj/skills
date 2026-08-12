@@ -1,6 +1,6 @@
 {
-  "version": "5.1.1",
-  "released": "2026-08-07",
+  "version": "5.2.0",
+  "released": "2026-08-09",
   "brand": "Apipoj Skills",
   "slug": "spk",
   "tagline": "Thai-first, ready-to-use engineering skills with evidence and safe defaults",
@@ -287,6 +287,14 @@
     },
     {
       "name": "/uninstall",
+      "direct": true
+    },
+    {
+      "name": "/bala",
+      "direct": true
+    },
+    {
+      "name": "/sunzi",
       "direct": true
     },
     {

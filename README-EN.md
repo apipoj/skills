@@ -4,6 +4,8 @@ Thai-first, ready-to-use engineering skills for Claude Code, Codex, and Agent Sk
 
 Apipoj Skills builds on the small, composable workflows from `mattpocock/skills` and adds SPK's stronger approval gates, evidence receipts, project memory, security hooks, Claude/Codex generation, and natural Thai defaults.
 
+For step-by-step onboarding, read the **[English user guide](USER_GUIDE-EN.md)** or the canonical [Thai guide](USER_GUIDE.md).
+
 ## Instant start
 
 Install the plugin, then use one entry point:
@@ -51,7 +53,7 @@ Use one installation method per project to avoid duplicate skills.
 ## Inventory
 
 <!-- SPK-COUNTS:start -->
-**21 subagents** (4 orchestrators + 17 specialists) · **38 canonical skills** + **21 compatibility aliases**
+**21 subagents** (4 orchestrators + 17 specialists) · **40 canonical skills** + **21 compatibility aliases**
 <!-- SPK-COUNTS:end -->
 
 ### Agents
@@ -131,6 +133,8 @@ Compatibility aliases are supported until v6 and always disclose the canonical r
 | `/spk:check-release` | verifier | typed only |
 | `/spk:test-changes` | direct main-thread workflow | model or typed |
 | `/spk:uninstall` | direct main-thread workflow | typed only |
+| `/spk:bala` | direct main-thread workflow | typed only |
+| `/spk:sunzi` | direct main-thread workflow | typed only |
 
 ### Compatibility aliases
 
@@ -160,8 +164,6 @@ Every alias is typed only.
 | `/spk:scoped-tests` | `/spk:test-changes` |
 | `/spk:release-check` | `/spk:check-release` |
 <!-- SPK-COMMANDS:end -->
-
-`bala` and `sunzi` live under `extras/` and are not installed in the default bundle.
 
 ## Source layout
 

@@ -1,10 +1,10 @@
 ---
-name: spk-bala
+name: bala
 description: ใช้หลักพละ 5 เป็นเครื่องมือตรวจสอบสมดุลก่อนเริ่มงาน plan, code, review หรือแก้ปัญหา
-argument-hint: "[scope, plan, diff, incident, หรือ decision]"
+disable-model-invocation: true
 ---
 
-# spk-bala
+# Bala 5 Check
 
 ใช้หลักพละ 5 ของพุทธศาสนาเป็นเครื่องมือตรวจสอบสมดุลสำหรับงาน engineering ร่วมกับ AI แปลงหลักพละให้เป็นพฤติกรรมที่สังเกตได้ในทางปฏิบัติ ไม่ใช่การสอนศาสนา
 
