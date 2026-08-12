@@ -1,5 +1,17 @@
 # Apipoj Skills
 
+## 5.2.0 - 2026-08-09
+
+### Added
+
+- `/bala` — apply the five Bala strengths as a practical balance check for engineering plans, changes, incidents, and decisions, then recommend the smallest evidence-producing next action.
+- `/sunzi` — apply Sun Tzu as a practical strategy lens for terrain, leverage, sequencing, battles to avoid, and the smallest winning move.
+- Add Thai-first `USER_GUIDE.md` and its English mirror with installation, workflow recipes, authority boundaries, troubleshooting, and practical `bala`/`sunzi` examples.
+
+### Changed
+
+- `bala` and `sunzi` now ship in the default Claude Code and Codex bundles as manual, read-only skills instead of optional extras.
+
 ## 5.1.1 - 2026-08-07
 
 ### Fixed

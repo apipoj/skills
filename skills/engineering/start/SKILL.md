@@ -67,5 +67,5 @@ approval_required: <true|false>
 - Router เพิ่ม authority ไม่ได้: อนุมัติ plan ไม่เท่ากับอนุมัติ dev และการสร้างไฟล์ไม่เท่ากับอนุมัติ Git หรือ remote write
 - ห้ามข้าม approval boundary ของ `pr`, `task-to-pr`, `deploy` และ `uninstall`
 - ให้คำแนะนำหนึ่งตัวและใช้ workflow เดียวเมื่อพอ
-- Strategy extras ไม่อยู่ใน default routing
+- `bala` และ `sunzi` อยู่ใน default bundle แต่เป็น manual-only จึงไม่ route ให้อัตโนมัติ
 - หลักฐานไม่พอให้บอกช่องว่าง ห้ามเดา

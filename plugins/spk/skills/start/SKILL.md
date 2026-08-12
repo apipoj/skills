@@ -76,5 +76,5 @@ approval_required: <true|false>
 - The router never adds authority. Planning approval does not authorize implementation; local creation does not authorize Git or remote writes.
 - Never auto-run `pr`, `task-to-pr`, `deploy`, or `uninstall` across their approval boundary.
 - Prefer one clear recommendation and one workflow over a large pipeline.
-- Optional strategy extras are not part of default routing.
+- `bala` and `sunzi` ship in the default bundle but remain manual-only and outside automatic routing.
 - Report missing evidence instead of guessing.

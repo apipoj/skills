@@ -42,8 +42,25 @@ describe('pipeline smoke', () => {
     const match = readme.match(/<!-- SPK-COUNTS:start -->\n(.+?)\n<!-- SPK-COUNTS:end -->/s);
     expect(match).not.toBeNull();
     expect(match[1]).toMatch(/\*\*\d+ subagents\*\*/);
-    expect(match[1]).toMatch(/\*\*38 skills หลัก\*\*/);
+    expect(match[1]).toMatch(/\*\*40 skills หลัก\*\*/);
     expect(match[1]).toMatch(/\*\*21 ชื่อเดิม\*\*/);
+  });
+
+  test('ships linked Thai and English user guides with strategy-lens onboarding', () => {
+    const readme = fs.readFileSync(path.join(REPO_ROOT, 'README.md'), 'utf-8');
+    const readmeEn = fs.readFileSync(path.join(REPO_ROOT, 'README-EN.md'), 'utf-8');
+    const guide = fs.readFileSync(path.join(REPO_ROOT, 'USER_GUIDE.md'), 'utf-8');
+    const guideEn = fs.readFileSync(path.join(REPO_ROOT, 'USER_GUIDE-EN.md'), 'utf-8');
+
+    expect(readme).toContain('[คู่มือผู้ใช้](USER_GUIDE.md)');
+    expect(readmeEn).toContain('[English user guide](USER_GUIDE-EN.md)');
+    for (const text of [guide, guideEn]) {
+      expect(text).toContain('/spk:start');
+      expect(text).toContain('/spk:bala');
+      expect(text).toContain('/spk:sunzi');
+      expect(text).toMatch(/read.only/i);
+      expect(text).toMatch(/typed.only/i);
+    }
   });
 
   test('every agent in manifest has unique name', () => {

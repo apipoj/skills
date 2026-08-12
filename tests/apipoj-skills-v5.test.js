@@ -47,6 +47,8 @@ const spkCore = [
   'check-release',
   'test-changes',
   'uninstall',
+  'bala',
+  'sunzi',
 ];
 
 const aliases = {
@@ -76,7 +78,7 @@ const aliases = {
 describe('Apipoj Skills v5 migration contract', () => {
   test('uses the approved product identity and version', () => {
     expect(manifest).toMatchObject({
-      version: '5.1.1',
+      version: '5.2.0',
       brand: 'Apipoj Skills',
       slug: 'spk',
     });
@@ -87,13 +89,13 @@ describe('Apipoj Skills v5 migration contract', () => {
     });
   });
 
-  test('declares 38 canonical skills and 21 temporary aliases', () => {
+  test('declares 40 canonical skills and 21 temporary aliases', () => {
     const skills = new Map(contract.skills.map(skill => [skill.id, skill]));
     const canonical = [...upstreamCanonical, ...spkCore];
 
-    expect(new Set(canonical).size).toBe(38);
-    expect(contract.skills).toHaveLength(59);
-    expect(manifest.commands).toHaveLength(59);
+    expect(new Set(canonical).size).toBe(40);
+    expect(contract.skills).toHaveLength(61);
+    expect(manifest.commands).toHaveLength(61);
 
     for (const id of canonical) {
       expect(skills.get(id)).toMatchObject({ tier: 'core' });
@@ -121,12 +123,12 @@ describe('Apipoj Skills v5 migration contract', () => {
     }
   });
 
-  test('keeps the two strategy skills outside the default bundle', () => {
+  test('ships the two strategy lenses in the default bundle', () => {
     const commandIds = new Set(manifest.commands.map(command => command.name.slice(1)));
-    expect(commandIds.has('bala')).toBe(false);
-    expect(commandIds.has('sunzi')).toBe(false);
-    expect(fs.existsSync(path.join(ROOT, 'extras', 'skills', 'bala', 'SKILL.md'))).toBe(true);
-    expect(fs.existsSync(path.join(ROOT, 'extras', 'skills', 'sunzi', 'SKILL.md'))).toBe(true);
+    expect(commandIds.has('bala')).toBe(true);
+    expect(commandIds.has('sunzi')).toBe(true);
+    expect(fs.existsSync(path.join(ROOT, 'skills', 'productivity', 'bala', 'SKILL.md'))).toBe(true);
+    expect(fs.existsSync(path.join(ROOT, 'skills', 'productivity', 'sunzi', 'SKILL.md'))).toBe(true);
   });
 
   test('makes start the Thai-first router and preserves the short namespace', () => {

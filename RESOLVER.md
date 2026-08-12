@@ -55,6 +55,8 @@ Rules:
 | `/spk:check-release` | verifier | typed only |
 | `/spk:test-changes` | direct main-thread workflow | model or typed |
 | `/spk:uninstall` | direct main-thread workflow | typed only |
+| `/spk:bala` | direct main-thread workflow | typed only |
+| `/spk:sunzi` | direct main-thread workflow | typed only |
 
 ### Compatibility aliases
 

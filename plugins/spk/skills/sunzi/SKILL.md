@@ -20,7 +20,7 @@ Run this lens directly in the current conversation; do not route it to a planner
 Return a short strategy brief and one recommended move. Do not change files unless the
 user separately asks for implementation.
 
-## Sun Tzu Mapping for Subagents
+## Sun Tzu Mapping
 
 1. **Know self, know the other**
    - Self: current capability, repo state, team bandwidth, available tests, deploy confidence.

@@ -4,6 +4,8 @@ Thai-first engineering skills แบบพร้อมใช้สำหรั�
 
 Apipoj Skills ใช้ skill ที่เล็กและ composable จาก `mattpocock/skills` เป็นฐาน แล้วเพิ่มสิ่งที่ SPK ทำได้ดีกว่า: approval gates, evidence receipts, project memory, security hooks, Claude/Codex generation และภาษาไทยที่คุยรู้เรื่อง
 
+เริ่มใช้งานแบบทีละขั้นได้ที่ **[คู่มือผู้ใช้](USER_GUIDE.md)** · [English user guide](USER_GUIDE-EN.md)
+
 ## เริ่มแบบมาม่า
 
 ติดตั้งแล้วเรียกคำสั่งเดียว:
@@ -51,7 +53,7 @@ npx skills@latest add apipoj/skills
 ## ภาพรวม
 
 <!-- SPK-COUNTS:start -->
-**21 subagents** (4 orchestrators + 17 specialists) · **38 skills หลัก** + **21 ชื่อเดิม**
+**21 subagents** (4 orchestrators + 17 specialists) · **40 skills หลัก** + **21 ชื่อเดิม**
 <!-- SPK-COUNTS:end -->
 
 ### Agents
@@ -131,6 +133,8 @@ Aliases ในตารางเป็นชื่อเดิมชั่วค
 | `/spk:check-release` | verifier | พิมพ์เอง |
 | `/spk:test-changes` | direct main-thread workflow | agent เรียกเองได้ |
 | `/spk:uninstall` | direct main-thread workflow | พิมพ์เอง |
+| `/spk:bala` | direct main-thread workflow | พิมพ์เอง |
+| `/spk:sunzi` | direct main-thread workflow | พิมพ์เอง |
 
 ### ชื่อเดิมที่ยังใช้ได้
 
@@ -160,8 +164,6 @@ Aliases ในตารางเป็นชื่อเดิมชั่วค
 | `/spk:scoped-tests` | `/spk:test-changes` |
 | `/spk:release-check` | `/spk:check-release` |
 <!-- SPK-COMMANDS:end -->
-
-`bala` และ `sunzi` อยู่ใน `extras/` จึงไม่ติดตั้งพร้อม default bundle
 
 ## โครงสร้าง source
 

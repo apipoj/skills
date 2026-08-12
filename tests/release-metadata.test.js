@@ -2,6 +2,7 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const {
+  PUBLIC_TEXT_FILES,
   collectCountClaimErrors,
   collectReleaseMetadataErrors,
   collectRepositorySecretErrors,
@@ -65,7 +66,7 @@ function createFixture() {
       description: 'Fixture with 2 agents and 1 command.',
     }],
   });
-  for (const file of ['README.md', 'README-EN.md', 'INSTALL_FOR_AGENTS.md']) {
+  for (const file of PUBLIC_TEXT_FILES) {
     writeText(root, file, 'Fixture: 2 subagents, 1 orchestrator, 1 specialist, and 1 skill.\n');
   }
   writeText(root, 'CHANGELOG.md', '# Changelog\n\n## Unreleased\n\n## 3.6.0 - 2026-07-31\n');
@@ -95,7 +96,7 @@ describe('release metadata', () => {
         { id: 'old-plan', tier: 'compat', aliasFor: 'plan' },
       ],
     };
-    for (const file of ['README.md', 'README-EN.md', 'INSTALL_FOR_AGENTS.md']) {
+    for (const file of PUBLIC_TEXT_FILES) {
       writeText(root, file, 'Fixture: 2 subagents, 1 canonical skill, and 1 compatibility alias.\n');
     }
     writeJson(root, 'package.json', { version: manifest.version, description: 'Fixture bundle.' });

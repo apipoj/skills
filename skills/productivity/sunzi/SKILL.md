@@ -1,10 +1,10 @@
 ---
-name: spk-sunzi
+name: sunzi
 description: ใช้หลักซุนวูเป็น strategy lens ก่อนเลือก battle, architecture, rollout หรือ competitive move
-argument-hint: "[goal, plan, competitor, incident, architecture choice, หรือ rollout]"
+disable-model-invocation: true
 ---
 
-# spk-sunzi
+# Sunzi Strategy Lens
 
 ใช้หลักซุนวูเป็น strategy lens สำหรับงาน engineering และ product ร่วมกับ AI แปลง classic strategy ให้เป็นพฤติกรรม planning ที่สังเกตได้: รู้สถานการณ์ เลือก battle ที่ถูก สร้างเงื่อนไขก่อนลงมือ และหลีกเลี่ยงการต่อสู้แบบเสียเปรียบ
 
