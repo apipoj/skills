@@ -19,6 +19,7 @@
     "verify:platforms": "node scripts/generate-platform-artifacts.cjs --check",
     "regen": "node scripts/regenerate-docs.cjs",
     "regen:check": "node scripts/regenerate-docs.cjs --check",
+    "sync:upstream-docs": "node scripts/sync-upstream-docs.cjs",
     "validate:manifest": "node scripts/validate-manifest.cjs",
     "verify:gates": "node scripts/verify-grep-gates.cjs",
     "verify:native": "node scripts/verify-native-skills.cjs",
