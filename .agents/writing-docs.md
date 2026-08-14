@@ -8,6 +8,8 @@ Root release docs and command tables are generated from `manifest.json`. Skill r
 and locale metadata come from `contracts/workflows.json`; do not maintain a separate
 handwritten roster. Each native bucket README links directly to its Thai `SKILL.md`.
 
-Files under `docs/engineering/` and `docs/productivity/` are retained upstream reference
-pages from the pinned Matt Pocock fork. They are not Apipoj installation instructions
-and must carry the upstream-reference banner.
+Files under `docs/engineering/` and `docs/productivity/` are generated mirrors of the
+pinned Matt Pocock fork. Do not edit them by hand — run `npm run sync:upstream-docs --
+--from <upstream-checkout>`. They are not Apipoj installation instructions. Each page
+carries the upstream-reference banner plus the canonical SPK skill it documents, and
+`npm run verify:upstream` checks every body against `docs/upstream/reference-hashes.json`.

@@ -18,7 +18,8 @@
 | `verify-agent-contracts.cjs` | Agent markdown files meet structural contracts |
 | `verify-grep-gates.cjs` | Grep-based checks for forbidden patterns |
 | `verify-native-skills.cjs` | Native Thai skills align with manifest command list |
-| `check-upstream-drift.cjs` | Verifies the reviewed Matt Pocock source pin and reports promoted-skill drift against an optional checkout |
+| `check-upstream-drift.cjs` | Verifies the reviewed Matt Pocock source pin, reports promoted-skill drift against an optional checkout, and verifies retained reference pages against docs/upstream/reference-hashes.json |
+| `sync-upstream-docs.cjs` | Regenerates the retained upstream reference pages from a pinned checkout and writes their sha256 index |
 | `scoped-tests.cjs` | Maps changed paths to a conservative Jest inner-loop plan |
 
 ## Commands
@@ -46,5 +47,9 @@
 ## When Editing Here
 1. Export the validation logic as a named function so `tests/*.test.js` can import it.
 2. Add the script as an npm script in `package.json` and wire it into `verify:release`.
+   Exception: `sync-upstream-docs.cjs` requires a local upstream checkout (`--from`)
+   and writes generated files — it is a maintainer tool, not a gate, and deliberately
+   stays out of `verify:release`. `check-upstream-drift.cjs` is the gate that verifies
+   its output offline; that one is wired in.
 3. Add or update the matching Jest suite, including stale-artifact and unsafe-input cases.
 4. Add to `.husky/pre-commit` only if it is fast (<2s) and checks commit-blocking invariants.

@@ -5,6 +5,10 @@ const childProcess = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
+const { bodyOf, sha256 } = require('./sync-upstream-docs.cjs');
+
+const REFERENCE_BUCKETS = ['docs/engineering', 'docs/productivity'];
+
 const REPO_ROOT = path.join(__dirname, '..');
 const PINNED_UPSTREAM_COMMIT = '84fdeffd12f2ee307994d1eb6feb48173b6e0502';
 const EXPECTED_BUCKETS = ['engineering', 'productivity'];
@@ -79,8 +83,61 @@ function changedPromotedPaths(upstreamDir) {
   return output.trim().split('\n').filter(Boolean);
 }
 
+function collectReferenceDocErrors(rootDir = REPO_ROOT) {
+  const errors = [];
+  const indexPath = path.join(rootDir, 'docs', 'upstream', 'reference-hashes.json');
+  if (!fs.existsSync(indexPath)) return ['missing docs/upstream/reference-hashes.json'];
+
+  let index;
+  try {
+    index = readJson(indexPath);
+  } catch (error) {
+    return [`invalid docs/upstream/reference-hashes.json: ${error.message}`];
+  }
+
+  const lockPath = path.join(rootDir, 'docs', 'upstream', 'upstream-lock.json');
+  if (fs.existsSync(lockPath)) {
+    try {
+      const lock = readJson(lockPath);
+      if (index.pin !== lock.commit) {
+        errors.push(
+          `reference-hashes.json: pinned at ${index.pin} but the lock says ${lock.commit} — regenerate with sync:upstream-docs`,
+        );
+      }
+    } catch (error) {
+      errors.push(`invalid docs/upstream/upstream-lock.json: ${error.message}`);
+    }
+  }
+
+  const indexed = index.pages || {};
+  for (const [docPath, expected] of Object.entries(indexed)) {
+    const file = path.join(rootDir, docPath);
+    if (!fs.existsSync(file)) {
+      errors.push(`${docPath}: indexed but missing from the working tree`);
+      continue;
+    }
+    const actual = sha256(bodyOf(fs.readFileSync(file, 'utf8')));
+    if (actual !== expected) {
+      errors.push(`${docPath}: content does not match the pinned upstream page`);
+    }
+  }
+
+  for (const bucket of REFERENCE_BUCKETS) {
+    const dir = path.join(rootDir, bucket);
+    if (!fs.existsSync(dir)) continue;
+    for (const file of fs.readdirSync(dir).filter(name => name.endsWith('.md'))) {
+      const relative = `${bucket}/${file}`;
+      if (!(relative in indexed)) {
+        errors.push(`${relative}: shipped without a hash entry — run sync:upstream-docs`);
+      }
+    }
+  }
+
+  return errors;
+}
+
 function main() {
-  const errors = collectUpstreamProvenanceErrors();
+  const errors = [...collectUpstreamProvenanceErrors(), ...collectReferenceDocErrors()];
   if (errors.length) {
     console.error('Upstream provenance FAILED:');
     errors.forEach(error => console.error(`  - ${error}`));
@@ -115,5 +172,6 @@ module.exports = {
   EXPECTED_PROMOTED_SKILLS,
   PINNED_UPSTREAM_COMMIT,
   changedPromotedPaths,
+  collectReferenceDocErrors,
   collectUpstreamProvenanceErrors,
 };
