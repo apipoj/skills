@@ -1,6 +1,6 @@
 {
   "name": "apipoj-skills",
-  "version": "5.2.0",
+  "version": "6.0.0",
   "description": "Thai-first, ready-to-use engineering skills for Claude Code, Codex, and skills.sh",
   "repository": {
     "type": "git",
@@ -19,6 +19,7 @@
     "verify:platforms": "node scripts/generate-platform-artifacts.cjs --check",
     "regen": "node scripts/regenerate-docs.cjs",
     "regen:check": "node scripts/regenerate-docs.cjs --check",
+    "sync:upstream-docs": "node scripts/sync-upstream-docs.cjs",
     "validate:manifest": "node scripts/validate-manifest.cjs",
     "verify:gates": "node scripts/verify-grep-gates.cjs",
     "verify:native": "node scripts/verify-native-skills.cjs",

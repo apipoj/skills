@@ -1,6 +1,6 @@
 {
-  "version": "5.2.0",
-  "released": "2026-08-09",
+  "version": "6.0.0",
+  "released": "2026-08-14",
   "brand": "Apipoj Skills",
   "slug": "spk",
   "tagline": "Thai-first, ready-to-use engineering skills with evidence and safe defaults",
@@ -296,90 +296,6 @@
     {
       "name": "/sunzi",
       "direct": true
-    },
-    {
-      "name": "/ask-matt",
-      "direct": true
-    },
-    {
-      "name": "/setup-matt-pocock-skills",
-      "direct": true
-    },
-    {
-      "name": "/spk",
-      "direct": true
-    },
-    {
-      "name": "/jumpstart",
-      "direct": true
-    },
-    {
-      "name": "/review",
-      "orchestrator": "audit-orchestrator"
-    },
-    {
-      "name": "/grill-me",
-      "direct": true
-    },
-    {
-      "name": "/grilling",
-      "direct": true
-    },
-    {
-      "name": "/grill-with-docs",
-      "direct": true
-    },
-    {
-      "name": "/diagnosing-bugs",
-      "agent": "debugger"
-    },
-    {
-      "name": "/implement",
-      "orchestrator": "build-orchestrator"
-    },
-    {
-      "name": "/design-shotgun",
-      "agent": "designer"
-    },
-    {
-      "name": "/resolving-merge-conflicts",
-      "direct": true
-    },
-    {
-      "name": "/writing-great-skills",
-      "direct": true
-    },
-    {
-      "name": "/writing-for-agents",
-      "direct": true
-    },
-    {
-      "name": "/prime",
-      "agent": "primer"
-    },
-    {
-      "name": "/query",
-      "agent": "researcher"
-    },
-    {
-      "name": "/ingest",
-      "direct": true
-    },
-    {
-      "name": "/wiki-lint",
-      "orchestrator": "audit-orchestrator"
-    },
-    {
-      "name": "/improve-codebase-architecture",
-      "direct": true
-    },
-    {
-      "name": "/scoped-tests",
-      "direct": true
-    },
-    {
-      "name": "/release-check",
-      "agent": "verifier"
     }
   ]
 }

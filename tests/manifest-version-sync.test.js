@@ -6,6 +6,7 @@ const os = require('os');
 const {
   collectVersionSyncErrors,
   collectReleaseDateErrors,
+  guideVersionClaim,
   parseFrontmatter,
 } = require('../scripts/verify-manifest-sync.cjs');
 
@@ -27,6 +28,14 @@ function makeFixtureRoot(version = '3.1.4') {
   writeJson(path.join(root, '.claude-plugin/marketplace.json'), {
     plugins: [{ name: 'spk', version }],
   });
+  fs.writeFileSync(
+    path.join(root, 'USER_GUIDE.md'),
+    `# คู่มือผู้ใช้\n\nคู่มือนี้ครอบคลุม Apipoj Skills **v${version}**\n\n/spk:check-release ตรวจความพร้อม v${version}\n`,
+  );
+  fs.writeFileSync(
+    path.join(root, 'USER_GUIDE-EN.md'),
+    `# User Guide\n\nThis guide covers Apipoj Skills **v${version}**.\n\n/spk:check-release Check v${version} readiness.\n`,
+  );
   return root;
 }
 
@@ -82,6 +91,57 @@ describe('manifest version sync', () => {
         expect.stringContaining('.claude-plugin/marketplace.json plugins[0]: version mismatch'),
       ]));
       expect(errors).toHaveLength(6);
+    } finally {
+      fs.rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  test('user guides must document the manifest version', () => {
+    // Regression: 6.0.0 shipped with both guides still saying v5.2.0 — the
+    // version-bearing source list covered only JSON, so nothing noticed.
+    const root = makeFixtureRoot('3.1.4');
+    const thai = path.join(root, 'USER_GUIDE.md');
+    const english = path.join(root, 'USER_GUIDE-EN.md');
+    try {
+      expect(collectVersionSyncErrors(root)).toEqual([]);
+
+      fs.writeFileSync(thai, 'คู่มือนี้ครอบคลุม Apipoj Skills **v3.1.3**\n');
+      expect(collectVersionSyncErrors(root)).toEqual([
+        'USER_GUIDE.md: version mismatch (file=3.1.3 manifest=3.1.4)',
+      ]);
+
+      fs.writeFileSync(english, 'This guide covers Apipoj Skills **v2.0.0**.\n');
+      expect(collectVersionSyncErrors(root)).toEqual([
+        'USER_GUIDE.md: version mismatch (file=3.1.3 manifest=3.1.4)',
+        'USER_GUIDE-EN.md: version mismatch (file=2.0.0 manifest=3.1.4)',
+      ]);
+
+      // A guide that updates its headline but forgets the example prompt is
+      // exactly how 5.2.0 survived: every claim in the file has to agree.
+      fs.writeFileSync(thai, 'Apipoj Skills **v3.1.4**\n\n/spk:check-release ตรวจความพร้อม v3.1.3\n');
+      expect(collectVersionSyncErrors(root)).toContainEqual(
+        'USER_GUIDE.md: version mismatch (file=3.1.4, 3.1.3 manifest=3.1.4)',
+      );
+
+      fs.rmSync(thai);
+      expect(collectVersionSyncErrors(root)).toContainEqual(
+        'USER_GUIDE.md: version mismatch (file=<missing> manifest=3.1.4)',
+      );
+    } finally {
+      fs.rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  test('guideVersionClaim reads every version claim in a guide', () => {
+    const root = makeFixtureRoot('3.1.4');
+    const guide = path.join(root, 'USER_GUIDE.md');
+    try {
+      expect(guideVersionClaim(guide)).toBe('3.1.4');
+
+      fs.writeFileSync(guide, 'Node.js 20 or newer. No release claim here.\n');
+      expect(guideVersionClaim(guide)).toBeUndefined();
+
+      expect(guideVersionClaim(path.join(root, 'does-not-exist.md'))).toBeUndefined();
     } finally {
       fs.rmSync(root, { recursive: true, force: true });
     }

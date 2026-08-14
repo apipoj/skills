@@ -5,12 +5,22 @@ const childProcess = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
+const {
+  BANNER_NOTICE,
+  bodyOf,
+  canonicalLine,
+  normalizeEol,
+  sha256,
+} = require('./sync-upstream-docs.cjs');
+
+const REFERENCE_BUCKETS = ['docs/engineering', 'docs/productivity'];
+
 const REPO_ROOT = path.join(__dirname, '..');
-const PINNED_UPSTREAM_COMMIT = '6acc160e4e0cd062dbbbd7a1b26ae92855edf07e';
+const PINNED_UPSTREAM_COMMIT = '84fdeffd12f2ee307994d1eb6feb48173b6e0502';
 const EXPECTED_BUCKETS = ['engineering', 'productivity'];
-// Canonical upstream skills we ship, plus aliases whose target is not itself
-// upstream-derived. Raise this deliberately when a review promotes a new skill.
-const EXPECTED_PROMOTED_SKILLS = 25;
+// Canonical upstream skills we ship. Raise this deliberately when a review
+// promotes a new skill.
+const EXPECTED_PROMOTED_SKILLS = 24;
 const EXCLUDED_BUCKETS = ['misc', 'personal', 'in-progress', 'deprecated'];
 
 function readJson(file) {
@@ -79,8 +89,99 @@ function changedPromotedPaths(upstreamDir) {
   return output.trim().split('\n').filter(Boolean);
 }
 
+// The leading blockquote region a reader sees above the mirrored body. `bodyOf`
+// skips it before hashing — deliberately, because the banner is ours to reword —
+// so the hash alone cannot tell whether the banner is present, correct, or
+// preceded by injected visible text. This is what the structural check below
+// compares.
+function bannerRegionOf(pageText) {
+  const lines = pageText.split('\n');
+  let index = 0;
+  while (index < lines.length && lines[index].startsWith('>')) index += 1;
+  return lines.slice(0, index).join('\n');
+}
+
+function collectReferenceDocErrors(rootDir = REPO_ROOT) {
+  const errors = [];
+  const indexPath = path.join(rootDir, 'docs', 'upstream', 'reference-hashes.json');
+  if (!fs.existsSync(indexPath)) return ['missing docs/upstream/reference-hashes.json'];
+
+  let index;
+  try {
+    index = readJson(indexPath);
+  } catch (error) {
+    return [`invalid docs/upstream/reference-hashes.json: ${error.message}`];
+  }
+
+  const lockPath = path.join(rootDir, 'docs', 'upstream', 'upstream-lock.json');
+  if (fs.existsSync(lockPath)) {
+    try {
+      const lock = readJson(lockPath);
+      if (index.pin !== lock.commit) {
+        errors.push(
+          `reference-hashes.json: pinned at ${index.pin} but the lock says ${lock.commit} — regenerate with sync:upstream-docs`,
+        );
+      }
+    } catch (error) {
+      errors.push(`invalid docs/upstream/upstream-lock.json: ${error.message}`);
+    }
+  }
+
+  const indexed = index.pages || {};
+  for (const [docPath, expected] of Object.entries(indexed)) {
+    const file = path.join(rootDir, docPath);
+    if (!fs.existsSync(file)) {
+      errors.push(`${docPath}: indexed but missing from the working tree`);
+      continue;
+    }
+    const page = normalizeEol(fs.readFileSync(file, 'utf8'));
+    const actual = sha256(bodyOf(page));
+    if (actual !== expected) {
+      errors.push(`${docPath}: content does not match the pinned upstream page`);
+    }
+
+    // The banner sits outside the hashed body, so assert it structurally: the
+    // leading blockquote region must be the notice and the canonical pointer,
+    // and nothing else. Anything extra there renders as visible page text that
+    // no gate would otherwise see.
+    let expectedBanner;
+    try {
+      expectedBanner = `${BANNER_NOTICE}\n${canonicalLine(docPath)}`;
+    } catch (error) {
+      errors.push(error.message);
+      continue;
+    }
+    if (bannerRegionOf(page) !== expectedBanner) {
+      errors.push(
+        `${docPath}: banner region must be exactly the upstream-reference notice plus the canonical SPK skill line — regenerate with sync:upstream-docs`,
+      );
+    }
+  }
+
+  for (const bucket of REFERENCE_BUCKETS) {
+    const dir = path.join(rootDir, bucket);
+    if (!fs.existsSync(dir)) continue;
+    for (const file of fs.readdirSync(dir).filter(name => name.endsWith('.md'))) {
+      const relative = `${bucket}/${file}`;
+      if (!(relative in indexed)) {
+        errors.push(`${relative}: shipped without a hash entry — run sync:upstream-docs`);
+      }
+    }
+  }
+
+  return errors;
+}
+
+// Every collector this gate runs, in one exported place. `main()` must call
+// nothing else: a collector dropped from an inline list in main() would leave
+// the suite green while `verify:upstream` silently stopped checking it, and
+// tests may not shell-exec the script to notice.
+function collectAllErrors(rootDir = REPO_ROOT) {
+  return [...collectUpstreamProvenanceErrors(rootDir), ...collectReferenceDocErrors(rootDir)];
+}
+
 function main() {
-  const errors = collectUpstreamProvenanceErrors();
+  const errors = collectAllErrors();
   if (errors.length) {
     console.error('Upstream provenance FAILED:');
     errors.forEach(error => console.error(`  - ${error}`));
@@ -114,6 +215,9 @@ module.exports = {
   EXPECTED_BUCKETS,
   EXPECTED_PROMOTED_SKILLS,
   PINNED_UPSTREAM_COMMIT,
+  bannerRegionOf,
   changedPromotedPaths,
+  collectAllErrors,
+  collectReferenceDocErrors,
   collectUpstreamProvenanceErrors,
 };

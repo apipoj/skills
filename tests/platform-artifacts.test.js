@@ -163,31 +163,9 @@ describe('platform artifact compiler', () => {
     );
     expect(wikiLintSkill).toMatch(/only permitted project write/i);
 
-    for (const id of [
-      'ask-matt',
-      'setup-matt-pocock-skills',
-      'spk',
-      'jumpstart',
-      'review',
-      'grill-me',
-      'grilling',
-      'grill-with-docs',
-      'diagnosing-bugs',
-      'implement',
-      'design-shotgun',
-      'resolving-merge-conflicts',
-      'writing-great-skills',
-      'prime',
-      'query',
-      'ingest',
-      'wiki-lint',
-      'improve-codebase-architecture',
-      'scoped-tests',
-      'release-check',
-    ]) {
-      expect(byId[id].tier).toBe('compat');
-      expect(byId[id].activation.allowImplicitInvocation).toBe(false);
-      expect(byId[id].aliasFor).toBeTruthy();
+    for (const skill of Object.values(byId)) {
+      expect(skill.tier).toBe('core');
+      expect(skill.aliasFor).toBeUndefined();
     }
   });
 
@@ -437,8 +415,15 @@ describe('platform artifact compiler', () => {
     drifted.skills[0].tier = 'default';
     drifted.skills[0].sources.th = '../outside/start';
     drifted.skills[0].origin.repository = '';
-    const alias = drifted.skills.find(skill => skill.tier === 'compat');
+    const alias = JSON.parse(JSON.stringify(drifted.skills[1]));
+    alias.id = 'legacy-alias';
+    alias.tier = 'compat';
+    alias.sources = {
+      th: 'skills/compat/legacy-alias',
+      en: 'locales/en/skills/compat/legacy-alias',
+    };
     alias.aliasFor = 'missing-canonical-skill';
+    drifted.skills.push(alias);
 
     const errors = validateContract(drifted, fixture.manifest).join('\n');
     expect(errors).toMatch(/tier must be core or compat/);

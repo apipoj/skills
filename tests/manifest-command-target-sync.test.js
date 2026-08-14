@@ -45,6 +45,8 @@ function makeFixtureRoot() {
   writeJson(path.join(root, 'plugins/spk/.claude-plugin/plugin.json'), { version });
   writeJson(path.join(root, 'plugins/spk-codex/.codex-plugin/plugin.json'), { version });
   writeJson(path.join(root, '.claude-plugin/marketplace.json'), { plugins: [{ name: 'spk', version }] });
+  writeText(path.join(root, 'USER_GUIDE.md'), `คู่มือนี้ครอบคลุม Apipoj Skills **v${version}**\n`);
+  writeText(path.join(root, 'USER_GUIDE-EN.md'), `This guide covers Apipoj Skills **v${version}**.\n`);
   writeAgent(root, 'plan-orchestrator', 'claude-opus-4-8', 'green');
   writeAgent(root, 'planner', 'claude-sonnet-4-6', 'green');
   writeSkill(root, 'plan');

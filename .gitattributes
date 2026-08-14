@@ -2,3 +2,10 @@
 # checkout produces a script bash refuses to run, and plugins/spk/templates/
 # ships its contents to users.
 *.sh text eol=lf
+
+# Markdown must stay LF too. The retained upstream mirrors under docs/ are
+# gated on a sha256 of their content, and Windows defaults to
+# core.autocrlf=true — a CRLF checkout rewrites every byte and failed all 25
+# pages while macOS and Linux passed. The gate normalises line endings when it
+# reads, so this rule is the second layer, not the only one.
+*.md text eol=lf

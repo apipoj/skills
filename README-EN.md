@@ -53,7 +53,7 @@ Use one installation method per project to avoid duplicate skills.
 ## Inventory
 
 <!-- SPK-COUNTS:start -->
-**21 subagents** (4 orchestrators + 17 specialists) · **40 canonical skills** + **21 compatibility aliases**
+**21 subagents** (4 orchestrators + 17 specialists) · **40 skills**
 <!-- SPK-COUNTS:end -->
 
 ### Agents
@@ -86,11 +86,7 @@ Use one installation method per project to avoid duplicate skills.
 
 ### Skills
 
-Compatibility aliases are supported until v6 and always disclose the canonical replacement.
-
 <!-- SPK-COMMANDS:start -->
-### Canonical skills
-
 `typed only` = the agent cannot see it; you must type the command yourself.
 
 | Skill | Dispatches to | Invocation |
@@ -135,34 +131,6 @@ Compatibility aliases are supported until v6 and always disclose the canonical r
 | `/spk:uninstall` | direct main-thread workflow | typed only |
 | `/spk:bala` | direct main-thread workflow | typed only |
 | `/spk:sunzi` | direct main-thread workflow | typed only |
-
-### Compatibility aliases
-
-Every alias is typed only.
-
-| Legacy name | Canonical name |
-|---|---|
-| `/spk:ask-matt` | `/spk:start` |
-| `/spk:setup-matt-pocock-skills` | `/spk:setup` |
-| `/spk:spk` | `/spk:start` |
-| `/spk:jumpstart` | `/spk:start` |
-| `/spk:review` | `/spk:code-review` |
-| `/spk:grill-me` | `/spk:ask-me` |
-| `/spk:grilling` | `/spk:asking` |
-| `/spk:grill-with-docs` | `/spk:ask-with-docs` |
-| `/spk:diagnosing-bugs` | `/spk:debug` |
-| `/spk:implement` | `/spk:code` |
-| `/spk:design-shotgun` | `/spk:design-options` |
-| `/spk:resolving-merge-conflicts` | `/spk:fix-conflicts` |
-| `/spk:writing-great-skills` | `/spk:write-skills` |
-| `/spk:writing-for-agents` | `/spk:write-skills` |
-| `/spk:prime` | `/spk:load-project` |
-| `/spk:query` | `/spk:ask-project` |
-| `/spk:ingest` | `/spk:add-knowledge` |
-| `/spk:wiki-lint` | `/spk:check-wiki` |
-| `/spk:improve-codebase-architecture` | `/spk:improve-codebase` |
-| `/spk:scoped-tests` | `/spk:test-changes` |
-| `/spk:release-check` | `/spk:check-release` |
 <!-- SPK-COMMANDS:end -->
 
 ## Source layout
@@ -185,4 +153,4 @@ npm run verify:release
 
 ## Upstream and license
 
-The pinned base is `mattpocock/skills@6acc160e4e0cd062dbbbd7a1b26ae92855edf07e`, licensed under MIT. Future updates are reviewed and localized before release. See `NOTICE` and `docs/upstream/`.
+The pinned base is `mattpocock/skills@84fdeffd12f2ee307994d1eb6feb48173b6e0502`, licensed under MIT. Future updates are reviewed and localized before release. See `NOTICE` and `docs/upstream/`.

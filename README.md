@@ -53,7 +53,7 @@ npx skills@latest add apipoj/skills
 ## ภาพรวม
 
 <!-- SPK-COUNTS:start -->
-**21 subagents** (4 orchestrators + 17 specialists) · **40 skills หลัก** + **21 ชื่อเดิม**
+**21 subagents** (4 orchestrators + 17 specialists) · **40 skills**
 <!-- SPK-COUNTS:end -->
 
 ### Agents
@@ -86,11 +86,7 @@ npx skills@latest add apipoj/skills
 
 ### Skills
 
-Aliases ในตารางเป็นชื่อเดิมชั่วคราวถึงก่อน v6 และจะบอกชื่อ canonical ทุกครั้งที่ใช้
-
 <!-- SPK-COMMANDS:start -->
-### ชื่อหลัก
-
 `พิมพ์เอง` = agent มองไม่เห็น ต้องพิมพ์คำสั่งเองเท่านั้น
 
 | Skill | ทำงานผ่าน | การเรียก |
@@ -135,34 +131,6 @@ Aliases ในตารางเป็นชื่อเดิมชั่วค
 | `/spk:uninstall` | direct main-thread workflow | พิมพ์เอง |
 | `/spk:bala` | direct main-thread workflow | พิมพ์เอง |
 | `/spk:sunzi` | direct main-thread workflow | พิมพ์เอง |
-
-### ชื่อเดิมที่ยังใช้ได้
-
-ชื่อเดิมทุกตัวเป็นแบบพิมพ์เองเท่านั้น
-
-| ชื่อเดิม | ใช้ชื่อหลักนี้ |
-|---|---|
-| `/spk:ask-matt` | `/spk:start` |
-| `/spk:setup-matt-pocock-skills` | `/spk:setup` |
-| `/spk:spk` | `/spk:start` |
-| `/spk:jumpstart` | `/spk:start` |
-| `/spk:review` | `/spk:code-review` |
-| `/spk:grill-me` | `/spk:ask-me` |
-| `/spk:grilling` | `/spk:asking` |
-| `/spk:grill-with-docs` | `/spk:ask-with-docs` |
-| `/spk:diagnosing-bugs` | `/spk:debug` |
-| `/spk:implement` | `/spk:code` |
-| `/spk:design-shotgun` | `/spk:design-options` |
-| `/spk:resolving-merge-conflicts` | `/spk:fix-conflicts` |
-| `/spk:writing-great-skills` | `/spk:write-skills` |
-| `/spk:writing-for-agents` | `/spk:write-skills` |
-| `/spk:prime` | `/spk:load-project` |
-| `/spk:query` | `/spk:ask-project` |
-| `/spk:ingest` | `/spk:add-knowledge` |
-| `/spk:wiki-lint` | `/spk:check-wiki` |
-| `/spk:improve-codebase-architecture` | `/spk:improve-codebase` |
-| `/spk:scoped-tests` | `/spk:test-changes` |
-| `/spk:release-check` | `/spk:check-release` |
 <!-- SPK-COMMANDS:end -->
 
 ## โครงสร้าง source
@@ -185,4 +153,4 @@ Version และ roster ใช้ `manifest.json` เป็น source of truth 
 
 ## Upstream และ license
 
-ฐาน upstream คือ `mattpocock/skills@6acc160e4e0cd062dbbbd7a1b26ae92855edf07e` ภายใต้ MIT License การ sync รอบถัดไปต้อง review และ localize ก่อนเสมอ ดู `NOTICE` และ `docs/upstream/`
+ฐาน upstream คือ `mattpocock/skills@84fdeffd12f2ee307994d1eb6feb48173b6e0502` ภายใต้ MIT License การ sync รอบถัดไปต้อง review และ localize ก่อนเสมอ ดู `NOTICE` และ `docs/upstream/`

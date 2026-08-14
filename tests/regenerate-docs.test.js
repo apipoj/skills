@@ -188,4 +188,28 @@ describe('SPK-COMMANDS invocation column', () => {
     expect(out).toMatch(/\| `\/spk:ask-with-docs` \|[^|]+\| พิมพ์เอง \|/);
     expect(out).toMatch(/\| `\/spk:debug` \|[^|]+\| agent เรียกเองได้ \|/);
   });
+
+  // An alias-free roster must not silently drop the column: the distinction is
+  // about model invocability, which has nothing to do with aliases.
+  test('keeps the invocation column when the roster has no aliases', () => {
+    const aliasFree = {
+      ...manifest,
+      commands: manifest.commands.filter(command => command.name !== '/grill-with-docs'),
+    };
+    const aliasFreeContract = {
+      skills: contract.skills.filter(skill => skill.tier !== 'compat'),
+    };
+    const out = regenerateContent(
+      '<!-- SPK-COMMANDS:start -->old<!-- SPK-COMMANDS:end -->',
+      aliasFree,
+      aliasFreeContract,
+      'README-EN.md',
+    );
+
+    expect(out).toContain('| Skill | Dispatches to | Invocation |');
+    expect(out).toMatch(/\| `\/spk:ask-with-docs` \|[^|]+\| typed only \|/);
+    expect(out).toMatch(/\| `\/spk:debug` \|[^|]+\| model or typed \|/);
+    expect(out).not.toContain('### Canonical skills');
+    expect(out).not.toContain('### Compatibility aliases');
+  });
 });

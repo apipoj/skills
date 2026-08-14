@@ -1,6 +1,6 @@
 # Apipoj Skills User Guide
 
-This guide covers Apipoj Skills **v5.2.0** for Claude Code, Codex, and Agent Skills-compatible tools.
+This guide covers Apipoj Skills **v6.0.0** for Claude Code, Codex, and Agent Skills-compatible tools.
 
 For the canonical Thai guide, see [USER_GUIDE.md](USER_GUIDE.md).
 
@@ -12,7 +12,7 @@ Apipoj Skills is a Thai-first set of software workflows for working with AI from
 - Important work must return evidence such as test results, diff scope, risks, and a verifiable next action.
 - Editing files never silently authorizes a commit, push, deployment, or publication.
 
-Version 5.2.0 ships **40 canonical skills**, **21 aliases**, and **61 commands** in total.
+Release v6.0.0 ships **40 skills**, each available as a command.
 
 ## Start in two minutes
 
@@ -74,7 +74,7 @@ The skill table uses two invocation states:
 Typed-only example:
 
 ```text
-/spk:check-release Check v5.2.0 readiness without committing, tagging, or publishing anything.
+/spk:check-release Check v6.0.0 readiness without committing, tagging, or publishing anything.
 ```
 
 On Codex, use `$spk:check-release` instead.
@@ -90,8 +90,6 @@ When uncertain, always begin with `/spk:start`. Use this table when you want to 
 | Build, diagnose, and review | `/spk:code`, `/spk:tdd`, `/spk:debug`, `/spk:triage`, `/spk:improve-codebase`, `/spk:code-review`, `/spk:test-changes`, `/spk:fix-conflicts` |
 | Understand and maintain project knowledge | `/spk:setup`, `/spk:load-project`, `/spk:ask-project`, `/spk:research`, `/spk:add-knowledge`, `/spk:check-wiki`, `/spk:write-skills` |
 | Check the system and prepare delivery | `/spk:doctor`, `/spk:check-release`, `/spk:pr`, `/spk:task-to-pr`, `/spk:deploy`, `/spk:wizard`, `/spk:uninstall` |
-
-Legacy names remain available until v6, but new work should use the canonical names above. See [README-EN.md](README-EN.md) for the complete alias table.
 
 ## Common recipes
 

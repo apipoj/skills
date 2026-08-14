@@ -51,34 +51,10 @@ const spkCore = [
   'sunzi',
 ];
 
-const aliases = {
-  'ask-matt': 'start',
-  'setup-matt-pocock-skills': 'setup',
-  spk: 'start',
-  jumpstart: 'start',
-  review: 'code-review',
-  'grill-me': 'ask-me',
-  grilling: 'asking',
-  'grill-with-docs': 'ask-with-docs',
-  'diagnosing-bugs': 'debug',
-  implement: 'code',
-  'design-shotgun': 'design-options',
-  'resolving-merge-conflicts': 'fix-conflicts',
-  'writing-great-skills': 'write-skills',
-  'writing-for-agents': 'write-skills',
-  prime: 'load-project',
-  query: 'ask-project',
-  ingest: 'add-knowledge',
-  'wiki-lint': 'check-wiki',
-  'improve-codebase-architecture': 'improve-codebase',
-  'scoped-tests': 'test-changes',
-  'release-check': 'check-release',
-};
-
 describe('Apipoj Skills v5 migration contract', () => {
   test('uses the approved product identity and version', () => {
     expect(manifest).toMatchObject({
-      version: '5.2.0',
+      version: '6.0.0',
       brand: 'Apipoj Skills',
       slug: 'spk',
     });
@@ -89,25 +65,26 @@ describe('Apipoj Skills v5 migration contract', () => {
     });
   });
 
-  test('declares 40 canonical skills and 21 temporary aliases', () => {
+  test('declares 40 canonical skills and no compatibility aliases', () => {
     const skills = new Map(contract.skills.map(skill => [skill.id, skill]));
     const canonical = [...upstreamCanonical, ...spkCore];
 
     expect(new Set(canonical).size).toBe(40);
-    expect(contract.skills).toHaveLength(61);
-    expect(manifest.commands).toHaveLength(61);
+    expect(contract.skills.filter(skill => skill.tier === 'core')).toHaveLength(40);
+    expect(contract.skills.filter(skill => skill.tier === 'compat')).toHaveLength(0);
+    expect(contract.skills.every(skill => !skill.aliasFor)).toBe(true);
+    expect(contract.skills).toHaveLength(40);
+    expect(manifest.commands).toHaveLength(40);
 
     for (const id of canonical) {
       expect(skills.get(id)).toMatchObject({ tier: 'core' });
       expect(skills.get(id).aliasFor).toBeUndefined();
     }
-    for (const [id, target] of Object.entries(aliases)) {
-      expect(skills.get(id)).toMatchObject({
-        tier: 'compat',
-        aliasFor: target,
-        activation: { allowImplicitInvocation: false },
-      });
-    }
+  });
+
+  test('ships no compatibility bucket', () => {
+    expect(fs.existsSync(path.join(ROOT, 'skills/compat'))).toBe(false);
+    expect(fs.existsSync(path.join(ROOT, 'locales/en/skills/compat'))).toBe(false);
   });
 
   test('records Thai and English source directories for every shipped skill', () => {

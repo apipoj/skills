@@ -1,5 +1,29 @@
 # Apipoj Skills
 
+## 6.0.0 - 2026-08-14
+
+### Breaking Changes
+
+- Removed all 21 compatibility aliases. `skills/compat/` promised support only up to 6.0.0, and this release keeps that promise. Typing a removed name now reports that no such skill exists instead of forwarding. The canonical replacements: `ask-matt`/`spk`/`jumpstart` → `/start`, `setup-matt-pocock-skills` → `/setup`, `review` → `/code-review`, `grill-me` → `/ask-me`, `grilling` → `/asking`, `grill-with-docs` → `/ask-with-docs`, `diagnosing-bugs` → `/debug`, `implement` → `/code`, `design-shotgun` → `/design-options`, `resolving-merge-conflicts` → `/fix-conflicts`, `writing-great-skills`/`writing-for-agents` → `/write-skills`, `prime` → `/load-project`, `query` → `/ask-project`, `ingest` → `/add-knowledge`, `wiki-lint` → `/check-wiki`, `improve-codebase-architecture` → `/improve-codebase`, `scoped-tests` → `/test-changes`, `release-check` → `/check-release`.
+- The published roster is now 40 canonical skills with no alias tier.
+
+### Upstream
+
+- Re-pinned the reviewed `mattpocock/skills` source at `84fdeffd12f2ee307994d1eb6feb48173b6e0502`, up from `6acc160e4e0cd062dbbbd7a1b26ae92855edf07e`. The only substantive change in range is one sentence in an upstream reference page; no skill behavior changed.
+
+### Fixed
+
+- The retained upstream reference pages under `docs/` were stale. Every page claimed to hold the content of the pinned commit while holding pre-5.1 text, and four pages — `wizard`, `to-questionnaire`, `wait-what`, `writing-for-agents` — were never created when 5.1 added those skills. All 25 pages are now generated from the pin.
+
+### Added
+
+- `npm run sync:upstream-docs` regenerates the reference pages from an upstream checkout and writes `docs/upstream/reference-hashes.json`.
+- `npm run verify:upstream` now verifies every reference page body against that index. Re-pinning without regenerating fails the release gate — the exact gap that let 5.1 ship stale mirrors.
+
+### Changed
+
+- The `setup` skill's English title now reads `# Setup Apipoj Skills`, matching the Thai source (`# ตั้งค่า Apipoj Skills`) instead of the old `# Setup Matt Pocock's Skills`.
+
 ## 5.2.0 - 2026-08-09
 
 ### Added
