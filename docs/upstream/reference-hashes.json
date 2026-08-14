@@ -1,0 +1,31 @@
+{
+  "pin": "84fdeffd12f2ee307994d1eb6feb48173b6e0502",
+  "algorithm": "sha256",
+  "pages": {
+    "docs/engineering/ask-matt.md": "2f758b4808b061ceb64ba1b2a381ab1e06563f06f0057cfbbc7e9ca6265d2392",
+    "docs/engineering/code-review.md": "492579ad79d195764641468e2faf83343cae9e7bb27845f000c932f686cefc03",
+    "docs/engineering/codebase-design.md": "0ebfbb7e224247f8b5a96f4fb9017c0a7974681700ec635b7b6516686688328a",
+    "docs/engineering/diagnosing-bugs.md": "128c78195543d4473589612ffebcebf547fa394d27bf19c22a264f3b46706140",
+    "docs/engineering/domain-modeling.md": "04bc349ca8f8b4bfc70e61a8edb6f30597c0b59a3b8c0ac3c39182ef66222abf",
+    "docs/engineering/grill-with-docs.md": "c9dae37a0b1abd5af53bbe59fc798f1db92d5606776450ab15745814c57ba28b",
+    "docs/engineering/implement.md": "415bff7956736ee164b29f6100779f7e1975be3703f60e6b175c57373aade842",
+    "docs/engineering/improve-codebase-architecture.md": "d22e6b25334399a8c04beaa77a97fbd474a6224ef7123d1b89b3599673ca29f3",
+    "docs/engineering/prototype.md": "2671ee5115875b23a98524e0443e77ecdee081c22cb79e12f0f667099f807c2c",
+    "docs/engineering/research.md": "10aa8b6dfa1275b401c2996bf80d4c616fe9fef368bc77fdc8829098bf11c604",
+    "docs/engineering/resolving-merge-conflicts.md": "cef782a8232b901a7757368095b858d22e7c04595d93cbd5eeb5616f6a379935",
+    "docs/engineering/setup-matt-pocock-skills.md": "65bd2af20270a8cd50e175124f6b2b72f051990b1b35cf251c941a5730afe75e",
+    "docs/engineering/tdd.md": "e3cd9b5648c568e0a9183a80b07526eb2e70526d04bc7d2135b8418f0feb7682",
+    "docs/engineering/to-spec.md": "9f2df5180fecb168aa561edeb785e7a31ca426669adfe4e30c36c6ca3d362704",
+    "docs/engineering/to-tickets.md": "50810c609188fa55757226c6c853ff78ea8d7ff57926452af1b881ce169a5979",
+    "docs/engineering/triage.md": "08d6722c75d8c8a835a64eab4e0c56fb14f6307a666aa05fcd5ab335b70e8db7",
+    "docs/engineering/wayfinder.md": "d93b667c7deebcaad7a31f8741c5ca3daeeb8f03f2b040b05e71ceaf5ef41821",
+    "docs/engineering/wizard.md": "398fd93e65c0859ab8b7e7226fd126ae012b3602d6bf89f7d6a98ac4f7a52529",
+    "docs/productivity/grill-me.md": "37e8af628fc21db7a0e89465b97acc96083db4f954445a7659e7b3aa9e96fb54",
+    "docs/productivity/grilling.md": "73cfcfdaf3829114aaf438712a3a4a890de37d0b99ad1d31c684b3de2dc63eac",
+    "docs/productivity/handoff.md": "fa147d8b53a2e90c4c9e5913274c7b3c1917e432fa5b765762f69c1753cdca20",
+    "docs/productivity/teach.md": "308c69fdceac7ccb6e17a5fe6dccebc969187e32b824756b64885d017f350bbe",
+    "docs/productivity/to-questionnaire.md": "85cfcb8475a9c05843eb0279c2e58b03f67c8b19434d4d7fad1f9b6410f88039",
+    "docs/productivity/wait-what.md": "bd1bde22889a849fca4410f5af5d56a1af8abffdbead056c13a55867772207f3",
+    "docs/productivity/writing-for-agents.md": "441a8485adb46b181294849457f6e8cb0ae440729fad7586e83004d747c5112f"
+  }
+}

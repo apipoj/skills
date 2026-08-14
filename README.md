@@ -185,4 +185,4 @@ Version และ roster ใช้ `manifest.json` เป็น source of truth 
 
 ## Upstream และ license
 
-ฐาน upstream คือ `mattpocock/skills@6acc160e4e0cd062dbbbd7a1b26ae92855edf07e` ภายใต้ MIT License การ sync รอบถัดไปต้อง review และ localize ก่อนเสมอ ดู `NOTICE` และ `docs/upstream/`
+ฐาน upstream คือ `mattpocock/skills@84fdeffd12f2ee307994d1eb6feb48173b6e0502` ภายใต้ MIT License การ sync รอบถัดไปต้อง review และ localize ก่อนเสมอ ดู `NOTICE` และ `docs/upstream/`

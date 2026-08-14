@@ -6,7 +6,7 @@ const fs = require('fs');
 const path = require('path');
 
 const REPO_ROOT = path.join(__dirname, '..');
-const PINNED_UPSTREAM_COMMIT = '6acc160e4e0cd062dbbbd7a1b26ae92855edf07e';
+const PINNED_UPSTREAM_COMMIT = '84fdeffd12f2ee307994d1eb6feb48173b6e0502';
 const EXPECTED_BUCKETS = ['engineering', 'productivity'];
 // Canonical upstream skills we ship, plus aliases whose target is not itself
 // upstream-derived. Raise this deliberately when a review promotes a new skill.

@@ -1,6 +1,6 @@
 # Upstream: mattpocock/skills
 
-Apipoj Skills v5 is based on commit `6acc160e4e0cd062dbbbd7a1b26ae92855edf07e`.
+Apipoj Skills v6 is based on commit `84fdeffd12f2ee307994d1eb6feb48173b6e0502`.
 
 Only promoted engineering and productivity skills are imported. Updates are reviewed, localized into native Thai, verified against the English mirror, and never auto-merged into a release branch.
 

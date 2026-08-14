@@ -185,4 +185,4 @@ npm run verify:release
 
 ## Upstream and license
 
-The pinned base is `mattpocock/skills@6acc160e4e0cd062dbbbd7a1b26ae92855edf07e`, licensed under MIT. Future updates are reviewed and localized before release. See `NOTICE` and `docs/upstream/`.
+The pinned base is `mattpocock/skills@84fdeffd12f2ee307994d1eb6feb48173b6e0502`, licensed under MIT. Future updates are reviewed and localized before release. See `NOTICE` and `docs/upstream/`.
