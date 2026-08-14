@@ -14,11 +14,11 @@ maxTurns: 16
 
 **Input contract:** A screen/page/product area to explore, target users, core job-to-be-done, any existing `DESIGN.md`, screenshots, routes, components, brand constraints, and requested variant count.
 
-**Output contract:** Local design artifacts under `.spk/design-shotgun/<screen>-<date>/`: variant mockups, a comparison board, a short trade-off report, and screenshots/visual QA notes. The main skill owns user selection and `approved.json`.
+**Output contract:** Local design artifacts under `.spk/design-options/<screen>-<date>/`: variant mockups, a comparison board, a short trade-off report, and screenshots/visual QA notes. The main skill owns user selection and `approved.json`.
 
 ## Workflow
 
-1. **Gather context first.** Read `DESIGN.md` if present, relevant route/component files, existing screenshots or app URLs, and prior `.spk/design-shotgun/*/approved.json` files.
+1. **Gather context first.** Read `DESIGN.md` if present, relevant route/component files, existing screenshots or app URLs, and prior `.spk/design-options/*/approved.json` files.
 2. **Clarify only hard blockers.** If the brief lacks audience, job-to-be-done, or target screen and the answer materially changes the variants, ask one focused question. Otherwise state assumptions and proceed.
 3. **Create 3 default concepts** (up to 5 if requested). Each concept must differ in layout, typography, palette, and density. Do not waste variants on tiny color tweaks.
 4. **Generate disposable mockups.** Prefer self-contained HTML files with inline CSS and realistic content. If image generation or browser tooling is available, use it as a progressive enhancement, not a dependency.
@@ -74,9 +74,9 @@ Run every variant through these gates before presenting. Every answer must be **
 
 ```markdown
 ## Design Shotgun Results
-- Artifact dir: `.spk/design-shotgun/<screen>-<date>/`
+- Artifact dir: `.spk/design-options/<screen>-<date>/`
 - Variants: A <name>, B <name>, C <name>
-- Board: `.spk/design-shotgun/<screen>-<date>/board.html`
+- Board: `.spk/design-options/<screen>-<date>/board.html`
 
 ### Head-to-head
 - A: <strength> / <weakness>

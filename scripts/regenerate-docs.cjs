@@ -31,7 +31,7 @@ function commandTarget(command) {
     (command.direct === true ? 'direct main-thread workflow' : '(invalid target)');
 }
 
-// 40 of 59 skills are typed-only (`disable-model-invocation: true`), so an
+// 21 of 40 skills are typed-only (`disable-model-invocation: true`), so an
 // agent asked to "use ask-with-docs" reports it does not exist — it genuinely
 // cannot see it. Publish the distinction rather than leaving users to hit it.
 function invocationLabel(skill, thai) {
@@ -85,20 +85,13 @@ function renderBlock(name, manifest, contract = null, relativePath = '') {
       return rows.join('\n');
     }
     case 'SPK-COMMANDS': {
-      if (aliases.length === 0) {
-        return [
-          '| Skill | Dispatches to subagent |',
-          '|---|---|',
-          ...canonical.map(command => {
-            const slug = command.name.replace(/^\//, '');
-            return `| \`/spk:${slug}\` | ${commandTarget(command)} |`;
-          }),
-        ].join('\n');
-      }
       const byId = new Map((contract?.skills || []).map(skill => [skill.id, skill]));
-      const rows = [
-        thai ? '### ชื่อหลัก' : '### Canonical skills',
-        '',
+      const rows = [];
+      // The canonical heading only earns its place when a second section follows.
+      if (aliases.length > 0) {
+        rows.push(thai ? '### ชื่อหลัก' : '### Canonical skills', '');
+      }
+      rows.push(
         thai
           ? '`พิมพ์เอง` = agent มองไม่เห็น ต้องพิมพ์คำสั่งเองเท่านั้น'
           : '`typed only` = the agent cannot see it; you must type the command yourself.',
@@ -110,20 +103,24 @@ function renderBlock(name, manifest, contract = null, relativePath = '') {
           const label = invocationLabel(byId.get(slug), thai);
           return `| \`/spk:${slug}\` | ${commandTarget(command)} | ${label} |`;
         }),
-        '',
-        thai ? '### ชื่อเดิมที่ยังใช้ได้' : '### Compatibility aliases',
-        '',
-        thai
-          ? 'ชื่อเดิมทุกตัวเป็นแบบพิมพ์เองเท่านั้น'
-          : 'Every alias is typed only.',
-        '',
-        thai ? '| ชื่อเดิม | ใช้ชื่อหลักนี้ |' : '| Legacy name | Canonical name |',
-        '|---|---|',
-        ...aliases.map(({ command, skill }) => {
-          const slug = command.name.replace(/^\//, '');
-          return `| \`/spk:${slug}\` | \`/spk:${skill.aliasFor}\` |`;
-        }),
-      ];
+      );
+      if (aliases.length > 0) {
+        rows.push(
+          '',
+          thai ? '### ชื่อเดิมที่ยังใช้ได้' : '### Compatibility aliases',
+          '',
+          thai
+            ? 'ชื่อเดิมทุกตัวเป็นแบบพิมพ์เองเท่านั้น'
+            : 'Every alias is typed only.',
+          '',
+          thai ? '| ชื่อเดิม | ใช้ชื่อหลักนี้ |' : '| Legacy name | Canonical name |',
+          '|---|---|',
+          ...aliases.map(({ command, skill }) => {
+            const slug = command.name.replace(/^\//, '');
+            return `| \`/spk:${slug}\` | \`/spk:${skill.aliasFor}\` |`;
+          }),
+        );
+      }
       return rows.join('\n');
     }
     default:

@@ -10,7 +10,7 @@
 
 - `manifest.json` — version, release date, command roster, and agent roster.
 - `contracts/workflows.json` — workflow IDs, Thai/English sources, activation policy, effects, evidence, and guardrails.
-- `skills/<bucket>/<name>/` — native Thai source. Buckets are `engineering`, `productivity`, `operations`, `knowledge`, and `compat`.
+- `skills/<bucket>/<name>/` — native Thai source. Buckets are `engineering`, `productivity`, `operations`, and `knowledge`.
 - `locales/en/skills/<bucket>/<name>/` — English source mirror.
 - `plugins/spk/` — canonical Claude runtime payload.
 - `plugins/spk-codex/` — generated Codex payload; never hand-edit.
@@ -28,8 +28,6 @@
 ## Conventions
 
 - Thai is the canonical user experience: natural, concise, familiar technical English where clearer, smart defaults for reversible low-risk choices, and one material question when a decision changes scope or risk.
-- Canonical branded renames are `ask-matt -> start` and `setup-matt-pocock-skills -> setup`.
-- Compatibility aliases are temporary, manual-only, disclose the canonical name, and never add authority.
 - All Git writes, remote writes, publishing, deployment, and destructive effects require exact approval for the current target and payload.
 - Every workflow reports observable evidence and gaps; never convert an unverified result into a success claim.
 

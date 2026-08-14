@@ -41,8 +41,6 @@ Select skills from the Thai-first `skills/` tree. Do not combine this with a nat
 ## Full shipped command list
 
 <!-- SPK-COMMANDS:start -->
-### Canonical skills
-
 `typed only` = the agent cannot see it; you must type the command yourself.
 
 | Skill | Dispatches to | Invocation |
@@ -87,32 +85,4 @@ Select skills from the Thai-first `skills/` tree. Do not combine this with a nat
 | `/spk:uninstall` | direct main-thread workflow | typed only |
 | `/spk:bala` | direct main-thread workflow | typed only |
 | `/spk:sunzi` | direct main-thread workflow | typed only |
-
-### Compatibility aliases
-
-Every alias is typed only.
-
-| Legacy name | Canonical name |
-|---|---|
-| `/spk:ask-matt` | `/spk:start` |
-| `/spk:setup-matt-pocock-skills` | `/spk:setup` |
-| `/spk:spk` | `/spk:start` |
-| `/spk:jumpstart` | `/spk:start` |
-| `/spk:review` | `/spk:code-review` |
-| `/spk:grill-me` | `/spk:ask-me` |
-| `/spk:grilling` | `/spk:asking` |
-| `/spk:grill-with-docs` | `/spk:ask-with-docs` |
-| `/spk:diagnosing-bugs` | `/spk:debug` |
-| `/spk:implement` | `/spk:code` |
-| `/spk:design-shotgun` | `/spk:design-options` |
-| `/spk:resolving-merge-conflicts` | `/spk:fix-conflicts` |
-| `/spk:writing-great-skills` | `/spk:write-skills` |
-| `/spk:writing-for-agents` | `/spk:write-skills` |
-| `/spk:prime` | `/spk:load-project` |
-| `/spk:query` | `/spk:ask-project` |
-| `/spk:ingest` | `/spk:add-knowledge` |
-| `/spk:wiki-lint` | `/spk:check-wiki` |
-| `/spk:improve-codebase-architecture` | `/spk:improve-codebase` |
-| `/spk:scoped-tests` | `/spk:test-changes` |
-| `/spk:release-check` | `/spk:check-release` |
 <!-- SPK-COMMANDS:end -->

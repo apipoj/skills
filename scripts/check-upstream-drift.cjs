@@ -12,9 +12,9 @@ const REFERENCE_BUCKETS = ['docs/engineering', 'docs/productivity'];
 const REPO_ROOT = path.join(__dirname, '..');
 const PINNED_UPSTREAM_COMMIT = '84fdeffd12f2ee307994d1eb6feb48173b6e0502';
 const EXPECTED_BUCKETS = ['engineering', 'productivity'];
-// Canonical upstream skills we ship, plus aliases whose target is not itself
-// upstream-derived. Raise this deliberately when a review promotes a new skill.
-const EXPECTED_PROMOTED_SKILLS = 25;
+// Canonical upstream skills we ship. Raise this deliberately when a review
+// promotes a new skill.
+const EXPECTED_PROMOTED_SKILLS = 24;
 const EXCLUDED_BUCKETS = ['misc', 'personal', 'in-progress', 'deprecated'];
 
 function readJson(file) {

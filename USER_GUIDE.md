@@ -12,7 +12,7 @@ Apipoj Skills คือชุด workflow สำหรับทำงาน soft
 - งานสำคัญต้องมีหลักฐาน เช่น test result, diff scope, risk และ next action
 - การแก้ไฟล์ไม่ได้แปลว่าอนุญาตให้ commit, push, deploy หรือ publish
 
-รุ่นนี้มี **40 skills หลัก**, **21 aliases** และ **61 commands** ทั้งหมด
+รุ่นนี้มี **40 skills** และเรียกใช้เป็น command ได้ทุกตัว
 
 ## เริ่มใน 2 นาที
 
@@ -90,8 +90,6 @@ npx skills@latest add apipoj/skills
 | พัฒนา แก้ปัญหา และตรวจงาน | `/spk:code`, `/spk:tdd`, `/spk:debug`, `/spk:triage`, `/spk:improve-codebase`, `/spk:code-review`, `/spk:test-changes`, `/spk:fix-conflicts` |
 | เข้าใจและดูแลความรู้ project | `/spk:setup`, `/spk:load-project`, `/spk:ask-project`, `/spk:research`, `/spk:add-knowledge`, `/spk:check-wiki`, `/spk:write-skills` |
 | ตรวจระบบและเตรียมส่งงาน | `/spk:doctor`, `/spk:check-release`, `/spk:pr`, `/spk:task-to-pr`, `/spk:deploy`, `/spk:wizard`, `/spk:uninstall` |
-
-ชื่อเดิมยังใช้ได้ถึงก่อน v6 แต่ควรใช้ชื่อหลักจากตารางนี้ รายชื่อ alias ทั้งหมดอยู่ใน [README.md](README.md)
 
 ## สูตรใช้งานที่พบบ่อย
 

@@ -8,11 +8,8 @@ Rules:
 2. Use a second workflow only when it supplies a required verification or approval gate.
 3. State the actual effect level before crossing a write boundary.
 4. Ask one material question at a time and include a recommended default.
-5. Compatibility aliases disclose their canonical replacement and add no authority.
 
 <!-- SPK-COMMANDS:start -->
-### Canonical skills
-
 `typed only` = the agent cannot see it; you must type the command yourself.
 
 | Skill | Dispatches to | Invocation |
@@ -57,32 +54,4 @@ Rules:
 | `/spk:uninstall` | direct main-thread workflow | typed only |
 | `/spk:bala` | direct main-thread workflow | typed only |
 | `/spk:sunzi` | direct main-thread workflow | typed only |
-
-### Compatibility aliases
-
-Every alias is typed only.
-
-| Legacy name | Canonical name |
-|---|---|
-| `/spk:ask-matt` | `/spk:start` |
-| `/spk:setup-matt-pocock-skills` | `/spk:setup` |
-| `/spk:spk` | `/spk:start` |
-| `/spk:jumpstart` | `/spk:start` |
-| `/spk:review` | `/spk:code-review` |
-| `/spk:grill-me` | `/spk:ask-me` |
-| `/spk:grilling` | `/spk:asking` |
-| `/spk:grill-with-docs` | `/spk:ask-with-docs` |
-| `/spk:diagnosing-bugs` | `/spk:debug` |
-| `/spk:implement` | `/spk:code` |
-| `/spk:design-shotgun` | `/spk:design-options` |
-| `/spk:resolving-merge-conflicts` | `/spk:fix-conflicts` |
-| `/spk:writing-great-skills` | `/spk:write-skills` |
-| `/spk:writing-for-agents` | `/spk:write-skills` |
-| `/spk:prime` | `/spk:load-project` |
-| `/spk:query` | `/spk:ask-project` |
-| `/spk:ingest` | `/spk:add-knowledge` |
-| `/spk:wiki-lint` | `/spk:check-wiki` |
-| `/spk:improve-codebase-architecture` | `/spk:improve-codebase` |
-| `/spk:scoped-tests` | `/spk:test-changes` |
-| `/spk:release-check` | `/spk:check-release` |
 <!-- SPK-COMMANDS:end -->

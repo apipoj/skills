@@ -287,7 +287,7 @@ describe('SkillLab run scoring', () => {
   });
 
   test('honors token and latency budgets with bounded deterministic scores', () => {
-    const scenario = findScenario(corpus, 'query.outcome');
+    const scenario = findScenario(corpus, 'ask-project.outcome');
     const result = makeResult(corpus, scenario.id, {
       metrics: {
         inputTokens: scenario.budgets.maxTokens,
@@ -351,12 +351,12 @@ describe('SkillLab aggregation and baselines', () => {
   });
 
   test('marks a two-run cell incomplete even in partial-suite mode', () => {
-    const scorecard = aggregateResults(corpus, makeThreeRuns(corpus, 'prime.positive').slice(0, 2));
+    const scorecard = aggregateResults(corpus, makeThreeRuns(corpus, 'load-project.positive').slice(0, 2));
 
     expect(scorecard.passed).toBe(false);
     expect(scorecard.coverage.completeGroups).toBe(0);
     expect(scorecard.errors).toContain(
-      'prime.positive::claude::en: expected at least 3 runs, received 2',
+      'load-project.positive::claude::en: expected at least 3 runs, received 2',
     );
   });
 
@@ -364,7 +364,7 @@ describe('SkillLab aggregation and baselines', () => {
     const results = [];
     for (const provider of ['claude', 'codex']) {
       for (const locale of ['en', 'th']) {
-        results.push(...makeThreeRuns(corpus, 'spk.outcome', { provider, locale }));
+        results.push(...makeThreeRuns(corpus, 'start.outcome', { provider, locale }));
       }
     }
     const scorecard = aggregateResults(corpus, results);
@@ -594,7 +594,7 @@ describe('SkillLab CLI and output', () => {
       const baselineFile = path.join(root, 'baseline.json');
       const jsonFile = path.join(root, 'scorecard.json');
       const markdownFile = path.join(root, 'scorecard.md');
-      const results = makeThreeRuns(corpus, 'release-check.outcome');
+      const results = makeThreeRuns(corpus, 'check-release.outcome');
       const baseline = aggregateResults(corpus, results);
       fs.writeFileSync(resultsFile, JSON.stringify({ results }), 'utf8');
       fs.writeFileSync(baselineFile, JSON.stringify(baseline), 'utf8');
