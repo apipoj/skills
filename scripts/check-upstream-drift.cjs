@@ -5,7 +5,13 @@ const childProcess = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
-const { BANNER_NOTICE, bodyOf, canonicalLine, sha256 } = require('./sync-upstream-docs.cjs');
+const {
+  BANNER_NOTICE,
+  bodyOf,
+  canonicalLine,
+  normalizeEol,
+  sha256,
+} = require('./sync-upstream-docs.cjs');
 
 const REFERENCE_BUCKETS = ['docs/engineering', 'docs/productivity'];
 
@@ -128,7 +134,7 @@ function collectReferenceDocErrors(rootDir = REPO_ROOT) {
       errors.push(`${docPath}: indexed but missing from the working tree`);
       continue;
     }
-    const page = fs.readFileSync(file, 'utf8');
+    const page = normalizeEol(fs.readFileSync(file, 'utf8'));
     const actual = sha256(bodyOf(page));
     if (actual !== expected) {
       errors.push(`${docPath}: content does not match the pinned upstream page`);

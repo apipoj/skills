@@ -64,6 +64,17 @@ describe('upstream reference doc fidelity', () => {
     expect(collectReferenceDocErrors(referenceFixture())).toEqual([]);
   });
 
+  test('accepts a CRLF working tree, because line endings are a checkout artifact', () => {
+    // Windows runners default to core.autocrlf=true, so every mirrored page
+    // arrives with CRLF. That still carries upstream's content faithfully —
+    // the gate must measure content, not the checkout's line-ending style,
+    // or it fails all 25 pages on Windows while passing on macOS and Linux.
+    const root = referenceFixture();
+    const file = path.join(root, 'docs', 'engineering', 'tdd.md');
+    fs.writeFileSync(file, fs.readFileSync(file, 'utf8').replace(/\n/g, '\r\n'));
+    expect(collectReferenceDocErrors(root)).toEqual([]);
+  });
+
   test('rejects an edited body', () => {
     const root = referenceFixture();
     const file = path.join(root, 'docs', 'engineering', 'tdd.md');

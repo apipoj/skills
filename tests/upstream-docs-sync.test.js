@@ -7,6 +7,7 @@ const {
   NO_COUNTERPART,
   bodyOf,
   buildHashIndex,
+  normalizeEol,
   renderCanonicalLine,
   renderPage,
   sha256,
@@ -101,5 +102,22 @@ describe('upstream reference doc generator', () => {
       .filter(([, skill]) => skill !== null && !commandNames.has(`/${skill}`))
       .map(([docPath, skill]) => `${docPath} -> /${skill}`);
     expect(unshipped).toEqual([]);
+  });
+
+  test('a CRLF page hashes identically to its LF twin', () => {
+    // The property Windows depends on: core.autocrlf=true rewrites every line
+    // ending on checkout, and the page still carries upstream's content.
+    const page = renderPage('docs/engineering/tdd.md', '## What it does\n\nBody.\n');
+    const crlf = page.replace(/\n/g, '\r\n');
+    expect(crlf).not.toBe(page);
+    expect(normalizeEol(crlf)).toBe(page);
+    expect(sha256(bodyOf(normalizeEol(crlf)))).toBe(sha256(bodyOf(page)));
+  });
+
+  test('normalizeEol leaves a lone carriage return alone', () => {
+    // Only CRLF pairs are checkout artefacts. A bare \r inside content is
+    // content, and silently rewriting it would let real drift pass the gate.
+    expect(normalizeEol('a\rb')).toBe('a\rb');
+    expect(normalizeEol('a\r\nb')).toBe('a\nb');
   });
 });

@@ -73,6 +73,15 @@ function bodyOf(pageText) {
   return lines.slice(index).join('\n');
 }
 
+// Line endings are a property of the checkout, not of upstream's content.
+// Windows sets core.autocrlf=true by default, so every mirrored page arrives
+// with CRLF there. Hashing or string-comparing those bytes directly would fail
+// all 25 pages on Windows while passing on macOS and Linux. Normalise at every
+// boundary where we read a page back, so the gate measures content only.
+function normalizeEol(text) {
+  return text.replace(/\r\n/g, '\n');
+}
+
 function sha256(text) {
   return crypto.createHash('sha256').update(text, 'utf8').digest('hex');
 }
@@ -85,11 +94,13 @@ function buildHashIndex(pages, pin) {
 }
 
 function readUpstreamPage(upstreamDir, pin, docPath) {
-  return childProcess.execFileSync('git', ['show', `${pin}:${docPath}`], {
-    cwd: upstreamDir,
-    encoding: 'utf8',
-    stdio: ['ignore', 'pipe', 'pipe'],
-  });
+  return normalizeEol(
+    childProcess.execFileSync('git', ['show', `${pin}:${docPath}`], {
+      cwd: upstreamDir,
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'pipe'],
+    }),
+  );
 }
 
 function listUpstreamPages(upstreamDir, pin) {
@@ -166,6 +177,7 @@ module.exports = {
   buildHashIndex,
   canonicalLine,
   listUpstreamPages,
+  normalizeEol,
   readUpstreamPage,
   renderCanonicalLine,
   renderPage,
