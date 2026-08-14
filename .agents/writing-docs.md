@@ -12,4 +12,5 @@ Files under `docs/engineering/` and `docs/productivity/` are generated mirrors o
 pinned Matt Pocock fork. Do not edit them by hand — run `npm run sync:upstream-docs --
 --from <upstream-checkout>`. They are not Apipoj installation instructions. Each page
 carries the upstream-reference banner plus the canonical SPK skill it documents, and
-`npm run verify:upstream` checks every body against `docs/upstream/reference-hashes.json`.
+`npm run verify:upstream` enforces both: the leading blockquote region must be exactly
+that banner, and every body must match `docs/upstream/reference-hashes.json`.

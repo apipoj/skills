@@ -20,6 +20,24 @@ function parseFrontmatter(content) {
   return fm;
 }
 
+// Both user guides state the release they document as `v<major>.<minor>.<patch>`
+// — in the opening sentence and in the typed-only example prompt. Both drifted to
+// v5.2.0 while every machine-readable source moved on, so treat every `v<semver>`
+// mention in a guide as a version claim and require all of them to agree with the
+// manifest. Returns undefined for a missing or claim-less guide, and the distinct
+// claims joined when a guide contradicts itself.
+function guideVersionClaim(file) {
+  let text;
+  try {
+    text = fs.readFileSync(file, 'utf-8');
+  } catch {
+    return undefined;
+  }
+  const claims = [...new Set(text.match(/\bv\d+\.\d+\.\d+\b/g) || [])].map(claim => claim.slice(1));
+  if (claims.length === 0) return undefined;
+  return claims.join(', ');
+}
+
 function collectVersionSyncErrors(rootDir = REPO_ROOT) {
   const errors = [];
   const manifest = readJson(path.join(rootDir, 'manifest.json'));
@@ -31,6 +49,8 @@ function collectVersionSyncErrors(rootDir = REPO_ROOT) {
     ['plugins/spk/.claude-plugin/plugin.json', readJson(path.join(rootDir, 'plugins/spk/.claude-plugin/plugin.json')).version],
     ['plugins/spk-codex/.codex-plugin/plugin.json', readJson(path.join(rootDir, 'plugins/spk-codex/.codex-plugin/plugin.json')).version],
     ['.claude-plugin/marketplace.json plugins[0]', readJson(path.join(rootDir, '.claude-plugin/marketplace.json')).plugins?.[0]?.version],
+    ['USER_GUIDE.md', guideVersionClaim(path.join(rootDir, 'USER_GUIDE.md'))],
+    ['USER_GUIDE-EN.md', guideVersionClaim(path.join(rootDir, 'USER_GUIDE-EN.md'))],
   ];
 
   for (const [source, version] of versionSources) {
@@ -154,5 +174,6 @@ module.exports = {
   collectManifestSyncErrors,
   collectVersionSyncErrors,
   collectReleaseDateErrors,
+  guideVersionClaim,
   parseFrontmatter,
 };
