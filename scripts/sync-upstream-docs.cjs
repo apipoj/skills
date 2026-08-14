@@ -46,7 +46,7 @@ const CANONICAL_BY_DOC = {
 };
 
 function renderCanonicalLine(skill) {
-  return skill === null ? NO_COUNTERPART : `> **Canonical SPK skill:** \`/${skill}\``;
+  return skill === null ? NO_COUNTERPART : `> **Canonical SPK skill:** \`/spk:${skill}\``;
 }
 
 function canonicalLine(docPath) {
@@ -66,7 +66,10 @@ function bodyOf(pageText) {
   const lines = pageText.split('\n');
   let index = 0;
   while (index < lines.length && lines[index].startsWith('>')) index += 1;
-  while (index < lines.length && lines[index].trim() === '') index += 1;
+  // renderPage inserts exactly one blank line between the banner and the
+  // body. Consume exactly that one line — not every blank line — so a body
+  // that itself starts with a blank line round-trips intact.
+  if (index < lines.length && lines[index].trim() === '') index += 1;
   return lines.slice(index).join('\n');
 }
 
@@ -102,7 +105,7 @@ function main() {
   const args = process.argv.slice(2);
   const fromIndex = args.indexOf('--from');
   const pinIndex = args.indexOf('--pin');
-  if (fromIndex < 0 || !args[fromIndex + 1]) {
+  if (fromIndex < 0 || !args[fromIndex + 1] || (pinIndex >= 0 && !args[pinIndex + 1])) {
     console.error('usage: sync-upstream-docs.cjs --from <upstream-checkout> [--pin <commit>]');
     process.exit(1);
   }
@@ -113,6 +116,19 @@ function main() {
   const pin = pinIndex >= 0 ? args[pinIndex + 1] : lock.commit;
 
   const docPaths = listUpstreamPages(upstreamDir, pin);
+  if (docPaths.length === 0) {
+    throw new Error(
+      `no reference pages found under docs/engineering or docs/productivity at ${pin} in ${upstreamDir} — refusing to delete the existing reference docs`,
+    );
+  }
+
+  const unmapped = docPaths.filter(docPath => !(docPath in CANONICAL_BY_DOC));
+  if (unmapped.length > 0) {
+    throw new Error(
+      `${unmapped.join(', ')}: no entry in CANONICAL_BY_DOC — review where these upstream pages belong before shipping them`,
+    );
+  }
+
   const bodies = {};
   for (const docPath of docPaths) {
     const body = readUpstreamPage(upstreamDir, pin, docPath);
