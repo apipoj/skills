@@ -1815,7 +1815,7 @@
       "locales": {
         "en": {
           "displayName": "Wait What",
-          "description": "Stop and re-pitch the last message that did not land: add the missing context, drop the jargon, and use the project's own vocabulary from CONTEXT.md.",
+          "description": "Stop and re-pitch the last message that did not land — add the missing context, drop the jargon, and use the project's own vocabulary from CONTEXT.md.",
           "shortDescription": "Re-pitch the last message in plain language with the missing context",
           "defaultPrompt": "Use wait-what for my current request.",
           "triggers": [

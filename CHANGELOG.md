@@ -1,5 +1,15 @@
 # Apipoj Skills
 
+## 6.0.1 - 2026-08-15
+
+### Fixed
+
+- `wait-what`'s description carried an unquoted `: `, which YAML reads as a second key, so the skill's frontmatter did not parse. Claude Code and the skills.sh adapters parse that frontmatter, and an installer reported the warning in the field while every release gate stayed green — `verify-skill-descriptions` matched frontmatter lines with a regular expression and never parsed them as YAML. The description is reworded and all 40 shipped skills now parse.
+
+### Added
+
+- `npm run verify:descriptions` now checks that every skill's frontmatter is parseable. It enforces a rule narrower than YAML — each value is either properly quoted or a plain scalar free of `: `, a trailing `:`, ` #`, and leading indicator characters — which needs no YAML dependency and is exact for the flat key/value frontmatter these skills use.
+
 ## 6.0.0 - 2026-08-14
 
 ### Breaking Changes

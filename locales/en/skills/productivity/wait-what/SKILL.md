@@ -1,6 +1,6 @@
 ---
 name: wait-what
-description: Stop and re-pitch the last message that did not land: add the missing context, drop the jargon, and use the project's own vocabulary from CONTEXT.md.
+description: Stop and re-pitch the last message that did not land — add the missing context, drop the jargon, and use the project's own vocabulary from CONTEXT.md.
 disable-model-invocation: true
 ---
 # Wait What
