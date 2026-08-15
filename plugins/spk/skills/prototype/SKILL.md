@@ -1,51 +1,31 @@
 ---
 name: prototype
-description: สร้าง prototype แบบทิ้งได้เพื่อพิสูจน์คำถามด้าน logic, state หรือ UI ก่อนลงทุนทำ production
+description: Build a disposable prototype to answer a logic, state, or UI question before investing in production work.
 ---
-# ทำ prototype เพื่อตอบคำถาม
+
+# Prototype to Answer One Question
 
 ## Thai-first Experience
 
 Respond in natural, concise Thai by default. Lead with the outcome, use familiar English technical terms when clearer, apply safe smart defaults, and ask one material question only when its answer changes scope, risk, or success.
 
-ตอบเป็นภาษาไทยธรรมชาติแบบเพื่อนร่วมงานเป็นค่าเริ่มต้น ใช้ศัพท์เทคนิคภาษาอังกฤษเมื่อทำให้อ่านง่ายกว่า และเริ่มจากผลลัพธ์หรือ decision ที่ผู้ใช้ต้องรู้ก่อน
-
 ## Workflow
 
-1. อ่านคำขอ repository instructions และหลักปฏิบัติฉบับเต็มใน [UPSTREAM.md](UPSTREAM.md)
-2. ใช้ smart defaults เมื่อความเสี่ยงต่ำ ถ้ามี decision ที่เปลี่ยน scope ให้ถามเพียงหนึ่งคำถามพร้อมคำแนะนำ
-3. ทำงานตาม discipline ของ skill นี้เป็น slice สั้น ๆ และแสดง progress เท่าที่ช่วยให้ตรวจสอบได้
-4. สรุปผล หลักฐาน ความเสี่ยง และสิ่งที่ยังต้องตัดสินใจโดยไม่ยืดเยื้อ
+1. Read the request, repository instructions, and full practice in [UPSTREAM.md](UPSTREAM.md).
+2. Use smart defaults when risk is low. If a decision changes scope, ask exactly one material question with a recommendation.
+3. Apply this skill's discipline in short slices and show only the progress needed for verification.
+4. Close with the outcome, evidence, risks, and remaining decisions without padding.
 
-## จุดเน้น
+## Focus
 
-สร้าง prototype แบบทิ้งได้เพื่อพิสูจน์คำถามด้าน logic, state หรือ UI ก่อนลงทุนทำ production
-
-Identify which question is being answered before writing anything — getting this wrong wastes the
-whole prototype:
-
-- **"Does this logic or state model feel right?"** — build a **single shareable HTML file**: free-play
-  buttons plus tabbed guided walkthroughs, driving the state model through the cases that are hard to
-  reason about on paper. One file, no framework, no bundler, no server, everything inline so it opens
-  by double-click and survives being emailed. Write every label in domain language so a
-  non-developer can drive it. Keep the logic in a pure module the page calls into and nothing flows
-  back — that module is what lifts into the real codebase once the question is answered.
-- **"What should this look like?"** — generate several radically different UI variations on a single
-  route, switchable via a URL search param and a floating bottom bar.
-
-If the question is genuinely ambiguous and the user is unreachable, default to whichever branch
-matches the surrounding code (a backend module → logic, a page or component → UI) and state the
-assumption at the top of the prototype.
-
-**Trivial to run.** A UI prototype starts from one command in the project's task runner; a logic demo
-is a single HTML file the user double-clicks. Either way, no thinking required to start it.
+Build a throwaway prototype that answers one concrete logic, state, or UI question before production investment.
 
 ## Evidence Receipt
 
-รายงาน artifact, คำสั่งตรวจสอบ, ผลจริง, ความเสี่ยง และ next action ที่เล็กที่สุด
+Report artifacts, verification commands, observed results, risks, and the smallest next action.
 
 ## Guardrails
 
-- อย่าขยาย scope เอง
-- อย่า commit, push, publish หรือแก้ระบบภายนอกโดยไม่มี approval ที่ตรงเป้าหมาย
-- ถ้าหลักฐานไม่พอ ให้บอกช่องว่างแทนการเดา
+- Do not expand scope on your own.
+- Do not commit, push, publish, or change external systems without exact approval for the target.
+- If evidence is incomplete, report the gap instead of guessing.
