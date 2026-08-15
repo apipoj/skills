@@ -1,5 +1,12 @@
 # Apipoj Skills
 
+## 6.1.0 - 2026-08-15
+
+### Changed
+
+- Runtime skill prompts are now English to save tokens. Agents reply in the user's language and keep Thai cultural fit: colleague tone, familiar technical English when clearer, no literal translation, and no location stereotypes.
+- Converted the remaining thin Thai plugin shells to English and removed duplicated Thai upstream text from `tdd`.
+
 ## 6.0.1 - 2026-08-15
 
 ### Fixed
