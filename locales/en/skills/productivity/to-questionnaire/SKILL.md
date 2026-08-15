@@ -5,6 +5,8 @@ disable-model-invocation: true
 ---
 # To Questionnaire
 
+When a decision or confirmation is needed, use the host's structured choice prompt if one is available; otherwise present a numbered list. Options must be genuinely distinct with exactly one recommended, every label names the real outcome, and a free-form answer stays possible.
+
 Turn something the user cannot answer alone into a **questionnaire** — a Markdown document they hand to one person to fill in async, or fill out together over a meeting. The recipient holds knowledge the user lacks; the questionnaire pulls it out of them.
 
 ## Grill the send, not the subject
@@ -57,7 +59,6 @@ Frame the document as a **discovery questionnaire**: the user lacks context, the
 
 ## Guardrails
 
-- Interview the user about the send, never about the subject they cannot answer.
 - Keep exact technical identifiers unchanged.
 - Write only the questionnaire file; do not change other project files.
 - Report evidence gaps instead of guessing at what the recipient knows.

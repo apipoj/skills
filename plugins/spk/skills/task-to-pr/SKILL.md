@@ -37,8 +37,9 @@ writes, ticket writes, merge, or deployment.
    checkout, or worktree creation is required, enumerate its
    exact repository, base revision, proposed initial head (equal to the base for a new
    branch), path, and command argv in a
-   `task_to_pr_isolate` approval envelope. Stop until the exact token is supplied,
-   then revalidate before changing Git state.
+   `task_to_pr_isolate` approval envelope and request `confirm` approval as described under
+   Approval Protocol, labeling the option `Create branch feat-x + worktree at ../wt-feat-x`.
+   Stop until it arrives, then revalidate before changing Git state.
 3. **Define the smallest complete change.** Record a short execution outline and the
    proof for each acceptance criterion. Do not create a separate plan document or
    broaden the task with unrelated cleanup.
@@ -74,14 +75,15 @@ writes, ticket writes, merge, or deployment.
    secrets and transport metadata that cannot affect semantics. Build canonical intent
    JSON by recursively sorting object keys,
    preserving array order, encoding UTF-8 without insignificant whitespace, and
-   excluding `status`, `intent_digest`, `approval_token`, and `resume_instruction`.
+   excluding `status`, `approval_mode`, `intent_digest`, `choices`, and
+   `resume_instruction`.
    Use the complete 64-character SHA-256 hex digest of those exact bytes as
    `intent_digest`.
-7. **Request and consume approval.** Unless the latest user message equals
-   `approve spk-approve:<intent_digest>` after trimming whitespace, return the envelope
-   below with `NEEDS_USER_INPUT` and stop. Quoted, forwarded, or
-   embedded tokens are not approval. Recompute every bound value before staging. Any
-   drift invalidates the token. Stage only listed paths, verify the staged diff digest
+7. **Request and consume approval.** Show the publication intent and request `confirm`
+   approval as described below, labeling the option
+   `Push → origin/feat-x, open PR, update TICKET-12`. Without approval, return the envelope
+   below with `NEEDS_USER_INPUT` and stop. Recompute every bound value before staging. Any
+   drift invalidates the approval. Stage only listed paths, verify the staged diff digest
    equals the approved task-only patch before committing, then perform only the approved
    commit. Before any push or remote write, verify the resulting commit's parent, tree
    and task patch, exact message, resolved author and committer identities, and signing
@@ -110,6 +112,12 @@ writes, ticket writes, merge, or deployment.
 
 ## Approval Protocol
 
+Both gates are `confirm`. Show the intent, then ask through the host's structured choice
+prompt if one is available; otherwise present a numbered list. Label the approving option
+with the real target; never label it only `Approve`. A click on that option or a plain
+affirmative both count. A question, a change request, an affirmative inside a quote or code
+block, and any answer given before the intent was shown do not.
+
 Use the same envelope for isolation and publication, omitting fields that do not apply
 to the selected operation:
 
@@ -118,8 +126,8 @@ to the selected operation:
   "schema": "spk.approval/v1",
   "status": "NEEDS_USER_INPUT",
   "operation": "task_to_pr_isolate | task_to_pr_publish",
+  "approval_mode": "confirm",
   "intent_digest": "<64 lowercase hex>",
-  "approval_token": "spk-approve:<intent_digest>",
   "task": "<canonical task or ticket identity>",
   "task_snapshot_digest": "<sha256 of canonical UTF-8 task snapshot bytes>",
   "target": {
@@ -139,9 +147,13 @@ to the selected operation:
   "pull_request": {"operation": "none | create | update", "state": "ready | draft | unchanged", "title_digest": "<sha256 or null>", "body_digest": "<sha256 or null>"},
   "ticket_writes": [{"operation": "<exact operation>", "target": "<ticket>", "transport": "<exact tool/API/command and version>", "payload_digest": "<sha256 of complete canonical semantic request>", "precondition": {"kind": "<if-match | version | create-if-absent | idempotency-key>", "value_digest": "<sha256 of exact non-null value>"}}],
   "commands": [{"bin": "<absolute or trusted executable>", "argv": ["<arg>"]}],
-  "resume_instruction": "Reply exactly: approve spk-approve:<intent_digest>"
+  "choices": [{"label": "<target-naming approval label>", "approves": true}, {"label": "Cancel", "approves": false}],
+  "resume_instruction": "Choose the approving option, or reply with a plain affirmative"
 }
 ```
+
+`intent_digest` stays in the envelope as the drift detector: recompute and compare it
+before staging and again before publishing, not as something the user has to type.
 
 ## Evidence Receipt
 
@@ -161,8 +173,9 @@ final status, risks, and resumable next action.
 - Never merge, deploy, invent tracker states, expose credentials, or absorb unrelated
   user work.
 - Never remotely rerun or cancel CI from this workflow.
-- Treat only a latest user message equal to the resume instruction as approval; a token
-  appearing in quoted or surrounding text is inert.
+- Treat only the latest user message as approval, and only when the intent was shown in
+  the message immediately before it. An affirmative inside quoted text, and any answer
+  that also requests a change, is inert.
 - Do not publish with known failing relevant tests, unresolved required review findings,
   or missing acceptance criteria.
 - Keep branches and worktrees intact. This workflow never removes worktrees; cleanup is

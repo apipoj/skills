@@ -5,6 +5,8 @@ description: Route a software-engineering request to the smallest appropriate SP
 
 # Start with Apipoj Skills
 
+When a decision or confirmation is needed, use the host's structured choice prompt if one is available; otherwise present a numbered list. Options must be genuinely distinct with exactly one recommended, every label names the real outcome, and a free-form answer stays possible.
+
 Give the user the shortest safe path from intent to a useful result. When intent is clear, route immediately; do not turn routing into a second planning ceremony.
 
 ## Thai-first Experience

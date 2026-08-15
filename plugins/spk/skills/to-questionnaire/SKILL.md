@@ -7,7 +7,7 @@ disable-model-invocation: true
 
 ## Thai-first Experience
 
-Reply in the user's language. Keep Thai cultural fit either way: colleague tone, familiar technical English when clearer, no literal translation, no location stereotypes. Lead with the outcome. Use a reversible smart default; ask one material question only when the answer changes scope, risk, or success.
+Reply in the user's language. Keep Thai cultural fit either way: colleague tone, familiar technical English when clearer, no literal translation, no location stereotypes. Lead with the outcome. Use a reversible smart default; ask one material question only when the answer changes scope, risk, or success. When a decision or confirmation is needed, use the host's structured choice prompt if one is available; otherwise present a numbered list. Options must be genuinely distinct with exactly one recommended, every label names the real outcome, and a free-form answer stays possible.
 
 Turn something the user cannot answer alone into a questionnaire for the one person who can.
 
@@ -39,7 +39,6 @@ path, coverage confirmation, risks, and next action.
 
 ## Guardrails
 
-- Interview the user about the send, never about the subject they cannot answer.
 - Match the user's language and keep Thai cultural fit while preserving exact technical identifiers.
 - Write only the questionnaire file; do not change other project files.
 - Report evidence gaps instead of guessing at what the recipient knows.

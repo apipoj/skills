@@ -20,8 +20,8 @@ Skill นี้เป็น manual-only โหมด default คือ **prepare
 2. **Resolve writes** ถ้า user ขอ commit/push/open/update ให้ list exact paths, commit message, outgoing commits, remote/ref, API operations, title/body digest และ force mode
 3. **Verify** secret-scan proposed staged diff ที่แน่นอนและรัน gates ถ้า auth หายหรือ gate fail ให้ `BLOCKED`
 4. **Bind intent** canonicalize proposed write object แบบ stable key ordering แล้วใช้ SHA-256 lowercase hex ครบ 64 ตัว
-5. **ขอ approval** ถ้า latest message ไม่มี exact `spk-approve:<intent_digest>` ให้คืน envelope และหยุด ห้าม delegate mutating step
-6. **Resume + revalidate** คำนวณ state/digest ใหม่ drift ใด ๆ ทำให้ token เป็นโมฆะ
+5. **ขอ approval** แสดง intent — target, paths, commits, commands — แล้วถามผ่าน structured choice prompt ของ host ถ้ามี ถ้าไม่มีให้ใช้ numbered list ตั้ง label ของตัวเลือกที่อนุมัติด้วย target จริง เช่น `Push → origin/feat-x, open PR` ห้าม label ว่า `Approve` เฉย ๆ gate นี้เป็น `confirm` กดตัวเลือกนั้นหรือตอบรับธรรมดาก็นับทั้งคู่ แต่คำถาม การขอแก้ คำตอบรับที่อยู่ใน quote หรือ code block และคำตอบที่มาก่อนแสดง intent ไม่นับ ถ้ายังไม่อนุมัติให้คืน envelope และหยุด ห้าม delegate mutating step
+6. **Resume + revalidate** คำนวณ state/digest ใหม่ก่อน write ทุกครั้ง drift ใด ๆ ล้ม approval ให้แสดง intent ใหม่แล้วถามอีกรอบ หนึ่ง approval คุมหนึ่ง intent ไม่ยกไป gate ถัดไปหรือ retry หลังมีอะไรเปลี่ยน
 7. **Execute exact intent** ส่ง approved intent + token ให้ PR worker หรือทำ sequential stage เฉพาะ paths ที่ list, commit/push/API write เฉพาะที่อนุมัติ
 8. **Verify outcome** รายงาน commit SHA, remote ref, PR URL และ CI state การแก้ CI ที่ write/push ต้อง approval ใหม่
 
@@ -32,15 +32,18 @@ Skill นี้เป็น manual-only โหมด default คือ **prepare
   "schema": "spk.approval/v1",
   "status": "NEEDS_USER_INPUT",
   "operation": "pull_request_write",
+  "approval_mode": "confirm",
   "intent_digest": "<64 lowercase hex>",
-  "approval_token": "spk-approve:<intent_digest>",
   "target": {"remote": "<remote>", "branch": "<branch>", "repository": "<owner/repo>"},
   "paths": ["<reviewed path>"],
   "commits": ["<outgoing หรือ proposed commit>"],
   "commands": ["<exact git/API command + argv>"],
-  "resume_instruction": "Reply exactly: approve spk-approve:<intent_digest>"
+  "choices": [{"label": "<label ที่ระบุ target จริง>", "approves": true}, {"label": "ยกเลิก", "approves": false}],
+  "resume_instruction": "Choose the approving option, or reply with a plain affirmative"
 }
 ```
+
+`intent_digest` ยังอยู่ใน envelope ในฐานะตัวจับ drift คำนวณใหม่แล้วเทียบก่อน write ไม่ใช่สิ่งที่ user ต้องพิมพ์
 
 ## Evidence Receipt
 
@@ -50,7 +53,7 @@ Skill นี้เป็น manual-only โหมด default คือ **prepare
 
 - Default เป็น prepare-only: อย่า stage, commit, push หรือ create/update PR เว้นแต่ถูกขออย่างชัดเจน
 - อย่า force-push เว้นแต่ถูกสั่งและใช้ `--force-with-lease`
-- ห้าม network/local write จน exact approval token ผ่าน revalidation
+- ห้าม network/local write จนกว่า approval จะผ่าน revalidation ของ state ปัจจุบัน
 - อย่า push จาก dirty `main` โดยไม่ระบุ commit ทั้งหมดที่จะออกไป
 - Stage เฉพาะ paths ที่ review แล้ว อย่า `git add .` เมื่อมี untracked/generated/operator files
 - Secret-scan staged diff ก่อน commit

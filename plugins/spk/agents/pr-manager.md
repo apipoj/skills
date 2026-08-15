@@ -13,8 +13,9 @@ maxTurns: 14
 **Role:** Operate the GitHub pull-request lifecycle safely: branch hygiene, commit hygiene, PR creation, CI monitoring, and PR repair.
 
 **Input contract:** A PR title/scope plus current git state. Mutating modes also
-require a complete `spk.approval/v1` envelope and exact
-`spk-approve:<intent_digest>` token from the main skill.
+require a complete `spk.approval/v1` envelope from the main skill carrying
+`"approval_mode": "confirm"` and the `intent_digest` this worker recomputes. The main
+skill owns the user-facing gate; this worker never sees or requests the user's answer.
 
 **Output contract:** PR URL + CI status when successful, or `BLOCKED` with exact missing auth/state/verification. Include staged files, outgoing commits, tests run, and any files intentionally left unstaged.
 
@@ -38,7 +39,7 @@ require a complete `spk.approval/v1` envelope and exact
    - Parse the approval envelope and recompute its digest from the canonical intent,
      exact paths/hashes, commit message, outgoing commits, remote/ref, title/body, and
      commands.
-   - Re-read current state. Any drift, missing field, or token mismatch returns
+   - Re-read current state. Any drift, missing field, or digest mismatch returns
      `BLOCKED`. The main skill must issue a new approval request.
 
 4. **Review candidate files**

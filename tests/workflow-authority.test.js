@@ -17,6 +17,11 @@ function read(file) {
   return fs.readFileSync(file, 'utf8');
 }
 
+// SKILL.md prose is hard-wrapped, so phrase assertions match against collapsed whitespace
+function flat(text) {
+  return text.replace(/\s+/g, ' ');
+}
+
 function nativeSkillFile(id) {
   const skill = CONTRACT_BY_ID.get(id);
   if (!skill) throw new Error(`Unknown contract skill: ${id}`);
@@ -166,10 +171,52 @@ describe('provider-neutral workflow and authority contracts', () => {
   test('external and destructive workflows require a bound approval envelope', () => {
     for (const name of ['deploy', 'pr', 'task-to-pr', 'uninstall']) {
       const text = read(path.join(SHARED_SKILLS, name, 'SKILL.md'));
+      const mode = CONTRACT_BY_ID.get(name).approvalMode;
       expect(text).toContain('"schema": "spk.approval/v1"');
       expect(text).toContain('"status": "NEEDS_USER_INPUT"');
-      expect(text).toMatch(/spk-approve:<intent_digest>/);
+      expect(text).toContain(`"approval_mode": "${mode}"`);
+      expect(text).toContain('"intent_digest"');
       expect(text).toMatch(/recomput|revalidat/i);
+      expect(flat(text)).toMatch(/structured choice prompt.*numbered list/i);
+      expect(flat(text)).toMatch(/never label it only `Approve`|"choices"/i);
+    }
+  });
+
+  test('only deploy still binds approval to a typed digest', () => {
+    const deploy = read(path.join(SHARED_SKILLS, 'deploy', 'SKILL.md'));
+    expect(CONTRACT_BY_ID.get('deploy').approvalMode).toBe('bound_token');
+    expect(deploy).toMatch(/spk-approve:<intent_digest>/);
+    expect(flat(deploy)).toMatch(/a plain affirmative is never sufficient/i);
+    expect(flat(deploy)).toMatch(/prefix of at least 12 hex characters/i);
+
+    for (const name of ['pr', 'task-to-pr', 'uninstall']) {
+      const text = read(path.join(SHARED_SKILLS, name, 'SKILL.md'));
+      expect(CONTRACT_BY_ID.get(name).approvalMode).toBe('confirm');
+      expect(text).not.toMatch(/spk-approve:<intent_digest>/);
+      expect(flat(text)).toMatch(/plain affirmative/i);
+      expect(flat(text)).toMatch(/drift invalidates|Any state drift/i);
+    }
+  });
+
+  test('the contract defines both approval modes and a button-first interaction policy', () => {
+    expect(Object.keys(CONTRACT.approvalModes).sort()).toEqual(['bound_token', 'confirm']);
+    expect(CONTRACT.approvalModes.confirm).toMatch(/immediately preceding message/i);
+    expect(CONTRACT.approvalModes.bound_token).toMatch(/at least 12 hex characters/i);
+    expect(CONTRACT.approvalModes.bound_token).toMatch(/never sufficient/i);
+
+    const policy = CONTRACT.interactionPolicy;
+    expect(policy.choicePrompt).toMatch(/structured choice prompt[\s\S]*numbered list/i);
+    expect(policy.options).toMatch(/exactly one is marked as recommended/i);
+    expect(policy.labels).toMatch(/bare 'Approve' label is invalid/i);
+    expect(policy.freeForm).toMatch(/free-form answer/i);
+    expect(policy.revalidation).toMatch(/One approval authorizes one intent/i);
+
+    for (const name of [
+      'ask-me', 'asking', 'start', 'wizard', 'design-options', 'to-questionnaire', 'setup',
+    ]) {
+      const text = flat(read(path.join(SHARED_SKILLS, name, 'SKILL.md')));
+      expect(text).toMatch(/structured choice prompt if one is available; otherwise present a numbered list/i);
+      expect(text).toMatch(/free-form answer stays possible/i);
     }
   });
 
@@ -206,10 +253,15 @@ describe('provider-neutral workflow and authority contracts', () => {
     for (const name of ['deploy-orchestrator', 'devops', 'pr-manager']) {
       const text = read(path.join(AGENTS, `${name}.md`));
       expect(text).toContain('spk.approval/v1');
-      expect(text).toMatch(/spk-approve:<intent_digest>/);
-      expect(text).toMatch(/main skill owns approval|do not ask the user|never solicit confirmation/i);
+      expect(text).toMatch(/main skill owns approval|main skill owns the user-facing gate|do not ask the user|never solicit confirmation/i);
       expect(text).not.toMatch(/pause for (?:explicit )?(?:user|operator) confirmation/i);
     }
+
+    // deploy is the only bound_token gate, so only its workers consume a typed digest
+    for (const name of ['deploy-orchestrator', 'devops']) {
+      expect(read(path.join(AGENTS, `${name}.md`))).toMatch(/spk-approve:<intent_digest>/);
+    }
+    expect(read(path.join(AGENTS, 'pr-manager.md'))).toMatch(/"approval_mode": "confirm"/);
   });
 
   test('every agent declares least-privilege controls and a typed receipt', () => {
