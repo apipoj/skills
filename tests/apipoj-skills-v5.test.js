@@ -54,7 +54,7 @@ const spkCore = [
 describe('Apipoj Skills v5 migration contract', () => {
   test('uses the approved product identity and version', () => {
     expect(manifest).toMatchObject({
-      version: '6.0.0',
+      version: '6.0.1',
       brand: 'Apipoj Skills',
       slug: 'spk',
     });
