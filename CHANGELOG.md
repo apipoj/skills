@@ -1,5 +1,27 @@
 # Apipoj Skills
 
+## 6.2.0 - 2026-08-15
+
+### Changed
+
+- Approval gates now come in two modes, defined in `contracts/workflows.json` as `approvalModes`. `pr`, `task-to-pr`, and `uninstall` use `confirm`: approval is a click on the approving option or a plain affirmative such as `approve` or `เอาเลย`. Only `deploy` keeps `bound_token` and still requires the intent digest. Previously every gate demanded a transcribed 64-character token, so creating a branch and a worktree — local and reversible — was gated as heavily as a production deploy.
+- `bound_token` matching is lenient about form and strict about identity: the token may appear anywhere in the message, hex case is ignored, surrounding backticks and quotes are stripped, and a unique prefix of at least 12 hex characters is accepted. The rule that discounted quoted or forwarded tokens is removed — the protection is that the digest must match freshly revalidated state.
+- Approval envelopes carry `approval_mode` and `choices` instead of a user-facing `approval_token` in `confirm` mode. `intent_digest` remains as the drift detector.
+
+### Added
+
+- `interactionPolicy` in `contracts/workflows.json`: when a decision or confirmation is needed, use the host's structured choice prompt if one is available, otherwise present a numbered list. Options stay genuinely distinct with exactly one recommended, every label names the real target or outcome rather than reading `Approve`, and a free-form answer stays possible. The rule is capability-phrased, so Claude Code renders buttons while Codex keeps the existing numbered-list behavior. Applied to `ask-me`, `asking`, `start`, `wizard`, `design-options`, `to-questionnaire`, `setup`, and the four gated skills.
+
+### Removed
+
+- Redundant prose found by auditing all 40 skills for restated instructions. `ask-me` dropped a duplicated language rule, a one-question rule stated in three places, a second anti-bureaucratic example, a location-stereotype rule already in the shared block, and a manual-only guardrail that `disable-model-invocation: true` enforces mechanically — 71 words, back under its original budget with the new interaction policy included. `task-to-pr` states the `confirm` rule once under Approval Protocol instead of spelling it out at both gates. `bala` and `to-questionnaire` each dropped a guardrail restated verbatim in their workflow.
+- The audit left 5 flagged pairs in place as intentional parallel structure, and treated `wizard`'s and `code-review`'s overlap between their SPK section and their retained `## Upstream Discipline` section as the two-layer design it is, not as duplication.
+
+### Unchanged
+
+- `scripts/install/uninstall.cjs` still performs its full digest round-trip; that exchange runs between the agent and the module, not through a human.
+- Secret scanners and the guardrails against `git add .`, force-push without `--force-with-lease`, and staging unapproved paths.
+
 ## 6.1.0 - 2026-08-15
 
 ### Changed
