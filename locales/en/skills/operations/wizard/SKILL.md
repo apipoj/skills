@@ -4,6 +4,8 @@ description: Author an interactive bash wizard for the steps only a human can pe
 ---
 # Wizard
 
+When a decision or confirmation is needed, use the host's structured choice prompt if one is available; otherwise present a numbered list. Options must be genuinely distinct with exactly one recommended, every label names the real outcome, and a free-form answer stays possible.
+
 A wizard is a bash script that walks a human, step by step, through a manual procedure that is tedious to do by hand and tedious to re-explain to an AI every time. It opens each URL, says exactly what to click and copy, captures the values, writes them where they belong (`.env`, GitHub secrets), confirms at every stage, and shows how many stages are left.
 
 Use it when provisioning infrastructure, setting up credentials or CI secrets, clicking through an unfamiliar third-party dashboard, or running a one-off migration or cutover.

@@ -39,6 +39,17 @@
     "external_write": "May change a remote system only after explicit approval for the exact target.",
     "destructive": "May remove data only after showing exact targets and receiving explicit approval."
   },
+  "approvalModes": {
+    "confirm": "Proceed when the latest user message unambiguously accepts the intent shown in the immediately preceding message. A click on the approving option or a plain affirmative both count. A question, a change request, a quoted affirmative, or an answer given before the intent was shown does not.",
+    "bound_token": "Proceed only when the latest user message also carries the digest of the current intent. Match the token anywhere in the message, ignore hex case, strip surrounding backticks and quotes, and accept a prefix of at least 12 hex characters that uniquely matches. A plain affirmative is never sufficient."
+  },
+  "interactionPolicy": {
+    "choicePrompt": "When a decision or confirmation is needed, use the host's structured choice prompt if one is available; otherwise present a numbered list.",
+    "options": "Options must be genuinely distinct and exactly one is marked as recommended. Never force an open-ended question into fixed options.",
+    "labels": "Every option label names the real target or outcome. A bare 'Approve' label is invalid; a bound_token label carries a 12-character digest prefix.",
+    "freeForm": "A free-form answer stays possible at every prompt.",
+    "revalidation": "Any drift between the shown intent and freshly computed state invalidates approval. Recompute immediately before the write, and show the new intent and ask again when it differs. One approval authorizes one intent and never carries to the next gate or to a retry after a change."
+  },
   "skills": [
     {
       "id": "start",
@@ -2094,6 +2105,7 @@
       },
       "effectLevel": "external_write",
       "role": "deployment_operator",
+      "approvalMode": "bound_token",
       "workflow": [
         {
           "phase": "preflight",
@@ -2259,6 +2271,7 @@
       },
       "effectLevel": "external_write",
       "role": "pr_operator",
+      "approvalMode": "confirm",
       "workflow": [
         {
           "phase": "inspect",
@@ -2347,6 +2360,7 @@
       },
       "effectLevel": "external_write",
       "role": "delivery_orchestrator",
+      "approvalMode": "confirm",
       "workflow": [
         {
           "phase": "resolve",
@@ -3034,6 +3048,7 @@
       },
       "effectLevel": "destructive",
       "role": "uninstaller",
+      "approvalMode": "confirm",
       "workflow": [
         {
           "phase": "inventory",

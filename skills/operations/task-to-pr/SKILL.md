@@ -26,8 +26,9 @@ push, เขียน ticket/PR, merge หรือ deploy
    เฉพาะเมื่อ checkout นั้น dedicated ให้ exact task อยู่แล้ว มิฉะนั้นใช้ dedicated
    worktree และห้าม repurpose shared checkout ถ้าต้อง fetch, branch, checkout หรือ
    สร้าง worktree ให้ bind repository, base, proposed initial head ซึ่งเท่ากับ base
-   สำหรับ branch ใหม่, path และ command argv ใน `task_to_pr_isolate` envelope รอ exact token แล้ว
-   revalidate ก่อนเปลี่ยน Git state
+   สำหรับ branch ใหม่, path และ command argv ใน `task_to_pr_isolate` envelope แล้วขอ `confirm`
+   approval ตามที่ระบุใน Approval Protocol โดยตั้ง label ว่า
+   `สร้าง branch feat-x + worktree ที่ ../wt-feat-x` รอจนกว่าจะได้แล้ว revalidate ก่อนเปลี่ยน Git state
 3. **กำหนด change ที่เล็กแต่ครบ** เขียน execution outline สั้น ๆ และ proof ของแต่ละ
    criterion ห้ามสร้าง plan document แยกหรือขยาย scope ไป cleanup ที่ไม่เกี่ยวข้อง
 4. **Implement และ verify ในเครื่อง** สำหรับ behavior ที่เปลี่ยนต้องพิสูจน์ focused
@@ -58,12 +59,12 @@ push, เขียน ticket/PR, merge หรือ deploy
    ที่ไม่มีผลต่อ semantics และ
    structured command argv สร้าง canonical JSON โดย sort object keys ทุกระดับ,
    รักษา array order, encode UTF-8 โดยไม่มี insignificant whitespace และตัด
-   `status`, `intent_digest`, `approval_token`, `resume_instruction` ออก แล้วใช้
+   `status`, `approval_mode`, `intent_digest`, `choices`, `resume_instruction` ออก แล้วใช้
    SHA-256 digest แบบ lowercase hex ครบ 64 ตัวเป็น `intent_digest`
-7. **ขอและใช้ approval** ถ้า latest user message หลัง trim ไม่เท่ากับ
-   `approve spk-approve:<intent_digest>` ให้คืน envelope ที่มี `NEEDS_USER_INPUT`
-   แล้วหยุด token ที่ถูก quote, forward หรือแทรกในข้อความอื่นไม่ใช่ approval
-   ก่อน stage ต้องคำนวณ state ใหม่ drift ใด ๆ ทำให้ token เป็นโมฆะ stage เฉพาะ path
+7. **ขอและใช้ approval** แสดง publication intent แล้วขอ `confirm` approval ตามที่ระบุข้างล่าง
+   โดยตั้ง label ว่า `Push → origin/feat-x, เปิด PR, อัปเดต TICKET-12`
+   ถ้ายังไม่อนุมัติให้คืน envelope ที่มี `NEEDS_USER_INPUT` แล้วหยุด
+   ก่อน stage ต้องคำนวณ state ใหม่ drift ใด ๆ ล้ม approval stage เฉพาะ path
    ที่ bind แล้วตรวจ staged diff digest ให้ตรง task-only patch ก่อน commit จากนั้นก่อน
    push หรือ remote write ใด ๆ ต้องตรวจ resulting commit ว่า parent, tree/task patch,
    exact message, resolved author/committer identities และ signing state ตรง approved
@@ -89,13 +90,18 @@ push, เขียน ticket/PR, merge หรือ deploy
 
 ## Approval Protocol
 
+ทั้งสอง gate เป็น `confirm` แสดง intent แล้วถามผ่าน structured choice prompt ของ host ถ้ามี
+ถ้าไม่มีให้ใช้ numbered list ตั้ง label ของตัวเลือกที่อนุมัติด้วย target จริง ห้าม label ว่า `Approve`
+เฉย ๆ กดตัวเลือกนั้นหรือตอบรับธรรมดาก็นับทั้งคู่ แต่คำถาม การขอแก้ คำตอบรับที่อยู่ใน quote
+หรือ code block และคำตอบที่มาก่อนแสดง intent ไม่นับ
+
 ```json
 {
   "schema": "spk.approval/v1",
   "status": "NEEDS_USER_INPUT",
   "operation": "task_to_pr_isolate | task_to_pr_publish",
+  "approval_mode": "confirm",
   "intent_digest": "<64 lowercase hex>",
-  "approval_token": "spk-approve:<intent_digest>",
   "task": "<canonical task หรือ ticket>",
   "task_snapshot_digest": "<sha256 of canonical UTF-8 task snapshot bytes>",
   "target": {
@@ -115,9 +121,13 @@ push, เขียน ticket/PR, merge หรือ deploy
   "pull_request": {"operation": "none | create | update", "state": "ready | draft | unchanged", "title_digest": "<sha256 หรือ null>", "body_digest": "<sha256 หรือ null>"},
   "ticket_writes": [{"operation": "<exact operation>", "target": "<ticket>", "transport": "<exact tool/API/command and version>", "payload_digest": "<sha256 of complete canonical semantic request>", "precondition": {"kind": "<if-match | version | create-if-absent | idempotency-key>", "value_digest": "<sha256 of exact non-null value>"}}],
   "commands": [{"bin": "<absolute หรือ trusted executable>", "argv": ["<arg>"]}],
-  "resume_instruction": "Reply exactly: approve spk-approve:<intent_digest>"
+  "choices": [{"label": "<label ที่ระบุ target จริง>", "approves": true}, {"label": "ยกเลิก", "approves": false}],
+  "resume_instruction": "Choose the approving option, or reply with a plain affirmative"
 }
 ```
+
+`intent_digest` ยังอยู่ใน envelope ในฐานะตัวจับ drift คำนวณใหม่แล้วเทียบก่อน stage และเทียบอีกรอบ
+ก่อน publish ไม่ใช่สิ่งที่ user ต้องพิมพ์
 
 ## Evidence Receipt
 
@@ -137,8 +147,8 @@ resumable next action
 - ห้าม merge, deploy, สร้าง tracker state เอง, เปิดเผย credential หรือรวมงานผู้ใช้ที่
   ไม่เกี่ยวข้อง
 - ห้าม remote rerun/cancel CI จาก workflow นี้
-- นับ approval เฉพาะ latest message ที่เท่ากับ resume instruction เท่านั้น token ใน
-  quote หรือข้อความล้อมรอบไม่มีผล
+- นับ approval เฉพาะ latest message และเฉพาะเมื่อ intent ถูกแสดงในข้อความก่อนหน้าทันที
+  คำตอบรับที่อยู่ใน quote หรือที่ขอแก้มาด้วยไม่มีผล
 - ห้าม publish เมื่อ relevant tests ยัง fail, required finding ยังไม่แก้ หรือ
   acceptance criteria ยังขาด
 - ให้เก็บ branch/worktree ไว้เสมอ Workflow นี้ไม่ลบ worktree; cleanup เป็น exact-path

@@ -12,8 +12,8 @@ Skill นี้เป็น manual-only และทำโดยตรงใน 
 1. **Inventory read-only** ใช้ `.spk/installed.json` เป็น ownership evidence ก่อน normalize ทุก candidate ให้อยู่ใน workspace Legacy install รับเฉพาะ SPK marker หรือ registered exact name ห้ามเดาจาก directory กว้าง
 2. **Preview exact effects** list ทุก file/range ที่จะลบ, stale record และทุกอย่างที่ preserve ต้องรักษา wiki, sources, human-authored context, credentials และ non-SPK files
 3. **Bind intent** canonicalize operation, exact paths, text ranges, expected hashes และ preserve list แล้วใช้ SHA-256 lowercase hex ครบ 64 ตัว
-4. **ขอ approval** ถ้า latest message ไม่มี exact `spk-approve:<intent_digest>` ให้คืน envelope แล้วหยุด
-5. **Resume safely** re-read ownership กับ hashes drift ใด ๆ ต้องขอ approval ใหม่
+4. **ขอ approval** แสดง preview แล้วถามผ่าน structured choice prompt ของ host ถ้ามี ถ้าไม่มีให้ใช้ numbered list ตั้ง label ของตัวเลือกที่อนุมัติด้วย scope จริง เช่น `ลบไฟล์ SPK 7 ไฟล์ใน .claude/` ห้าม label ว่า `Approve` เฉย ๆ gate นี้เป็น `confirm` กดตัวเลือกนั้นหรือตอบรับธรรมดาก็นับทั้งคู่ แต่คำถาม การขอแก้ คำตอบรับที่อยู่ใน quote หรือ code block และคำตอบที่มาก่อนแสดง preview ไม่นับ ถ้ายังไม่อนุมัติให้คืน envelope แล้วหยุด
+5. **Resume safely** re-read ownership กับ hashes แล้วคำนวณ digest ใหม่ก่อนลบทุกครั้ง drift ใด ๆ ต้องขอ approval ใหม่ เวลาเรียก uninstall module ให้ส่ง digest ที่ module ออกให้ user อนุมัติ preview ไม่ใช่อนุมัติตัว digest
 6. **Apply narrowly** ลบเฉพาะ approved SPK-owned files และ marker block ที่อนุมัติ ห้าม recursive remove `.claude/` หรือ broad directory ลบ empty directory ได้หลังพิสูจน์ว่าว่าง
 7. **Verify** ยืนยัน targets หาย, preserved paths byte-for-byte เหมือนเดิม, ไม่มี path escape workspace และรายงาน recovery ถ้าใช้ trash/quarantine
 
@@ -24,14 +24,17 @@ Skill นี้เป็น manual-only และทำโดยตรงใน 
   "schema": "spk.approval/v1",
   "status": "NEEDS_USER_INPUT",
   "operation": "uninstall",
+  "approval_mode": "confirm",
   "intent_digest": "<64 lowercase hex>",
-  "approval_token": "spk-approve:<intent_digest>",
   "paths": ["<exact SPK-owned path>"],
   "text_edits": [{"path": "<shared file>", "range": "<SPK marker block>"}],
   "preserve": ["ai_context/wiki/", "ai_context/sources/", "<human-owned path>"],
-  "resume_instruction": "Reply exactly: approve spk-approve:<intent_digest>"
+  "choices": [{"label": "ลบไฟล์ SPK <n> ไฟล์ใน <scope>", "approves": true}, {"label": "ยกเลิก", "approves": false}],
+  "resume_instruction": "Choose the approving option, or reply with a plain affirmative"
 }
 ```
+
+`intent_digest` ยังอยู่ใน envelope ในฐานะตัวจับ drift และเป็นค่าที่ส่งให้ uninstall module คำนวณใหม่แล้วเทียบก่อนลบ ไม่ใช่ให้ user พิมพ์
 
 ## Evidence Receipt
 

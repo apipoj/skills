@@ -21,11 +21,17 @@ This skill is manual-only and runs directly in the current conversation.
 3. **Bind intent.** Canonicalize `operation`, exact paths, text ranges, expected file
    hashes, and preservation list with stable key ordering. Use the complete
    64-character lowercase SHA-256 hex digest as `intent_digest`.
-4. **Request approval.** Unless the latest user message contains exact
-   `spk-approve:<intent_digest>`, return the envelope below and stop without editing.
-5. **Resume safely.** Re-read ownership records and file hashes, recompute the intent
-   digest, and compare it to the token. Any added, removed, or changed target
-   invalidates approval and requires a new preview.
+4. **Request approval.** Show the preview, then ask through the host's structured choice
+   prompt if one is available; otherwise present a numbered list. Label the approving
+   option with the real scope, such as `Remove 7 SPK files from .claude/`; never label it
+   only `Approve`. This gate is `confirm`: a click on that option or a plain affirmative
+   both count. A question, a change request, an affirmative inside a quote or code block,
+   and any answer given before the preview do not. Without approval, return the envelope
+   below and stop without editing.
+5. **Resume safely.** Re-read ownership records and file hashes and recompute the intent
+   digest immediately before deleting. Any added, removed, or changed target invalidates
+   approval and requires a new preview. When calling the uninstall module, pass the digest
+   it issued; the user approves the preview, not the digest string.
 6. **Apply narrowly.** Remove only approved SPK-owned files and only the approved SPK
    marker block from shared files. Never recursively remove `.claude/` or any other
    broad directory. Remove an empty directory only after proving it is empty.
@@ -40,14 +46,19 @@ This skill is manual-only and runs directly in the current conversation.
   "schema": "spk.approval/v1",
   "status": "NEEDS_USER_INPUT",
   "operation": "uninstall",
+  "approval_mode": "confirm",
   "intent_digest": "<64 lowercase hex>",
-  "approval_token": "spk-approve:<intent_digest>",
   "paths": ["<exact SPK-owned path>"],
   "text_edits": [{"path": "<shared file>", "range": "<SPK marker block>"}],
   "preserve": ["ai_context/wiki/", "ai_context/sources/", "<human-owned path>"],
-  "resume_instruction": "Reply exactly: approve spk-approve:<intent_digest>"
+  "choices": [{"label": "Remove <n> SPK files from <scope>", "approves": true}, {"label": "Cancel", "approves": false}],
+  "resume_instruction": "Choose the approving option, or reply with a plain affirmative"
 }
 ```
+
+`intent_digest` stays in the envelope as the drift detector and as the value handed to the
+uninstall module; recompute and compare it before deleting, rather than asking the user to
+type it.
 
 ## Evidence Receipt
 

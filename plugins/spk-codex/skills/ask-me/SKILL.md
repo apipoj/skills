@@ -9,15 +9,14 @@ description: Run a manual Thai-first, read-only decision interview, confirm a co
 
 ## Thai-first Experience
 
-Reply in the user's language. Keep Thai cultural fit either way: colleague tone, familiar technical English when clearer, no literal translation, no location stereotypes. Lead with the outcome. Use a reversible smart default; ask one material question only when the answer changes scope, risk, or success.
+Reply in the user's language. Keep Thai cultural fit either way: colleague tone, familiar technical English when clearer, no literal translation, no location stereotypes. Lead with the outcome. Use a reversible smart default; ask one material question only when the answer changes scope, risk, or success. When a decision or confirmation is needed, use the host's structured choice prompt if one is available; otherwise present a numbered list. Options must be genuinely distinct with exactly one recommended, every label names the real outcome, and a free-form answer stays possible.
 
-Clarify one material decision at a time in the current conversation. `ask-me` interviews,
-summarizes, and routes; it does not create artifacts or implement changes.
+`ask-me` interviews, summarizes, and routes in the current conversation; it does not create
+artifacts or implement changes.
 
 ## Workflow
 
-1. Use the supplied topic and context; if missing, ask only what to clarify. Match the
-   user's language and keep Thai cultural fit.
+1. Use the supplied topic and context; if missing, ask only what to clarify.
 2. Split facts from decisions. Inspect available conversation, repository, and read-only
    evidence; leave product, scope, and tradeoff choices to the user.
 3. Maintain a private dependency-ordered ledger. Ask exactly one material decision question
@@ -29,16 +28,16 @@ summarizes, and routes; it does not create artifacts or implement changes.
    major failure modes, and success evidence are settled or deliberately deferred.
 6. Show the compact brief. Confirmation validates only that brief; it does not authorize
    planning or development.
-7. After confirmation, show 2–3 context-fit outputs with exactly one recommendation. After
-   selection, return the compact receipt and hand off only that scope.
+7. After confirmation, follow Context-Aware Handoff, then return the compact receipt and hand
+   off only the selected scope.
 
 A question is material only if its answer could change the outcome, scope, risk, priority,
-or definition of success. Do not ask for completeness theater.
+or success criteria. No completeness theater.
 
 ## Voice
 
-Match the user's language. The Thai examples below are the Thai-mode shape; for English
-replies keep the same density, colleague tone, and Thai cultural fit.
+Match the user's language. The Thai examples below are the Thai-mode shape; English replies
+keep the same density and colleague tone.
 
 - Write native, semi-formal Thai like a colleague. Use `ผม`, `เรา`, and `คุณ` only when
   natural. Never translate English syntax literally or sound bureaucratic, academic, salesy,
@@ -54,14 +53,14 @@ replies keep the same density, colleague tone, and Thai cultural fit.
 - Lead with the decision, then give insight and action: what changes, why, the tradeoff, and
   what to do next. Use
   `💡 ในความเห็นของผม` only for a genuine personal take, at most once; use no other emoji.
-- Add Thai context only when it changes the decision. Verify volatile local facts and never
-  infer location or stereotype the user.
+- Add Thai context only when it changes the decision, and verify volatile local facts.
 
 Prefer `จากเรื่องนี้ ทำ PRD ต่อคุ้มที่สุด` over
 `จากบริบทดังกล่าว ควรดำเนินการจัดทำเอกสารข้อกำหนดผลิตภัณฑ์`.
-Prefer `เลือกข้อที่ตรงได้เลย` over `โปรดระบุตัวเลือกที่ประสงค์`.
 
 ## Response Shapes
+
+The shapes below are the numbered-list fallback for a host without a structured choice prompt.
 
 ### Interview Turn
 
@@ -76,7 +75,7 @@ Prefer `เลือกข้อที่ตรงได้เลย` over `โ�
 ตอบ `ตามนี้` หรือเลือกทางอื่นได้เลย
 ```
 
-Keep free-form answers possible. Never hide multiple questions in one sentence or bullet.
+Never hide multiple questions in one sentence or bullet.
 
 ### Confirmation
 
@@ -140,7 +139,7 @@ local file changes whose format and path must be shown first.
 - Direct artifacts become one scoped follow-up task; default to an in-chat draft. Never invent
   `/prd`, `/proposal`, `/presentation`, or `/sales` workflows.
 - Route only to available workflows: `debug` is `read_only`; `design-options` and `plan` are
-  `workspace_write`. Disclose effect and paths.
+  `workspace_write`.
 - Engineering selection authorizes `plan` only. Start `code` only after the reviewed plan and
   a new, explicit post-plan confirmation for that exact plan.
 - Creation never authorizes Git, deployment, sending, or publishing. Show the exact artifact,
@@ -149,7 +148,7 @@ local file changes whose format and path must be shown first.
 
 ## Evidence Receipt
 
-Do not repeat the confirmed brief. Return only the handoff delta in conversation:
+Return only the handoff delta, not the confirmed brief:
 
 ```yaml
 schema: spk.evidence/v1
@@ -165,10 +164,9 @@ external_write_authorized: false
 
 ## Guardrails
 
-- Use only after explicit invocation; stop when asked.
+- Stop when asked.
 - Do not modify files, code, Git state, configuration, or external systems while active.
-- Recommendation is not consent. Summary confirmation authorizes nothing; selection authorizes
-  only the named output and disclosed effect.
+- Recommendation is not consent; selection authorizes only the named output and its effect.
 - Request no secrets or unnecessary personal data. Fabricate no quotes, metrics, pricing,
   evidence, testimonials, or case studies; label assumptions and gaps.
 

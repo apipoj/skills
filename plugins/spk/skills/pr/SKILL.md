@@ -28,10 +28,18 @@ to prepare or open a pull request.
    Missing auth or failed gates produces `BLOCKED`, not a reduced-safety workflow.
 4. **Bind intent.** Canonicalize the proposed write object with stable key ordering and
    use its complete 64-character lowercase SHA-256 hex digest as `intent_digest`.
-5. **Request approval.** Without exact `spk-approve:<intent_digest>` in the latest user
-   message, return the envelope below and stop. Do not delegate a mutating step.
+5. **Request approval.** Show the intent — target, paths, commits, commands — then ask
+   through the host's structured choice prompt if one is available; otherwise present a
+   numbered list. Label the approving option with the real target, such as
+   `Push → origin/feat-x, open PR`; never label it only `Approve`. This gate is `confirm`:
+   a click on that option or a plain affirmative both count. A question, a change request,
+   an affirmative inside a quote or code block, and any answer given before the intent was
+   shown do not. Without approval, return the envelope below and stop. Do not delegate a
+   mutating step.
 6. **Resume and revalidate.** Recompute branch state, file list, outgoing commits,
-   title/body, commands, auth, and digest. Any drift invalidates the token.
+   title/body, commands, auth, and digest immediately before writing. Any drift invalidates
+   the approval; show the new intent and ask again. One approval authorizes one intent and
+   never carries to the next gate or to a retry after any change.
 7. **Execute exact intent.** Delegate to an available PR worker or run sequentially.
    Pass the approved intent and token. Stage only listed paths, commit only if listed,
    push only the approved ref, then perform only listed API writes.
@@ -45,15 +53,19 @@ to prepare or open a pull request.
   "schema": "spk.approval/v1",
   "status": "NEEDS_USER_INPUT",
   "operation": "pull_request_write",
+  "approval_mode": "confirm",
   "intent_digest": "<64 lowercase hex>",
-  "approval_token": "spk-approve:<intent_digest>",
   "target": {"remote": "<remote>", "branch": "<branch>", "repository": "<owner/repo>"},
   "paths": ["<reviewed path>"],
   "commits": ["<outgoing or proposed commit>"],
   "commands": ["<exact git/API command and argv>"],
-  "resume_instruction": "Reply exactly: approve spk-approve:<intent_digest>"
+  "choices": [{"label": "<target-naming approval label>", "approves": true}, {"label": "Cancel", "approves": false}],
+  "resume_instruction": "Choose the approving option, or reply with a plain affirmative"
 }
 ```
+
+`intent_digest` stays in the envelope as the drift detector: recompute and compare it
+before writing, not as something the user has to type.
 
 ## Evidence Receipt
 

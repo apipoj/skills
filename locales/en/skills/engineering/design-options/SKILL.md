@@ -5,6 +5,8 @@ description: Explore multiple genuinely distinct interface directions, compare t
 
 # Design Shotgun
 
+When a decision or confirmation is needed, use the host's structured choice prompt if one is available; otherwise present a numbered list. Options must be genuinely distinct with exactly one recommended, every label names the real outcome, and a free-form answer stays possible.
+
 Use this when the user wants to explore visual directions before committing to implementation: "show me design options", "I don't like this UI", "visual brainstorm", "ทำ design shotgun", "ขอหลายแบบให้เลือก", or "make this screen look better".
 
 This workflow keeps exploration local and codebase-aware: generate disposable

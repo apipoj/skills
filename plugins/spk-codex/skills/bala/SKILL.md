@@ -26,8 +26,6 @@ Run this lens directly in the current conversation.
 4. Recommend the smallest safe action that reduces uncertainty.
 5. Define the test, log, review signal, or other evidence that proves the action worked.
 
-Do not change files unless the user separately asks for implementation.
-
 ## Five Strengths for Engineering
 
 ### 1. Confidence (Saddha)
