@@ -4,9 +4,58 @@ const path = require('path');
 const os = require('os');
 
 const {
+  collectFrontmatterYamlErrors,
   collectSkillDescriptionErrors,
   parseFrontmatter,
 } = require('../scripts/verify-skill-descriptions.cjs');
+
+const ROOT = path.join(__dirname, '..');
+
+function writeRawSkill(root, slug, frontmatter) {
+  const file = path.join(root, 'plugins/spk/skills', slug, 'SKILL.md');
+  fs.mkdirSync(path.dirname(file), { recursive: true });
+  fs.writeFileSync(file, `---\n${frontmatter}\n---\n# ${slug}\n`);
+  return root;
+}
+
+describe('skill frontmatter is parseable YAML', () => {
+  // Claude Code and the skills.sh adapters read this frontmatter as YAML. A
+  // plain scalar carrying ": " is not valid YAML, and 6.0.0 shipped exactly
+  // one — the installer caught it in the field, no gate did.
+  test('the shipped payload parses', () => {
+    expect(collectFrontmatterYamlErrors(ROOT)).toEqual([]);
+  });
+
+  test('rejects a colon-space inside an unquoted value', () => {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), 'apipoj-fm-'));
+    writeRawSkill(root, 'wait-what', 'name: wait-what\ndescription: Re-pitch what did not land: add the missing context.');
+    expect(collectFrontmatterYamlErrors(root).join('\n')).toMatch(/wait-what.*unquoted value contains ": "/);
+  });
+
+  test('accepts the same text once it is quoted', () => {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), 'apipoj-fm-'));
+    writeRawSkill(root, 'ok', 'name: ok\ndescription: "Re-pitch what did not land: add the missing context."');
+    expect(collectFrontmatterYamlErrors(root)).toEqual([]);
+  });
+
+  test('rejects an unterminated quote', () => {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), 'apipoj-fm-'));
+    writeRawSkill(root, 'oops', 'name: oops\ndescription: "never closed');
+    expect(collectFrontmatterYamlErrors(root).join('\n')).toMatch(/oops.*unterminated quote/);
+  });
+
+  test('rejects a value opening with a YAML indicator character', () => {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), 'apipoj-fm-'));
+    writeRawSkill(root, 'anchor', 'name: anchor\ndescription: *not-an-anchor please');
+    expect(collectFrontmatterYamlErrors(root).join('\n')).toMatch(/anchor.*indicator character/);
+  });
+
+  test('rejects an inline comment marker that would truncate the value', () => {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), 'apipoj-fm-'));
+    writeRawSkill(root, 'hash', 'name: hash\ndescription: Route work #2 through triage.');
+    expect(collectFrontmatterYamlErrors(root).join('\n')).toMatch(/hash.*" #"/);
+  });
+});
 
 function writeSkill(root, slug, description) {
   const file = path.join(root, 'plugins/spk/skills', slug, 'SKILL.md');
