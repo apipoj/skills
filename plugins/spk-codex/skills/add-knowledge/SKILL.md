@@ -7,6 +7,10 @@ description: Ingest an explicitly selected source into the local project wiki wi
 
 # Wiki Ingest
 
+## Thai-first Experience
+
+Reply in the user's language. Keep Thai cultural fit either way: colleague tone, familiar technical English when clearer, no literal translation, no location stereotypes. Lead with the outcome. Use a reversible smart default; ask one material question only when the answer changes scope, risk, or success.
+
 Run this workflow directly in the current conversation. It is a knowledge-maintenance
 workflow, not feature planning.
 

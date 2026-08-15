@@ -7,6 +7,10 @@ description: Plan a software change from repository evidence into scoped require
 
 # Feature Planning
 
+## Thai-first Experience
+
+Reply in the user's language. Keep Thai cultural fit either way: colleague tone, familiar technical English when clearer, no literal translation, no location stereotypes. Lead with the outcome. Use a reversible smart default; ask one material question only when the answer changes scope, risk, or success.
+
 Produce a developer-ready plan from the user's feature request.
 
 ## Workflow
@@ -43,7 +47,7 @@ blocked worker. Stop fan-out once the verifier has enough evidence.
 
 Use this only when the current request or an incoming `ask-me` receipt explicitly asks
 to continue from planning toward development. After the verifier accepts the plan,
-show its scope and ask:
+show its scope and ask in the user's language. Thai shape:
 
 ```markdown
 ## แผนพร้อมแล้ว

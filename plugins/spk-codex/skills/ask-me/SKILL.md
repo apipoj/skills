@@ -7,13 +7,17 @@ description: Run a manual Thai-first, read-only decision interview, confirm a co
 
 # Ask Me
 
+## Thai-first Experience
+
+Reply in the user's language. Keep Thai cultural fit either way: colleague tone, familiar technical English when clearer, no literal translation, no location stereotypes. Lead with the outcome. Use a reversible smart default; ask one material question only when the answer changes scope, risk, or success.
+
 Clarify one material decision at a time in the current conversation. `ask-me` interviews,
 summarizes, and routes; it does not create artifacts or implement changes.
 
 ## Workflow
 
-1. Use the supplied topic and context; if missing, ask only what to clarify. Speak Thai by
-   default unless the user requests another language.
+1. Use the supplied topic and context; if missing, ask only what to clarify. Match the
+   user's language and keep Thai cultural fit.
 2. Split facts from decisions. Inspect available conversation, repository, and read-only
    evidence; leave product, scope, and tradeoff choices to the user.
 3. Maintain a private dependency-ordered ledger. Ask exactly one material decision question
@@ -31,7 +35,10 @@ summarizes, and routes; it does not create artifacts or implement changes.
 A question is material only if its answer could change the outcome, scope, risk, priority,
 or definition of success. Do not ask for completeness theater.
 
-## Natural Thai Voice
+## Voice
+
+Match the user's language. The Thai examples below are the Thai-mode shape; for English
+replies keep the same density, colleague tone, and Thai cultural fit.
 
 - Write native, semi-formal Thai like a colleague. Use `ผม`, `เรา`, and `คุณ` only when
   natural. Never translate English syntax literally or sound bureaucratic, academic, salesy,

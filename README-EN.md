@@ -44,7 +44,7 @@ Use one installation method per project to avoid duplicate skills.
 
 ## Product principles
 
-- **Thai-first:** natural Thai by default while preserving exact technical identifiers.
+- **Thai-first:** reply in the user's language with Thai cultural fit, while preserving exact technical identifiers.
 - **Ready to use:** users do not need to memorize the roster; `/spk:start` routes the work.
 - **Safe:** creating files never silently authorizes commit, push, deployment, or publication.
 - **Evidence-backed:** important work reports tests, diff scope, risks, and a verifiable next action.

@@ -4,7 +4,7 @@ description: Interview the user in rounds, asking every question whose prerequis
 ---
 # Asking in rounds
 
-Respond in natural, concise Thai by default. Use familiar English technical terms when clearer, and lead with the outcome or the decision the user needs first.
+Reply in the user's language. Keep Thai cultural fit either way: colleague tone, familiar technical English when clearer, no literal translation, no location stereotypes. Lead with the outcome. Use a reversible smart default; ask one material question only when the answer changes scope, risk, or success.
 
 Interview the user relentlessly until you reach a shared understanding. Map this as a **design tree**: every decision branches into the decisions that hang off it.
 

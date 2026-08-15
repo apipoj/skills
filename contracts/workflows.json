@@ -110,7 +110,7 @@
         "verification status"
       ],
       "guardrails": [
-        "Use natural concise Thai by default while preserving exact technical identifiers.",
+        "Match the user's language and keep Thai cultural fit while preserving exact technical identifiers.",
         "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
         "Report evidence gaps instead of guessing."
       ]
@@ -185,7 +185,7 @@
         "verification status"
       ],
       "guardrails": [
-        "Use natural concise Thai by default while preserving exact technical identifiers.",
+        "Match the user's language and keep Thai cultural fit while preserving exact technical identifiers.",
         "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
         "Report evidence gaps instead of guessing."
       ]
@@ -204,8 +204,8 @@
       "locales": {
         "en": {
           "displayName": "Ask With Docs",
-          "description": "ถามทีละ decision เพื่อทำแผนหรือ design ให้ชัด พร้อมอัปเดตศัพท์และเหตุผลสำคัญของ project",
-          "shortDescription": "ถามทีละ decision เพื่อทำแผนหรือ design ให้ชัด พร้อมอัปเดตศัพท์และเหตุผลสำคัญของ project",
+          "description": "Interview one decision at a time to sharpen a plan or design while updating project vocabulary and durable rationale.",
+          "shortDescription": "Stateful decision interview with docs",
           "defaultPrompt": "Use ask-with-docs for my current request.",
           "triggers": [
             "use ask-with-docs",
@@ -260,7 +260,7 @@
         "verification status"
       ],
       "guardrails": [
-        "Use natural concise Thai by default while preserving exact technical identifiers.",
+        "Match the user's language and keep Thai cultural fit while preserving exact technical identifiers.",
         "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
         "Report evidence gaps instead of guessing."
       ]
@@ -279,8 +279,8 @@
       "locales": {
         "en": {
           "displayName": "Triage",
-          "description": "คัดกรอง issue และ pull request ให้พร้อมตัดสินใจหรือพร้อมส่งต่อให้ agent ทำงาน",
-          "shortDescription": "คัดกรอง issue และ pull request ให้พร้อมตัดสินใจหรือพร้อมส่งต่อให้ agent ทำงาน",
+          "description": "Triage issues and pull requests until each item is ready for a human decision or an agent-ready handoff.",
+          "shortDescription": "Make issues and PRs agent-ready",
           "defaultPrompt": "Use triage for my current request.",
           "triggers": [
             "use triage",
@@ -335,7 +335,7 @@
         "verification status"
       ],
       "guardrails": [
-        "Use natural concise Thai by default while preserving exact technical identifiers.",
+        "Match the user's language and keep Thai cultural fit while preserving exact technical identifiers.",
         "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
         "Report evidence gaps instead of guessing."
       ]
@@ -354,8 +354,8 @@
       "locales": {
         "en": {
           "displayName": "Improve Codebase",
-          "description": "หาโอกาสทำ module ให้ลึกขึ้น เข้าใจง่ายขึ้น และทดสอบผ่าน interface ที่เหมาะสม",
-          "shortDescription": "หาโอกาสทำ module ให้ลึกขึ้น เข้าใจง่ายขึ้น และทดสอบผ่าน interface ที่เหมาะสม",
+          "description": "Find opportunities to deepen modules, simplify understanding, and test behavior through the right interfaces.",
+          "shortDescription": "Deepen modules and seams",
           "defaultPrompt": "Use improve-codebase for my current request.",
           "triggers": [
             "use improve-codebase",
@@ -410,7 +410,7 @@
         "verification status"
       ],
       "guardrails": [
-        "Use natural concise Thai by default while preserving exact technical identifiers.",
+        "Match the user's language and keep Thai cultural fit while preserving exact technical identifiers.",
         "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
         "Report evidence gaps instead of guessing."
       ]
@@ -485,7 +485,7 @@
         "verification status"
       ],
       "guardrails": [
-        "Use natural concise Thai by default while preserving exact technical identifiers.",
+        "Match the user's language and keep Thai cultural fit while preserving exact technical identifiers.",
         "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
         "Report evidence gaps instead of guessing."
       ]
@@ -560,7 +560,7 @@
         "verification status"
       ],
       "guardrails": [
-        "Use natural concise Thai by default while preserving exact technical identifiers.",
+        "Match the user's language and keep Thai cultural fit while preserving exact technical identifiers.",
         "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
         "Report evidence gaps instead of guessing."
       ]
@@ -579,8 +579,8 @@
       "locales": {
         "en": {
           "displayName": "To Spec",
-          "description": "สรุปบทสนทนาและหลักฐานจาก codebase เป็นสเปกที่พร้อมตรวจและนำไปวางแผนต่อ",
-          "shortDescription": "สรุปบทสนทนาและหลักฐานจาก codebase เป็นสเปกที่พร้อมตรวจและนำไปวางแผนต่อ",
+          "description": "Collapse conversation and codebase evidence into a reviewable specification ready for planning.",
+          "shortDescription": "Conversation and evidence into a spec",
           "defaultPrompt": "Use to-spec for my current request.",
           "triggers": [
             "use to-spec",
@@ -635,7 +635,7 @@
         "verification status"
       ],
       "guardrails": [
-        "Use natural concise Thai by default while preserving exact technical identifiers.",
+        "Match the user's language and keep Thai cultural fit while preserving exact technical identifiers.",
         "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
         "Report evidence gaps instead of guessing."
       ]
@@ -654,8 +654,8 @@
       "locales": {
         "en": {
           "displayName": "To Tickets",
-          "description": "แตกสเปกหรือแผนเป็น vertical slices พร้อม blocking edges ที่ทำต่อได้จริง",
-          "shortDescription": "แตกสเปกหรือแผนเป็น vertical slices พร้อม blocking edges ที่ทำต่อได้จริง",
+          "description": "Split a specification or plan into vertical slices with real blocking edges that can be implemented independently.",
+          "shortDescription": "Vertical slices with blocking edges",
           "defaultPrompt": "Use to-tickets for my current request.",
           "triggers": [
             "use to-tickets",
@@ -710,7 +710,7 @@
         "verification status"
       ],
       "guardrails": [
-        "Use natural concise Thai by default while preserving exact technical identifiers.",
+        "Match the user's language and keep Thai cultural fit while preserving exact technical identifiers.",
         "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
         "Report evidence gaps instead of guessing."
       ]
@@ -786,7 +786,7 @@
       ],
       "guardrails": [
         "Interview the user about the send, never about the subject they cannot answer.",
-        "Use natural concise Thai by default while preserving exact technical identifiers.",
+        "Match the user's language and keep Thai cultural fit while preserving exact technical identifiers.",
         "Write only the questionnaire file; do not change other project files.",
         "Report evidence gaps instead of guessing at what the recipient knows."
       ]
@@ -805,8 +805,8 @@
       "locales": {
         "en": {
           "displayName": "Wayfinder",
-          "description": "ทำแผนที่ decision สำหรับงานใหญ่ที่ยังมีหมอก แล้วคลี่คำถามทีละใบจนเส้นทางชัด",
-          "shortDescription": "ทำแผนที่ decision สำหรับงานใหญ่ที่ยังมีหมอก แล้วคลี่คำถามทีละใบจนเส้นทางชัด",
+          "description": "Chart decision tickets for a large foggy effort and resolve them one by one until the path is clear.",
+          "shortDescription": "Decision map for foggy large work",
           "defaultPrompt": "Use wayfinder for my current request.",
           "triggers": [
             "use wayfinder",
@@ -861,7 +861,7 @@
         "verification status"
       ],
       "guardrails": [
-        "Use natural concise Thai by default while preserving exact technical identifiers.",
+        "Match the user's language and keep Thai cultural fit while preserving exact technical identifiers.",
         "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
         "Report evidence gaps instead of guessing."
       ]
@@ -936,7 +936,7 @@
         "verification status"
       ],
       "guardrails": [
-        "Use natural concise Thai by default while preserving exact technical identifiers.",
+        "Match the user's language and keep Thai cultural fit while preserving exact technical identifiers.",
         "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
         "Report evidence gaps instead of guessing."
       ]
@@ -955,8 +955,8 @@
       "locales": {
         "en": {
           "displayName": "Prototype",
-          "description": "สร้าง prototype แบบทิ้งได้เพื่อพิสูจน์คำถามด้าน logic, state หรือ UI ก่อนลงทุนทำ production",
-          "shortDescription": "สร้าง prototype แบบทิ้งได้เพื่อพิสูจน์คำถามด้าน logic, state หรือ UI ก่อนลงทุนทำ production",
+          "description": "Build a disposable prototype to answer a logic, state, or UI question before investing in production work.",
+          "shortDescription": "Disposable prototype for one design question",
           "defaultPrompt": "Use prototype for my current request.",
           "triggers": [
             "use prototype",
@@ -1011,7 +1011,7 @@
         "verification status"
       ],
       "guardrails": [
-        "Use natural concise Thai by default while preserving exact technical identifiers.",
+        "Match the user's language and keep Thai cultural fit while preserving exact technical identifiers.",
         "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
         "Report evidence gaps instead of guessing."
       ]
@@ -1030,8 +1030,8 @@
       "locales": {
         "en": {
           "displayName": "Research",
-          "description": "ค้นคว้าคำถามจาก primary sources และเก็บข้อค้นพบพร้อม citation ที่ตรวจย้อนกลับได้",
-          "shortDescription": "ค้นคว้าคำถามจาก primary sources และเก็บข้อค้นพบพร้อม citation ที่ตรวจย้อนกลับได้",
+          "description": "Research a question from primary sources and store findings with verifiable citations.",
+          "shortDescription": "Cited primary-source research notes",
           "defaultPrompt": "Use research for my current request.",
           "triggers": [
             "use research",
@@ -1086,7 +1086,7 @@
         "verification status"
       ],
       "guardrails": [
-        "Use natural concise Thai by default while preserving exact technical identifiers.",
+        "Match the user's language and keep Thai cultural fit while preserving exact technical identifiers.",
         "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
         "Report evidence gaps instead of guessing."
       ]
@@ -1105,8 +1105,8 @@
       "locales": {
         "en": {
           "displayName": "Domain Modeling",
-          "description": "สร้างและปรับภาษากลางของ project พร้อมทดสอบคำศัพท์กับกรณีขอบและบันทึก decision ที่ควรจำ",
-          "shortDescription": "สร้างและปรับภาษากลางของ project พร้อมทดสอบคำศัพท์กับกรณีขอบและบันทึก decision ที่ควรจำ",
+          "description": "Build and refine the project's ubiquitous language, stress-test terms on edge cases, and record durable decisions.",
+          "shortDescription": "Ubiquitous language and ADRs",
           "defaultPrompt": "Use domain-modeling for my current request.",
           "triggers": [
             "use domain-modeling",
@@ -1161,7 +1161,7 @@
         "verification status"
       ],
       "guardrails": [
-        "Use natural concise Thai by default while preserving exact technical identifiers.",
+        "Match the user's language and keep Thai cultural fit while preserving exact technical identifiers.",
         "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
         "Report evidence gaps instead of guessing."
       ]
@@ -1180,8 +1180,8 @@
       "locales": {
         "en": {
           "displayName": "Codebase Design",
-          "description": "ใช้แนวคิด deep module, interface, seam, adapter, leverage และ locality เพื่อออกแบบ code ที่เปลี่ยนง่าย",
-          "shortDescription": "ใช้แนวคิด deep module, interface, seam, adapter, leverage และ locality เพื่อออกแบบ code ที่เปลี่",
+          "description": "Design code that stays easy to change using deep modules, interfaces, seams, adapters, leverage, and locality.",
+          "shortDescription": "Deep-module shape and seams",
           "defaultPrompt": "Use codebase-design for my current request.",
           "triggers": [
             "use codebase-design",
@@ -1236,7 +1236,7 @@
         "verification status"
       ],
       "guardrails": [
-        "Use natural concise Thai by default while preserving exact technical identifiers.",
+        "Match the user's language and keep Thai cultural fit while preserving exact technical identifiers.",
         "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
         "Report evidence gaps instead of guessing."
       ]
@@ -1311,7 +1311,7 @@
         "verification status"
       ],
       "guardrails": [
-        "Use natural concise Thai by default while preserving exact technical identifiers.",
+        "Match the user's language and keep Thai cultural fit while preserving exact technical identifiers.",
         "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
         "Report evidence gaps instead of guessing."
       ]
@@ -1330,8 +1330,8 @@
       "locales": {
         "en": {
           "displayName": "Fix Conflicts",
-          "description": "แก้ merge หรือ rebase conflict ทีละ hunk โดยตามเจตนาของทั้งสองฝั่งและตรวจผลก่อนเดินต่อ",
-          "shortDescription": "แก้ merge หรือ rebase conflict ทีละ hunk โดยตามเจตนาของทั้งสองฝั่งและตรวจผลก่อนเดินต่อ",
+          "description": "Resolve merge or rebase conflicts hunk by hunk by preserving both sides' intent and verifying before continuing.",
+          "shortDescription": "Intent-preserving conflict resolution",
           "defaultPrompt": "Use fix-conflicts for my current request.",
           "triggers": [
             "use fix-conflicts",
@@ -1386,7 +1386,7 @@
         "verification status"
       ],
       "guardrails": [
-        "Use natural concise Thai by default while preserving exact technical identifiers.",
+        "Match the user's language and keep Thai cultural fit while preserving exact technical identifiers.",
         "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
         "Report evidence gaps instead of guessing."
       ]
@@ -1461,7 +1461,7 @@
         "verification status"
       ],
       "guardrails": [
-        "Use natural concise Thai by default while preserving exact technical identifiers.",
+        "Match the user's language and keep Thai cultural fit while preserving exact technical identifiers.",
         "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
         "Report evidence gaps instead of guessing."
       ]
@@ -1480,8 +1480,8 @@
       "locales": {
         "en": {
           "displayName": "Handoff",
-          "description": "ย่อบริบทที่จำเป็นเป็น handoff ซึ่ง session ใหม่อ่านแล้วทำงานต่อได้โดยไม่เดา",
-          "shortDescription": "ย่อบริบทที่จำเป็นเป็น handoff ซึ่ง session ใหม่อ่านแล้วทำงานต่อได้โดยไม่เดา",
+          "description": "Compress the necessary context into a handoff that a fresh session can continue without guessing.",
+          "shortDescription": "Portable context for a fresh session",
           "defaultPrompt": "Use handoff for my current request.",
           "triggers": [
             "use handoff",
@@ -1536,7 +1536,7 @@
         "verification status"
       ],
       "guardrails": [
-        "Use natural concise Thai by default while preserving exact technical identifiers.",
+        "Match the user's language and keep Thai cultural fit while preserving exact technical identifiers.",
         "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
         "Report evidence gaps instead of guessing."
       ]
@@ -1555,8 +1555,8 @@
       "locales": {
         "en": {
           "displayName": "Teach",
-          "description": "สอนแนวคิดหรือทักษะเป็นลำดับสั้น ๆ พร้อมภารกิจและหลักฐานความเข้าใจที่ใช้ต่อข้าม session ได้",
-          "shortDescription": "สอนแนวคิดหรือทักษะเป็นลำดับสั้น ๆ พร้อมภารกิจและหลักฐานความเข้าใจที่ใช้ต่อข้าม session ได้",
+          "description": "Teach a concept or skill in short sequenced lessons with missions and durable proof of understanding across sessions.",
+          "shortDescription": "Sequenced lessons with durable proof",
           "defaultPrompt": "Use teach for my current request.",
           "triggers": [
             "use teach",
@@ -1611,7 +1611,7 @@
         "verification status"
       ],
       "guardrails": [
-        "Use natural concise Thai by default while preserving exact technical identifiers.",
+        "Match the user's language and keep Thai cultural fit while preserving exact technical identifiers.",
         "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
         "Report evidence gaps instead of guessing."
       ]
@@ -1686,7 +1686,7 @@
         "verification status"
       ],
       "guardrails": [
-        "Use natural concise Thai by default while preserving exact technical identifiers.",
+        "Match the user's language and keep Thai cultural fit while preserving exact technical identifiers.",
         "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
         "Report evidence gaps instead of guessing."
       ]
@@ -1742,7 +1742,7 @@
       "workflow": [
         {
           "phase": "frame",
-          "instruction": "Start from the supplied topic and conversation context, use Thai by default, and identify the goal without turning the opening into a questionnaire."
+          "instruction": "Start from the supplied topic and conversation context, match the user's language with Thai cultural fit, and identify the goal without turning the opening into a questionnaire."
         },
         {
           "phase": "voice",
@@ -1866,7 +1866,7 @@
       ],
       "guardrails": [
         "Explain again; never change the work or any file.",
-        "Use natural concise Thai and the project's own vocabulary instead of borrowed jargon.",
+        "Match the user's language with Thai cultural fit and the project's own vocabulary instead of borrowed jargon.",
         "Say plainly when the confusion came from a wrong assumption rather than from wording."
       ]
     },

@@ -1,28 +1,31 @@
 ---
 name: codebase-design
-description: ใช้แนวคิด deep module, interface, seam, adapter, leverage และ locality เพื่อออกแบบ code ที่เปลี่ยนง่าย
+description: Design code that stays easy to change using deep modules, interfaces, seams, adapters, leverage, and locality.
 ---
-# ออกแบบ module ให้ลึก
 
-ตอบเป็นภาษาไทยธรรมชาติแบบเพื่อนร่วมงานเป็นค่าเริ่มต้น ใช้ศัพท์เทคนิคภาษาอังกฤษเมื่อทำให้อ่านง่ายกว่า และเริ่มจากผลลัพธ์หรือ decision ที่ผู้ใช้ต้องรู้ก่อน
+# Design Deep Modules
+
+## Thai-first Experience
+
+Reply in the user's language. Keep Thai cultural fit either way: colleague tone, familiar technical English when clearer, no literal translation, no location stereotypes. Lead with the outcome. Use a reversible smart default; ask one material question only when the answer changes scope, risk, or success.
 
 ## Workflow
 
-1. อ่านคำขอ repository instructions และหลักปฏิบัติฉบับเต็มใน [UPSTREAM.md](UPSTREAM.md)
-2. ใช้ smart defaults เมื่อความเสี่ยงต่ำ ถ้ามี decision ที่เปลี่ยน scope ให้ถามเพียงหนึ่งคำถามพร้อมคำแนะนำ
-3. ทำงานตาม discipline ของ skill นี้เป็น slice สั้น ๆ และแสดง progress เท่าที่ช่วยให้ตรวจสอบได้
-4. สรุปผล หลักฐาน ความเสี่ยง และสิ่งที่ยังต้องตัดสินใจโดยไม่ยืดเยื้อ
+1. Read the request, repository instructions, and full practice in [UPSTREAM.md](UPSTREAM.md).
+2. Use smart defaults when risk is low. If a decision changes scope, ask exactly one material question with a recommendation.
+3. Apply this skill's discipline in short slices and show only the progress needed for verification.
+4. Close with the outcome, evidence, risks, and remaining decisions without padding.
 
-## จุดเน้น
+## Focus
 
-ใช้แนวคิด deep module, interface, seam, adapter, leverage และ locality เพื่อออกแบบ code ที่เปลี่ยนง่าย
+Use deep modules, interfaces, seams, adapters, leverage, and locality to design code that stays easy to change.
 
 ## Evidence Receipt
 
-รายงาน artifact, คำสั่งตรวจสอบ, ผลจริง, ความเสี่ยง และ next action ที่เล็กที่สุด
+Report artifacts, verification commands, observed results, risks, and the smallest next action.
 
 ## Guardrails
 
-- อย่าขยาย scope เอง
-- อย่า commit, push, publish หรือแก้ระบบภายนอกโดยไม่มี approval ที่ตรงเป้าหมาย
-- ถ้าหลักฐานไม่พอ ให้บอกช่องว่างแทนการเดา
+- Do not expand scope on your own.
+- Do not commit, push, publish, or change external systems without exact approval for the target.
+- If evidence is incomplete, report the gap instead of guessing.

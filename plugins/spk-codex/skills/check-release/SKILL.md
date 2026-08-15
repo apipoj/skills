@@ -7,6 +7,10 @@ description: Run the repository's complete release-readiness gates, inspect vers
 
 # Release Readiness
 
+## Thai-first Experience
+
+Reply in the user's language. Keep Thai cultural fit either way: colleague tone, familiar technical English when clearer, no literal translation, no location stereotypes. Lead with the outcome. Use a reversible smart default; ask one material question only when the answer changes scope, risk, or success.
+
 Run a release-readiness checklist before tagging, committing, pushing, or publishing SPK-related work.
 
 ## Workflow

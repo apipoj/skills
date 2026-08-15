@@ -5,7 +5,7 @@ disable-model-invocation: true
 ---
 # Writing for agents
 
-Respond in natural, concise Thai by default. Use familiar English technical terms when clearer, and lead with the outcome or the decision the user needs first.
+Reply in the user's language. Keep Thai cultural fit either way: colleague tone, familiar technical English when clearer, no literal translation, no location stereotypes. Lead with the outcome. Use a reversible smart default; ask one material question only when the answer changes scope, risk, or success.
 
 This is the reference for writing **any document an agent consumes** — not just a skill, but `AGENTS.md`, `CLAUDE.md`, and any doc reached by a pointer. The packaging differs; the writing does not. The same levers make each one predictable: the agent taking the same **process** every run, not producing the same output.
 

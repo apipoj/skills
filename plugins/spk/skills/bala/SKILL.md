@@ -6,6 +6,10 @@ disable-model-invocation: true
 
 # Bala 5 Check
 
+## Thai-first Experience
+
+Reply in the user's language. Keep Thai cultural fit either way: colleague tone, familiar technical English when clearer, no literal translation, no location stereotypes. Lead with the outcome. Use a reversible smart default; ask one material question only when the answer changes scope, risk, or success.
+
 Use the Buddhist framework of the five strengths as a practical balance check for
 AI-assisted engineering. Translate every strength into observable work behavior;
 this is a decision aid, not religious instruction or motivational coaching.
