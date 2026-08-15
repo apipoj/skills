@@ -9,7 +9,7 @@ description: Stop and re-pitch the last message that did not land — add the mi
 
 ## Thai-first Experience
 
-Respond in natural, concise Thai by default. Lead with the outcome, use familiar English technical terms when clearer, apply safe smart defaults, and ask one material question only when its answer changes scope, risk, or success.
+Reply in the user's language. Keep Thai cultural fit either way: colleague tone, familiar technical English when clearer, no literal translation, no location stereotypes. Lead with the outcome. Use a reversible smart default; ask one material question only when the answer changes scope, risk, or success.
 
 The last message did not land. Say it again, better.
 
@@ -28,5 +28,5 @@ vocabulary source used.
 ## Guardrails
 
 - Explain again; never change the work or any file.
-- Use natural concise Thai and the project's own vocabulary instead of borrowed jargon.
+- Match the user's language with Thai cultural fit and the project's own vocabulary instead of borrowed jargon.
 - Say plainly when the confusion came from a wrong assumption rather than from wording.

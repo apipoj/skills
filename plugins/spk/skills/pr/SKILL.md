@@ -6,6 +6,10 @@ disable-model-invocation: true
 
 # Pull Request Workflow
 
+## Thai-first Experience
+
+Reply in the user's language. Keep Thai cultural fit either way: colleague tone, familiar technical English when clearer, no literal translation, no location stereotypes. Lead with the outcome. Use a reversible smart default; ask one material question only when the answer changes scope, risk, or success.
+
 Prepare a GitHub pull request for the current branch or reviewed local changes. Default mode is **prepare-only**: produce the PR body/checklist and safety report without staging, committing, pushing, or creating/updating a PR.
 
 This skill is manual-only. Use it after review passes, or when the user explicitly asks

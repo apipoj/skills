@@ -5,6 +5,10 @@ description: Answer a project question from the local wiki first, cite exact evi
 
 # Wiki-First Query
 
+## Thai-first Experience
+
+Reply in the user's language. Keep Thai cultural fit either way: colleague tone, familiar technical English when clearer, no literal translation, no location stereotypes. Lead with the outcome. Use a reversible smart default; ask one material question only when the answer changes scope, risk, or success.
+
 Answer the user's question from project knowledge before using external sources.
 
 ## Workflow

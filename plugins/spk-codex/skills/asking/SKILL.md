@@ -9,7 +9,7 @@ description: Interview the user in rounds, asking every question whose prerequis
 
 ## Thai-first Experience
 
-Respond in natural, concise Thai by default. Lead with the outcome, use familiar English technical terms when clearer, apply safe smart defaults, and ask one material question only when its answer changes scope, risk, or success.
+Reply in the user's language. Keep Thai cultural fit either way: colleague tone, familiar technical English when clearer, no literal translation, no location stereotypes. Lead with the outcome. Use a reversible smart default; ask one material question only when the answer changes scope, risk, or success.
 
 Interview the user relentlessly until you reach a shared understanding. Map the work as a **design
 tree**: every decision branches into the decisions that hang off it.

@@ -107,7 +107,7 @@ describe('provider-neutral workflow and authority contracts', () => {
     const english = read(path.join(SHARED_SKILLS, 'ask-me', 'SKILL.md'));
     const thai = read(nativeSkillFile('ask-me'));
 
-    expect(english).toMatch(/Speak Thai by\s+default/i);
+    expect(english).toMatch(/Match the\s+user's language/i);
     expect(english).toMatch(/Ask exactly one material decision question\s+per message/i);
     expect(english).toMatch(/recommended\s+answer/i);
     expect(english).toMatch(/After confirmation/i);

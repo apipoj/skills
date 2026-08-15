@@ -27,7 +27,7 @@
 
 ## Conventions
 
-- Thai is the canonical user experience: natural, concise, familiar technical English where clearer, smart defaults for reversible low-risk choices, and one material question when a decision changes scope or risk.
+- Skill instructions stay English to save tokens. Reply in the user's language and keep Thai cultural fit: colleague tone, familiar technical English when clearer, no literal translation, no location stereotypes. Use smart defaults for reversible low-risk choices, and ask one material question when a decision changes scope or risk.
 - All Git writes, remote writes, publishing, deployment, and destructive effects require exact approval for the current target and payload.
 - Every workflow reports observable evidence and gaps; never convert an unverified result into a success claim.
 

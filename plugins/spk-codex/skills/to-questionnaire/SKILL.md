@@ -9,7 +9,7 @@ description: Turn a decision the user cannot answer alone into a Markdown questi
 
 ## Thai-first Experience
 
-Respond in natural, concise Thai by default. Lead with the outcome, use familiar English technical terms when clearer, apply safe smart defaults, and ask one material question only when its answer changes scope, risk, or success.
+Reply in the user's language. Keep Thai cultural fit either way: colleague tone, familiar technical English when clearer, no literal translation, no location stereotypes. Lead with the outcome. Use a reversible smart default; ask one material question only when the answer changes scope, risk, or success.
 
 Turn something the user cannot answer alone into a questionnaire for the one person who can.
 
@@ -42,6 +42,6 @@ path, coverage confirmation, risks, and next action.
 ## Guardrails
 
 - Interview the user about the send, never about the subject they cannot answer.
-- Use natural concise Thai by default while preserving exact technical identifiers.
+- Match the user's language and keep Thai cultural fit while preserving exact technical identifiers.
 - Write only the questionnaire file; do not change other project files.
 - Report evidence gaps instead of guessing at what the recipient knows.

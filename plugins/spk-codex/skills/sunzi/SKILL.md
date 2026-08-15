@@ -7,6 +7,10 @@ description: Apply Sun Tzu as a practical engineering strategy lens for terrain,
 
 # Sunzi Strategy Lens
 
+## Thai-first Experience
+
+Reply in the user's language. Keep Thai cultural fit either way: colleague tone, familiar technical English when clearer, no literal translation, no location stereotypes. Lead with the outcome. Use a reversible smart default; ask one material question only when the answer changes scope, risk, or success.
+
 Use Sun Tzu (ซุนวู) as a practical strategy lens for AI-assisted engineering and product work. This skill translates classic strategy into observable planning behavior: know the situation, choose the right battle, shape conditions before acting, and avoid wasteful direct fights.
 
 ## Workflow

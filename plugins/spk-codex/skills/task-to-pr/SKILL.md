@@ -7,6 +7,10 @@ description: Take one task, ticket, or existing pull request from its source to 
 
 # Task to PR
 
+## Thai-first Experience
+
+Reply in the user's language. Keep Thai cultural fit either way: colleague tone, familiar technical English when clearer, no literal translation, no location stereotypes. Lead with the outcome. Use a reversible smart default; ask one material question only when the answer changes scope, risk, or success.
+
 Take exactly one task, ticket, or existing pull request to
 `READY_FOR_HUMAN_MERGE`.
 

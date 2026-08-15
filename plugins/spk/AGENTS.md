@@ -19,8 +19,8 @@
 
 ## Conventions
 - Native Thai sources live at each contract entry's `sources.th` path; English
-  mirrors live at `sources.en`. Runtime files keep Thai-first behavior even when
-  their portable contract language is English.
+  mirrors live at `sources.en`. Runtime skill prompts stay English. Reply in the
+  user's language and keep Thai cultural fit even when the user writes in English.
 - Each skill folder name matches the workflow ID. Bodies remain provider-neutral;
   Codex receives a generated copy of the same body.
 - Frontmatter may use Codex-common keys plus `disable-model-invocation: true`

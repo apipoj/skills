@@ -5,6 +5,10 @@ description: Map changed files to the smallest defensible test set, run it for f
 
 # Scoped Tests
 
+## Thai-first Experience
+
+Reply in the user's language. Keep Thai cultural fit either way: colleague tone, familiar technical English when clearer, no literal translation, no location stereotypes. Lead with the outcome. Use a reversible smart default; ask one material question only when the answer changes scope, risk, or success.
+
 Speed the inner loop by running only the test suites that the current changes can affect, instead of the full suite on every edit. Use during TDD or iterative implementation when the full run is slow; always fall back to the full suite before sign-off.
 Run this workflow directly in the current conversation.
 
