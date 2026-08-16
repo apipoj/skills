@@ -11,10 +11,12 @@ const path = require('path');
 const REPO_ROOT = path.join(__dirname, '..');
 const CONTRACT = require(path.join(REPO_ROOT, 'contracts', 'workflows.json'));
 
+// Reported paths stay POSIX-style on every platform. path.join would emit
+// backslashes on Windows and make this gate's output platform-dependent.
 function targetsFor(skill) {
   return [
-    path.join('plugins', 'spk', 'skills', skill.id, 'SKILL.md'),
-    path.join(skill.sources.en, 'SKILL.md'),
+    path.posix.join('plugins', 'spk', 'skills', skill.id, 'SKILL.md'),
+    path.posix.join(skill.sources.en, 'SKILL.md'),
   ];
 }
 
@@ -31,7 +33,7 @@ function collectResponsePolicyErrors(rootDir = REPO_ROOT, contract = CONTRACT) {
 
   for (const skill of contract.skills) {
     for (const relative of targetsFor(skill)) {
-      const file = path.join(rootDir, relative);
+      const file = path.join(rootDir, ...relative.split('/'));
       if (!fs.existsSync(file)) {
         errors.push(`MISSING skill file: ${relative}`);
         continue;
