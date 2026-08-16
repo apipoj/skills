@@ -1,6 +1,6 @@
 # คู่มือผู้ใช้ Apipoj Skills
 
-คู่มือนี้ครอบคลุม Apipoj Skills **v6.3.0** สำหรับ Claude Code, Codex และเครื่องมือที่รองรับ Agent Skills
+คู่มือนี้ครอบคลุม Apipoj Skills **v6.3.1** สำหรับ Claude Code, Codex และเครื่องมือที่รองรับ Agent Skills
 
 อ่านฉบับภาษาอังกฤษได้ที่ [USER_GUIDE-EN.md](USER_GUIDE-EN.md)
 
@@ -74,7 +74,7 @@ npx skills@latest add apipoj/skills
 ตัวอย่าง typed-only:
 
 ```text
-/spk:check-release ตรวจความพร้อม v6.3.0 โดยยังไม่ commit, tag หรือ publish
+/spk:check-release ตรวจความพร้อม v6.3.1 โดยยังไม่ commit, tag หรือ publish
 ```
 
 บน Codex ให้เปลี่ยนรูปแบบเป็น `$spk:check-release`

@@ -1,5 +1,11 @@
 # Apipoj Skills
 
+## 6.3.1 - 2026-08-16
+
+### Fixed
+
+- `verify-response-policy.cjs` built the paths in its error messages with `path.join`, so on Windows it reported `locales\en\skills\...` while its tests asserted forward slashes. Five tests failed on the `windows-latest` matrix leg and 6.3.0 shipped with a red CI run; the gate's file checking was correct on every platform, only its reporting was not. Reported paths are now POSIX everywhere, and a regression test asserts no backslash reaches an error message.
+
 ## 6.3.0 - 2026-08-16
 
 ### Added
