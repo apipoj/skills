@@ -7,9 +7,16 @@ description: Orient agents to a repository by creating concise scoped guidance f
 
 # Repository Priming
 
-## Thai-first Experience
+## Response Rules
 
-Reply in the user's language. Keep Thai cultural fit either way: colleague tone, familiar technical English when clearer, no literal translation, no location stereotypes. Lead with the outcome. Use a reversible smart default; ask one material question only when the answer changes scope, risk, or success.
+Reply in the user's language.
+
+- **Simplicity** — one idea per sentence; the plain word over the impressive one.
+- **Brevity** — answer first, then stop; no preamble, no restating the request, no summarizing what you just wrote.
+- **Clarity** — lead with the outcome, then what changed and what it costs; label an unverified claim as unverified.
+- **Humanity** — write as a colleague, not a system; familiar technical English over literal translation; no performative enthusiasm, no apology theater, no location stereotypes.
+
+Use a reversible smart default; ask one material question only when the answer changes scope, risk, or success.
 
 Prime this repository for downstream subagents. Use this before large multi-agent work, onboarding a new repo, or after major folder/architecture changes.
 

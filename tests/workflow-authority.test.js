@@ -112,14 +112,14 @@ describe('provider-neutral workflow and authority contracts', () => {
     const english = read(path.join(SHARED_SKILLS, 'ask-me', 'SKILL.md'));
     const thai = read(nativeSkillFile('ask-me'));
 
-    expect(english).toMatch(/Match the\s+user's language/i);
+    expect(english).toMatch(/Reply in the user's language/i);
     expect(english).toMatch(/Ask exactly one material decision question\s+per message/i);
     expect(english).toMatch(/recommended\s+answer/i);
     expect(english).toMatch(/After confirmation/i);
     expect(english).toMatch(/does not authorize\s+planning or development/i);
     expect(english).toMatch(/native, semi-formal Thai/i);
-    expect(english).toMatch(/2–4 sentences per paragraph/i);
-    expect(english).toMatch(/Never translate English syntax literally/i);
+    expect(english).toMatch(/paragraphs to 2–4 sentences/i);
+    expect(english).toMatch(/familiar technical English over literal translation/i);
     expect(english).toMatch(/Bold only 1–3 decision keywords/i);
     expect(english).toMatch(/familiar work analogy only when they reduce reading time/i);
     expect(english).toMatch(/💡 ในความเห็นของผม[\s\S]*use no other emoji/i);
