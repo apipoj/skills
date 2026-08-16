@@ -97,6 +97,19 @@ describe('response policy gate', () => {
     ]);
   });
 
+  // 6.3.0 built these with path.join, so Windows reported "locales\en\..." and
+  // the suite failed there while passing on macOS
+  test('reports POSIX paths on every platform', () => {
+    const { dir, contract, targets } = fixture({ spk: '# Demo\n', en: '# Demo\n' });
+    fs.rmSync(targets.en);
+    const errors = collectResponsePolicyErrors(dir, contract);
+    expect(errors).toHaveLength(2);
+    for (const error of errors) {
+      expect(error).not.toContain('\\');
+      expect(error).toMatch(/(plugins|locales)\/[\w/-]+\/SKILL\.md/);
+    }
+  });
+
   test('every shipped skill and mirror satisfies the gate', () => {
     expect(collectResponsePolicyErrors(ROOT, CONTRACT)).toEqual([]);
   });
