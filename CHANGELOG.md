@@ -1,5 +1,22 @@
 # Apipoj Skills
 
+## 6.3.0 - 2026-08-16
+
+### Added
+
+- Response rules, stated once in `contracts/workflows.json` as `responsePolicy` and carried verbatim by every skill: **Simplicity** — one idea per sentence, the plain word over the impressive one. **Brevity** — answer first then stop, no preamble, no restating the request, no summarizing what you just wrote. **Clarity** — lead with the outcome, then what changed and what it costs, and label an unverified claim as unverified. **Humanity** — write as a colleague not a system, familiar technical English over literal translation, no performative enthusiasm, no apology theater, no location stereotypes. Each rule names an observable behavior; four abstract nouns on their own would not have bound anything.
+- `npm run verify:response` checks that all 40 runtime skills and all 40 English mirrors carry the block verbatim under `## Response Rules`, that the choice-prompt addendum is verbatim and directly follows the block where it appears, and that the retired heading is gone. Wired into `verify:release`.
+
+### Changed
+
+- `## Thai-first Experience` is now `## Response Rules`. The section no longer covers only Thai; `Reply in the user's language` and the technical-English rule keep the Thai-first intent.
+- The block absorbed what it duplicated: colleague tone, familiar technical English, literal translation, location stereotypes, and leading with the outcome. `ask-me` gave up the voice rules the block now states and stayed under its existing word and line budgets without either ceiling moving.
+
+### Fixed
+
+- The shared block was hand-copied and had drifted into three variants across the 40 runtime skills — 46 words in 33, 46 plus the interaction policy in 6, and a 39-word rewording in `start`. 6.2.0 made `start` worse by landing its interaction-policy sentence above the section heading, because `start` lacked the phrase the insertion anchored on. All 40 now carry one text, and the new gate is what keeps them there.
+- The English mirror carried the block in 17 of 40 files. `CLAUDE.md` names `locales/en/skills/` a source of truth and requires both locale sources to move together, but nothing read the mirror's content, so that rule was unenforceable. All 40 mirrors now carry the block and the gate covers them.
+
 ## 6.2.0 - 2026-08-15
 
 ### Changed
