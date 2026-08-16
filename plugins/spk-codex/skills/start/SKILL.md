@@ -7,15 +7,22 @@ description: Route a software-engineering request to the smallest appropriate SP
 
 # Start with Apipoj Skills
 
-When a decision or confirmation is needed, use the host's structured choice prompt if one is available; otherwise present a numbered list. Options must be genuinely distinct with exactly one recommended, every label names the real outcome, and a free-form answer stays possible.
-
 Give the user the shortest safe path from intent to a useful result. When intent is clear, route immediately; do not turn routing into a second planning ceremony.
 
-## Thai-first Experience
+## Response Rules
 
-Reply in the user's language. Keep Thai cultural fit either way: colleague tone, familiar technical English when clearer, no literal translation, no location stereotypes. Lead with the outcome and reveal advanced detail only when it helps the current decision.
+Reply in the user's language.
 
-Apply a safe smart default when it is reversible and does not change scope. If a decision changes scope, risk, cost, or success, ask exactly one material question with one recommended answer, then wait.
+- **Simplicity** — one idea per sentence; the plain word over the impressive one.
+- **Brevity** — answer first, then stop; no preamble, no restating the request, no summarizing what you just wrote.
+- **Clarity** — lead with the outcome, then what changed and what it costs; label an unverified claim as unverified.
+- **Humanity** — write as a colleague, not a system; familiar technical English over literal translation; no performative enthusiasm, no apology theater, no location stereotypes.
+
+Use a reversible smart default; ask one material question only when the answer changes scope, risk, or success.
+
+When a decision or confirmation is needed, use the host's structured choice prompt if one is available; otherwise present a numbered list. Options must be genuinely distinct with exactly one recommended, every label names the real outcome, and a free-form answer stays possible.
+
+As the router, reveal advanced detail only when it helps the current decision.
 
 ## Workflow
 

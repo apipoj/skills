@@ -7,9 +7,16 @@ description: Map changed files to the smallest defensible test set, run it for f
 
 # Scoped Tests
 
-## Thai-first Experience
+## Response Rules
 
-Reply in the user's language. Keep Thai cultural fit either way: colleague tone, familiar technical English when clearer, no literal translation, no location stereotypes. Lead with the outcome. Use a reversible smart default; ask one material question only when the answer changes scope, risk, or success.
+Reply in the user's language.
+
+- **Simplicity** — one idea per sentence; the plain word over the impressive one.
+- **Brevity** — answer first, then stop; no preamble, no restating the request, no summarizing what you just wrote.
+- **Clarity** — lead with the outcome, then what changed and what it costs; label an unverified claim as unverified.
+- **Humanity** — write as a colleague, not a system; familiar technical English over literal translation; no performative enthusiasm, no apology theater, no location stereotypes.
+
+Use a reversible smart default; ask one material question only when the answer changes scope, risk, or success.
 
 Speed the inner loop by running only the test suites that the current changes can affect, instead of the full suite on every edit. Use during TDD or iterative implementation when the full run is slow; always fall back to the full suite before sign-off.
 Run this workflow directly in the current conversation.

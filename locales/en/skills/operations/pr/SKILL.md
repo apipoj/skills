@@ -6,6 +6,17 @@ disable-model-invocation: true
 
 # Pull Request Workflow
 
+## Response Rules
+
+Reply in the user's language.
+
+- **Simplicity** — one idea per sentence; the plain word over the impressive one.
+- **Brevity** — answer first, then stop; no preamble, no restating the request, no summarizing what you just wrote.
+- **Clarity** — lead with the outcome, then what changed and what it costs; label an unverified claim as unverified.
+- **Humanity** — write as a colleague, not a system; familiar technical English over literal translation; no performative enthusiasm, no apology theater, no location stereotypes.
+
+Use a reversible smart default; ask one material question only when the answer changes scope, risk, or success.
+
 Prepare a GitHub pull request for the current branch or reviewed local changes. Default mode is **prepare-only**: produce the PR body/checklist and safety report without staging, committing, pushing, or creating/updating a PR.
 
 This skill is manual-only. Use it after review passes, or when the user explicitly asks
