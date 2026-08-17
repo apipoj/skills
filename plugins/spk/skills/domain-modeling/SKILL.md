@@ -1,6 +1,6 @@
 ---
 name: domain-modeling
-description: Build and refine the project's ubiquitous language, stress-test terms on edge cases, and record durable decisions.
+description: Build and refine the project's ubiquitous language, stress-test terms on edge cases, and record durable decisions. Fires when discussing codebase terminology, writing or editing CONTEXT.md, or recording an ADR.
 ---
 
 # Sharpen Domain Language

@@ -1122,7 +1122,7 @@
       "locales": {
         "en": {
           "displayName": "Domain Modeling",
-          "description": "Build and refine the project's ubiquitous language, stress-test terms on edge cases, and record durable decisions.",
+          "description": "Build and refine the project's ubiquitous language, stress-test terms on edge cases, and record durable decisions. Fires when discussing codebase terminology, writing or editing CONTEXT.md, or recording an ADR.",
           "shortDescription": "Ubiquitous language and ADRs",
           "defaultPrompt": "Use domain-modeling for my current request.",
           "triggers": [
@@ -1136,7 +1136,7 @@
         },
         "th": {
           "displayName": "จัดภาษา domain ให้ชัด",
-          "description": "สร้างและปรับภาษากลางของ project พร้อมทดสอบคำศัพท์กับกรณีขอบและบันทึก decision ที่ควรจำ",
+          "description": "สร้างและปรับภาษากลางของ project พร้อมทดสอบคำศัพท์กับกรณีขอบและบันทึก decision ที่ควรจำ ใช้เมื่อคุยเรื่องศัพท์ใน codebase เขียนหรือแก้ CONTEXT.md หรือบันทึก ADR",
           "shortDescription": "สร้างและปรับภาษากลางของ project พร้อมทดสอบคำศัพท์กับกรณีขอบและบันทึก decision ที่ควรจำ",
           "defaultPrompt": "ใช้ domain-modeling กับคำขอนี้",
           "triggers": [
