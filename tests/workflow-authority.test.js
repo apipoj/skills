@@ -133,7 +133,11 @@ describe('provider-neutral workflow and authority contracts', () => {
     expect(english).toMatch(/Never invent\s+`\/prd`[\s\S]*`\/proposal`[\s\S]*`\/presentation`[\s\S]*`\/sales`/i);
     expect(english).toMatch(/exact artifact,\s+recipients, and channel[\s\S]*separate\s+delivery approval/i);
     expect(english).toMatch(/Do not modify files, code, Git state, configuration, or external systems/i);
-    expect(english.trim().split(/\s+/u).length).toBeLessThan(1050);
+    // 6.4.0 moved this from 1050. The shared response block grew by the
+    // 50-word Terminology rule and ask-me only had 13 words of its own to give
+    // back, so the ceiling moves rather than the skill losing guidance the
+    // block does not state.
+    expect(english.trim().split(/\s+/u).length).toBeLessThan(1100);
     expect(english.split('\n').length).toBeLessThan(180);
     expect(thai).toMatch(/ถามเพียงหนึ่ง decision สำคัญต่อหนึ่งข้อความ/);
     expect(thai).toMatch(/คำตอบที่แนะนำ/);

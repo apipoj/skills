@@ -113,4 +113,18 @@ describe('response policy gate', () => {
   test('every shipped skill and mirror satisfies the gate', () => {
     expect(collectResponsePolicyErrors(ROOT, CONTRACT)).toEqual([]);
   });
+
+  // the gate only checks that contract and files agree, so a bad edit to the
+  // contract propagates into 120 files without failing anything. These two pin
+  // what the block is supposed to say.
+  test('the canonical block carries every named rule', () => {
+    for (const rule of ['Simplicity', 'Brevity', 'Clarity', 'Humanity', 'Terminology']) {
+      expect(block).toContain(`- **${rule}** — `);
+    }
+  });
+
+  test('the Terminology rule keeps both failure shapes it exists to prevent', () => {
+    expect(block).toContain('ผลเทสท์'); // phonetic respelling of an English term
+    expect(block).toContain('หูจับ'); // literal translation of an English term
+  });
 });
