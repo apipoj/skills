@@ -15,6 +15,7 @@
 | `regenerate-docs.cjs` | Keeps generated docs in sync with manifest |
 | `verify-reference-integrity.cjs` | Internal cross-references (agents ↔ skills ↔ commands) |
 | `verify-skill-descriptions.cjs` | All skill SKILL.md files have non-empty `description:` |
+| `verify-invocation-authority.cjs` | No skill body instructs the agent to invoke a user-invoked skill |
 | `verify-agent-contracts.cjs` | Agent markdown files meet structural contracts |
 | `verify-grep-gates.cjs` | Grep-based checks for forbidden patterns |
 | `verify-native-skills.cjs` | Native Thai skills align with manifest command list |

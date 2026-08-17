@@ -24,6 +24,7 @@
     "verify:gates": "node scripts/verify-grep-gates.cjs",
     "verify:native": "node scripts/verify-native-skills.cjs",
     "verify:response": "node scripts/verify-response-policy.cjs",
+    "verify:invocation": "node scripts/verify-invocation-authority.cjs",
     "verify:upstream": "node scripts/check-upstream-drift.cjs",
     "verify:sync": "node scripts/verify-manifest-sync.cjs",
     "verify:refs": "node scripts/verify-reference-integrity.cjs",
@@ -33,7 +34,7 @@
     "verify:metadata": "node scripts/verify-release-metadata.cjs",
     "verify:security": "npm audit --audit-level=high",
     "verify:coverage": "jest --coverage --runInBand",
-    "verify:release": "npm run validate:manifest && npm run verify:platforms && npm run regen:check && npm run verify:sync && npm run verify:refs && npm run verify:descriptions && npm run verify:agents && npm run verify:gates && npm run verify:native && npm run verify:response && npm run verify:upstream && npm run eval:skilllab && npm run verify:metadata && npm run verify:security && npm run verify:coverage",
+    "verify:release": "npm run validate:manifest && npm run verify:platforms && npm run regen:check && npm run verify:sync && npm run verify:refs && npm run verify:descriptions && npm run verify:agents && npm run verify:gates && npm run verify:native && npm run verify:response && npm run verify:invocation && npm run verify:upstream && npm run eval:skilllab && npm run verify:metadata && npm run verify:security && npm run verify:coverage",
     "prepare": "husky"
   },
   "devDependencies": {

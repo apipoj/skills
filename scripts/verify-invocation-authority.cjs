@@ -1,0 +1,102 @@
+#!/usr/bin/env node
+'use strict';
+
+// A user-invoked skill is one the user runs deliberately; nothing else may
+// reach it. `disable-model-invocation: true` stops a host from auto-firing it,
+// but it cannot stop a sibling skill's prose from telling the agent to go run
+// it anyway. This gate reads those bodies and catches that instruction.
+//
+// The check is a lint on phrasing, not a proof. It fires on an invocation verb
+// governing a code-span or slash reference to a user-invoked skill — the shape
+// SPK writes real references in. Prose that names a skill without either marker
+// is left alone, because `setup`, `triage`, `handoff`, and `pr` are ordinary
+// English words long before they are skill ids.
+
+const fs = require('fs');
+const path = require('path');
+
+const REPO_ROOT = path.join(__dirname, '..');
+const CONTRACT = require(path.join(REPO_ROOT, 'contracts', 'workflows.json'));
+
+const VERB =
+  '(?:run|runs|invoke|invokes|call|calls|launch|launches|trigger|triggers' +
+  '|hands?\\s+off\\s+to|handed\\s+off\\s+to|routes?\\s+to|delegates?\\s+to' +
+  '|เรียกใช้|เรียก|ให้ใช้)';
+// "run the `/x` skill", "hand off to a `/x` session"
+const FILLER = '(?:\\s+(?:the|a|an))*\\s+';
+// The negation has to sit against the verb — "Never auto-run `pr`" is a rule,
+// while "(no good test seam) hand off to `/x`" is an instruction that merely
+// contains the word "no" earlier in the sentence.
+const NEGATED_BEFORE =
+  /(?:\b(?:never|do not|don't|cannot|can't|avoid|without)\b|ห้าม|อย่า)(?:\s*(?:auto|automatically))?[\s-]*$/i;
+// The invariant bans the agent from invoking, not the skill from naming the
+// step. "Tell the user to run `/setup`" is the correct rewrite of a violation,
+// so it has to read as clean or the gate would reject its own fix.
+const USER_DIRECTED_BEFORE = /(?:\bthe user\b|ผู้ใช้)\s*(?:to|should|can|must)?[\s,]*$/i;
+
+// Reported paths stay POSIX-style on every platform, matching the other gates.
+function targetsFor(skill) {
+  return [
+    path.posix.join('plugins', 'spk', 'skills', skill.id, 'SKILL.md'),
+    path.posix.join(skill.sources.en, 'SKILL.md'),
+  ];
+}
+
+function userInvokedIds(contract) {
+  return contract.skills
+    .filter(skill => skill.activation && skill.activation.allowImplicitInvocation === false)
+    .map(skill => skill.id);
+}
+
+function collectInvocationAuthorityErrors(rootDir = REPO_ROOT, contract = CONTRACT) {
+  const manual = userInvokedIds(contract);
+  // a backtick or a leading slash is what separates a reference to the skill
+  // from the same word used as prose
+  const patterns = manual.map(id => ({
+    id,
+    re: new RegExp(`${VERB}${FILLER}\`?/?${id}\\b`, 'i'),
+  }));
+  const errors = [];
+
+  for (const skill of contract.skills) {
+    for (const relative of targetsFor(skill)) {
+      const file = path.join(rootDir, ...relative.split('/'));
+      if (!fs.existsSync(file)) {
+        errors.push(`MISSING skill file: ${relative}`);
+        continue;
+      }
+      const lines = fs.readFileSync(file, 'utf8').replace(/\r\n/g, '\n').split('\n');
+      lines.forEach((line, index) => {
+        for (const { id, re } of patterns) {
+          if (id === skill.id) continue;
+          const hit = re.exec(line);
+          if (!hit) continue;
+          const before = line.slice(0, hit.index);
+          if (NEGATED_BEFORE.test(before) || USER_DIRECTED_BEFORE.test(before)) continue;
+          errors.push(
+            `${relative}:${index + 1}: instructs the agent to invoke \`${id}\`, which is user-invoked`,
+          );
+          break;
+        }
+      });
+    }
+  }
+
+  return errors;
+}
+
+function main() {
+  const errors = collectInvocationAuthorityErrors();
+  if (errors.length > 0) {
+    console.error('Invocation authority FAILED:');
+    for (const error of errors) console.error(`  - ${error}`);
+    console.error('  Phrase the step for the user to act on instead of invoking the skill.');
+    process.exit(1);
+  }
+  const count = userInvokedIds(CONTRACT).length;
+  console.log(`Invocation authority OK (no skill body invokes any of the ${count} user-invoked skills)`);
+}
+
+if (require.main === module) main();
+
+module.exports = { collectInvocationAuthorityErrors, userInvokedIds };
