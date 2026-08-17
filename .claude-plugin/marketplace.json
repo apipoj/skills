@@ -10,7 +10,7 @@
       "name": "spk",
       "source": "./plugins/spk",
       "description": "Thai-first, ready-to-use engineering skills for Claude Code, Codex, and skills.sh.",
-      "version": "6.3.1"
+      "version": "6.4.0"
     }
   ]
 }

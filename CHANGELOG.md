@@ -1,5 +1,25 @@
 # Apipoj Skills
 
+## 6.4.0 - 2026-08-18
+
+### Added
+
+- A fifth response rule, **Terminology**, carried verbatim by every skill: reach for the precise domain term and keep it in its English form; never respell it phonetically in the reply's script (`ผลเทสท์` for `test`) or translate it literally (`หูจับ` for `handle`); gloss an unfamiliar term once — `CPA (ต้นทุนต่อการได้ลูกค้าหนึ่งราย)` — then anchor it with one concrete example. **Humanity** already asked for familiar technical English over literal translation, but it said nothing about phonetic respelling, and replies drifted toward Thai-script spellings of terms the reader already knows in English.
+- The rule is stated once and generalizes past Thai: it names "the reply's script" rather than Thai script, so it holds in whatever language the reply lands in. The examples stay Thai because that is where the failure was observed.
+- Two tests pin what the block says — the roster of five named rules, and both failure shapes the Terminology rule exists to prevent. The response-policy gate only checks that the contract and the 120 files agree, so a bad edit to the contract used to propagate everywhere without failing anything.
+- `npm run verify:invocation` enforces that no skill body tells the agent to invoke one of the 21 user-invoked skills. `disable-model-invocation: true` stops a host from auto-firing a skill, but it never stopped a sibling skill's prose from instructing the agent to go run it, and two skills were doing exactly that. Wired into `verify:release`. Adopted from upstream's `.agents/invocation.md` invariant; the reviewed upstream pin stays at `84fdeff`.
+- The gate is a lint on phrasing, not a proof. It fires on an invocation verb governing a code-span or slash reference — the form SPK writes real references in — and stays quiet on a bare name, because `setup`, `triage`, `handoff`, and `pr` are ordinary English words long before they are skill ids. It also stays quiet when the instruction is aimed at the user, since "tell the user to run `/setup`" is the correct rewrite of a violation and a gate that rejected its own fix would be useless.
+
+### Fixed
+
+- `debug` told the agent to hand its post-mortem off to `improve-codebase`, and `code-review` told it to run `/setup` when the issue tracker doc was missing. Both are user-invoked, so neither hand-off could ever have fired — the agent was being pointed at a door it cannot open. Both now instruct the user. Upstream deleted its equivalent post-mortem outright; SPK keeps it, because naming what would have prevented the bug is the useful half and only the hand-off was broken.
+
+### Changed
+
+- `domain-modeling` says when it fires, not only what it does: "Fires when discussing codebase terminology, writing or editing CONTEXT.md, or recording an ADR." Adopted from upstream's trigger rewrite, in both locales. The clause went into `description` rather than the contract's `triggers`, because `triggers` is validated but never emitted into a runtime artifact — every skill still carries the same `use <id>` / `<id> workflow` boilerplate there, and adding real ones would have changed nothing an agent reads.
+- `ask-me` gave up its `ROI (ผลตอบแทนจากการลงทุน)` gloss rule, now stated by the block. Its restriction to *familiar* work terms stays, since the block does not say it.
+- `ask-me`'s word ceiling moved from 1050 to 1100, disclosed here rather than raised quietly. 6.3.0 named this risk and said the voice trim had to pay for the block: it did not. The block grew by 50 words and `ask-me` had 13 of its own to give back. The one remaining redundancy — the `จากเรื่องนี้ ทำ PRD ต่อคุ้มที่สุด` example — also anchors "never sound bureaucratic," which the block does not state, so the ceiling moved instead of the guidance going. The 180-line ceiling did not move.
+
 ## 6.3.1 - 2026-08-16
 
 ### Fixed
