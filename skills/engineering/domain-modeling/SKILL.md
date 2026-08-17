@@ -1,6 +1,6 @@
 ---
 name: domain-modeling
-description: สร้างและปรับภาษากลางของ project พร้อมทดสอบคำศัพท์กับกรณีขอบและบันทึก decision ที่ควรจำ
+description: สร้างและปรับภาษากลางของ project พร้อมทดสอบคำศัพท์กับกรณีขอบและบันทึก decision ที่ควรจำ ใช้เมื่อคุยเรื่องศัพท์ใน codebase เขียนหรือแก้ CONTEXT.md หรือบันทึก ADR
 ---
 # จัดภาษา domain ให้ชัด
 

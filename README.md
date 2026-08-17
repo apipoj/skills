@@ -44,7 +44,7 @@ npx skills@latest add apipoj/skills
 
 ## หลักการ
 
-- **Thai-first:** ตอบตามภาษาผู้ใช้ และคงโทนวัฒนธรรมไทย แต่เก็บ technical identifiers ตามจริง
+- **Thai-first:** ตอบตามภาษาผู้ใช้ และคงโทนวัฒนธรรมไทย เก็บ technical identifiers ตามจริง และคงศัพท์เฉพาะทางเป็น English แทนการทับศัพท์หรือแปลตรงตัว
 - **พร้อมใช้:** ผู้ใช้ไม่ต้องจำรายชื่อ skill; `/spk:start` route ให้
 - **ปลอดภัย:** การสร้างไฟล์ไม่ได้แปลว่าอนุญาต commit, push, deploy หรือ publish
 - **มีหลักฐาน:** งานสำคัญคืน test output, diff scope, risk และ next action ที่ตรวจได้
