@@ -25,7 +25,8 @@ The last message did not land. Say it again, better.
 
 1. Identify the exact message that did not land and name the assumed knowledge that made it opaque.
 2. Say it again with the missing context first, in plain language, using the project's own vocabulary
-   from `CONTEXT.md` when it exists. If the confusion came from a wrong assumption rather than from
+   from `CONTEXT.md` when it exists, following a root `CONTEXT-MAP.md` to the right one when the repo
+   carries more than one context. If the confusion came from a wrong assumption rather than from
    wording, say so plainly and fix the assumption instead of rephrasing.
 
 ## Evidence Receipt

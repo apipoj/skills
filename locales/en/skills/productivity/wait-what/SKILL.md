@@ -21,7 +21,7 @@ Wait — that last message didn't land. Re-pitch it.
 
 Find the exact message that didn't land, and name the knowledge it assumed the user already had. Then say it again with **the missing context first**, before the substance.
 
-Use plain language and drop the jargon that isn't carrying weight. If the project has a `CONTEXT.md`, use its vocabulary rather than borrowed terms — a word the team already agreed on always communicates better than a generic one.
+Use plain language and drop the jargon that isn't carrying weight. If the project has a `CONTEXT.md`, use its vocabulary rather than borrowed terms — a word the team already agreed on always communicates better than a generic one. When a root `CONTEXT-MAP.md` exists, follow it to the `CONTEXT.md` for the context under discussion rather than guessing at one.
 
 If the confusion came from a wrong assumption rather than from wording, **say so plainly** and fix the assumption first. Re-explaining the same thing in prettier words helps nothing when the premise is wrong.
 
