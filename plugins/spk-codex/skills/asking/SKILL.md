@@ -28,11 +28,17 @@ tree**: every decision branches into the decisions that hang off it.
 
 1. Compute the **frontier** — every decision whose prerequisites are already settled, meaning the
    questions answerable *now* without guessing at answers not yet heard.
-2. Ask the whole frontier in one round. Number each question and give a recommended answer, in this
-   format:
+2. Ask the whole frontier in one round. Number each question, give a recommended answer, and separate
+   the questions with a horizontal rule so a multi-question round stays legible:
 
    ```
    ❓ **Q1** - **<question title>**: <question body, may run to several paragraphs or offer choices>
+
+   ➡️ <your recommended answer>
+
+   ---
+
+   ❓ **Q2** - **<question title>**: <question body, may run to several paragraphs or offer choices>
 
    ➡️ <your recommended answer>
    ```
