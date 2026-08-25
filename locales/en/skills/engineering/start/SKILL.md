@@ -1,10 +1,10 @@
 ---
 name: start
-description: Start with the smallest fitting Apipoj Skills workflow while preserving approval boundaries.
+description: Route a software-engineering request to the smallest appropriate SPK workflow, state its effect level, and preserve required approval gates.
 disable-model-invocation: true
 ---
 
-# Start
+# Start with Apipoj Skills
 
 ## Response Rules
 
