@@ -39,7 +39,7 @@ Implement feature จาก plan ที่มีอยู่ ทำงานเ�
 - ใน flow plan-to-dev คำตอบล่าสุดอนุมัติ plan ฉบับที่เพิ่งแสดงอย่างชัดเจน
 
 ห้ามนับคำยืนยันจาก `ask-me`, การเลือกให้สร้าง plan หรือข้อความ “plan แล้ว dev” ก่อนเห็น
-plan เป็น codeation approval ถ้า authority ไม่ครบ ห้ามเขียน code, tests หรือ docs
+plan เป็น implementation approval ถ้า authority ไม่ครบ ห้ามเขียน code, tests หรือ docs
 
 ## Output Format
 
@@ -64,7 +64,7 @@ plan เป็น codeation approval ถ้า authority ไม่ครบ ห�
 
 ## ข้อควรระวัง
 
-- ห้ามแก้ workspace โดยไม่มี approved plan และ codeation authority ของ scope นั้น
+- ห้ามแก้ workspace โดยไม่มี approved plan และ implementation authority ของ scope นั้น
 - อย่าข้าม test ถ้า test harness ไม่มี ให้ flag `NEEDS_TEST_HARNESS`
 - ห้าม commit, push หรือเปิด PR เว้นแต่ผู้ใช้อนุญาต action นั้นแยกต่างหาก
 - ถ้า task ใหญ่เกินไป ให้แยกก่อน code

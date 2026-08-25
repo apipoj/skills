@@ -21,7 +21,7 @@ Implement the supplied approved plan without broadening its scope.
 ## Workflow
 
 1. Read repository instructions, the referenced plan, current diff, relevant code, and
-   codeation authority. When arriving from a plan-to-development handoff, require
+   implementation authority. When arriving from a plan-to-development handoff, require
    the user's explicit approval after the exact plan was shown; otherwise stop before
    modifying the workspace.
 2. Split work by acceptance criterion. Delegate only independent, disjoint slices; use
@@ -41,7 +41,7 @@ the user explicitly requested those separate actions.
 
 ## Implementation Authorization
 
-Accept either of these as workspace codeation authority:
+Accept either of these as workspace implementation authority:
 
 - The user's current direct request explicitly asks to code an identified,
   already-approved plan.
@@ -54,14 +54,14 @@ ambiguous, return `NEEDS_USER_INPUT` with the exact plan reference and make no c
 
 ## Evidence Receipt
 
-Return `spk.evidence/v1` with status, approved plan reference, codeation-authority
-source, changed artifacts, RED/GREEN and regression verification, documentation,
-risks, and next action.
+Return `spk.evidence/v1` with status, approved plan reference,
+implementation-authority source, changed artifacts, RED/GREEN and regression
+verification, documentation, risks, and next action.
 
 ## Guardrails
 
 - Stay inside the approved plan and preserve unrelated user changes.
-- Never modify the workspace without an approved plan and current codeation
+- Never modify the workspace without an approved plan and current implementation
   authority for that exact scope.
 - Never skip a failing gate, invent test results, or describe unverified work as done.
 - Do not commit, push, create a PR, or deploy without separate explicit authorization.
