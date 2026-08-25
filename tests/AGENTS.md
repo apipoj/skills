@@ -9,7 +9,7 @@
 - `command-manifest-sync.test.js` — skill command names match manifest commands array
 - `agent-manifest-sync.test.js` — agent files match manifest agents roster
 - `agent-contracts.test.js` — agent markdown structural contracts
-- `native-skills.test.js` — native Thai skills align with manifest
+- `native-skills.test.js` — Thai sources and English mirrors align with the contract and manifest
 - `platform-artifacts.test.js` — canonical contract and deterministic Claude/Codex metadata generation
 - `skilllab.test.js` — behavioral corpus, scoring, baselines, and gated live-adapter protocol
 - `release-metadata.test.js` — versions, public counts, tags, roster semantics, and repository secret scanning

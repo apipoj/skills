@@ -43,6 +43,27 @@ function checkForbiddenTokens(content) {
   return hits;
 }
 
+// An English mirror may legitimately carry Thai: an example utterance in a code
+// span or fenced block, an excerpt in quotation marks, the parenthetical gloss
+// the Terminology response rule asks for. What it may not do is narrate in Thai.
+// Strip those sanctioned carriers and anything left standing is prose that was
+// copied from the Thai source rather than translated.
+function englishProseOf(content) {
+  return content
+    .replace(/\r\n/g, '\n')
+    .replace(/^---\n[\s\S]*?\n---\n/, '')
+    .replace(/^[ \t]*```[\s\S]*?^[ \t]*```/gm, '')
+    .replace(/`[^`\n]*`/g, '')
+    .replace(/“[^”]*”/g, '')
+    .replace(/"[^"\n]*"/g, '')
+    .replace(/\([^)\n]*\)/g, '');
+}
+
+function headingOf(content) {
+  const match = content.replace(/\r\n/g, '\n').match(/^# (.*)$/m);
+  return match ? match[1] : null;
+}
+
 function findSkillFiles(directory, files = []) {
   if (!fs.existsSync(directory)) return files;
   for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
@@ -71,6 +92,9 @@ function collectNativeSkillErrors(rootDir = REPO_ROOT, contract = CONTRACT) {
     else {
       if (metadata.name !== skill.id) errors.push(`${relative}: name must be ${skill.id}`);
       if (!metadata.description) errors.push(`${relative}: missing description`);
+      else if (metadata.description !== skill.locales.th.description) {
+        errors.push(`${relative}: description must match contracts/workflows.json locales.th.description`);
+      }
     }
     const body = content.replace(/\r\n/g, '\n').replace(/^---\n[\s\S]+?\n---/, '');
     if (!THAI_CHAR_RE.test(body)) errors.push(`${relative}: body lacks native Thai content`);
@@ -82,6 +106,59 @@ function collectNativeSkillErrors(rootDir = REPO_ROOT, contract = CONTRACT) {
   for (const file of findSkillFiles(path.join(rootDir, 'skills'))) {
     if (!expectedFiles.has(path.resolve(file))) {
       errors.push(`ORPHAN Thai skill: ${path.relative(rootDir, file)}`);
+    }
+  }
+
+  // The English mirror is a source, not a by-product. `plugins/spk` is hand-authored,
+  // so no generator reads `locales/en` and nothing downstream notices when a mirror is
+  // wrong. Three of them shipped their Thai body verbatim under an `# code` heading and
+  // no gate saw it, because this one only ever opened the Thai side.
+  const englishFiles = new Set();
+  for (const skill of contract.skills) {
+    const relative = path.join(skill.sources.en, 'SKILL.md');
+    const file = path.join(rootDir, relative);
+    englishFiles.add(path.resolve(file));
+    if (!fs.existsSync(file)) {
+      errors.push(`MISSING English mirror: ${relative}`);
+      continue;
+    }
+    const content = fs.readFileSync(file, 'utf8');
+    const metadata = parseFrontmatter(content);
+    if (!metadata) errors.push(`${relative}: missing frontmatter`);
+    else {
+      if (metadata.name !== skill.id) errors.push(`${relative}: name must be ${skill.id}`);
+      if (metadata.description !== skill.locales.en.description) {
+        errors.push(`${relative}: description must match contracts/workflows.json locales.en.description`);
+      }
+    }
+    const untranslated = englishProseOf(content)
+      .split('\n')
+      .find(line => THAI_CHAR_RE.test(line));
+    if (untranslated) {
+      errors.push(
+        `${relative}: Thai prose outside a code span, quotation, or gloss — ` +
+          `${JSON.stringify(untranslated.trim().slice(0, 60))}`,
+      );
+    }
+    // The H1 is where an untranslated mirror gives itself away first: a body copied
+    // from the Thai source arrives titled with the bare skill id.
+    const payload = path.join(rootDir, 'plugins', 'spk', 'skills', skill.id, 'SKILL.md');
+    if (fs.existsSync(payload)) {
+      const expected = headingOf(fs.readFileSync(payload, 'utf8'));
+      if (headingOf(content) !== expected) {
+        errors.push(
+          `${relative}: H1 must be "${expected}", matching plugins/spk/skills/${skill.id}/SKILL.md`,
+        );
+      }
+    }
+    for (const hit of checkForbiddenTokens(content)) {
+      errors.push(`${relative}:${hit.line}: forbidden token "${hit.token}"`);
+    }
+  }
+
+  for (const file of findSkillFiles(path.join(rootDir, 'locales', 'en', 'skills'))) {
+    if (!englishFiles.has(path.resolve(file))) {
+      errors.push(`ORPHAN English mirror: ${path.relative(rootDir, file)}`);
     }
   }
 
@@ -106,7 +183,9 @@ function main() {
     errors.forEach(error => console.error('  -', error));
     process.exit(1);
   }
-  console.log(`Native skills OK (${CONTRACT.skills.length} Thai-first skills verified across bucketed sources)`);
+  console.log(
+    `Native skills OK (${CONTRACT.skills.length} skills verified across Thai sources and English mirrors)`,
+  );
 }
 
 if (require.main === module) main();
@@ -117,7 +196,9 @@ module.exports = {
   THAI_CHAR_RE,
   checkForbiddenTokens,
   collectNativeSkillErrors,
+  englishProseOf,
   findSkillFiles,
+  headingOf,
   missingFromDocs,
   parseFrontmatter,
 };

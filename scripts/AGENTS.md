@@ -18,7 +18,7 @@
 | `verify-invocation-authority.cjs` | No skill body instructs the agent to invoke a user-invoked skill |
 | `verify-agent-contracts.cjs` | Agent markdown files meet structural contracts |
 | `verify-grep-gates.cjs` | Grep-based checks for forbidden patterns |
-| `verify-native-skills.cjs` | Native Thai skills align with manifest command list |
+| `verify-native-skills.cjs` | Thai sources and English mirrors align with the contract and manifest command list |
 | `check-upstream-drift.cjs` | Verifies the reviewed Matt Pocock source pin, reports promoted-skill drift against an optional checkout, and verifies retained reference pages against docs/upstream/reference-hashes.json |
 | `sync-upstream-docs.cjs` | Regenerates the retained upstream reference pages from a pinned checkout and writes their sha256 index |
 | `scoped-tests.cjs` | Maps changed paths to a conservative Jest inner-loop plan |
