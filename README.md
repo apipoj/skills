@@ -6,6 +6,8 @@ Apipoj Skills ใช้ skill ที่เล็กและ composable จา�
 
 เริ่มใช้งานแบบทีละขั้นได้ที่ **[คู่มือผู้ใช้](USER_GUIDE.md)** · [English user guide](USER_GUIDE-EN.md)
 
+ใช้กับ Grok Bot: **[สร้าง First Agent และตั้ง `ask-me` เป็นค่าเริ่มต้น](GROK_BOT.md)**
+
 ## เริ่มแบบมาม่า
 
 ติดตั้งแล้วเรียกคำสั่งเดียว:
