@@ -14,7 +14,11 @@ push, เขียน ticket/PR, merge หรือ deploy
 ## Workflow
 
 1. **Resolve หนึ่ง source** อ่านคำสั่งของ repo แล้วระบุ task และ acceptance criteria
-   ที่แน่นอน สร้าง immutable snapshot เป็น canonical JSON ที่รวม source identity/version,
+   ที่แน่นอน ระบุ GitHub repository จาก selected remote URL และคำสั่งของ repo ให้ชัดเจน
+   ใน fork ตัว CLI อาจตั้งค่า PR ไปที่ fork parent โดยอัตโนมัติ ห้ามพึ่ง inference นี้
+   ให้ bind explicit repository selector เช่น `GH_REPO=<owner/repo>` หรือ
+   `--repo <owner/repo>` กับทุก GitHub read/write และตรวจว่า repository ที่ตอบกลับมาตรงกัน
+   จากนั้นสร้าง immutable snapshot เป็น canonical JSON ที่รวม source identity/version,
    task fields และ criteria โดย normalize text ทุกค่าเป็น Unicode NFC, แปลง CRLF/CR
    เป็น LF, รักษา whitespace อื่น, sort object keys ทุกระดับ, รักษา array order และ
    encode UTF-8 แบบไม่มี BOM จากนั้น hash exact bytes นี้ ห้าม hash ข้อความที่ render
@@ -51,7 +55,8 @@ push, เขียน ticket/PR, merge หรือ deploy
    repository/worktree, base/head SHA, paths/hashes, task-only patch และ expected
    staged-diff digests, existing outgoing commits, proposed commit parent/tree/exact
    message, resolved author/committer identities และ sources, signing/hook policy,
-   expected remote old SHA, remote/ref, optional PR ready/draft state, title/body digests,
+   expected remote old SHA, remote/ref, explicit repository selector/environment,
+   optional PR ready/draft state, title/body digests,
    exact ticket operation/target/conditional หรือ idempotency precondition/transport
    identity+version/canonical payload digest โดย ticket payload ต้องเป็น complete semantic
    tool/API arguments หรือ wire-request object ที่รวม method, endpoint, path/query,
@@ -120,7 +125,7 @@ push, เขียน ticket/PR, merge หรือ deploy
   "proposed_commit": {"parent_sha": "<sha>", "tree_sha": "<expected tree sha>", "message": "<exact message>", "author": {"identity_digest": "<sha256>", "source": "<approved source>"}, "committer": {"identity_digest": "<sha256>", "source": "<approved source>"}, "signing": "<policy>", "hooks": "<enabled | bypass-approved>"},
   "pull_request": {"operation": "none | create | update", "state": "ready | draft | unchanged", "title_digest": "<sha256 หรือ null>", "body_digest": "<sha256 หรือ null>"},
   "ticket_writes": [{"operation": "<exact operation>", "target": "<ticket>", "transport": "<exact tool/API/command and version>", "payload_digest": "<sha256 of complete canonical semantic request>", "precondition": {"kind": "<if-match | version | create-if-absent | idempotency-key>", "value_digest": "<sha256 of exact non-null value>"}}],
-  "commands": [{"bin": "<absolute หรือ trusted executable>", "argv": ["<arg>"]}],
+  "commands": [{"bin": "<absolute หรือ trusted executable>", "environment": {"GH_REPO": "<owner/repo>"}, "argv": ["<arg>"]}],
   "choices": [{"label": "<label ที่ระบุ target จริง>", "approves": true}, {"label": "ยกเลิก", "approves": false}],
   "resume_instruction": "Choose the approving option, or reply with a plain affirmative"
 }

@@ -29,6 +29,7 @@
 
 - Skill instructions stay English to save tokens. Reply in the user's language and keep Thai cultural fit: colleague tone, familiar technical English when clearer, no literal translation, no phonetic respelling of a technical term, no location stereotypes. Gloss an unfamiliar term once in parentheses. Use smart defaults for reversible low-risk choices, and ask one material question when a decision changes scope or risk.
 - All Git writes, remote writes, publishing, deployment, and destructive effects require exact approval for the current target and payload.
+- GitHub writes for this source repository target `apipoj/skills`. Use an explicit repository selector such as `GH_REPO=apipoj/skills` or `--repo apipoj/skills`; never rely on a CLI to infer the target from fork parent metadata.
 - Every workflow reports observable evidence and gaps; never convert an unverified result into a success claim.
 
 ## Editing guardrails

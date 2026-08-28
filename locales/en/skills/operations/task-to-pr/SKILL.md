@@ -28,7 +28,11 @@ writes, ticket writes, merge, or deployment.
 ## Workflow
 
 1. **Resolve one source.** Read repository instructions and resolve the exact task and
-   acceptance criteria. Represent the immutable source identity/version, task fields,
+   acceptance criteria. Resolve the exact GitHub repository from the selected remote URL
+   and repository guidance. In a fork, a CLI may default pull-request operations to the
+   fork parent; never rely on that inference. Bind an explicit repository selector such
+   as `GH_REPO=<owner/repo>` or the command's `--repo <owner/repo>` for every GitHub read
+   and write, and verify the returned repository matches it. Represent the immutable source identity/version, task fields,
    and criteria as canonical JSON: normalize every text value to Unicode NFC, convert
    CRLF or CR line endings to LF, preserve all other whitespace, recursively sort object
    keys, preserve array order, and encode UTF-8 without a BOM. Hash those exact bytes as
@@ -73,7 +77,8 @@ writes, ticket writes, merge, or deployment.
    repository/worktree, base and head SHA, explicit paths and hashes, task-only patch
    and expected staged-diff digests, existing outgoing commits, proposed commit parent,
    tree, exact message, resolved author and committer identities/sources, signing and
-   hook policy, expected remote old SHA, remote/ref,
+   hook policy, expected remote old SHA, remote/ref, explicit repository selector and
+   environment,
    optional pull-request operation,
    pull-request ready/draft state, title/body digests, each ticket write's exact
    operation, target, conditional or idempotency precondition, transport identity/version,
@@ -154,7 +159,7 @@ to the selected operation:
   "proposed_commit": {"parent_sha": "<sha>", "tree_sha": "<expected tree sha>", "message": "<exact message>", "author": {"identity_digest": "<sha256>", "source": "<approved source>"}, "committer": {"identity_digest": "<sha256>", "source": "<approved source>"}, "signing": "<policy>", "hooks": "<enabled | bypass-approved>"},
   "pull_request": {"operation": "none | create | update", "state": "ready | draft | unchanged", "title_digest": "<sha256 or null>", "body_digest": "<sha256 or null>"},
   "ticket_writes": [{"operation": "<exact operation>", "target": "<ticket>", "transport": "<exact tool/API/command and version>", "payload_digest": "<sha256 of complete canonical semantic request>", "precondition": {"kind": "<if-match | version | create-if-absent | idempotency-key>", "value_digest": "<sha256 of exact non-null value>"}}],
-  "commands": [{"bin": "<absolute or trusted executable>", "argv": ["<arg>"]}],
+  "commands": [{"bin": "<absolute or trusted executable>", "environment": {"GH_REPO": "<owner/repo>"}, "argv": ["<arg>"]}],
   "choices": [{"label": "<target-naming approval label>", "approves": true}, {"label": "Cancel", "approves": false}],
   "resume_instruction": "Choose the approving option, or reply with a plain affirmative"
 }

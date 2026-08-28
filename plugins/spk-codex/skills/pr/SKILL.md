@@ -27,7 +27,11 @@ to prepare or open a pull request.
 ## Workflow
 
 1. **Prepare-only by default.** Inspect branch, remote, dirty/untracked files, diff,
-   outgoing commits, review result, gates, and repository authentication. Produce a
+   outgoing commits, review result, gates, and repository authentication. Resolve the
+   exact GitHub repository from the selected remote URL and repository guidance. In a
+   fork, never let a CLI infer the fork parent as the PR target: bind an explicit
+   repository selector such as `GH_REPO=<owner/repo>` or `--repo <owner/repo>` to every
+   GitHub read and write, then verify the returned repository. Produce a
    conventional title/body, exact candidate paths, test plan, risk/rollback notes, and
    safety findings. Do not stage or write locally/remotely in this mode.
 2. **Resolve requested writes.** If the user asked to commit, push, open, or update a
@@ -67,7 +71,7 @@ to prepare or open a pull request.
   "target": {"remote": "<remote>", "branch": "<branch>", "repository": "<owner/repo>"},
   "paths": ["<reviewed path>"],
   "commits": ["<outgoing or proposed commit>"],
-  "commands": ["<exact git/API command and argv>"],
+  "commands": ["<exact git/API command and environment + argv, including GH_REPO=<owner/repo>>"],
   "choices": [{"label": "<target-naming approval label>", "approves": true}, {"label": "Cancel", "approves": false}],
   "resume_instruction": "Choose the approving option, or reply with a plain affirmative"
 }

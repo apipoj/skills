@@ -16,7 +16,7 @@ Skill นี้เป็น manual-only โหมด default คือ **prepare
 
 ## Workflow
 
-1. **Prepare-only เป็น default** ตรวจ branch, remote, dirty/untracked files, diff, outgoing commits, review, gates และ auth แล้วสร้าง title/body, exact paths, test plan, risks โดยห้าม local/remote write
+1. **Prepare-only เป็น default** ตรวจ branch, remote, dirty/untracked files, diff, outgoing commits, review, gates และ auth ระบุ GitHub repository จาก selected remote URL และคำสั่งของ repo ให้ชัดเจน ใน fork ห้ามปล่อยให้ CLI infer fork parent เป็น PR target ให้ bind explicit repository selector เช่น `GH_REPO=<owner/repo>` หรือ `--repo <owner/repo>` กับทุก GitHub read/write แล้วตรวจ repository ที่ตอบกลับมา จากนั้นสร้าง title/body, exact paths, test plan, risks โดยห้าม local/remote write
 2. **Resolve writes** ถ้า user ขอ commit/push/open/update ให้ list exact paths, commit message, outgoing commits, remote/ref, API operations, title/body digest และ force mode
 3. **Verify** secret-scan proposed staged diff ที่แน่นอนและรัน gates ถ้า auth หายหรือ gate fail ให้ `BLOCKED`
 4. **Bind intent** canonicalize proposed write object แบบ stable key ordering แล้วใช้ SHA-256 lowercase hex ครบ 64 ตัว
@@ -37,7 +37,7 @@ Skill นี้เป็น manual-only โหมด default คือ **prepare
   "target": {"remote": "<remote>", "branch": "<branch>", "repository": "<owner/repo>"},
   "paths": ["<reviewed path>"],
   "commits": ["<outgoing หรือ proposed commit>"],
-  "commands": ["<exact git/API command + argv>"],
+  "commands": ["<exact git/API command + environment + argv รวม GH_REPO=<owner/repo>>"],
   "choices": [{"label": "<label ที่ระบุ target จริง>", "approves": true}, {"label": "ยกเลิก", "approves": false}],
   "resume_instruction": "Choose the approving option, or reply with a plain affirmative"
 }

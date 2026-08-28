@@ -5,6 +5,7 @@
 ### Fixed
 
 - Skill payloads now ship every auxiliary file from the English source directory, including retained `UPSTREAM.md` guidance and referenced templates. The upstream mirrors are regenerated from the reviewed pin instead of recursively pointing back to themselves, and the release gates now reject missing runtime links or drifted mirrors.
+- Repository and PR workflow guidance now pins an explicit GitHub repository selector so fork-aware CLIs cannot redirect pull-request operations to an upstream parent.
 
 ## 6.4.0 - 2026-08-18
 
