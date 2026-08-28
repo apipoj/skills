@@ -80,8 +80,79 @@ describe('SPK reference integrity', () => {
     }
   });
 
+  test('reports a missing relative Markdown dependency inside a packaged skill', () => {
+    const root = makeFixtureRoot();
+    try {
+      const skill = 'plugins/spk/skills/plan/SKILL.md';
+      writeText(
+        path.join(root, skill),
+        'Read the full practice in [UPSTREAM.md](UPSTREAM.md).\n',
+      );
+
+      expect(collectReferenceIntegrityErrors(root, [skill])).toEqual([
+        `${skill}:1: missing local reference UPSTREAM.md`,
+      ]);
+
+      writeText(
+        path.join(root, 'plugins/spk/skills/plan/UPSTREAM.md'),
+        '# Full practice\n',
+      );
+      expect(collectReferenceIntegrityErrors(root, [skill])).toEqual([]);
+    } finally {
+      fs.rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  test('rejects a packaged UPSTREAM file that links to itself', () => {
+    const root = makeFixtureRoot();
+    try {
+      const upstream = 'plugins/spk-codex/skills/plan/UPSTREAM.md';
+      writeText(
+        path.join(root, upstream),
+        'Read [UPSTREAM.md](UPSTREAM.md).\n',
+      );
+
+      expect(collectReferenceIntegrityErrors(root, [upstream])).toEqual([
+        `${upstream}:1: local reference points to itself: UPSTREAM.md`,
+      ]);
+    } finally {
+      fs.rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  test('allows illustrative relative-looking links inside retained upstream prose', () => {
+    const root = makeFixtureRoot();
+    try {
+      const upstream = 'plugins/spk/skills/plan/UPSTREAM.md';
+      writeText(
+        path.join(root, upstream),
+        'A ticket may carry an illustrative [link](link).\n',
+      );
+      expect(collectReferenceIntegrityErrors(root, [upstream])).toEqual([]);
+    } finally {
+      fs.rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  test('reports a missing file dependency linked by retained upstream guidance', () => {
+    const root = makeFixtureRoot();
+    try {
+      const upstream = 'plugins/spk/skills/plan/UPSTREAM.md';
+      writeText(
+        path.join(root, upstream),
+        'See [test examples](tests.md).\n',
+      );
+      expect(collectReferenceIntegrityErrors(root, [upstream])).toEqual([
+        `${upstream}:1: missing local reference tests.md`,
+      ]);
+    } finally {
+      fs.rmSync(root, { recursive: true, force: true });
+    }
+  });
+
   test('scan root matcher excludes transient state files', () => {
     expect(isUnderScanRoots('plugins/spk/skills/plan/SKILL.md')).toBe(true);
+    expect(isUnderScanRoots('plugins/spk-codex/skills/plan/SKILL.md')).toBe(true);
     expect(isUnderScanRoots('docs/plugin.md')).toBe(true);
     expect(isUnderScanRoots('.omx/state/session.json')).toBe(false);
     expect(isUnderScanRoots('tests/reference-integrity.test.js')).toBe(false);

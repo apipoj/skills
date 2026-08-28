@@ -101,6 +101,26 @@ function bannerRegionOf(pageText) {
   return lines.slice(0, index).join('\n');
 }
 
+function listRetainedSkillMirrors(rootDir) {
+  const mirrors = [];
+  for (const sourceRoot of ['skills', 'locales/en/skills']) {
+    const absoluteRoot = path.join(rootDir, sourceRoot);
+    if (!fs.existsSync(absoluteRoot)) continue;
+    const stack = [absoluteRoot];
+    while (stack.length > 0) {
+      const current = stack.pop();
+      for (const entry of fs.readdirSync(current, { withFileTypes: true })) {
+        const target = path.join(current, entry.name);
+        if (entry.isDirectory()) stack.push(target);
+        else if (entry.isFile() && entry.name === 'UPSTREAM.md') {
+          mirrors.push(path.relative(rootDir, target).split(path.sep).join('/'));
+        }
+      }
+    }
+  }
+  return mirrors.sort();
+}
+
 function collectReferenceDocErrors(rootDir = REPO_ROOT) {
   const errors = [];
   const indexPath = path.join(rootDir, 'docs', 'upstream', 'reference-hashes.json');
@@ -169,6 +189,32 @@ function collectReferenceDocErrors(rootDir = REPO_ROOT) {
     }
   }
 
+  const indexedMirrors = index.skillMirrors || {};
+  for (const [mirrorPath, expected] of Object.entries(indexedMirrors)) {
+    const normalized = path.posix.normalize(mirrorPath);
+    const validPath = normalized === mirrorPath &&
+      /^(?:skills|locales\/en\/skills)\/(?:engineering|productivity|operations|knowledge)\/[^/]+\/UPSTREAM\.md$/.test(mirrorPath);
+    if (!validPath) {
+      errors.push(`${mirrorPath}: invalid retained upstream skill mirror path`);
+      continue;
+    }
+    const file = path.join(rootDir, mirrorPath);
+    if (!fs.existsSync(file)) {
+      errors.push(`${mirrorPath}: indexed but missing from the working tree`);
+      continue;
+    }
+    const actual = sha256(normalizeEol(fs.readFileSync(file, 'utf8')));
+    if (actual !== expected) {
+      errors.push(`${mirrorPath}: content does not match the pinned upstream skill`);
+    }
+  }
+
+  for (const mirrorPath of listRetainedSkillMirrors(rootDir)) {
+    if (!(mirrorPath in indexedMirrors)) {
+      errors.push(`${mirrorPath}: shipped without a hash entry — run sync:upstream-docs`);
+    }
+  }
+
   return errors;
 }
 
@@ -220,4 +266,5 @@ module.exports = {
   collectAllErrors,
   collectReferenceDocErrors,
   collectUpstreamProvenanceErrors,
+  listRetainedSkillMirrors,
 };

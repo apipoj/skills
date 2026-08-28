@@ -1,67 +1,38 @@
 ---
 name: tdd
-description: พัฒนา behavior ทีละ slice ด้วยวงจร RED, GREEN และ refactor พร้อมหลักฐานจาก test จริง
+description: Test-driven development. Use when the user wants to build features or fix bugs test-first, mentions "red-green-refactor", or wants integration tests.
 ---
-# tdd
 
-รัน TDD loop แบบเข้มงวด: เขียน test ที่ fail ยืนยันว่า fail ด้วยเหตุผลที่ถูกต้อง implement ขั้นต่ำให้ pass refactor แล้วทำซ้ำ
+# Test-Driven Development
 
-## รวบรวม Context
+TDD is the red → green loop. This skill is the reference that makes that loop produce tests worth keeping: what a good test is, where tests go, the anti-patterns, and the rules of the loop. Every section applies on every cycle — consult them before and during the loop, not after.
 
-- ถ้าอยู่ใน git worktree ให้รัน `git status --short` และ `git log -3 --oneline`; ถ้าไม่ใช่ git repo ให้ข้าม git context และทำงานต่อ
-- ระบุ test setup (package.json, pyproject.toml, pytest.ini, jest.config, vitest.config)
+When exploring the codebase, read `CONTEXT.md` (if it exists) so test names and interface vocabulary match the project's domain language, and respect ADRs in the area you're touching.
 
-## TDD Cycle
+## What a good test is
 
-### RED: เขียน Failing Test
-1. เขียน behavior test ขั้นต่ำที่กำหนด expected behavior
-2. Test ต้องเจาะจงและโฟกัสที่ behavior เดียว
+Tests verify behavior through public interfaces, not implementation details. Code can change entirely; tests shouldn't. A good test reads like a specification — "user can checkout with valid cart" tells you exactly what capability exists — and survives refactors because it doesn't care about internal structure.
 
-### Verify RED
-3. รัน focused test และยืนยันว่า fail **ด้วยเหตุผลที่คาดไว้**
-4. ถ้า test pass ทันที ให้แก้ test ก่อน code (มัน test สิ่งผิด)
+See [tests.md](tests.md) for examples and [mocking.md](mocking.md) for mocking guidelines.
 
-### GREEN: Implementation ขั้นต่ำ
-5. เขียน implementation ที่เล็กที่สุดที่ทำให้ test pass
-6. อย่าเพิ่ม features, optimizations หรือ refactoring
+## Seams — where tests go
 
-### Verify GREEN
-7. รัน focused test ต้อง pass
-8. รัน regression suite ที่เกี่ยวข้อง ไม่มีอะไรพัง
+A **seam** is the public boundary you test at: the interface where you observe behavior without reaching inside. Tests live at seams, never against internals.
 
-### REFACTOR
-9. ทำความสะอาด code เฉพาะตอนที่ tests green
-10. รัน tests ที่เกี่ยวข้องทั้งหมดหลัง refactor
+**Test only at pre-agreed seams.** Before writing any test, write down the seams under test and confirm them with the user. No test is written at an unconfirmed seam. You can't test everything — agreeing the seams up front is how testing effort lands on the critical paths and complex logic instead of every edge case.
 
-### Evidence
-11. บันทึก evidence ของ TDD cycle ที่ตรวจสอบแล้ว
-12. Commit เฉพาะเมื่อผู้ใช้อนุญาต action นี้แยกต่างหาก แล้วทำซ้ำสำหรับ behavior ถัดไป
+Ask: "What's the public interface, and which seams should we test?"
 
-## Output Format
+When the shape of that interface is itself in question — how deep the module is, where the seam belongs, what the interface should expose — use the `/codebase-design` skill for the vocabulary. It is the shared source of the module, interface, depth, seam, adapter, leverage and locality terms, and it is a reference to consult, not a session to run.
 
-```markdown
-## TDD Cycle Report
-- Behavior: <สิ่งที่ implement>
-- Test file: <path>
-- RED: <confirmed - test fails ด้วยเหตุผลที่คาดไว้>
-- GREEN: <confirmed - test passes>
-- REFACTOR: <สิ่งที่ทำความสะอาด>
-- Regression suite: <pass/fail>
-- Commit: <hash, proposed message หรือ "not authorized">
-- Remaining behaviors: <list หรือ "none">
-```
+## Anti-patterns
 
-## Hard Stops
+- **Implementation-coupled** — mocks internal collaborators, tests private methods, or verifies through a side channel (querying the database instead of using the interface). The tell: the test breaks when you refactor but behavior hasn't changed.
+- **Tautological** — the assertion recomputes the expected value the way the code does (`expect(add(a, b)).toBe(a + b)`, a snapshot derived by hand the same way, a constant asserted equal to itself), so it passes by construction and can never disagree with the code. Expected values must come from an independent source of truth — a known-good literal, a worked example, the spec.
+- **Horizontal slicing** — writing all tests first, then all implementation. Bulk tests verify _imagined_ behavior: you test the _shape_ of things rather than user-facing behavior, the tests go insensitive to real changes, and you commit to test structure before understanding the implementation. Work in **vertical slices** instead — one test → one implementation → repeat, each test a **tracer bullet** that responds to what the last cycle taught you.
 
-- ถ้า test แรก pass ทันที ให้แก้ test ก่อน code
-- ถ้าไม่มี test harness ที่ใช้ได้ ให้ return `NEEDS_TEST_HARNESS` พร้อม harness ที่เล็กที่สุดที่ควรเพิ่ม
-- ถ้าแก้ bug ให้รวม regression test ที่ fail ก่อน fix
-- ห้าม commit, push หรือ deploy เว้นแต่ผู้ใช้อนุญาต action นั้นแยกต่างหาก
+## Rules of the loop
 
-## ข้อควรระวัง
-
-- อย่ายอมรับ tests ที่ pass ก่อน implementation
-- อย่าข้าม tests
-- อย่ารวมหลาย behaviors ในหนึ่ง cycle หนึ่ง behavior ต่อ cycle
-- อย่า refactor ตอน red
-- ถ้าได้รับอนุญาตให้ commit ให้ใช้เฉพาะ cycle ที่ตรวจสอบแล้ว
+- **Red before green.** Write the failing test first, then only enough code to pass it. Don't anticipate future tests or add speculative features.
+- **One slice at a time.** One seam, one test, one minimal implementation per cycle.
+- **Refactoring is not part of the loop.** It belongs to the review stage (see the `code-review` skill), not the red → green implementation cycle.

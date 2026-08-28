@@ -2281,7 +2281,7 @@
       "workflow": [
         {
           "phase": "inspect",
-          "instruction": "Resolve branch, base, dirty state, outgoing commits, reviewed paths, and repository pull-request rules."
+          "instruction": "Resolve branch, base, dirty state, outgoing commits, reviewed paths, and repository pull-request rules. Resolve the exact GitHub repository from the selected remote and bind an explicit repository selector for every read and write; never let a fork-aware CLI infer the fork parent as the pull-request target."
         },
         {
           "phase": "verify",
@@ -2370,7 +2370,7 @@
       "workflow": [
         {
           "phase": "resolve",
-          "instruction": "Read repository guidance and resolve exactly one task, ticket, or pull request. Resume only an unambiguous existing pull request, branch, or worktree, and bind an immutable task snapshot digest plus repository, base, head, and workspace identity."
+          "instruction": "Read repository guidance and resolve exactly one task, ticket, or pull request. Resolve the exact GitHub repository from the selected remote and bind an explicit repository selector for every read and write; never let a fork-aware CLI infer the fork parent as the pull-request target. Resume only an unambiguous existing pull request, branch, or worktree, and bind an immutable task snapshot digest plus repository, base, head, and workspace identity."
         },
         {
           "phase": "isolate",
@@ -2390,7 +2390,7 @@
         },
         {
           "phase": "publish",
-          "instruction": "Revalidate state and digest, then stage only approved paths and commit. Before any remote write, verify the resulting commit parent, tree/task patch, exact message, resolved identities, and signing state against the approved intent; mismatch requires fresh approval. Revalidate every complete ticket request immediately before sending and require a server-enforced conditional write or bound idempotency key; otherwise block. Push and create or update only the approved pull request. Never merge or deploy."
+          "instruction": "Revalidate state and digest, then stage only approved paths and commit. Before any remote write, verify the resulting commit parent, tree/task patch, exact message, resolved identities, signing state, and explicit repository selector against the approved intent; mismatch requires fresh approval. Revalidate every complete ticket request immediately before sending and require a server-enforced conditional write or bound idempotency key; otherwise block. Push and create or update only the approved pull request, then verify the returned URL belongs to the selected repository. Never merge or deploy."
         },
         {
           "phase": "observe",

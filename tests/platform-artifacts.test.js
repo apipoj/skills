@@ -197,9 +197,25 @@ describe('platform artifact compiler', () => {
 
   test('generates deterministic Codex metadata and detects stale artifacts in check mode', () => {
     const fixture = createFixture();
+    const start = fixture.contract.skills.find((skill) => skill.id === 'start');
+    const upstream = '# Retained upstream guidance\n';
+    writeFile(
+      fixture.root,
+      path.join(start.sources.en, 'UPSTREAM.md'),
+      upstream,
+    );
     const first = generatePlatformArtifacts({ repoRoot: fixture.root });
     expect(first.ok).toBe(true);
-    expect(first.written).toHaveLength(fixture.contract.skills.length * 3 + 2);
+    expect(first.written).toHaveLength(fixture.contract.skills.length * 3 + 4);
+
+    expect(fs.readFileSync(
+      path.join(fixture.root, 'plugins/spk/skills/start/UPSTREAM.md'),
+      'utf8',
+    )).toBe(upstream);
+    expect(fs.readFileSync(
+      path.join(fixture.root, 'plugins/spk-codex/skills/start/UPSTREAM.md'),
+      'utf8',
+    )).toBe(upstream);
 
     const firstManifest = fs.readFileSync(
       path.join(fixture.root, CODEX_MANIFEST_RELATIVE),

@@ -240,6 +240,26 @@ describe('provider-neutral workflow and authority contracts', () => {
     expect(text).toMatch(/Never merge/i);
   });
 
+  test('pull-request workflows pin the selected repository instead of inferring a fork parent', () => {
+    const repositoryGuidance = read(path.join(ROOT, 'CLAUDE.md'));
+    expect(repositoryGuidance).toContain('GH_REPO=apipoj/skills');
+    expect(flat(repositoryGuidance)).toMatch(/never rely on.*fork parent/i);
+
+    for (const name of ['pr', 'task-to-pr']) {
+      const english = read(path.join(SHARED_SKILLS, name, 'SKILL.md'));
+      const thai = read(nativeSkillFile(name));
+
+      for (const text of [english, thai]) {
+        expect(text).toContain('GH_REPO=<owner/repo>');
+        expect(flat(text)).toMatch(/explicit repository selector/i);
+        expect(flat(text)).toMatch(/fork parent/i);
+      }
+
+      const contract = CONTRACT_BY_ID.get(name);
+      expect(flat(JSON.stringify(contract.workflow))).toMatch(/explicit repository selector/i);
+    }
+  });
+
   test('English and Thai implementation workflows never imply automatic commits', () => {
     for (const file of [
       path.join(SHARED_SKILLS, 'code', 'SKILL.md'),
