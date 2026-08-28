@@ -583,12 +583,29 @@ function addCodexRuntimeArtifacts(artifacts, repoRoot) {
   }
 }
 
+function addSkillDependencyArtifacts(artifacts, repoRoot, skill) {
+  const sourceRoot = path.join(repoRoot, skill.sources.en);
+  for (const file of regularFilesRecursively(sourceRoot)) {
+    const relative = path.relative(sourceRoot, file);
+    if (relative === 'SKILL.md' || relative.startsWith(`agents${path.sep}`)) continue;
+
+    const content = fs.readFileSync(file, 'utf8').replace(/\r\n/g, '\n');
+    for (const payloadRoot of [PLUGIN_ROOT_RELATIVE, CODEX_PLUGIN_ROOT_RELATIVE]) {
+      artifacts.set(
+        path.join(payloadRoot, 'skills', skill.id, relative),
+        content,
+      );
+    }
+  }
+}
+
 function buildArtifactMap(contract, manifest, repoRoot = REPO_ROOT) {
   const artifacts = new Map();
   artifacts.set(CODEX_MANIFEST_RELATIVE, renderPluginManifest(contract, manifest));
   artifacts.set(MARKETPLACE_RELATIVE, renderMarketplace(contract));
   addCodexRuntimeArtifacts(artifacts, repoRoot);
   for (const skill of contract.skills) {
+    addSkillDependencyArtifacts(artifacts, repoRoot, skill);
     const sourceRelative = path.join(
       PLUGIN_ROOT_RELATIVE,
       'skills',
@@ -782,6 +799,7 @@ module.exports = {
   PLUGIN_ROOT_RELATIVE,
   REPO_ROOT,
   SHARED_SKILL_FRONTMATTER_KEYS,
+  addSkillDependencyArtifacts,
   buildArtifactMap,
   compareArtifactMap,
   formatErrors,

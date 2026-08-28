@@ -7,6 +7,7 @@ const {
   NO_COUNTERPART,
   bodyOf,
   buildHashIndex,
+  indexUpstreamSkillFiles,
   normalizeEol,
   renderCanonicalLine,
   renderPage,
@@ -88,6 +89,36 @@ describe('upstream reference doc generator', () => {
     expect(index.pages['docs/engineering/tdd.md']).toBe(
       '44261ce242e1b99d52c7d2a4cb6dbcb5a4ab507bed9b9b303062a969fafe1d1e',
     );
+  });
+
+  test('indexes pinned upstream skill instructions and their sibling files', () => {
+    const index = indexUpstreamSkillFiles([
+      'skills/engineering/tdd/SKILL.md',
+      'skills/engineering/tdd/tests.md',
+      'skills/engineering/tdd/agents/openai.yaml',
+      'skills/productivity/teach/SKILL.md',
+    ]);
+
+    expect(index.get('tdd')).toEqual({
+      skillPath: 'skills/engineering/tdd/SKILL.md',
+      auxiliaryPaths: [
+        'skills/engineering/tdd/agents/openai.yaml',
+        'skills/engineering/tdd/tests.md',
+      ],
+    });
+    expect(index.get('teach').skillPath).toBe('skills/productivity/teach/SKILL.md');
+  });
+
+  test('hash index can pin retained upstream skill mirrors alongside docs', () => {
+    const index = buildHashIndex(
+      { 'docs/engineering/tdd.md': 'Docs.\n' },
+      'abc123',
+      { 'skills/engineering/tdd/UPSTREAM.md': 'Skill.\n' },
+    );
+
+    expect(index.skillMirrors).toEqual({
+      'skills/engineering/tdd/UPSTREAM.md': sha256('Skill.\n'),
+    });
   });
 
   test('maps every shipped reference page to a reviewed decision', () => {

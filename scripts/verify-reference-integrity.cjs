@@ -6,6 +6,7 @@ const childProcess = require('child_process');
 const REPO_ROOT = path.join(__dirname, '..');
 const COMMAND_REF_RE = /\/spk:([a-z][a-z0-9-]*)/g;
 const SPK_REF_RE = /(?<!\/)\bspk:([a-z][a-z0-9-]*)/g;
+const MARKDOWN_LINK_RE = /!?\[[^\]]*\]\(\s*(?:<([^>]+)>|([^\s)]+))/g;
 
 const DEFAULT_SCAN_ROOTS = [
   'README.md',
@@ -17,6 +18,7 @@ const DEFAULT_SCAN_ROOTS = [
   'RESOLVER.md',
   'docs',
   'plugins/spk',
+  'plugins/spk-codex',
 ];
 
 function readJson(file) {
@@ -84,6 +86,24 @@ function buildRegistry(rootDir = REPO_ROOT) {
   return { commands, agents };
 }
 
+function isPackagedSkillFile(relFile) {
+  const packaged = relFile.startsWith('plugins/spk/skills/') ||
+    relFile.startsWith('plugins/spk-codex/skills/');
+  return packaged && ['SKILL.md', 'UPSTREAM.md'].includes(path.basename(relFile));
+}
+
+function localMarkdownTarget(rawTarget) {
+  const withoutFragment = rawTarget.split('#', 1)[0];
+  if (!withoutFragment || withoutFragment.startsWith('/') || /^[a-z][a-z0-9+.-]*:/i.test(withoutFragment)) {
+    return null;
+  }
+  try {
+    return decodeURIComponent(withoutFragment);
+  } catch {
+    return withoutFragment;
+  }
+}
+
 function collectReferencesFromFile(rootDir, relFile) {
   const content = fs.readFileSync(path.join(rootDir, relFile), 'utf-8');
   const refs = [];
@@ -99,6 +119,17 @@ function collectReferencesFromFile(rootDir, relFile) {
     let spkMatch;
     while ((spkMatch = SPK_REF_RE.exec(line)) !== null) {
       refs.push({ type: 'spk', name: spkMatch[1], file: relFile, line: idx + 1 });
+    }
+
+    if (isPackagedSkillFile(relFile)) {
+      MARKDOWN_LINK_RE.lastIndex = 0;
+      let linkMatch;
+      while ((linkMatch = MARKDOWN_LINK_RE.exec(line)) !== null) {
+        const target = localMarkdownTarget(linkMatch[1] || linkMatch[2]);
+        if (target) {
+          refs.push({ type: 'local', target, file: relFile, line: idx + 1 });
+        }
+      }
     }
   });
 
@@ -133,7 +164,20 @@ function collectReferenceIntegrityErrors(rootDir = REPO_ROOT, files = null) {
 
   for (const file of scanFiles) {
     for (const ref of collectReferencesFromFile(rootDir, file)) {
-      if (ref.type === 'command') {
+      if (ref.type === 'local') {
+        const source = path.resolve(rootDir, ref.file);
+        const target = path.resolve(path.dirname(source), ref.target);
+        if (path.basename(source) === 'UPSTREAM.md' && source === target) {
+          errors.push(
+            `${ref.file}:${ref.line}: local reference points to itself: ${ref.target}`,
+          );
+        } else if (
+          !fs.existsSync(target) &&
+          (path.basename(source) === 'SKILL.md' || path.extname(ref.target) !== '')
+        ) {
+          errors.push(`${ref.file}:${ref.line}: missing local reference ${ref.target}`);
+        }
+      } else if (ref.type === 'command') {
         if (!commands.has(ref.name)) {
           errors.push(`${ref.file}:${ref.line}: unknown /spk:${ref.name} command`);
         }
@@ -166,5 +210,7 @@ module.exports = {
   collectReferencesFromFile,
   collectResolverCoverageErrors,
   isUnderScanRoots,
+  isPackagedSkillFile,
   listTrackedScanFiles,
+  localMarkdownTarget,
 };

@@ -1,29 +1,16 @@
 ---
 name: handoff
-description: ย่อบริบทที่จำเป็นเป็น handoff ซึ่ง session ใหม่อ่านแล้วทำงานต่อได้โดยไม่เดา
+description: Compact the current conversation into a handoff document for another agent to pick up.
+argument-hint: "What will the next session be used for?"
 disable-model-invocation: true
 ---
-# ส่งต่องานข้าม session
 
-ตอบเป็นภาษาไทยธรรมชาติแบบเพื่อนร่วมงานเป็นค่าเริ่มต้น ใช้ศัพท์เทคนิคภาษาอังกฤษเมื่อทำให้อ่านง่ายกว่า และเริ่มจากผลลัพธ์หรือ decision ที่ผู้ใช้ต้องรู้ก่อน
+Write a handoff document summarising the current conversation so a fresh agent can continue the work. Save to the temporary directory of the user's OS - not the current workspace.
 
-## Workflow
+Include a "suggested skills" section in the document, which suggests skills that the agent should invoke.
 
-1. อ่านคำขอ repository instructions และหลักปฏิบัติฉบับเต็มใน [UPSTREAM.md](UPSTREAM.md)
-2. ใช้ smart defaults เมื่อความเสี่ยงต่ำ ถ้ามี decision ที่เปลี่ยน scope ให้ถามเพียงหนึ่งคำถามพร้อมคำแนะนำ
-3. ทำงานตาม discipline ของ skill นี้เป็น slice สั้น ๆ และแสดง progress เท่าที่ช่วยให้ตรวจสอบได้
-4. สรุปผล หลักฐาน ความเสี่ยง และสิ่งที่ยังต้องตัดสินใจโดยไม่ยืดเยื้อ
+Do not duplicate content already captured in other artifacts (specs, plans, ADRs, issues, commits, diffs). Reference them by path or URL instead.
 
-## จุดเน้น
+Redact any sensitive information, such as API keys, passwords, or personally identifiable information.
 
-ย่อบริบทที่จำเป็นเป็น handoff ซึ่ง session ใหม่อ่านแล้วทำงานต่อได้โดยไม่เดา
-
-## Evidence Receipt
-
-รายงาน artifact, คำสั่งตรวจสอบ, ผลจริง, ความเสี่ยง และ next action ที่เล็กที่สุด
-
-## Guardrails
-
-- อย่าขยาย scope เอง
-- อย่า commit, push, publish หรือแก้ระบบภายนอกโดยไม่มี approval ที่ตรงเป้าหมาย
-- ถ้าหลักฐานไม่พอ ให้บอกช่องว่างแทนการเดา
+If the user passed arguments, treat them as a description of what the next session will focus on and tailor the doc accordingly.

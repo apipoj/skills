@@ -86,11 +86,16 @@ function sha256(text) {
   return crypto.createHash('sha256').update(text, 'utf8').digest('hex');
 }
 
-function buildHashIndex(pages, pin) {
+function buildHashIndex(pages, pin, skillMirrors = {}) {
   const entries = Object.keys(pages)
     .sort()
     .map(docPath => [docPath, sha256(pages[docPath])]);
-  return { pin, algorithm: 'sha256', pages: Object.fromEntries(entries) };
+  const index = { pin, algorithm: 'sha256', pages: Object.fromEntries(entries) };
+  const mirrorEntries = Object.keys(skillMirrors)
+    .sort()
+    .map(mirrorPath => [mirrorPath, sha256(skillMirrors[mirrorPath])]);
+  if (mirrorEntries.length > 0) index.skillMirrors = Object.fromEntries(mirrorEntries);
+  return index;
 }
 
 function readUpstreamPage(upstreamDir, pin, docPath) {
@@ -112,6 +117,66 @@ function listUpstreamPages(upstreamDir, pin) {
   return output.trim().split('\n').filter(file => file.endsWith('.md'));
 }
 
+function listUpstreamSkillFiles(upstreamDir, pin) {
+  const output = childProcess.execFileSync(
+    'git',
+    ['ls-tree', '-r', '--name-only', pin, '--', 'skills/engineering', 'skills/productivity'],
+    { cwd: upstreamDir, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] },
+  );
+  return output.trim().split('\n').filter(Boolean);
+}
+
+function indexUpstreamSkillFiles(files) {
+  const index = new Map();
+  for (const file of [...files].sort()) {
+    const match = file.match(/^skills\/(?:engineering|productivity)\/([^/]+)\/(.+)$/);
+    if (!match) continue;
+    const [, skillName, relative] = match;
+    const entry = index.get(skillName) || { skillPath: null, auxiliaryPaths: [] };
+    if (relative === 'SKILL.md') entry.skillPath = file;
+    else entry.auxiliaryPaths.push(file);
+    index.set(skillName, entry);
+  }
+  return index;
+}
+
+function buildUpstreamSkillArtifactMap(upstreamDir, pin, contract, repoRoot = REPO_ROOT) {
+  const upstreamIndex = indexUpstreamSkillFiles(listUpstreamSkillFiles(upstreamDir, pin));
+  const artifacts = new Map();
+  const promoted = contract.skills.filter(skill =>
+    skill.tier === 'core' && skill.origin?.repository === 'mattpocock/skills',
+  );
+
+  for (const skill of promoted) {
+    const upstream = upstreamIndex.get(skill.origin.skill);
+    if (!upstream?.skillPath) {
+      throw new Error(
+        `${skill.id}: pinned upstream skill ${skill.origin.skill} has no SKILL.md`,
+      );
+    }
+    const skillBody = readUpstreamPage(upstreamDir, pin, upstream.skillPath);
+    const upstreamRoot = path.posix.dirname(upstream.skillPath);
+
+    for (const locale of ['th', 'en']) {
+      const localRoot = skill.sources[locale];
+      artifacts.set(path.posix.join(localRoot, 'UPSTREAM.md'), skillBody);
+
+      for (const upstreamAuxiliary of upstream.auxiliaryPaths) {
+        const relative = path.posix.relative(upstreamRoot, upstreamAuxiliary);
+        if (relative.startsWith('agents/')) continue;
+        const localTarget = path.posix.join(localRoot, relative);
+        if (fs.existsSync(path.join(repoRoot, localTarget))) continue;
+        artifacts.set(
+          localTarget,
+          readUpstreamPage(upstreamDir, pin, upstreamAuxiliary),
+        );
+      }
+    }
+  }
+
+  return artifacts;
+}
+
 function main() {
   const args = process.argv.slice(2);
   const fromIndex = args.indexOf('--from');
@@ -123,6 +188,9 @@ function main() {
   const upstreamDir = path.resolve(args[fromIndex + 1]);
   const lock = JSON.parse(
     fs.readFileSync(path.join(REPO_ROOT, 'docs', 'upstream', 'upstream-lock.json'), 'utf8'),
+  );
+  const contract = JSON.parse(
+    fs.readFileSync(path.join(REPO_ROOT, 'contracts', 'workflows.json'), 'utf8'),
   );
   const pin = pinIndex >= 0 ? args[pinIndex + 1] : lock.commit;
 
@@ -148,6 +216,17 @@ function main() {
     bodies[docPath] = body;
   }
 
+  const skillArtifacts = buildUpstreamSkillArtifactMap(
+    upstreamDir,
+    pin,
+    contract,
+  );
+  for (const [relative, content] of skillArtifacts) {
+    const target = path.join(REPO_ROOT, relative);
+    fs.mkdirSync(path.dirname(target), { recursive: true });
+    fs.writeFileSync(target, content);
+  }
+
   for (const bucket of ['docs/engineering', 'docs/productivity']) {
     const dir = path.join(REPO_ROOT, bucket);
     if (!fs.existsSync(dir)) continue;
@@ -162,9 +241,19 @@ function main() {
 
   fs.writeFileSync(
     path.join(REPO_ROOT, 'docs', 'upstream', 'reference-hashes.json'),
-    `${JSON.stringify(buildHashIndex(bodies, pin), null, 2)}\n`,
+    `${JSON.stringify(buildHashIndex(
+      bodies,
+      pin,
+      Object.fromEntries(
+        [...skillArtifacts].filter(([relative]) => relative.endsWith('/UPSTREAM.md')),
+      ),
+    ), null, 2)}\n`,
   );
-  console.log(`Synced ${docPaths.length} upstream reference pages at ${pin.slice(0, 7)}`);
+  const mirrorCount = [...skillArtifacts.keys()]
+    .filter(relative => relative.endsWith('/UPSTREAM.md')).length;
+  console.log(
+    `Synced ${docPaths.length} upstream reference pages and ${mirrorCount} skill mirrors at ${pin.slice(0, 7)}`,
+  );
 }
 
 if (require.main === module) main();
@@ -174,9 +263,12 @@ module.exports = {
   CANONICAL_BY_DOC,
   NO_COUNTERPART,
   bodyOf,
+  buildUpstreamSkillArtifactMap,
   buildHashIndex,
   canonicalLine,
   listUpstreamPages,
+  listUpstreamSkillFiles,
+  indexUpstreamSkillFiles,
   normalizeEol,
   readUpstreamPage,
   renderCanonicalLine,

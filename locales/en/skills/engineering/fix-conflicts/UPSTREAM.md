@@ -1,28 +1,14 @@
 ---
 name: resolving-merge-conflicts
-description: แก้ merge หรือ rebase conflict ทีละ hunk โดยตามเจตนาของทั้งสองฝั่งและตรวจผลก่อนเดินต่อ
+description: "Use when you need to resolve an in-progress git merge/rebase conflict."
 ---
-# แก้ merge conflict ตามเจตนา
 
-ตอบเป็นภาษาไทยธรรมชาติแบบเพื่อนร่วมงานเป็นค่าเริ่มต้น ใช้ศัพท์เทคนิคภาษาอังกฤษเมื่อทำให้อ่านง่ายกว่า และเริ่มจากผลลัพธ์หรือ decision ที่ผู้ใช้ต้องรู้ก่อน
+1. **See the current state** of the merge/rebase. Check git history, and the conflicting files.
 
-## Workflow
+2. **Find the primary sources** for each conflict. Understand deeply why each change was made, and what the original intent was. Read the commit messages, check the PRs, check original issues/tickets.
 
-1. อ่านคำขอ repository instructions และหลักปฏิบัติฉบับเต็มใน [UPSTREAM.md](UPSTREAM.md)
-2. ใช้ smart defaults เมื่อความเสี่ยงต่ำ ถ้ามี decision ที่เปลี่ยน scope ให้ถามเพียงหนึ่งคำถามพร้อมคำแนะนำ
-3. ทำงานตาม discipline ของ skill นี้เป็น slice สั้น ๆ และแสดง progress เท่าที่ช่วยให้ตรวจสอบได้
-4. สรุปผล หลักฐาน ความเสี่ยง และสิ่งที่ยังต้องตัดสินใจโดยไม่ยืดเยื้อ
+3. **Resolve each hunk.** Preserve both intents where possible. Where incompatible, pick the one matching the merge's stated goal and note the trade-off. Do **not** invent new behaviour. Always resolve; never `--abort`.
 
-## จุดเน้น
+4. Discover the project's **automated checks** and run them — typically typecheck, then tests, then format. Fix anything the merge broke.
 
-แก้ merge หรือ rebase conflict ทีละ hunk โดยตามเจตนาของทั้งสองฝั่งและตรวจผลก่อนเดินต่อ
-
-## Evidence Receipt
-
-รายงาน artifact, คำสั่งตรวจสอบ, ผลจริง, ความเสี่ยง และ next action ที่เล็กที่สุด
-
-## Guardrails
-
-- อย่าขยาย scope เอง
-- อย่า commit, push, publish หรือแก้ระบบภายนอกโดยไม่มี approval ที่ตรงเป้าหมาย
-- ถ้าหลักฐานไม่พอ ให้บอกช่องว่างแทนการเดา
+5. **Finish the merge/rebase.** Stage everything and commit. If rebasing, continue the rebase process until all commits are rebased.

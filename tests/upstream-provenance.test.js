@@ -30,6 +30,20 @@ describe('reviewed upstream provenance', () => {
     }
   });
 
+  test('retained UPSTREAM mirrors never point back to themselves', () => {
+    const recursive = [];
+    for (const skill of contract.skills) {
+      for (const locale of ['th', 'en']) {
+        const file = path.join(ROOT, skill.sources[locale], 'UPSTREAM.md');
+        if (!fs.existsSync(file)) continue;
+        if (fs.readFileSync(file, 'utf8').includes('[UPSTREAM.md](UPSTREAM.md)')) {
+          recursive.push(path.relative(ROOT, file));
+        }
+      }
+    }
+    expect(recursive).toEqual([]);
+  });
+
   test('rejects a malformed or incomplete lock', () => {
     const fixture = fs.mkdtempSync(path.join(os.tmpdir(), 'apipoj-upstream-lock-'));
     fs.mkdirSync(path.join(fixture, 'docs', 'upstream'), { recursive: true });
@@ -80,6 +94,37 @@ describe('upstream reference doc fidelity', () => {
     const file = path.join(root, 'docs', 'engineering', 'tdd.md');
     fs.writeFileSync(file, `${fs.readFileSync(file, 'utf8')}\nSmuggled sentence.\n`);
     expect(collectReferenceDocErrors(root).join('\n')).toMatch(/tdd\.md: content does not match/);
+  });
+
+  test('rejects an edited retained upstream skill mirror', () => {
+    const root = referenceFixture();
+    const mirror = 'skills/engineering/tdd/UPSTREAM.md';
+    fs.mkdirSync(path.join(root, path.dirname(mirror)), { recursive: true });
+    fs.writeFileSync(path.join(root, mirror), 'Pinned skill.\n');
+    fs.writeFileSync(
+      path.join(root, 'docs', 'upstream', 'reference-hashes.json'),
+      JSON.stringify(buildHashIndex(
+        { 'docs/engineering/tdd.md': '## What it does\n\nBody.\n' },
+        'abc123',
+        { [mirror]: 'Pinned skill.\n' },
+      )),
+    );
+    expect(collectReferenceDocErrors(root)).toEqual([]);
+
+    fs.appendFileSync(path.join(root, mirror), 'Drift.\n');
+    expect(collectReferenceDocErrors(root).join('\n')).toMatch(
+      /UPSTREAM\.md: content does not match the pinned upstream skill/,
+    );
+  });
+
+  test('rejects a retained upstream skill mirror missing from the hash index', () => {
+    const root = referenceFixture();
+    const mirror = path.join(root, 'locales/en/skills/engineering/tdd/UPSTREAM.md');
+    fs.mkdirSync(path.dirname(mirror), { recursive: true });
+    fs.writeFileSync(mirror, 'Unindexed.\n');
+    expect(collectReferenceDocErrors(root).join('\n')).toMatch(
+      /UPSTREAM\.md: shipped without a hash entry/,
+    );
   });
 
   test('the body hash ignores banner text, which is ours to own', () => {
