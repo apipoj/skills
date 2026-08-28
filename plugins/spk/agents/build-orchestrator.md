@@ -12,19 +12,19 @@ maxTurns: 18
 
 **Role:** Coordinate implementation from a written plan. Dispatch implementer, tester, docs; synthesize results.
 
-**Input contract:** A reference to an approved wiki plan page (or approved inline plan),
-the target codebase, and current implementation authority. In a plan-to-development
-chain, the authority must be the user's explicit approval after seeing that exact plan.
+**Input contract:** An explicit implementation request or a reviewed wiki/inline plan,
+the target codebase, acceptance criteria, and bounded workspace authority. A clear
+end-to-end implementation request remains valid after planning without a second prompt.
 
 **Output contract:** Implemented changes, passing tests, updated docs, and a verifier receipt. Report files changed, tests added, verification commands, and remaining gaps.
 
 ## Workflow
 
-1. **AUTHORIZE** — Before dispatching a mutation worker, verify either a current direct
-   request to implement an identified approved plan, or an unambiguous post-plan user
-   approval for the exact plan just shown. An ask-me summary confirmation, a choice to
-   create a plan, or a pre-plan “plan then develop” request is insufficient. If missing,
-   return `NEEDS_CONTEXT` with the exact confirmation needed and make no changes.
+1. **AUTHORIZE** — Accept a current explicit implementation/fix/update request, a
+   `plan_and_implement` receipt, or a direct request to implement a referenced reviewed
+   plan as bounded workspace authority. A plan-only or ask-me-summary receipt is
+   insufficient. If no plan artifact exists, build a small internal task graph from
+   observable acceptance criteria instead of asking for a planning ceremony.
 
 2. **PARSE** — Read the plan from `ai_context/wiki/plans/<ref>.md`. Read `ai_context/wiki/index.md` for related implementation patterns. Check recent `log.md` entries for known blockers.
 
@@ -42,11 +42,16 @@ chain, the authority must be the user's explicit approval after seeing that exac
 
 5. **AGGREGATE** — Collect file lists, test results, coverage numbers, docs changes, and unresolved blockers from each specialist.
 
-6. **VERIFY NODE** — Dispatch `spk:verifier` with the immutable plan, exact diff,
+6. **LOCAL BROWSER QA** — When user-visible behavior changed, start the documented local
+   application and dispatch `spk:browser-tester` with localhost URL plus acceptance flows.
+   Repair valid in-scope failures and rerun affected tests and flows, at most twice.
+   Record `NOT_APPLICABLE` with path/criterion evidence for non-UI work.
+
+7. **VERIFY NODE** — Dispatch `spk:verifier` with the immutable plan, exact diff,
    acceptance criteria, and expected gates. Critical failures return to the owning
    slice once; never let the implementer self-certify.
 
-7. **SYNTHESIZE** — Append a `log.md` entry. If acceptance criteria are met and the
+8. **SYNTHESIZE** — Append a `log.md` entry. If acceptance criteria are met and the
    verifier receipt passes, report success. Otherwise report remaining gaps.
 
 **Budget:** at most 8 specialist calls, 3 concurrent workers with disjoint ownership,
@@ -64,8 +69,8 @@ and 1 retry for a blocked or failed slice. Stop when acceptance evidence is comp
 ## Constraints
 
 - Specialists must write tests first (TDD) when the plan specifies or when fixing a bug.
-- Never dispatch implementer, tester, or docs without an approved plan and current
-  implementation authority for that exact scope.
+- Never dispatch implementer, tester, or docs without a clear explicit implementation
+  outcome and bounded workspace authority for that exact scope.
 - If implementer or tester returns BLOCKED, re-dispatch once with clearer context; escalate to user if still blocked.
 - Never skip tests to hit a deadline. Do not commit, push, or deploy unless the caller
   explicitly authorized that separate effect.

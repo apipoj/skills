@@ -1,5 +1,23 @@
 # Apipoj Skills
 
+## 6.5.0 - 2026-08-28
+
+### Added
+
+- Every shipped workflow now declares an autonomy profile with explicit prompt and repair budgets. Low-risk local work can continue AFK within its declared effect boundary, while material decisions and external effects remain visible and bounded.
+- `task_bound` approvals authorize one exact task-to-PR run instead of interrupting for each reversible step. The bound run may create its branch or worktree, implement, test, perform local browser QA when a UI exists, run an independent review, commit, push, open the PR, observe CI, and repair failures within the approved scope.
+- The workflow contract advances to schema v2. Generation now validates every autonomy profile and emits it into all 40 English, Thai, Claude, and Codex skill payloads; SkillLab covers the new autonomous and boundary-stop outcomes.
+
+### Changed
+
+- `plan-and-implement` carries already granted workspace authority into implementation, and `code` builds a compact micro-plan when it receives an executable request without a separate plan artifact. Neither workflow asks for a redundant second approval before local edits.
+- Planning, build, browser-test, and PR agents now share task-bound authority, bounded repair loops, and explicit evidence receipts. GitHub operations pin the selected repository explicitly and verify the returned repository or PR URL.
+
+### Guardrails
+
+- Autonomous runs never merge, deploy, force-push, write to the protected or default branch, expand scope, weaken secret scanning, or cross a newly discovered material decision. Those boundaries still require fresh exact approval.
+- Browser QA is required when the changed product exposes a local UI and is reported as `NOT_APPLICABLE` with evidence when no browser surface exists.
+
 ## 6.4.1 - 2026-08-28
 
 ### Fixed

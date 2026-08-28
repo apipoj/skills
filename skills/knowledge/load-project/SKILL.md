@@ -56,6 +56,10 @@ Scan source-code folders และสร้างหรืออัพเดต 
 - Secrets ที่พบ: <none>
 ```
 
+## Autonomy Profile
+
+`afk_local` — ทำงานต่อเองได้ถึง effect level ที่ skill นี้ประกาศเท่านั้น และห้ามยกระดับ read-only เป็น write; prompt budget 0, repair budget 3 รอบ ก่อนหยุดต้องบันทึก phase, assumption, evidence, attempts และ next action ที่ทำต่อได้
+
 ## ข้อควรระวัง
 
 - อย่าแก้ product source code

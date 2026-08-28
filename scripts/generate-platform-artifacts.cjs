@@ -103,8 +103,8 @@ function validateContract(contract, manifest) {
   if (!contract || typeof contract !== 'object' || Array.isArray(contract)) {
     return ['contract must be a JSON object'];
   }
-  if (contract.schemaVersion !== 1) {
-    errors.push('schemaVersion must be 1');
+  if (contract.schemaVersion !== 2) {
+    errors.push('schemaVersion must be 2');
   }
 
   const plugin = contract.plugin;
@@ -139,6 +139,39 @@ function validateContract(contract, manifest) {
   const effectLevels = contract.effectLevels;
   if (!effectLevels || typeof effectLevels !== 'object' || Array.isArray(effectLevels)) {
     errors.push('effectLevels must be an object');
+  }
+
+  const approvalModes = contract.approvalModes;
+  if (!approvalModes || typeof approvalModes !== 'object' || Array.isArray(approvalModes)) {
+    errors.push('approvalModes must be an object');
+  }
+
+  const autonomyProfiles = contract.autonomyProfiles;
+  if (!autonomyProfiles || typeof autonomyProfiles !== 'object' || Array.isArray(autonomyProfiles)) {
+    errors.push('autonomyProfiles must be an object');
+  } else {
+    const expectedProfiles = ['afk_local', 'afk_to_pr', 'boundary_gated', 'decision_aware'];
+    const actualProfiles = Object.keys(autonomyProfiles).sort();
+    if (JSON.stringify(actualProfiles) !== JSON.stringify(expectedProfiles)) {
+      errors.push(`autonomyProfiles must define exactly: ${expectedProfiles.join(', ')}`);
+    }
+    for (const [profileName, profile] of Object.entries(autonomyProfiles)) {
+      const profileLabel = `autonomyProfiles.${profileName}`;
+      if (!profile || typeof profile !== 'object' || Array.isArray(profile)) {
+        errors.push(`${profileLabel} must be an object`);
+        continue;
+      }
+      if (!Number.isInteger(profile.promptBudget) || profile.promptBudget < 0 || profile.promptBudget > 1) {
+        errors.push(`${profileLabel}.promptBudget must be 0 or 1`);
+      }
+      if (!Number.isInteger(profile.repairBudget) || profile.repairBudget < 1 || profile.repairBudget > 3) {
+        errors.push(`${profileLabel}.repairBudget must be between 1 and 3`);
+      }
+      requireNonEmptyString(profile.invocationAuthority, `${profileLabel}.invocationAuthority`, errors);
+      requireNonEmptyString(profile.continuation, `${profileLabel}.continuation`, errors);
+      requireStringArray(profile.pauseOnlyFor, `${profileLabel}.pauseOnlyFor`, errors);
+      requireNonEmptyString(profile.checkpoint, `${profileLabel}.checkpoint`, errors);
+    }
   }
 
   if (!Array.isArray(contract.skills)) {
@@ -261,6 +294,19 @@ function validateContract(contract, manifest) {
       !Object.prototype.hasOwnProperty.call(effectLevels, skill.effectLevel)
     ) {
       errors.push(`${label}.effectLevel must reference a declared effect level`);
+    }
+    if (
+      typeof skill.autonomyProfile !== 'string' ||
+      !autonomyProfiles ||
+      !Object.prototype.hasOwnProperty.call(autonomyProfiles, skill.autonomyProfile)
+    ) {
+      errors.push(`${label}.autonomyProfile must reference a declared autonomy profile`);
+    }
+    if (
+      skill.approvalMode !== undefined &&
+      (!approvalModes || !Object.prototype.hasOwnProperty.call(approvalModes, skill.approvalMode))
+    ) {
+      errors.push(`${label}.approvalMode must reference a declared approval mode`);
     }
     requireNonEmptyString(skill.role, `${label}.role`, errors);
 

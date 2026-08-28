@@ -36,6 +36,10 @@ Skill นี้เป็น manual-only และทำโดยตรงใน 
 
 `intent_digest` ยังอยู่ใน envelope ในฐานะตัวจับ drift และเป็นค่าที่ส่งให้ uninstall module คำนวณใหม่แล้วเทียบก่อนลบ ไม่ใช่ให้ user พิมพ์
 
+## Autonomy Profile
+
+`boundary_gated` — เตรียม intent ให้ครบแล้วขออนุมัติ boundary เพียงครั้งเดียว prompt budget 1, repair budget 2 รอบ ก่อนหยุดต้องบันทึก phase, assumption, evidence, attempts และ next action ที่ทำต่อได้
+
 ## Evidence Receipt
 
 คืน `spk.evidence/v1` ที่มี approval digest, removed paths, edited ranges, preserved verification, recovery, risks และ next action

@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "plugin": {
     "name": "spk",
     "displayName": "Apipoj Skills",
@@ -34,25 +34,26 @@
   },
   "effectLevels": {
     "read_only": "May inspect local project state but must not change files or external systems.",
-    "workspace_write": "May create or edit project files inside the requested scope.",
-    "git_write": "May change Git state only after the workflow's explicit approval gate.",
-    "external_write": "May change a remote system only after explicit approval for the exact target.",
+    "workspace_write": "May create or edit project files inside an explicit requested scope without another prompt.",
+    "git_write": "May change recoverable local Git state when the current explicit workflow request grants that bounded authority; remote writes remain separate.",
+    "external_write": "May change a remote system only through the workflow approval mode and declared target boundary.",
     "destructive": "May remove data only after showing exact targets and receiving explicit approval."
   },
   "approvalModes": {
     "confirm": "Proceed when the latest user message unambiguously accepts the intent shown in the immediately preceding message. A click on the approving option or a plain affirmative both count. A question, a change request, a quoted affirmative, or an answer given before the intent was shown does not.",
-    "bound_token": "Proceed only when the latest user message also carries the digest of the current intent. Match the token anywhere in the message, ignore hex case, strip surrounding backticks and quotes, and accept a prefix of at least 12 hex characters that uniquely matches. A plain affirmative is never sufficient."
+    "bound_token": "Proceed only when the latest user message also carries the digest of the current intent. Match the token anywhere in the message, ignore hex case, strip surrounding backticks and quotes, and accept a prefix of at least 12 hex characters that uniquely matches. A plain affirmative is never sufficient.",
+    "task_bound": "An explicit current request to take one identified task to a pull request authorizes bounded fetch, branch/worktree creation, workspace edits, local QA, commit, push to the task pull-request ref, pull-request create/update, and in-scope CI repair. It never authorizes merge, deployment, destructive production actions, protected-branch writes, force-push, unrelated ticket writes, or scope expansion."
   },
   "interactionPolicy": {
     "choicePrompt": "When a decision or confirmation is needed, use the host's structured choice prompt if one is available; otherwise present a numbered list.",
     "options": "Options must be genuinely distinct and exactly one is marked as recommended. Never force an open-ended question into fixed options.",
     "labels": "Every option label names the real target or outcome. A bare 'Approve' label is invalid; a bound_token label carries a 12-character digest prefix.",
     "freeForm": "A free-form answer stays possible at every prompt.",
-    "revalidation": "Any drift between the shown intent and freshly computed state invalidates approval. Recompute immediately before the write, and show the new intent and ask again when it differs. One approval authorizes one intent and never carries to the next gate or to a retry after a change."
+    "revalidation": "Recompute current state immediately before a write. Only material drift in target, semantic payload, path set, revision, authority, risk, or rollback invalidates approval. Incidental metadata, observation order, timestamps, and retry bookkeeping do not. A boundary approval remains valid for the declared operation and retry budget while material state stays unchanged."
   },
   "responsePolicy": {
     "heading": "## Response Rules",
-    "block": "Reply in the user's language.\n\n- **Simplicity** — one idea per sentence; the plain word over the impressive one.\n- **Brevity** — answer first, then stop; no preamble, no restating the request, no summarizing what you just wrote.\n- **Clarity** — lead with the outcome, then what changed and what it costs; label an unverified claim as unverified.\n- **Humanity** — write as a colleague, not a system; familiar technical English over literal translation; no performative enthusiasm, no apology theater, no location stereotypes.\n- **Terminology** — reach for the precise domain term and keep it in its English form; never respell it phonetically in the reply's script (`ผลเทสท์` for `test`) or translate it literally (`หูจับ` for `handle`). Gloss an unfamiliar term once — `CPA (ต้นทุนต่อการได้ลูกค้าหนึ่งราย)` — then anchor it with one concrete example.\n\nUse a reversible smart default; ask one material question only when the answer changes scope, risk, or success.",
+    "block": "Reply in the user's language.\n\n- **Simplicity** — one idea per sentence; the plain word over the impressive one.\n- **Brevity** — answer first, then stop; no preamble, no restating the request, no summarizing what you just wrote.\n- **Clarity** — lead with the outcome, then what changed and what it costs; label an unverified claim as unverified.\n- **Humanity** — write as a colleague, not a system; familiar technical English over literal translation; no performative enthusiasm, no apology theater, no location stereotypes.\n- **Terminology** — reach for the precise domain term and keep it in its English form; never respell it phonetically in the reply's script (`ผลเทสท์` for `test`) or translate it literally (`หูจับ` for `handle`). Gloss an unfamiliar term once — `CPA (ต้นทุนต่อการได้ลูกค้าหนึ่งราย)` — then anchor it with one concrete example.\n\nKeep working without user input while the requested outcome remains inside current authority. Use a reversible smart default and record assumptions. Ask only when one material user-owned decision changes scope, risk, cost, or success, or when a required effect crosses an unapproved boundary.",
     "choicePromptAddendum": "When a decision or confirmation is needed, use the host's structured choice prompt if one is available; otherwise present a numbered list. Options must be genuinely distinct with exactly one recommended, every label names the real outcome, and a free-form answer stays possible.",
     "rule": "Every runtime skill and English mirror carries the heading followed by block verbatim. A skill that asks the user to choose appends choicePromptAddendum verbatim, directly after block. Skill-specific sentences may follow. Enforced by scripts/verify-response-policy.cjs."
   },
@@ -110,7 +111,7 @@
         },
         {
           "phase": "execute",
-          "instruction": "Apply the start discipline in the smallest complete slice; ask one material question only when needed."
+          "instruction": "Apply the selected workflow through its verified outcome. Carry a clear explicit end-to-end workspace request through planning and implementation without a second confirmation; ask only one material question at an unapproved boundary or material user-owned decision."
         },
         {
           "phase": "verify",
@@ -128,9 +129,11 @@
       ],
       "guardrails": [
         "Match the user's language and keep Thai cultural fit while preserving exact technical identifiers.",
-        "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
+        "Carry explicit bounded workspace authority across local phases; do not manufacture a second approval between planning, implementation, testing, and local QA.",
+        "Never expand scope or cross merge, deployment, destructive production, protected-branch, or another undeclared remote boundary.",
         "Report evidence gaps instead of guessing."
-      ]
+      ],
+      "autonomyProfile": "afk_local"
     },
     {
       "id": "debug",
@@ -205,7 +208,8 @@
         "Match the user's language and keep Thai cultural fit while preserving exact technical identifiers.",
         "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
         "Report evidence gaps instead of guessing."
-      ]
+      ],
+      "autonomyProfile": "afk_local"
     },
     {
       "id": "ask-with-docs",
@@ -280,7 +284,8 @@
         "Match the user's language and keep Thai cultural fit while preserving exact technical identifiers.",
         "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
         "Report evidence gaps instead of guessing."
-      ]
+      ],
+      "autonomyProfile": "decision_aware"
     },
     {
       "id": "triage",
@@ -355,7 +360,8 @@
         "Match the user's language and keep Thai cultural fit while preserving exact technical identifiers.",
         "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
         "Report evidence gaps instead of guessing."
-      ]
+      ],
+      "autonomyProfile": "decision_aware"
     },
     {
       "id": "improve-codebase",
@@ -430,7 +436,8 @@
         "Match the user's language and keep Thai cultural fit while preserving exact technical identifiers.",
         "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
         "Report evidence gaps instead of guessing."
-      ]
+      ],
+      "autonomyProfile": "afk_local"
     },
     {
       "id": "setup",
@@ -505,7 +512,8 @@
         "Match the user's language and keep Thai cultural fit while preserving exact technical identifiers.",
         "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
         "Report evidence gaps instead of guessing."
-      ]
+      ],
+      "autonomyProfile": "decision_aware"
     },
     {
       "id": "tdd",
@@ -580,7 +588,8 @@
         "Match the user's language and keep Thai cultural fit while preserving exact technical identifiers.",
         "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
         "Report evidence gaps instead of guessing."
-      ]
+      ],
+      "autonomyProfile": "afk_local"
     },
     {
       "id": "to-spec",
@@ -655,7 +664,8 @@
         "Match the user's language and keep Thai cultural fit while preserving exact technical identifiers.",
         "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
         "Report evidence gaps instead of guessing."
-      ]
+      ],
+      "autonomyProfile": "afk_local"
     },
     {
       "id": "to-tickets",
@@ -730,7 +740,8 @@
         "Match the user's language and keep Thai cultural fit while preserving exact technical identifiers.",
         "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
         "Report evidence gaps instead of guessing."
-      ]
+      ],
+      "autonomyProfile": "afk_local"
     },
     {
       "id": "to-questionnaire",
@@ -806,7 +817,8 @@
         "Match the user's language and keep Thai cultural fit while preserving exact technical identifiers.",
         "Write only the questionnaire file; do not change other project files.",
         "Report evidence gaps instead of guessing at what the recipient knows."
-      ]
+      ],
+      "autonomyProfile": "decision_aware"
     },
     {
       "id": "wayfinder",
@@ -881,7 +893,8 @@
         "Match the user's language and keep Thai cultural fit while preserving exact technical identifiers.",
         "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
         "Report evidence gaps instead of guessing."
-      ]
+      ],
+      "autonomyProfile": "decision_aware"
     },
     {
       "id": "code",
@@ -897,8 +910,8 @@
       "locales": {
         "en": {
           "displayName": "Code",
-          "description": "Implement an approved software plan in small scoped slices, verify each behavior, update documentation, and report an evidence receipt.",
-          "shortDescription": "Implement an approved software plan in small scoped slices, verify each behavior, update documen",
+          "description": "Implement an explicit software request or reviewed plan through tested, documented, locally verified workspace changes without a second approval gate.",
+          "shortDescription": "Implement and verify an explicit request without a second local approval",
           "defaultPrompt": "Use code for my current request.",
           "triggers": [
             "use code",
@@ -911,8 +924,8 @@
         },
         "th": {
           "displayName": "ลงมือพัฒนาตามแผน",
-          "description": "ลงมือพัฒนาตามแผนที่อนุมัติแล้วทีละส่วน พร้อม test และ review โดยไม่ commit หรือ push เอง",
-          "shortDescription": "ลงมือพัฒนาตามแผนที่อนุมัติแล้วทีละส่วน พร้อม test และ review โดยไม่ commit หรือ push เอง",
+          "description": "ลงมือพัฒนาคำขอที่ชัดหรือแผนที่ review แล้วจนผ่าน test และ local verification โดยไม่ถามอนุมัติ workspace ซ้ำ",
+          "shortDescription": "พัฒนาและตรวจคำขอที่ชัดโดยไม่ขออนุมัติ local ซ้ำ",
           "defaultPrompt": "ใช้ code กับคำขอนี้",
           "triggers": [
             "ใช้ code",
@@ -931,16 +944,20 @@
       "role": "code_workflow",
       "workflow": [
         {
-          "phase": "orient",
-          "instruction": "Read the request, repository evidence, Thai-first defaults, and the exact approval boundary."
+          "phase": "authorize",
+          "instruction": "Treat a clear explicit implementation, fix, update, or plan-and-implement request as bounded workspace authority. If no plan artifact exists, build an internal micro-plan from acceptance criteria instead of stopping."
         },
         {
           "phase": "execute",
-          "instruction": "Apply the code discipline in the smallest complete slice; ask one material question only when needed."
+          "instruction": "Implement dependency-ordered slices with RED/GREEN evidence, preserving unrelated work and using reversible assumptions inside scope."
+        },
+        {
+          "phase": "repair",
+          "instruction": "Run focused and regression gates, diagnose failures, and repair autonomously within the profile budget. Pause only for a material user-owned decision, security risk, missing access, scope expansion, or an undeclared Git/remote/destructive effect."
         },
         {
           "phase": "verify",
-          "instruction": "Verify the observable outcome and return concise evidence, risks, and the next action."
+          "instruction": "Run an independent verifier, update documentation, and return exact evidence plus a resumable checkpoint for any remaining blocker."
         }
       ],
       "artifacts": [
@@ -956,7 +973,8 @@
         "Match the user's language and keep Thai cultural fit while preserving exact technical identifiers.",
         "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
         "Report evidence gaps instead of guessing."
-      ]
+      ],
+      "autonomyProfile": "afk_local"
     },
     {
       "id": "prototype",
@@ -1031,7 +1049,8 @@
         "Match the user's language and keep Thai cultural fit while preserving exact technical identifiers.",
         "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
         "Report evidence gaps instead of guessing."
-      ]
+      ],
+      "autonomyProfile": "afk_local"
     },
     {
       "id": "research",
@@ -1106,7 +1125,8 @@
         "Match the user's language and keep Thai cultural fit while preserving exact technical identifiers.",
         "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
         "Report evidence gaps instead of guessing."
-      ]
+      ],
+      "autonomyProfile": "afk_local"
     },
     {
       "id": "domain-modeling",
@@ -1181,7 +1201,8 @@
         "Match the user's language and keep Thai cultural fit while preserving exact technical identifiers.",
         "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
         "Report evidence gaps instead of guessing."
-      ]
+      ],
+      "autonomyProfile": "afk_local"
     },
     {
       "id": "codebase-design",
@@ -1256,7 +1277,8 @@
         "Match the user's language and keep Thai cultural fit while preserving exact technical identifiers.",
         "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
         "Report evidence gaps instead of guessing."
-      ]
+      ],
+      "autonomyProfile": "afk_local"
     },
     {
       "id": "code-review",
@@ -1331,7 +1353,8 @@
         "Match the user's language and keep Thai cultural fit while preserving exact technical identifiers.",
         "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
         "Report evidence gaps instead of guessing."
-      ]
+      ],
+      "autonomyProfile": "afk_local"
     },
     {
       "id": "fix-conflicts",
@@ -1406,7 +1429,8 @@
         "Match the user's language and keep Thai cultural fit while preserving exact technical identifiers.",
         "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
         "Report evidence gaps instead of guessing."
-      ]
+      ],
+      "autonomyProfile": "decision_aware"
     },
     {
       "id": "asking",
@@ -1481,7 +1505,8 @@
         "Match the user's language and keep Thai cultural fit while preserving exact technical identifiers.",
         "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
         "Report evidence gaps instead of guessing."
-      ]
+      ],
+      "autonomyProfile": "decision_aware"
     },
     {
       "id": "handoff",
@@ -1556,7 +1581,8 @@
         "Match the user's language and keep Thai cultural fit while preserving exact technical identifiers.",
         "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
         "Report evidence gaps instead of guessing."
-      ]
+      ],
+      "autonomyProfile": "afk_local"
     },
     {
       "id": "teach",
@@ -1631,7 +1657,8 @@
         "Match the user's language and keep Thai cultural fit while preserving exact technical identifiers.",
         "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
         "Report evidence gaps instead of guessing."
-      ]
+      ],
+      "autonomyProfile": "afk_local"
     },
     {
       "id": "write-skills",
@@ -1677,7 +1704,7 @@
       "activation": {
         "allowImplicitInvocation": false
       },
-      "effectLevel": "read_only",
+      "effectLevel": "workspace_write",
       "role": "writing_great_skills_workflow",
       "workflow": [
         {
@@ -1706,7 +1733,8 @@
         "Match the user's language and keep Thai cultural fit while preserving exact technical identifiers.",
         "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
         "Report evidence gaps instead of guessing."
-      ]
+      ],
+      "autonomyProfile": "afk_local"
     },
     {
       "id": "ask-me",
@@ -1791,7 +1819,7 @@
         },
         {
           "phase": "handoff",
-          "instruction": "Ask one separate selection and end ask-me before creating anything. A non-engineering selection becomes a new scoped artifact request whose output and effect must be disclosed; default to an in-conversation draft. Route diagnosis or design only through an available registered workflow and never invent a deliverable workflow. Engineering authorizes only planning; development needs separate post-plan confirmation against the exact reviewed plan. Creating content never authorizes sending or publishing. Return a compact receipt that references rather than repeats the confirmed brief."
+          "instruction": "Ask one separate selection and end ask-me before creating anything, unless the original request already names the deliverable. A non-engineering selection becomes a new scoped artifact request whose output and effect must be disclosed; default to an in-conversation draft. Route diagnosis or design only through an available registered workflow and never invent a deliverable workflow. An explicit end-to-end workspace intent may carry through planning and development after a reviewed plan; plan-only requests stop at the plan. Creating content never authorizes sending, publishing, merge, or deployment. Return a compact receipt that references rather than repeats the confirmed brief."
         }
       ],
       "artifacts": [
@@ -1812,11 +1840,12 @@
         "Recommend only context-relevant outputs, exactly one as the default, and never generate every catalog candidate.",
         "Do not invent unavailable workflows, evidence, customer claims, metrics, pricing, testimonials, or case studies.",
         "Do not auto-chain one selected deliverable into another; each additional outcome requires a new user choice.",
-        "Never begin development until a reviewed plan has been shown and the user gives a separate explicit post-plan confirmation for that exact scope.",
+        "Carry an explicit end-to-end workspace intent through a reviewed plan into development without another prompt; a plan-only request remains plan-only.",
         "Handoff authority never includes commit, push, pull-request, deployment, sending, publishing, or another Git or remote write; external delivery requires separate approval after the exact artifact, recipients, and channel are visible.",
         "Recommendations are proposals; the user owns every decision and may stop at any time.",
         "Do not request secrets or unnecessary personal data, stereotype Thai users, or guess changing local facts."
-      ]
+      ],
+      "autonomyProfile": "decision_aware"
     },
     {
       "id": "wait-what",
@@ -1885,7 +1914,8 @@
         "Explain again; never change the work or any file.",
         "Match the user's language with Thai cultural fit and the project's own vocabulary instead of borrowed jargon.",
         "Say plainly when the confusion came from a wrong assumption rather than from wording."
-      ]
+      ],
+      "autonomyProfile": "afk_local"
     },
     {
       "id": "plan",
@@ -1958,7 +1988,7 @@
         },
         {
           "phase": "handoff",
-          "instruction": "When the current request carries a plan-to-development intent, show the reviewed plan and ask for separate explicit implementation approval. A pre-plan request to develop authorizes planning only; never begin code until the user approves the exact presented plan after verification."
+          "instruction": "Classify the incoming authority as plan-only or plan-and-implement. A plan-only request stops after the reviewed plan. A clear plan-and-implement or direct implementation request carries bounded workspace authority; after verification, continue automatically into implementation without another user prompt unless a material user-owned decision remains."
         }
       ],
       "artifacts": [
@@ -1970,13 +2000,14 @@
         "acceptance criteria",
         "per-task verification commands",
         "risk and rollback notes",
-        "handoff intent and post-plan implementation-approval state"
+        "handoff intent and end-to-end workspace-authority state"
       ],
       "guardrails": [
-        "Do not implement while planning.",
-        "Do not treat ask-me summary confirmation or a pre-plan request to develop as approval of an unseen plan.",
+        "Do not modify production source while the planning phase itself is still unresolved or unverified.",
+        "Carry a clear plan-and-implement workspace intent into development; do not invent a second confirmation gate.",
         "Do not invent repository facts; label assumptions and unresolved questions."
-      ]
+      ],
+      "autonomyProfile": "afk_local"
     },
     {
       "id": "design-options",
@@ -2061,7 +2092,8 @@
       "guardrails": [
         "Do not modify production source during exploration.",
         "Do not present near-identical variants as distinct directions."
-      ]
+      ],
+      "autonomyProfile": "decision_aware"
     },
     {
       "id": "deploy",
@@ -2148,7 +2180,8 @@
       "guardrails": [
         "Never deploy without approval for the exact revision and environment.",
         "Stop when rollback, credentials, or required preflight evidence is missing."
-      ]
+      ],
+      "autonomyProfile": "boundary_gated"
     },
     {
       "id": "wizard",
@@ -2225,7 +2258,8 @@
         "Never hand-edit the library above the STAGES marker.",
         "Confirm before every irreversible stage in the generated script.",
         "Report evidence gaps instead of guessing at a dashboard's current UI."
-      ]
+      ],
+      "autonomyProfile": "afk_local"
     },
     {
       "id": "pr",
@@ -2314,7 +2348,8 @@
       "guardrails": [
         "Prepare only by default; do not stage, commit, push, or open a pull request implicitly.",
         "Never force-push without explicit instruction and a lease-protected command."
-      ]
+      ],
+      "autonomyProfile": "boundary_gated"
     },
     {
       "id": "task-to-pr",
@@ -2330,9 +2365,9 @@
       "locales": {
         "en": {
           "displayName": "Task to PR",
-          "description": "Take one task, ticket, or existing pull request from its source to a tested, independently reviewed pull request ready for human merge; resume exact existing work and require bound approval for Git and remote writes.",
-          "shortDescription": "Deliver one task to a merge-ready PR",
-          "defaultPrompt": "Take this task to a tested pull request ready for human merge.",
+          "description": "Take one identified task from source to a tested, independently reviewed pull request ready for human merge, including local browser QA for user-visible changes, without repeated approval prompts.",
+          "shortDescription": "Autonomously take one task through local browser QA to a ready PR",
+          "defaultPrompt": "Take this identified task autonomously through local browser QA and CI to a pull request ready for human merge.",
           "triggers": [
             "take this task to a pull request",
             "implement this ticket end to end",
@@ -2346,9 +2381,9 @@
         },
         "th": {
           "displayName": "นำงานไปสู่ Pull Request",
-          "description": "นำงาน ticket หรือ pull request หนึ่งรายการจากต้นทางไปสู่ PR ที่ผ่านการทดสอบและ review อิสระ พร้อมให้มนุษย์ merge โดยทำต่อจากงานเดิมที่ตรงกันและขอ approval ที่ bind ก่อน Git หรือ remote write",
-          "shortDescription": "ส่งมอบหนึ่งงานเป็น PR ที่พร้อม merge",
-          "defaultPrompt": "นำงานนี้ไปสู่ pull request ที่ทดสอบแล้วและพร้อมให้มนุษย์ merge",
+          "description": "นำงานที่ระบุหนึ่งรายการจากต้นทางไปสู่ PR ที่ผ่าน test, review และ local browser QA สำหรับสิ่งที่ผู้ใช้เห็น โดยไม่ขออนุมัติซ้ำระหว่างทาง",
+          "shortDescription": "ทำหนึ่ง task แบบอัตโนมัติผ่าน browser QA จน PR พร้อม merge",
+          "defaultPrompt": "นำ task ที่ระบุนี้แบบอัตโนมัติผ่าน local browser QA และ CI ไปจน PR พร้อมให้มนุษย์ merge",
           "triggers": [
             "ทำ task นี้ให้จบเป็น pull request",
             "implement ticket นี้ตั้งแต่ต้นจนพร้อม merge",
@@ -2366,62 +2401,63 @@
       },
       "effectLevel": "external_write",
       "role": "delivery_orchestrator",
-      "approvalMode": "confirm",
+      "approvalMode": "task_bound",
       "workflow": [
         {
           "phase": "resolve",
-          "instruction": "Read repository guidance and resolve exactly one task, ticket, or pull request. Resolve the exact GitHub repository from the selected remote and bind an explicit repository selector for every read and write; never let a fork-aware CLI infer the fork parent as the pull-request target. Resume only an unambiguous existing pull request, branch, or worktree, and bind an immutable task snapshot digest plus repository, base, head, and workspace identity."
+          "instruction": "Read repository guidance and resolve exactly one task, ticket, or existing pull request plus observable acceptance criteria. Resolve the exact GitHub repository from the selected remote, bind an explicit repository selector for every GitHub read and write, and never let a fork-aware client infer the fork parent. Resume only an unambiguous matching pull request, branch, or worktree."
         },
         {
           "phase": "isolate",
-          "instruction": "Reuse a clean checkout already dedicated to the exact task; otherwise use a dedicated worktree. If fetch, branch, checkout, or worktree creation would change Git state, preview a task_to_pr_isolate approval envelope, stop for its exact token, and revalidate before executing."
+          "instruction": "Treat the explicit task-to-PR request as authority to fetch and create or reuse a dedicated task branch/worktree. Preserve unrelated user work and never repurpose a shared dirty checkout."
         },
         {
           "phase": "implement",
-          "instruction": "Define the smallest complete outcome and its acceptance proof, implement it with RED-GREEN evidence where behavior changes, update required documentation, and preserve unrelated user work. A selected worktree containing unrelated changes or a file mixing task and unrelated hunks is BLOCKED."
+          "instruction": "Implement the smallest complete task change with focused RED/GREEN evidence, required documentation, generated-source updates, and full local gates."
         },
         {
           "phase": "review",
-          "instruction": "Run focused checks and the full required gate, then give the immutable task, complete diff, and evidence to a fresh independent reviewer and acceptance verifier. Fix valid Critical or Important findings and repeat for at most two local repair rounds."
+          "instruction": "Run independent specification, correctness, security, test, and scope review. Repair valid Critical or Important findings within the local repair budget."
         },
         {
-          "phase": "approve",
-          "instruction": "Secret-scan and bind the reproducible raw-byte task-only patch and staged-diff digest, path hashes, existing outgoing commits, proposed commit parent/tree/message/resolved author and committer/signing/hook policy, expected remote old SHA, ref, optional pull-request state/title/body write, complete semantic ticket-write payload digests with transport identity and non-null conditional/idempotency preconditions, and structured command argv in spk.approval/v1. Without the exact current token, return NEEDS_USER_INPUT and stop."
+          "phase": "browser_qa",
+          "instruction": "When user-visible behavior changes, start the documented local application, derive non-destructive browser flows from acceptance criteria, run browser QA against localhost, capture pass/fail evidence plus console or network failures, repair in scope, and rerun until green or the repair budget is exhausted. Record not-applicable evidence for non-UI tasks."
         },
         {
           "phase": "publish",
-          "instruction": "Revalidate state and digest, then stage only approved paths and commit. Before any remote write, verify the resulting commit parent, tree/task patch, exact message, resolved identities, signing state, and explicit repository selector against the approved intent; mismatch requires fresh approval. Revalidate every complete ticket request immediately before sending and require a server-enforced conditional write or bound idempotency key; otherwise block. Push and create or update only the approved pull request, then verify the returned URL belongs to the selected repository. Never merge or deploy."
+          "instruction": "Secret-scan and stage only the task path set, verify the complete staged task patch, commit, push only the non-protected pull-request ref, and create or update the pull request under task-bound authority with the bound explicit repository selector. Verify the returned pull-request URL belongs to the selected repository. Never merge or deploy."
         },
         {
           "phase": "observe",
-          "instruction": "Observe required CI, any check relevant to task behavior, automated review, mergeability, and currently available comments for the published head. Do not remotely rerun or cancel checks. Each valid code repair repeats tests and fresh review, requires a new publication approval, and is limited to two post-publication repair rounds and three CI observations per head."
+          "instruction": "Observe required CI, task-relevant checks, automated review, mergeability, and current feedback. Diagnose and repair valid in-scope failures, rerun local tests and browser QA when applicable, then commit and push without another prompt. Limit post-publication repair to two rounds and CI observations to three per head."
         },
         {
           "phase": "finish",
-          "instruction": "Return READY_FOR_HUMAN_MERGE only when the latest head is mergeable, required CI passes or is not configured, every task-relevant check passes or is proven not applicable, current actionable feedback is handled, and no required change remains. Otherwise return BLOCKED with exact evidence and a resumable next action."
+          "instruction": "Return READY_FOR_HUMAN_MERGE only when acceptance criteria, local gates, applicable browser QA, independent review, and task-relevant CI are green; otherwise return a durable resumable checkpoint."
         }
       ],
       "artifacts": [
-        "task and delivery identity",
-        "verified implementation and independent review",
-        "pull-request URL and final readiness verdict"
+        "dedicated task branch/worktree",
+        "tested task patch",
+        "local browser QA evidence when applicable",
+        "pull-request URL"
       ],
       "evidence": [
-        "source task and acceptance criteria",
-        "base and head revisions, worktree, exact paths, and diff",
-        "focused and full test commands and results",
-        "independent review findings and repair rounds",
-        "approval digests and exact Git and remote writes",
-        "CI, mergeability, automated review, and current-comment state"
+        "immutable task identity and acceptance status",
+        "changed paths and RED/GREEN/full-gate results",
+        "independent review",
+        "local browser QA or not-applicable proof",
+        "commit/ref/pull-request and CI state",
+        "repair counts and resumable checkpoint"
       ],
       "guardrails": [
-        "Invocation authorizes only bounded workspace edits for the named task; every Git-state or remote write requires a current exact approval envelope.",
-        "Do not duplicate a ticket, branch, worktree, or pull request when an unambiguous existing one matches.",
-        "Any state drift or code change invalidates publication approval.",
-        "Never stage a file that mixes task and unrelated hunks; block instead of absorbing or exposing unrelated content.",
-        "Never use git add ., push directly to a default or protected branch, force-push without an approved lease bound to the expected old SHA, merge, deploy, remove worktrees, or absorb unrelated user changes.",
-        "Stop BLOCKED rather than expanding scope, skipping gates, exceeding loop budgets, or publishing uncertain work."
-      ]
+        "Invocation authorizes only the identified task-bound development-to-PR lifecycle; never absorb unrelated user changes or expand scope.",
+        "Never merge or deploy, push a default or protected branch, force-push, perform destructive production actions, or write unrelated tracker state.",
+        "Never stage a file that mixes task and unrelated hunks; block instead of exposing or absorbing unrelated content.",
+        "Never publish secrets or a known-bad task head; tests, applicable browser QA, independent review, and task-relevant checks must pass.",
+        "Keep the task branch/worktree for recovery and stop when the repair budget is exhausted."
+      ],
+      "autonomyProfile": "afk_to_pr"
     },
     {
       "id": "add-knowledge",
@@ -2507,7 +2543,8 @@
       "guardrails": [
         "Never add-knowledge ignored, credential-bearing, or unapproved private material.",
         "Never replace user-owned wiki history with a template."
-      ]
+      ],
+      "autonomyProfile": "afk_local"
     },
     {
       "id": "load-project",
@@ -2589,7 +2626,8 @@
       "guardrails": [
         "Preserve human-authored guidance and unrelated files.",
         "Do not copy secrets or generated/vendor content into agent context."
-      ]
+      ],
+      "autonomyProfile": "afk_local"
     },
     {
       "id": "ask-project",
@@ -2669,7 +2707,8 @@
       "guardrails": [
         "Do not treat absent wiki content as evidence.",
         "Do not make external calls when local evidence fully answers the question."
-      ]
+      ],
+      "autonomyProfile": "afk_local"
     },
     {
       "id": "check-wiki",
@@ -2717,7 +2756,7 @@
       "activation": {
         "allowImplicitInvocation": true
       },
-      "effectLevel": "workspace_write",
+      "effectLevel": "read_only",
       "role": "knowledge_auditor",
       "workflow": [
         {
@@ -2726,7 +2765,7 @@
         },
         {
           "phase": "guard",
-          "instruction": "When the repository provides the wiki-build guard, create its bounded marker before inspection and remove it in finally-style cleanup; this marker is the workflow's only project write."
+          "instruction": "Run the overlap guard outside the repository or use an in-memory lock so the audit remains read-only without a project marker."
         },
         {
           "phase": "analyze",
@@ -2756,8 +2795,9 @@
         "Do not read ignored private sources.",
         "Do not auto-fix historical knowledge without explicit authorization.",
         "Invoke implicitly only for a current explicit wiki-audit intent, never as an adjacent cleanup step.",
-        "Do not write project state other than the bounded temporary guard marker, and always remove that marker."
-      ]
+        "Do not write project state during audit; mechanical repair requires an explicit fix request and semantic repair remains a recommendation."
+      ],
+      "autonomyProfile": "afk_local"
     },
     {
       "id": "doctor",
@@ -2838,7 +2878,8 @@
       "guardrails": [
         "Do not mutate project, Git, plugin, or user configuration state.",
         "Do not claim a subsystem is healthy when its check was unavailable or skipped."
-      ]
+      ],
+      "autonomyProfile": "afk_local"
     },
     {
       "id": "check-release",
@@ -2923,7 +2964,8 @@
       "guardrails": [
         "Do not commit, tag, push, publish, or deploy.",
         "Do not mark ready when a required gate was skipped or failed."
-      ]
+      ],
+      "autonomyProfile": "afk_local"
     },
     {
       "id": "test-changes",
@@ -3004,7 +3046,8 @@
       "guardrails": [
         "Never present a partial test run as complete coverage.",
         "Fall back to the full suite when mapping confidence is insufficient."
-      ]
+      ],
+      "autonomyProfile": "afk_local"
     },
     {
       "id": "uninstall",
@@ -3091,7 +3134,8 @@
       "guardrails": [
         "Never remove project knowledge, private sources, or unrelated user files.",
         "Never use unresolved variables, broad roots, or unverified recursive deletion targets."
-      ]
+      ],
+      "autonomyProfile": "boundary_gated"
     },
     {
       "id": "bala",
@@ -3172,7 +3216,8 @@
         "Keep the assessment secular, practical, engineering-focused, and testable.",
         "Report imbalance as a workflow signal and never blame or diagnose the user.",
         "Do not modify files unless the user separately requests implementation."
-      ]
+      ],
+      "autonomyProfile": "afk_local"
     },
     {
       "id": "sunzi",
@@ -3253,7 +3298,84 @@
         "Keep the lens practical, engineering or product focused, and testable.",
         "Reinterpret conflict as constraints or uncertainty and never recommend harmful deception or manipulation.",
         "Do not modify files unless the user separately requests implementation."
-      ]
+      ],
+      "autonomyProfile": "afk_local"
     }
-  ]
+  ],
+  "autonomyProfiles": {
+    "afk_local": {
+      "promptBudget": 0,
+      "repairBudget": 3,
+      "invocationAuthority": "A clear request grants bounded work only up to the selected skill's declared effect level; this profile never upgrades read-only work into a write.",
+      "continuation": "Keep working through inspect, act, verify, and bounded repair without asking the user.",
+      "pauseOnlyFor": [
+        "missing access or credentials",
+        "material scope or product decision",
+        "security or privacy risk",
+        "external, destructive, or protected Git boundary not already authorized"
+      ],
+      "checkpoint": "Record phase, assumptions, evidence, attempts, and the smallest resumable next action before any pause."
+    },
+    "decision_aware": {
+      "promptBudget": 1,
+      "repairBudget": 3,
+      "invocationAuthority": "Inspect facts and prepare the smallest useful draft within the selected skill's declared effect level before asking for a decision; read-only profiles stay read-only.",
+      "continuation": "Use recommended reversible assumptions and bundle only the one material decision that changes outcome, scope, risk, cost, or success.",
+      "pauseOnlyFor": [
+        "one material user-owned decision",
+        "missing access or credentials",
+        "security or privacy risk",
+        "unapproved external or destructive effect"
+      ],
+      "checkpoint": "Return the decision ledger, recommended default, evidence, and a resumable next action."
+    },
+    "boundary_gated": {
+      "promptBudget": 1,
+      "repairBudget": 2,
+      "invocationAuthority": "Prepare and verify the exact boundary intent without mutation, then request one approval for the declared operation.",
+      "continuation": "After approval, complete every stage and allowed retry inside the stable envelope without another prompt.",
+      "pauseOnlyFor": [
+        "material drift",
+        "missing access or credentials",
+        "failed safety gate",
+        "scope expansion",
+        "new destructive or protected target"
+      ],
+      "checkpoint": "Persist the approved envelope digest, current phase, evidence, attempts, and rollback or recovery path."
+    },
+    "afk_to_pr": {
+      "promptBudget": 0,
+      "repairBudget": 2,
+      "invocationAuthority": "A clear current request to take one identified task, ticket, or existing pull request to READY_FOR_HUMAN_MERGE grants task-bound authority for the full development-to-PR lifecycle.",
+      "continuation": "Resolve, isolate, implement, test, run local browser QA when user-visible behavior changes, review, commit, push, create or update the pull request, observe CI, and repair in scope without another prompt.",
+      "allowedEffects": [
+        "fetch",
+        "task branch and worktree",
+        "workspace edits",
+        "local application and browser QA",
+        "commit",
+        "push non-protected pull-request ref",
+        "create or update pull request",
+        "in-scope CI repair"
+      ],
+      "forbiddenEffects": [
+        "merge",
+        "deploy",
+        "protected or default branch push",
+        "force-push",
+        "destructive production action",
+        "unrelated ticket mutation",
+        "scope expansion"
+      ],
+      "pauseOnlyFor": [
+        "ambiguous task identity",
+        "unrelated user work blocks isolation",
+        "missing access or credentials",
+        "material product decision",
+        "security or privacy risk",
+        "repair budget exhausted"
+      ],
+      "checkpoint": "Keep the branch and worktree, then return task identity, current head, evidence, attempts, pull-request state, and the smallest resumable next action."
+    }
+  }
 }

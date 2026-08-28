@@ -47,3 +47,7 @@ npm test -- --runInBand
 
 - ค่าเริ่มต้นคือ prepare-only
 - ห้าม commit, push, tag, publish หรือ deploy โดยไม่มี confirmation ชัดเจน
+
+## Autonomy Profile
+
+`afk_local` — ทำงานต่อเองได้ถึง effect level ที่ skill นี้ประกาศเท่านั้น และห้ามยกระดับ read-only เป็น write; prompt budget 0, repair budget 3 รอบ ก่อนหยุดต้องบันทึก phase, assumption, evidence, attempts และ next action ที่ทำต่อได้

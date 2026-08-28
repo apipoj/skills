@@ -57,6 +57,10 @@ disable-model-invocation: true
 <ช่องเปิดให้คนรับเติมสิ่งที่เขาคิดว่าเราควรรู้>
 ```
 
+## Autonomy Profile
+
+`decision_aware` — ตรวจ fact และทำ draft ได้ถึง effect level ที่ skill ประกาศ โดย read-only ยังต้อง read-only แล้วถามได้สูงสุดหนึ่ง decision สำคัญ; prompt budget 1, repair budget 3 รอบ ก่อนหยุดต้องบันทึก decision ledger, evidence และ next action ที่ทำต่อได้
+
 ## ข้อควรระวัง
 
 - สัมภาษณ์ผู้ใช้เรื่องการส่งเท่านั้น ห้ามถามเรื่องเนื้อหาที่เขาตอบไม่ได้

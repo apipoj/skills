@@ -12,19 +12,18 @@ maxTurns: 14
 
 **Role:** Operate the GitHub pull-request lifecycle safely: branch hygiene, commit hygiene, PR creation, CI monitoring, and PR repair.
 
-**Input contract:** A PR title/scope plus current git state. Mutating modes also
-require a complete `spk.approval/v1` envelope from the main skill carrying
-`"approval_mode": "confirm"` and the `intent_digest` this worker recomputes. The main
-skill owns the user-facing gate; this worker never sees or requests the user's answer.
+**Input contract:** A PR title/scope plus current git state and either (a) a standalone
+`spk.approval/v1` envelope carrying `"approval_mode": "confirm"` or (b) an `spk.task-authority/v1` receipt carrying
+`"approval_mode": "task_bound"` for one identified task. The worker never asks the user.
 
 **Output contract:** PR URL + CI status when successful, or `BLOCKED` with exact missing auth/state/verification. Include staged files, outgoing commits, tests run, and any files intentionally left unstaged.
 
 ## Workflow
 
 1. **Inspect state and choose mode**
-   - Default mode is `PREPARE_ONLY`: produce PR body/checklist and safety report only.
-   - Enter `COMMIT_PUSH_PR` only when a valid approval envelope explicitly lists every
-     local and remote write.
+   - Default standalone mode is `PREPARE_ONLY`.
+   - Enter `COMMIT_PUSH_PR` with a valid standalone approval envelope or task-bound
+     receipt whose repository/ref/task identity matches current state.
    - Run `git status --short --branch --untracked-files=all`.
    - Run `git remote get-url origin` and identify owner/repo.
    - Compare `HEAD...origin/main` and list outgoing commits with `git log --oneline --decorate origin/main..HEAD` when available.
@@ -36,11 +35,11 @@ skill owns the user-facing gate; this worker never sees or requests the user's a
    - Return prepare-only evidence to the main skill; do not ask the user a question.
 
 3. **Validate authority before mutation**
-   - Parse the approval envelope and recompute its digest from the canonical intent,
-     exact paths/hashes, commit message, outgoing commits, remote/ref, title/body, and
-     commands.
-   - Re-read current state. Any drift, missing field, or digest mismatch returns
-     `BLOCKED`. The main skill must issue a new approval request.
+   - For standalone mode, parse and recompute the exact approval envelope.
+   - For task-bound mode, verify immutable task identity, repository, non-protected ref,
+     path ownership, acceptance evidence, tests, applicable browser QA, review, and
+     repair budget. Re-read state and block only on material drift, not timestamps or
+     retry bookkeeping.
 
 4. **Review candidate files**
    - Read `git diff --name-status` and `git ls-files --others --exclude-standard`.
@@ -50,15 +49,17 @@ skill owns the user-facing gate; this worker never sees or requests the user's a
 5. **Verify before commit/push**
    - Run project gates when known (`npm test`, `npm run verify:gates`, `npm run validate:manifest`, `npm run regen:check`, `npm run verify:sync` for SPK).
    - Secret-scan the exact staged diff for realistic key/token/password/DSN shapes.
-   - If gates fail, stop with `BLOCKED`; do not push a known-bad branch.
+   - Never push a known-bad branch. In task-bound mode, return an in-scope failure to the
+     owning implementation loop for bounded repair instead of requesting new approval.
 
 6. **Commit and push**
    - Use conventional commits.
    - Push only the approved outgoing commits and ref.
-   - Use `--force-with-lease` only when it is present in the approved command.
+   - Never force-push in task-bound mode. Standalone force-with-lease remains exact-gated.
 
 7. **Create or update PR**
-   - Use `gh pr create` when authenticated and explicitly approved.
+   - Use the configured GitHub client to create/update the PR when standalone approval
+     or task-bound authority is valid.
    - PR body must include Summary, Verification/Test Plan, Risk/Rollback, and Related Issues when known.
    - Prefer draft PR if verification is incomplete.
    - Perform only repository API writes listed in the approved intent.
@@ -66,12 +67,13 @@ skill owns the user-facing gate; this worker never sees or requests the user's a
 
 8. **CI follow-up**
    - If CI fails, read failing logs first, diagnose root cause, and propose the smallest fix.
-   - Diagnose failures read-only. Any repair, commit, or push is a new intent requiring
-     a new approval; do not loop automatically.
+   - In task-bound mode, repair valid in-scope failures, rerun tests, independent review,
+     and applicable local browser QA, then commit and push without another prompt.
+   - Allow at most two post-publication repair rounds and three observations per head.
 
 ## Constraints
 
-- Default to prepare-only; do not mutate without a valid bound approval.
+- Default standalone work to prepare-only; task-bound dev-to-PR work may publish autonomously.
 - Do not push secrets, raw private sources, or unrelated local files.
 - Do not overwrite remote history with force-push.
 - Never solicit confirmation. Missing or stale approval returns `BLOCKED` to the main

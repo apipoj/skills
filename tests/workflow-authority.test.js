@@ -129,22 +129,20 @@ describe('provider-neutral workflow and authority contracts', () => {
       /\*\*PRD\*\*[\s\S]*\*\*Proposal\*\*[\s\S]*\*\*Presentation \/ Pitch deck\*\*[\s\S]*\*\*Sales asset\*\*/i,
     );
     expect(english).toMatch(/Show at most three deliverables[\s\S]*exactly one\s+recommendation/i);
-    expect(english).toMatch(/reviewed plan and\s+a new,\s+explicit post-plan confirmation/i);
+    expect(english).toMatch(/explicit end-to-end workspace intent/i);
     expect(english).toMatch(/Never invent\s+`\/prd`[\s\S]*`\/proposal`[\s\S]*`\/presentation`[\s\S]*`\/sales`/i);
     expect(english).toMatch(/exact artifact,\s+recipients, and channel[\s\S]*separate\s+delivery approval/i);
     expect(english).toMatch(/Do not modify files, code, Git state, configuration, or external systems/i);
-    // 6.4.0 moved this from 1050. The shared response block grew by the
-    // 50-word Terminology rule and ask-me only had 13 words of its own to give
-    // back, so the ceiling moves rather than the skill losing guidance the
-    // block does not state.
-    expect(english.trim().split(/\s+/u).length).toBeLessThan(1100);
-    expect(english.split('\n').length).toBeLessThan(180);
+    // The autonomy profile and end-to-end handoff authority are load-bearing
+    // guidance, so preserve a bounded ceiling without deleting those controls.
+    expect(english.trim().split(/\s+/u).length).toBeLessThan(1250);
+    expect(english.split('\n').length).toBeLessThan(190);
     expect(thai).toMatch(/ถามเพียงหนึ่ง decision สำคัญต่อหนึ่งข้อความ/);
     expect(thai).toMatch(/คำตอบที่แนะนำ/);
     expect(thai).toMatch(/ยังไม่อนุญาต\s*ให้ทำ plan หรือเริ่ม dev/);
     expect(thai).toMatch(/PRD[\s\S]*Proposal[\s\S]*Presentation \/ Pitch deck[\s\S]*Sales asset/);
     expect(thai).toMatch(/แสดง deliverable ไม่เกินสามตัว[\s\S]*คำแนะนำหนึ่งตัว/);
-    expect(thai).toMatch(/reviewed plan\s+และคำยืนยันใหม่หลังเห็น plan/);
+    expect(thai).toMatch(/end-to-end workspace intent/);
     expect(thai).toMatch(/ห้ามสร้างชื่อ workflow `\/prd`[\s\S]*`\/proposal`[\s\S]*`\/presentation`[\s\S]*`\/sales`/);
     expect(thai).toMatch(/แสดง artifact จริง ผู้รับ และ channel[\s\S]*ขออนุมัติการส่งแยกอีกครั้ง/);
     expect(thai).toMatch(/ห้ามแก้ไฟล์ code, Git state, configuration หรือระบบภายนอก/);
@@ -158,22 +156,22 @@ describe('provider-neutral workflow and authority contracts', () => {
     expect(thai.split('\n').length).toBeLessThan(185);
   });
 
-  test('plan and code preserve separate post-plan implementation authority', () => {
+  test('plan and code carry explicit end-to-end workspace authority without a second gate', () => {
     const plan = read(path.join(SHARED_SKILLS, 'plan', 'SKILL.md'));
     const implement = read(path.join(SHARED_SKILLS, 'code', 'SKILL.md'));
     const planAgent = read(path.join(AGENTS, 'plan-orchestrator.md'));
     const buildAgent = read(path.join(AGENTS, 'build-orchestrator.md'));
 
-    expect(plan).toMatch(/pre-plan .plan then develop. choice as\s+approval of an unseen plan/i);
-    expect(plan).toMatch(/Do not begin implementation\s+in the same turn as the plan/i);
-    expect(implement).toMatch(/latest user answer unambiguously approves the\s+exact plan that was just presented/i);
-    expect(implement).toMatch(/return `NEEDS_USER_INPUT`[\s\S]*make no changes/i);
-    expect(planAgent).toMatch(/implementation_authorized:false/);
-    expect(buildAgent).toMatch(/ask-me summary confirmation[\s\S]*is insufficient/i);
+    expect(plan).toMatch(/plan-only[\s\S]*plan-and-implement/i);
+    expect(plan).toMatch(/continue into implementation without another user prompt/i);
+    expect(implement).toMatch(/explicit implementation[\s\S]*request as bounded workspace authority/i);
+    expect(implement).toMatch(/build an internal micro-plan/i);
+    expect(planAgent).toMatch(/end_to_end_authority:true/);
+    expect(flat(buildAgent)).toMatch(/(?:explicit|clear) end-to-end implementation request/i);
   });
 
-  test('external and destructive workflows require a bound approval envelope', () => {
-    for (const name of ['deploy', 'pr', 'task-to-pr', 'uninstall']) {
+  test('standalone external and destructive workflows require a bound approval envelope', () => {
+    for (const name of ['deploy', 'pr', 'uninstall']) {
       const text = read(path.join(SHARED_SKILLS, name, 'SKILL.md'));
       const mode = CONTRACT_BY_ID.get(name).approvalMode;
       expect(text).toContain('"schema": "spk.approval/v1"');
@@ -193,7 +191,7 @@ describe('provider-neutral workflow and authority contracts', () => {
     expect(flat(deploy)).toMatch(/a plain affirmative is never sufficient/i);
     expect(flat(deploy)).toMatch(/prefix of at least 12 hex characters/i);
 
-    for (const name of ['pr', 'task-to-pr', 'uninstall']) {
+    for (const name of ['pr', 'uninstall']) {
       const text = read(path.join(SHARED_SKILLS, name, 'SKILL.md'));
       expect(CONTRACT_BY_ID.get(name).approvalMode).toBe('confirm');
       expect(text).not.toMatch(/spk-approve:<intent_digest>/);
@@ -202,18 +200,31 @@ describe('provider-neutral workflow and authority contracts', () => {
     }
   });
 
-  test('the contract defines both approval modes and a button-first interaction policy', () => {
-    expect(Object.keys(CONTRACT.approvalModes).sort()).toEqual(['bound_token', 'confirm']);
+  test('task-to-pr treats explicit invocation as task-bound authority through browser QA and CI repair', () => {
+    const text = read(path.join(SHARED_SKILLS, 'task-to-pr', 'SKILL.md'));
+    expect(CONTRACT_BY_ID.get('task-to-pr').approvalMode).toBe('task_bound');
+    expect(text).not.toContain('"status": "NEEDS_USER_INPUT"');
+    expect(text).toMatch(/explicit (?:current )?request to take one identified task to a pull request/i);
+    expect(text).toMatch(/local browser QA/i);
+    expect(text).toMatch(/start the documented local application/i);
+    expect(text).toMatch(/repair[\s\S]*commit[\s\S]*push[\s\S]*without another prompt/i);
+    expect(text).toMatch(/never merge or deploy/i);
+  });
+
+  test('the contract defines approval modes and a button-first interaction policy', () => {
+    expect(Object.keys(CONTRACT.approvalModes).sort()).toEqual(['bound_token', 'confirm', 'task_bound']);
     expect(CONTRACT.approvalModes.confirm).toMatch(/immediately preceding message/i);
     expect(CONTRACT.approvalModes.bound_token).toMatch(/at least 12 hex characters/i);
     expect(CONTRACT.approvalModes.bound_token).toMatch(/never sufficient/i);
+    expect(CONTRACT.approvalModes.task_bound).toMatch(/explicit current request[\s\S]*pull request authorizes bounded/i);
+    expect(CONTRACT.approvalModes.task_bound).toMatch(/never authorizes merge, deployment/i);
 
     const policy = CONTRACT.interactionPolicy;
     expect(policy.choicePrompt).toMatch(/structured choice prompt[\s\S]*numbered list/i);
     expect(policy.options).toMatch(/exactly one is marked as recommended/i);
     expect(policy.labels).toMatch(/bare 'Approve' label is invalid/i);
     expect(policy.freeForm).toMatch(/free-form answer/i);
-    expect(policy.revalidation).toMatch(/One approval authorizes one intent/i);
+    expect(policy.revalidation).toMatch(/material drift[\s\S]*Incidental metadata/i);
 
     for (const name of [
       'ask-me', 'asking', 'start', 'wizard', 'design-options', 'to-questionnaire', 'setup',
@@ -226,17 +237,18 @@ describe('provider-neutral workflow and authority contracts', () => {
 
   test('task-to-pr is bounded, independently reviewed, and never merges', () => {
     const text = read(path.join(SHARED_SKILLS, 'task-to-pr', 'SKILL.md'));
-    expect(text).toMatch(/at most two post-publication repair\s+rounds/i);
+    expect(flat(text)).toMatch(/at most two post-publication repair rounds/i);
     expect(text).toMatch(/fresh reviewer|fresh independent review/i);
     expect(text).toContain('--no-ext-diff');
     expect(text).toMatch(/Unicode NFC/);
     expect(text).toMatch(/resulting commit's parent, tree/);
     expect(text).toContain('"payload_digest"');
     expect(text).toMatch(/complete semantic tool\/API argument/);
-    expect(text).toMatch(/Immediately before each\s+ticket write/);
+    expect(text).toMatch(/Immediately before each\s+(?:identified-task|ticket) write/);
     expect(text).toContain('If-Match');
     expect(text).toMatch(/every task-relevant check\s+passes/i);
     expect(text).toContain('READY_FOR_HUMAN_MERGE');
+    expect(text).toMatch(/browser QA/i);
     expect(text).toMatch(/Never merge/i);
   });
 

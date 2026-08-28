@@ -4,7 +4,7 @@ description: ตรวจ wiki ของโปรเจกต์เพื่อ�
 ---
 # ตรวจความรู้ในโปรเจกต์
 
-รัน health check บน project wiki หา orphan pages, contradictions, stale claims, missing citations, dead links และ secrets ที่อาจมี
+รัน read-only health check บน project wiki หา orphan pages, contradictions, stale claims, missing citations, dead links และ secrets ที่อาจมี
 
 ## รวบรวม Context
 
@@ -60,10 +60,13 @@ description: ตรวจ wiki ของโปรเจกต์เพื่อ�
 - <issue> → <proposed fix>
 ```
 
+## Autonomy Profile
+
+`afk_local` — ทำงานต่อเองได้ถึง effect level ที่ skill นี้ประกาศเท่านั้น และห้ามยกระดับ read-only เป็น write; prompt budget 0, repair budget 3 รอบ ก่อนหยุดต้องบันทึก phase, assumption, evidence, attempts และ next action ที่ทำต่อได้
+
 ## ข้อควรระวัง
 
-- อย่าแก้ wiki pages โดยไม่ได้รับ approval จาก user
-- การสร้างและลบ `ai_context/.spk-wiki-build` ชั่วคราวคือ project write
-  เพียงอย่างเดียวที่ workflow นี้ทำได้ และต้อง cleanup เสมอ
+- ใช้ overlap guard นอก repo หรือใน memory เพื่อให้ audit ไม่มี project write และ cleanup เสมอ
+- audit mode ห้ามแก้ wiki; mechanical repair ทำได้เมื่อคำขอปัจจุบันระบุ fix ชัด ส่วน semantic repair ให้เสนอแนะก่อน
 - Flag secrets เป็น Critical ไม่ว่า context อะไร
 - รายงาน findings เรียงตาม severity

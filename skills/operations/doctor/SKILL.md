@@ -14,6 +14,10 @@ description: วินิจฉัยสุขภาพการติดตั�
 4. verify ซ้ำเฉพาะ check ที่ fail/ambiguous แบบ read-only ห้าม install, regenerate, rewrite config, auth หรือ restart
 5. จัดระดับ `ERROR`, `WARN`, `OK` ให้ exact repair command ทุก failure แต่ห้าม execute
 
+## Autonomy Profile
+
+`afk_local` — ทำงานต่อเองได้ถึง effect level ที่ skill นี้ประกาศเท่านั้น และห้ามยกระดับ read-only เป็น write; prompt budget 0, repair budget 3 รอบ ก่อนหยุดต้องบันทึก phase, assumption, evidence, attempts และ next action ที่ทำต่อได้
+
 ## Evidence Receipt
 
 คืน:

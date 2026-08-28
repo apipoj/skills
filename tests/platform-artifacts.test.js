@@ -107,7 +107,20 @@ describe('platform artifact compiler', () => {
       expect(skill.evidence.length).toBeGreaterThan(0);
       expect(typeof skill.activation.allowImplicitInvocation).toBe('boolean');
       expect(contract.effectLevels).toHaveProperty(skill.effectLevel);
+      expect(contract.autonomyProfiles).toHaveProperty(skill.autonomyProfile);
     }
+
+    expect(Object.fromEntries(
+      Object.keys(contract.autonomyProfiles).map((profile) => [
+        profile,
+        contract.skills.filter((skill) => skill.autonomyProfile === profile).length,
+      ]),
+    )).toEqual({
+      afk_local: 27,
+      afk_to_pr: 1,
+      boundary_gated: 3,
+      decision_aware: 9,
+    });
   });
 
   test('declares truthful effects for dynamic routing and audit workflows', () => {
@@ -119,7 +132,7 @@ describe('platform artifact compiler', () => {
     expect(fs.readFileSync(
       path.join(REPO_ROOT, 'plugins/spk/skills/start/SKILL.md'),
       'utf8',
-    )).toMatch(/planning approval does not authorize implementation/i);
+    )).toMatch(/explicit end-to-end request[\s\S]*continue[\s\S]*planning and implementation/i);
 
     expect(byId['ask-me'].effectLevel).toBe('read_only');
     expect(byId['ask-me'].activation.allowImplicitInvocation).toBe(false);
@@ -132,36 +145,45 @@ describe('platform artifact compiler', () => {
     expect(byId['ask-me'].workflow.find((step) => step.phase === 'recommend').instruction)
       .toMatch(/two or three context-relevant candidates[\s\S]*exactly one recommendation/i);
     expect(byId['ask-me'].workflow.find((step) => step.phase === 'handoff').instruction)
-      .toMatch(/new scoped artifact request[\s\S]*default to an in-conversation draft[\s\S]*post-plan confirmation[\s\S]*references rather than repeats/i);
+      .toMatch(/new scoped artifact request[\s\S]*default to an in-conversation draft[\s\S]*explicit end-to-end workspace intent[\s\S]*references rather than repeats/i);
     expect(byId['ask-me'].guardrails.join('\n'))
-      .toMatch(/ask-me remains read-only[\s\S]*never begin development until a reviewed plan/i);
+      .toMatch(/ask-me remains read-only[\s\S]*carry an explicit end-to-end workspace intent/i);
     expect(byId['ask-me'].guardrails.join('\n'))
       .toMatch(/external delivery requires separate approval[\s\S]*artifact, recipients, and channel/i);
 
     expect(byId.plan.effectLevel).toBe('workspace_write');
     expect(byId.plan.workflow.find((step) => step.phase === 'handoff').instruction)
-      .toMatch(/pre-plan request to develop authorizes planning only/i);
+      .toMatch(/plan-only[\s\S]*plan-and-implement[\s\S]*continue automatically/i);
     expect(byId.code.effectLevel).toBe('workspace_write');
     expect(fs.readFileSync(
       path.join(REPO_ROOT, 'plugins/spk/skills/code/SKILL.md'),
       'utf8',
-    )).toMatch(/exact plan that was just presented/i);
+    )).toMatch(/explicit implementation[\s\S]*request as bounded workspace authority/i);
+
+    expect(byId['task-to-pr'].autonomyProfile).toBe('afk_to_pr');
+    expect(byId['task-to-pr'].approvalMode).toBe('task_bound');
+    expect(byId['task-to-pr'].workflow.map((step) => step.phase))
+      .toEqual(expect.arrayContaining(['browser_qa', 'observe']));
+    expect(byId['task-to-pr'].guardrails.join('\n'))
+      .toMatch(/never merge or deploy[\s\S]*protected branch/i);
+
+    expect(byId['write-skills'].effectLevel).toBe('workspace_write');
+    expect(byId['check-wiki'].effectLevel).toBe('read_only');
 
     expect(byId['code-review'].effectLevel).toBe('read_only');
     expect(byId.debug.effectLevel).toBe('read_only');
 
-    expect(byId['check-wiki'].effectLevel).toBe('workspace_write');
     expect(byId['check-wiki'].activation.allowImplicitInvocation).toBe(true);
     expect(byId['check-wiki'].workflow.find((step) => step.phase === 'guard').instruction)
-      .toMatch(/only project write/i);
+      .toMatch(/outside the repository|without a project marker/i);
     expect(byId['check-wiki'].guardrails.join('\n'))
-      .toMatch(/explicit wiki-audit intent[\s\S]*bounded temporary guard marker/i);
+      .toMatch(/explicit wiki-audit intent[\s\S]*Do not write project state during audit/i);
 
     const wikiLintSkill = fs.readFileSync(
       path.join(REPO_ROOT, 'plugins/spk/skills/check-wiki/SKILL.md'),
       'utf8',
     );
-    expect(wikiLintSkill).toMatch(/only permitted project write/i);
+    expect(wikiLintSkill).toMatch(/read-only audit/i);
 
     for (const skill of Object.values(byId)) {
       expect(skill.tier).toBe('core');

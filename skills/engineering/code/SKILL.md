@@ -1,10 +1,10 @@
 ---
 name: code
-description: ลงมือพัฒนาตามแผนที่อนุมัติแล้วทีละส่วน พร้อม test และ review โดยไม่ commit หรือ push เอง
+description: ลงมือพัฒนาคำขอที่ชัดหรือแผนที่ review แล้วจนผ่าน test และ local verification โดยไม่ถามอนุมัติ workspace ซ้ำ
 ---
-# ลงมือพัฒนาตามแผน
+# ลงมือพัฒนาและตรวจให้ครบ
 
-Implement feature จาก plan ที่มีอยู่ ทำงานเป็น task เล็ก ๆ แบบ TDD ตรวจสอบงาน และอัพเดต docs
+Implement คำขอที่ชัดหรือ reviewed plan ภายใน scope แบบ TDD ตรวจสอบงาน และอัปเดต docs
 
 ## รวบรวม Context
 
@@ -14,11 +14,10 @@ Implement feature จาก plan ที่มีอยู่ ทำงานเ�
 
 ## Workflow
 
-1. **ตรวจ authority** อ่าน plan ที่อนุมัติแล้วและคำอนุญาตให้ code ถ้ามาจาก flow
-   plan-to-dev ต้องมีคำตอบใหม่หลัง user เห็น plan ฉบับนั้น เช่น `เริ่มพัฒนาตาม plan`
-   ถ้าไม่มีหรือกำกวม ให้คืน `NEEDS_USER_INPUT` ก่อนแก้ workspace
-2. **อ่าน plan** โหลด plan file แล้วดึง: goal, non-goals, tasks, gates, acceptance criteria
-   ถ้าไม่มี approved plan ให้หยุดและขอ plan ก่อน
+1. **ตรวจ authority** คำขอปัจจุบันที่ระบุให้ implement, fix, update, refactor, test หรือ
+   plan-and-implement outcome ที่ชัด ถือเป็น bounded workspace authority
+2. **สร้าง outline** ถ้ามี reviewed plan ให้ดึง goal, non-goals, tasks, gates และ acceptance
+   criteria ถ้าไม่มี plan file ให้สร้าง micro-plan ภายในจากหลักฐานใน repo แล้วทำต่อ
 3. **เลือก task ถัดไป** เลือก task แรกที่ยังไม่เสร็จ
 4. **TDD ต่อ task** สำหรับแต่ละ task:
    - เขียนหรือระบุ test ที่พิสูจน์ behavior
@@ -27,19 +26,21 @@ Implement feature จาก plan ที่มีอยู่ ทำงานเ�
    - รัน regression suite เพื่อยืนยันว่าไม่มีอะไรพัง
    - Refactor เฉพาะตอน green
    - บันทึก proposed commit message แต่ commit เฉพาะเมื่อผู้ใช้อนุญาต action นี้แยกต่างหาก
-5. **ตรวจสอบ gates** หลังแต่ละ task รัน verification commands จาก plan หยุดถ้า gate ใด fail
+5. **ตรวจสอบ gates** หลังแต่ละ task รัน verification commands และซ่อม failure ที่อยู่ใน
+   scope ได้ไม่เกิน repair budget
 6. **อัพเดต docs** ถ้า plan มี docs tasks ให้ทำตาม workflow
 7. **รายงานความคืบหน้า** สรุปว่าทำอะไรไป ถัดไปคืออะไร และมี deviation จาก plan ไหม
 
 ## Implementation Authorization
 
-ยอมรับ authority ได้สองแบบ:
+ยอมรับ bounded workspace authority ได้สามแบบ:
 
-- request ปัจจุบันขอให้ code plan ที่ระบุและอนุมัติแล้วโดยตรง
-- ใน flow plan-to-dev คำตอบล่าสุดอนุมัติ plan ฉบับที่เพิ่งแสดงอย่างชัดเจน
+- request ปัจจุบันขอ implement, fix, update, refactor หรือ test outcome ที่ระบุ
+- request ปัจจุบันขอ plan แล้ว implement outcome ที่ระบุ
+- request ปัจจุบันขอ implement reviewed plan ที่อ้างถึง
 
-ห้ามนับคำยืนยันจาก `ask-me`, การเลือกให้สร้าง plan หรือข้อความ “plan แล้ว dev” ก่อนเห็น
-plan เป็น codeation approval ถ้า authority ไม่ครบ ห้ามเขียน code, tests หรือ docs
+สรุปจาก `ask-me` เพียงอย่างเดียวยังเป็น read-only และคำขอ plan-only ต้องหยุดที่ plan
+ถ้า outcome ชัดแต่ไม่มี plan file ให้ใช้ micro-plan ห้ามสร้าง approval local รอบใหม่
 
 ## Output Format
 
@@ -62,10 +63,14 @@ plan เป็น codeation approval ถ้า authority ไม่ครบ ห�
 - Plan บอกว่าจะไม่ build อะไร
 - Acceptance criteria สังเกตได้และ test ได้
 
+## Autonomy Profile
+
+`afk_local` — ทำงานต่อเองได้ถึง effect level ที่ skill นี้ประกาศเท่านั้น และห้ามยกระดับ read-only เป็น write; prompt budget 0, repair budget 3 รอบ ก่อนหยุดต้องบันทึก phase, assumption, evidence, attempts และ next action ที่ทำต่อได้
+
 ## ข้อควรระวัง
 
-- ห้ามแก้ workspace โดยไม่มี approved plan และ codeation authority ของ scope นั้น
+- ห้ามแก้ workspace โดยไม่มีคำขอ implementation ที่ชัดและ bounded authority ของ scope นั้น
 - อย่าข้าม test ถ้า test harness ไม่มี ให้ flag `NEEDS_TEST_HARNESS`
 - ห้าม commit, push หรือเปิด PR เว้นแต่ผู้ใช้อนุญาต action นั้นแยกต่างหาก
 - ถ้า task ใหญ่เกินไป ให้แยกก่อน code
-- อย่าแก้ไฟล์นอก scope ของ plan โดยไม่ถาม
+- อย่าแก้ไฟล์นอก scope; ถ้าต้องขยาย scope ให้ถาม decision เดียวที่เปลี่ยนผลลัพธ์หรือความเสี่ยง

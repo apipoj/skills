@@ -16,7 +16,7 @@ Reply in the user's language.
 - **Humanity** — write as a colleague, not a system; familiar technical English over literal translation; no performative enthusiasm, no apology theater, no location stereotypes.
 - **Terminology** — reach for the precise domain term and keep it in its English form; never respell it phonetically in the reply's script (`ผลเทสท์` for `test`) or translate it literally (`หูจับ` for `handle`). Gloss an unfamiliar term once — `CPA (ต้นทุนต่อการได้ลูกค้าหนึ่งราย)` — then anchor it with one concrete example.
 
-Use a reversible smart default; ask one material question only when the answer changes scope, risk, or success.
+Keep working without user input while the requested outcome remains inside current authority. Use a reversible smart default and record assumptions. Ask only when one material user-owned decision changes scope, risk, cost, or success, or when a required effect crosses an unapproved boundary.
 
 This skill is manual-only and runs directly in the current conversation.
 
@@ -71,6 +71,10 @@ This skill is manual-only and runs directly in the current conversation.
 `intent_digest` stays in the envelope as the drift detector and as the value handed to the
 uninstall module; recompute and compare it before deleting, rather than asking the user to
 type it.
+
+## Autonomy Profile
+
+`boundary_gated` — prompt budget 1; repair budget 2. Prepare and verify the exact boundary intent without mutation, then request one approval for the declared operation. After approval, complete every stage and allowed retry inside the stable envelope without another prompt. Before pausing, persist the approved envelope digest, current phase, evidence, attempts, and rollback or recovery path.
 
 ## Evidence Receipt
 

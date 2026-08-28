@@ -45,6 +45,10 @@ Skill นี้เป็น manual-only โหมด default คือ **prepare
 
 `intent_digest` ยังอยู่ใน envelope ในฐานะตัวจับ drift คำนวณใหม่แล้วเทียบก่อน write ไม่ใช่สิ่งที่ user ต้องพิมพ์
 
+## Autonomy Profile
+
+`boundary_gated` — เตรียม intent ให้ครบแล้วขออนุมัติ boundary เพียงครั้งเดียว prompt budget 1, repair budget 2 รอบ ก่อนหยุดต้องบันทึก phase, assumption, evidence, attempts และ next action ที่ทำต่อได้
+
 ## Evidence Receipt
 
 คืน `spk.evidence/v1` ที่มี mode, approval digest, paths, commit/ref, PR URL, commands/gates, files ที่ตั้งใจไม่ stage, risks และ next action

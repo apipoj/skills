@@ -19,7 +19,7 @@ Reply in the user's language.
 - **Humanity** — write as a colleague, not a system; familiar technical English over literal translation; no performative enthusiasm, no apology theater, no location stereotypes.
 - **Terminology** — reach for the precise domain term and keep it in its English form; never respell it phonetically in the reply's script (`ผลเทสท์` for `test`) or translate it literally (`หูจับ` for `handle`). Gloss an unfamiliar term once — `CPA (ต้นทุนต่อการได้ลูกค้าหนึ่งราย)` — then anchor it with one concrete example.
 
-Use a reversible smart default; ask one material question only when the answer changes scope, risk, or success.
+Keep working without user input while the requested outcome remains inside current authority. Use a reversible smart default and record assumptions. Ask only when one material user-owned decision changes scope, risk, cost, or success, or when a required effect crosses an unapproved boundary.
 
 When a decision or confirmation is needed, use the host's structured choice prompt if one is available; otherwise present a numbered list. Options must be genuinely distinct with exactly one recommended, every label names the real outcome, and a free-form answer stays possible.
 
@@ -32,14 +32,14 @@ As the router, reveal advanced detail only when it helps the current decision.
 3. State the selected workflow and its actual effect:
    - `read_only` — inspect and report only.
    - `workspace_write` — create or edit local files in the approved scope.
-   - `git_write` — change local Git state only after exact approval.
-   - `external_write` — change GitHub, an issue tracker, deployment, or another remote only after exact approval.
+   - `git_write` — change recoverable local Git state when the explicit workflow request grants that bounded authority.
+   - `external_write` — change a remote only through the selected workflow's declared approval mode.
    - `destructive` — remove data only after showing exact targets and receiving approval.
 4. Route by outcome:
    - sharpen an idea or decision → `ask-me`, `asking`, or `ask-with-docs`
    - create an engineering plan → `plan`; publish an existing discussion as a spec → `to-spec`
    - split work → `to-tickets`; map a large foggy effort → `wayfinder`
-   - build an approved plan → `code`; use a strict red-green loop → `tdd`
+   - implement, fix, or plan-and-implement → `code`; use a strict red-green loop → `tdd`
    - investigate a failure → `debug`; review a diff → `code-review`; get fast test feedback → `test-changes`
    - answer a code-shape question → `prototype`; compare UI directions → `design-options`
    - improve module shape → `codebase-design` or `improve-codebase`
@@ -48,7 +48,9 @@ As the router, reveal advanced detail only when it helps the current decision.
    - configure or orient a repository → `setup` or `load-project`; check installation → `doctor`
    - prepare delivery → `check-release`, `pr`, `task-to-pr`, or `deploy`; remove Apipoj Skills → `uninstall`
    - carry context to a fresh session → `handoff`; learn a topic → `teach`
-5. Run only the selected workflow when it is available and within authority. Recommend adjacent work as a next action instead of silently chaining it.
+5. Run the selected workflow through its verified outcome. An explicit end-to-end request
+   carries bounded workspace authority through planning and implementation; continue
+   through planning and implementation without another local confirmation.
 6. Finish with the result first, then concise evidence, risks, and the next smallest action.
 
 ### Phase boundaries
@@ -70,6 +72,9 @@ the rest into subagents.
 Every move except Continue turns a primary source into a lossy secondary one, which is why the first
 question comes first.
 
+## Autonomy Profile
+
+`afk_local` — prompt budget 0; repair budget 3. A clear request grants bounded work only up to this skill's declared effect level; the profile never upgrades read-only work into a write. Keep working through inspect, act, verify, and bounded repair without asking the user. Before pausing, record phase, assumptions, evidence, attempts, and the smallest resumable next action.
 ## Evidence Receipt
 
 Return:
@@ -85,8 +90,10 @@ approval_required: <true|false>
 
 ## Guardrails
 
-- The router never adds authority. Planning approval does not authorize implementation; local creation does not authorize Git or remote writes.
-- Never auto-run `pr`, `task-to-pr`, `deploy`, or `uninstall` across their approval boundary.
+- The router carries explicit bounded authority but never invents it. A plan-only request
+  remains plan-only; an explicit end-to-end request continues through local implementation.
+- `task-to-pr` may run autonomously only for one identified task and never merge or deploy.
+- Never auto-run standalone `pr`, `deploy`, or `uninstall` across their approval boundary.
 - Prefer one clear recommendation and one workflow over a large pipeline.
 - `bala` and `sunzi` ship in the default bundle but remain manual-only and outside automatic routing.
 - Report missing evidence instead of guessing.

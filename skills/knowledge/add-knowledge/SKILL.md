@@ -21,6 +21,10 @@ disable-model-invocation: true
 
 read-only helper อาจช่วยสรุป source ใหญ่มากได้ แต่ main conversation ต้องเป็นเจ้าของ path validation, writes, verification และ cleanup
 
+## Autonomy Profile
+
+`afk_local` — ทำงานต่อเองได้ถึง effect level ที่ skill นี้ประกาศเท่านั้น และห้ามยกระดับ read-only เป็น write; prompt budget 0, repair budget 3 รอบ ก่อนหยุดต้องบันทึก phase, assumption, evidence, attempts และ next action ที่ทำต่อได้
+
 ## Evidence Receipt
 
 คืน `spk.evidence/v1` ที่มี status, source hash, artifacts ที่สร้าง/แก้, verification commands/results, redaction count, risks และ next action

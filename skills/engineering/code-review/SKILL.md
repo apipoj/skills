@@ -76,3 +76,7 @@ description: รีวิว diff แยกด้านมาตรฐาน ส
 - review แบบ read-only เท่านั้น ห้ามสร้างหรือแก้ project files รวมถึง reports,
   caches, snapshots, lockfiles และ generated artifacts; ถ้า verification command
   อาจเขียนไฟล์ ให้รายงาน command เพื่อให้ user รันแทน
+
+## Autonomy Profile
+
+`afk_local` — ทำงานต่อเองได้ถึง effect level ที่ skill นี้ประกาศเท่านั้น และห้ามยกระดับ read-only เป็น write; prompt budget 0, repair budget 3 รอบ ก่อนหยุดต้องบันทึก phase, assumption, evidence, attempts และ next action ที่ทำต่อได้

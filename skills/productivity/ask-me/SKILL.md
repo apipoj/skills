@@ -137,8 +137,8 @@ Sales deck การพูดถึง repo, product หรือ feature อย
   ห้ามสร้างชื่อ workflow `/prd`, `/proposal`, `/presentation` หรือ `/sales` ขึ้นเอง
 - **Workflow ที่มีจริง:** `debug` เป็น `read_only`; `design-options` และ `plan` เป็น
   `workspace_write` route ได้เมื่อมีอยู่และต้องบอก effect/path ก่อน
-- **Plan → Dev:** ตัวเลือกนี้อนุญาตเฉพาะ `plan` เริ่ม `code` ได้หลังแสดง reviewed plan
-  และคำยืนยันใหม่หลังเห็น plan ฉบับนั้นเท่านั้น
+- **Plan → Dev:** plan-only อนุญาตเฉพาะ `plan` ส่วน end-to-end workspace intent ที่ชัด
+  carry ผ่าน reviewed plan ไป `code` ได้โดยไม่ถามซ้ำ
 - **การส่งออก:** การสร้างงานไม่อนุญาต commit, push, PR, deploy, ส่ง หรือ publish ต้อง
   แสดง artifact จริง ผู้รับ และ channel ก่อน แล้วขออนุมัติการส่งแยกอีกครั้ง แม้ผู้ใช้เคย
   ขอให้ส่งไว้ล่วงหน้า
@@ -157,9 +157,13 @@ selected: <deliverable|stop>
 handoff_kind: <direct_task|workflow|stop>
 next_workflow: <name|null>
 effect: <read_only|workspace_write>
-development_authorized: false
+development_authorized: <true เฉพาะ end-to-end workspace intent ที่ชัด>
 external_write_authorized: false
 ```
+
+## Autonomy Profile
+
+`decision_aware` — ตรวจ fact และทำ draft ได้ถึง effect level ที่ skill ประกาศ โดย read-only ยังต้อง read-only แล้วถามได้สูงสุดหนึ่ง decision สำคัญ; prompt budget 1, repair budget 3 รอบ ก่อนหยุดต้องบันทึก decision ledger, evidence และ next action ที่ทำต่อได้
 
 ## ข้อควรระวัง
 

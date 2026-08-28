@@ -9,6 +9,9 @@ disable-model-invocation: true
 
 ใช้กับ **เอกสารทุกชนิดที่ agent ต้องอ่าน** — ไม่ใช่แค่ skill แต่รวม `AGENTS.md`, `CLAUDE.md` และ doc ที่ถูกชี้ถึงจากที่อื่น รูปแบบการห่อต่างกัน แต่วิธีเขียนเหมือนกัน คันโยกชุดเดียวกันทำให้ทุกอันคาดเดาได้ คือทำให้ agent เดิน **กระบวนการ** เดิมทุกครั้ง ไม่ใช่ผลิต output เดิมทุกครั้ง
 
+คำขอที่ระบุให้เขียนหรือแก้เอกสาร agent-facing ชัดเจนให้ bounded workspace authority
+ลงมือแก้และ validate ได้เลยโดยไม่ถามอนุมัติ local ซ้ำ
+
 เอกสารอ้างอิงประกอบ: [SKILL-MECHANICS.md](SKILL-MECHANICS.md) สำหรับกลไกเฉพาะของ skill (frontmatter, การเลือกวิธี invoke, router skill) และ [GLOSSARY.md](GLOSSARY.md) สำหรับคำศัพท์ทั้งชุด
 
 ## ตัวชี้ context
@@ -38,6 +41,10 @@ disable-model-invocation: true
 2. ใช้ smart defaults เมื่อความเสี่ยงต่ำ ถ้ามี decision ที่เปลี่ยน scope ให้ถามเพียงหนึ่งคำถามพร้อมคำแนะนำ
 3. เขียนหรือปรับทีละ slice สั้น ๆ ลับตัวชี้ก่อนย้ายเนื้อหา และเลือกว่าจะจ่าย context load หรือ cognitive load อย่างตั้งใจ
 4. สรุปผล หลักฐาน ความเสี่ยง และสิ่งที่ยังต้องตัดสินใจโดยไม่ยืดเยื้อ
+
+## Autonomy Profile
+
+`afk_local` — ทำงานต่อเองได้ถึง effect level ที่ skill นี้ประกาศเท่านั้น และห้ามยกระดับ read-only เป็น write; prompt budget 0, repair budget 3 รอบ ก่อนหยุดต้องบันทึก phase, assumption, evidence, attempts และ next action ที่ทำต่อได้
 
 ## Evidence Receipt
 

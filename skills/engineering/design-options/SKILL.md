@@ -89,6 +89,10 @@ description: ลอง UI หลายแนวที่ต่างกันจ
 Recommendation: <เลือกหนึ่งและบอกเหตุผล>
 ```
 
+## Autonomy Profile
+
+`decision_aware` — ตรวจ fact และทำ draft ได้ถึง effect level ที่ skill ประกาศ โดย read-only ยังต้อง read-only แล้วถามได้สูงสุดหนึ่ง decision สำคัญ; prompt budget 1, repair budget 3 รอบ ก่อนหยุดต้องบันทึก decision ledger, evidence และ next action ที่ทำต่อได้
+
 ## ข้อควรระวัง
 
 - อย่าแก้ production source code เว้นแต่ user ขอ implementation โดยตรง

@@ -15,7 +15,7 @@ Reply in the user's language.
 - **Humanity** — write as a colleague, not a system; familiar technical English over literal translation; no performative enthusiasm, no apology theater, no location stereotypes.
 - **Terminology** — reach for the precise domain term and keep it in its English form; never respell it phonetically in the reply's script (`ผลเทสท์` for `test`) or translate it literally (`หูจับ` for `handle`). Gloss an unfamiliar term once — `CPA (ต้นทุนต่อการได้ลูกค้าหนึ่งราย)` — then anchor it with one concrete example.
 
-Use a reversible smart default; ask one material question only when the answer changes scope, risk, or success.
+Keep working without user input while the requested outcome remains inside current authority. Use a reversible smart default and record assumptions. Ask only when one material user-owned decision changes scope, risk, cost, or success, or when a required effect crosses an unapproved boundary.
 
 Audit project wiki content without reading raw private sources.
 
@@ -24,26 +24,29 @@ Audit project wiki content without reading raw private sources.
 1. Resolve the requested wiki scope, defaulting to `ai_context/wiki/`.
 2. Refuse to inspect `ai_context/sources/`, ignored paths, credentials, or environment
    files.
-3. Create `ai_context/.spk-wiki-build` before the audit when the repository provides
-   that guard. While active, use only non-shell read/search tools; shell execution is
-   fail-closed except for an exact marker-cleanup command. Remove the marker in a
-   finally-style cleanup on success or failure. This bounded temporary marker is the
-   workflow's only permitted project write.
+3. Acquire the overlap guard outside the repository or in memory so the audit remains
+   read-only without a project marker. Release it in a finally-style cleanup on success
+   or failure.
 4. Check orphan pages, contradictions, stale claims, missing citations, dead links,
    index drift, and secret-shaped strings.
 5. Rank evidence-backed findings and propose fixes; do not apply them unless requested.
 6. Run an explicit verifier pass over the report and cleanup state.
 
+## Autonomy Profile
+
+`afk_local` — prompt budget 0; repair budget 3. A clear request grants bounded work only up to this skill's declared effect level; the profile never upgrades read-only work into a write. Keep working through inspect, act, verify, and bounded repair without asking the user. Before pausing, record phase, assumptions, evidence, attempts, and the smallest resumable next action.
+
 ## Evidence Receipt
 
 Return `spk.evidence/v1` with audited pages, ranked findings, verification results,
-guard cleanup, proposed fixes, risks, and next action.
+guard cleanup, proposed fixes, risks, and next action. Identify the run as a read-only audit.
 
 ## Guardrails
 
 - Read wiki pages only; never inspect raw private sources.
 - Invoke implicitly only for a current explicit wiki-audit intent, never as an
   adjacent cleanup step.
-- Do not apply proposed fixes without explicit authorization.
-- Do not write project state other than the temporary guard marker.
-- Fail closed on secret-scan failure and always remove the temporary guard.
+- Do not apply proposed fixes unless the current request explicitly asks to fix the wiki.
+- Keep audit mode read-only. Mechanical repairs may run only in explicit fix mode;
+  semantic changes remain recommendations.
+- Fail closed on secret-scan failure and always release the external guard.
