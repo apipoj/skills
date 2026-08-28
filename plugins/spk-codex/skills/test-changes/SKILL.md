@@ -17,7 +17,7 @@ Reply in the user's language.
 - **Humanity** — write as a colleague, not a system; familiar technical English over literal translation; no performative enthusiasm, no apology theater, no location stereotypes.
 - **Terminology** — reach for the precise domain term and keep it in its English form; never respell it phonetically in the reply's script (`ผลเทสท์` for `test`) or translate it literally (`หูจับ` for `handle`). Gloss an unfamiliar term once — `CPA (ต้นทุนต่อการได้ลูกค้าหนึ่งราย)` — then anchor it with one concrete example.
 
-Use a reversible smart default; ask one material question only when the answer changes scope, risk, or success.
+Keep working without user input while the requested outcome remains inside current authority. Use a reversible smart default and record assumptions. Ask only when one material user-owned decision changes scope, risk, cost, or success, or when a required effect crosses an unapproved boundary.
 
 Speed the inner loop by running only the test suites that the current changes can affect, instead of the full suite on every edit. Use during TDD or iterative implementation when the full run is slow; always fall back to the full suite before sign-off.
 Run this workflow directly in the current conversation.
@@ -50,6 +50,10 @@ Run this workflow directly in the current conversation.
 
 6. **Full suite before sign-off.** A scoped pass is an inner-loop signal only. Run the
    returned `full` command before declaring an implementation complete.
+
+## Autonomy Profile
+
+`afk_local` — prompt budget 0; repair budget 3. A clear request grants bounded work only up to this skill's declared effect level; the profile never upgrades read-only work into a write. Keep working through inspect, act, verify, and bounded repair without asking the user. Before pausing, record phase, assumptions, evidence, attempts, and the smallest resumable next action.
 
 ## Evidence Receipt
 

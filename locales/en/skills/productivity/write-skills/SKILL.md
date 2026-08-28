@@ -15,43 +15,49 @@ Reply in the user's language.
 - **Humanity** — write as a colleague, not a system; familiar technical English over literal translation; no performative enthusiasm, no apology theater, no location stereotypes.
 - **Terminology** — reach for the precise domain term and keep it in its English form; never respell it phonetically in the reply's script (`ผลเทสท์` for `test`) or translate it literally (`หูจับ` for `handle`). Gloss an unfamiliar term once — `CPA (ต้นทุนต่อการได้ลูกค้าหนึ่งราย)` — then anchor it with one concrete example.
 
-Use a reversible smart default; ask one material question only when the answer changes scope, risk, or success.
+Keep working without user input while the requested outcome remains inside current authority. Use a reversible smart default and record assumptions. Ask only when one material user-owned decision changes scope, risk, cost, or success, or when a required effect crosses an unapproved boundary.
 
-This is the reference for writing **any document an agent consumes** — not just a skill, but `AGENTS.md`, `CLAUDE.md`, and any doc reached by a pointer. The packaging differs; the writing does not. The same levers make each one predictable: the agent taking the same **process** every run, not producing the same output.
+This covers **any document an agent consumes** — a skill, an `AGENTS.md` / `CLAUDE.md`, a doc reached
+by a pointer. The packaging differs; the writing does not. The same levers make each one predictable:
+the agent taking the same *process* every run, not producing the same output.
 
-Companion references: [SKILL-MECHANICS.md](SKILL-MECHANICS.md) for the skill-specific mechanics (frontmatter, the invocation choice, router skills), and [GLOSSARY.md](GLOSSARY.md) for the full vocabulary.
-
-## Context pointers
-
-A **context pointer** is a reference held in the agent's context that names some out-of-context material and encodes the condition for reaching it. A skill's `description` is one; a line in `AGENTS.md` naming a doc is the same object.
-
-The pointer's **wording**, not its target, decides when the agent reaches the material — and how reliably. A must-have target behind a weakly worded pointer is a variance bug: **sharpen the wording first**, and inline the material only if sharpening fails.
-
-A pointer does two jobs — state what the material is, and list the **branches** that should trigger reaching it (a branch is a distinct case the document handles, so different runs take different paths through it). Every word of an always-loaded pointer costs on every turn, so it earns harder pruning than the body:
-
-- **Front-load the leading word** — the pointer is where it does its triggering work.
-- **One trigger per branch.** Synonyms that rename a single branch are one branch written twice; collapse them and keep only genuinely distinct branches.
-- **Cut identity the body already carries.**
-
-## The two loads
-
-Every document and pointer you add spends one of two budgets:
-
-- **Context load** — the cost of always-loaded material on the agent's window: an `AGENTS.md` line, a skill description, anything sitting in context every turn, spending tokens and attention whether or not it fires.
-- **Cognitive load** — the cost on the human: which documents exist and when to reach for each. The human is the index. Not a cost to minimise — it is the price of human agency; spend it where human judgement matters, remove it where it does not.
-
-Material reached only through a pointer escapes context load at the price of the pointer's own line; material with no pointer at all rides entirely on cognitive load.
+An explicit request to write or revise named agent-facing documentation grants bounded
+workspace authority. Apply the edits and validate them without another local confirmation.
 
 ## Workflow
 
-1. Read the request, the repository instructions, and the vocabulary in [GLOSSARY.md](GLOSSARY.md). If the document is a skill, read [SKILL-MECHANICS.md](SKILL-MECHANICS.md) too.
-2. Apply smart defaults when risk is low. When a decision changes scope, ask exactly one question with a recommendation.
-3. Write or edit in short slices. Sharpen pointers before relocating material, and choose deliberately which of the two loads you are spending.
-4. Report the result, the evidence, the risks, and what is still open, without padding.
+1. Read the request and the repository instructions, then write or edit in short slices, applying the
+   levers below. Use smart defaults when risk is low; when a decision changes scope, ask exactly one
+   question with a recommendation.
+2. **Context pointers.** A context pointer is a reference held in the agent's context that names
+   out-of-context material and encodes the condition for reaching it. A skill's `description` is one;
+   a line in `AGENTS.md` naming a doc is the same object. The pointer's *wording*, not its target,
+   decides when the agent reaches the material and how reliably — a must-have target behind a weakly
+   worded pointer is a variance bug. Sharpen the wording first; inline the material only if
+   sharpening fails. Front-load the leading word, write one trigger per branch with synonyms
+   collapsed, and cut identity the body already carries.
+3. **The two loads.** Every document and pointer spends one of two budgets. *Context load* is
+   always-loaded material on the agent's window, spending tokens and attention whether or not it
+   fires. *Cognitive load* is the cost on the human of knowing which documents exist and when to
+   reach for each — not a cost to minimise, but the price of human agency: spend it where human
+   judgement matters. Material behind a pointer escapes context load at the price of the pointer's
+   own line; material with no pointer rides entirely on cognitive load.
+4. **When the document is a skill.** Choose model-invoked (keep a `description`, so the agent and
+   other skills can reach it, at permanent context load) or user-invoked (`disable-model-invocation:
+   true`, zero context load, but the human is the index). Pick model-invocation only when the agent
+   or another skill must reach it on its own. When user-invoked skills multiply past what a human can
+   remember, add a router skill that names the others and when to reach for each; it can only hint,
+   never fire them.
+5. Report the result, the evidence, the risks, and what is still open, without padding.
+
+## Autonomy Profile
+
+`afk_local` — prompt budget 0; repair budget 3. A clear request grants bounded work only up to this skill's declared effect level; the profile never upgrades read-only work into a write. Keep working through inspect, act, verify, and bounded repair without asking the user. Before pausing, record phase, assumptions, evidence, attempts, and the smallest resumable next action.
 
 ## Evidence Receipt
 
-Report the artifact, the verification command, the real result, the risks, and the smallest next action.
+Return `spk.evidence/v1` with the artifact, the verification command, the real result, risks, and the
+smallest next action.
 
 ## Guardrails
 

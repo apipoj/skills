@@ -22,14 +22,14 @@ description: เริ่มงานกับ AI แบบไทยเป็น
 3. บอก workflow และ effect จริงก่อนลงมือ:
    - `read_only` — ตรวจและรายงานเท่านั้น
    - `workspace_write` — สร้างหรือแก้ local files ใน scope ที่อนุมัติ
-   - `git_write` — เปลี่ยน local Git หลังได้ approval ที่ตรงเป้าหมาย
-   - `external_write` — เปลี่ยน GitHub, issue tracker, deployment หรือระบบภายนอกหลังได้ approval
+   - `git_write` — เปลี่ยน local Git แบบย้อนกลับได้เมื่อคำขอของ workflow ระบุ authority นี้ชัด
+   - `external_write` — เปลี่ยน remote ตาม approval mode ที่ workflow นั้นประกาศ
    - `destructive` — ลบข้อมูลหลังแสดง target ที่แน่นอนและได้รับอนุมัติ
 4. Route ตาม outcome:
    - ทำ idea หรือเรื่องที่ต้องตัดสินใจให้ชัด → `ask-me`, `asking`, `ask-with-docs`
    - ทำ engineering plan → `plan`; สรุป discussion เป็น spec → `to-spec`
    - แตกงาน → `to-tickets`; งานใหญ่ที่ยังมีหมอก → `wayfinder`
-   - พัฒนาแผนที่อนุมัติแล้ว → `code`; ต้องการ RED-GREEN ชัด → `tdd`
+   - implement, fix หรือ plan-and-implement → `code`; ต้องการ RED-GREEN ชัด → `tdd`
    - failure ที่ยังไม่รู้ต้นเหตุ → `debug`; ตรวจ diff → `code-review`; feedback จาก test แบบเร็ว → `test-changes`
    - ตอบคำถามด้วยของทดลอง → `prototype`; เทียบ UI หลายทาง → `design-options`
    - ปรับรูปทรง module → `codebase-design`, `improve-codebase`
@@ -38,7 +38,9 @@ description: เริ่มงานกับ AI แบบไทยเป็น
    - ตั้งค่าหรือทำความรู้จัก repo → `setup`, `load-project`; ตรวจ installation → `doctor`
    - เตรียมส่งงาน → `check-release`, `pr`, `task-to-pr`, `deploy`; ถอนระบบ → `uninstall`
    - ส่งต่อ context → `handoff`; เรียนรู้เรื่องใหม่ → `teach`
-5. รันเฉพาะ workflow ที่เลือกและอยู่ใน authority ถ้ามีงานข้างเคียงให้แนะนำเป็น next action แทนการ chain เอง
+5. รัน workflow ที่เลือกไปจนถึงผลลัพธ์ที่ตรวจได้ คำขอแบบ end-to-end ที่ชัดให้ bounded
+   workspace authority ต่อเนื่องผ่าน plan, implementation, test และ local QA โดยไม่ถาม
+   อนุมัติ local ซ้ำ
 6. จบด้วยผลลัพธ์ก่อน ตามด้วยหลักฐาน ความเสี่ยง และ next action ที่เล็กที่สุด
 
 ## รอยต่อระหว่าง phase
@@ -53,6 +55,10 @@ description: เริ่มงานกับ AI แบบไทยเป็น
 
 ตัดสินใจที่รอยต่อเท่านั้น กลาง phase ให้ทำต่อหรือแยกงานที่เหลือไปให้ subagent รายละเอียดเต็มอยู่ใน [PHASE-BOUNDARIES.md](PHASE-BOUNDARIES.md)
 
+## Autonomy Profile
+
+`afk_local` — ทำงานต่อเองได้ถึง effect level ที่ skill นี้ประกาศเท่านั้น และห้ามยกระดับ read-only เป็น write; prompt budget 0, repair budget 3 รอบ ก่อนหยุดต้องบันทึก phase, assumption, evidence, attempts และ next action ที่ทำต่อได้
+
 ## Evidence Receipt
 
 ```yaml
@@ -66,8 +72,9 @@ approval_required: <true|false>
 
 ## Guardrails
 
-- Router เพิ่ม authority ไม่ได้: อนุมัติ plan ไม่เท่ากับอนุมัติ dev และการสร้างไฟล์ไม่เท่ากับอนุมัติ Git หรือ remote write
-- ห้ามข้าม approval boundary ของ `pr`, `task-to-pr`, `deploy` และ `uninstall`
+- Router สร้าง authority เองไม่ได้: plan-only ต้องหยุดที่ plan แต่คำขอ end-to-end ที่ชัดให้ทำ local implementation ต่อได้
+- `task-to-pr` ทำอัตโนมัติได้เฉพาะ task ที่ระบุหนึ่งรายการ และห้าม merge หรือ deploy
+- ห้ามข้าม approval boundary ของ standalone `pr`, `deploy` และ `uninstall`
 - ให้คำแนะนำหนึ่งตัวและใช้ workflow เดียวเมื่อพอ
 - `bala` และ `sunzi` อยู่ใน default bundle แต่เป็น manual-only จึงไม่ route ให้อัตโนมัติ
 - หลักฐานไม่พอให้บอกช่องว่าง ห้ามเดา

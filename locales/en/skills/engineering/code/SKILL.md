@@ -1,8 +1,8 @@
 ---
 name: code
-description: พัฒนาแผนที่อนุมัติแล้วเป็น slice เล็กที่ผ่าน test และ review โดยไม่ commit หรือ push เอง
+description: Implement an explicit software request or reviewed plan through tested, documented, locally verified workspace changes without a second approval gate.
 ---
-# code
+# Implementation
 
 ## Response Rules
 
@@ -14,70 +14,78 @@ Reply in the user's language.
 - **Humanity** — write as a colleague, not a system; familiar technical English over literal translation; no performative enthusiasm, no apology theater, no location stereotypes.
 - **Terminology** — reach for the precise domain term and keep it in its English form; never respell it phonetically in the reply's script (`ผลเทสท์` for `test`) or translate it literally (`หูจับ` for `handle`). Gloss an unfamiliar term once — `CPA (ต้นทุนต่อการได้ลูกค้าหนึ่งราย)` — then anchor it with one concrete example.
 
-Use a reversible smart default; ask one material question only when the answer changes scope, risk, or success.
+Keep working without user input while the requested outcome remains inside current authority. Use a reversible smart default and record assumptions. Ask only when one material user-owned decision changes scope, risk, cost, or success, or when a required effect crosses an unapproved boundary.
 
-Implement feature จาก plan ที่มีอยู่ ทำงานเป็น task เล็ก ๆ แบบ TDD ตรวจสอบงาน และอัพเดต docs
-
-## รวบรวม Context
-
-- ถ้าอยู่ใน git worktree ให้รัน `git status --short` และ `git log -3 --oneline`; ถ้าไม่ใช่ git repo ให้ข้าม git context และทำงานต่อ
-- หา plan file (ปกติอยู่ที่ `ai_context/wiki/plans/` หรือ path ที่ระบุ)
-- ดู project structure (package.json, tsconfig, pyproject.toml ฯลฯ)
+Implement the explicit request or supplied reviewed plan without broadening its scope.
 
 ## Workflow
 
-1. **ตรวจ authority** อ่าน plan ที่อนุมัติแล้วและคำอนุญาตให้ code ถ้ามาจาก flow
-   plan-to-dev ต้องมีคำตอบใหม่หลัง user เห็น plan ฉบับนั้น เช่น `เริ่มพัฒนาตาม plan`
-   ถ้าไม่มีหรือกำกวม ให้คืน `NEEDS_USER_INPUT` ก่อนแก้ workspace
-2. **อ่าน plan** โหลด plan file แล้วดึง: goal, non-goals, tasks, gates, acceptance criteria
-   ถ้าไม่มี approved plan ให้หยุดและขอ plan ก่อน
-3. **เลือก task ถัดไป** เลือก task แรกที่ยังไม่เสร็จ
-4. **TDD ต่อ task** สำหรับแต่ละ task:
-   - เขียนหรือระบุ test ที่พิสูจน์ behavior
-   - รัน test และยืนยันว่า fail (RED)
-   - Implement code ขั้นต่ำที่ทำให้ pass (GREEN)
-   - รัน regression suite เพื่อยืนยันว่าไม่มีอะไรพัง
-   - Refactor เฉพาะตอน green
-   - บันทึก proposed commit message แต่ commit เฉพาะเมื่อผู้ใช้อนุญาต action นี้แยกต่างหาก
-5. **ตรวจสอบ gates** หลังแต่ละ task รัน verification commands จาก plan หยุดถ้า gate ใด fail
-6. **อัพเดต docs** ถ้า plan มี docs tasks ให้ทำตาม workflow
-7. **รายงานความคืบหน้า** สรุปว่าทำอะไรไป ถัดไปคืออะไร และมี deviation จาก plan ไหม
+1. Read repository instructions, current diff, relevant code, acceptance criteria, and
+   authority. Treat a clear explicit implementation, fix, update, or
+   plan-and-implement request as bounded workspace authority. If no plan artifact exists,
+   build an internal micro-plan instead of stopping.
+2. Split work by acceptance criterion. Delegate only independent, disjoint slices; use
+   sequential work for shared files or dependent steps.
+3. For each behavior, record a failing RED test before the minimum GREEN change, then
+   refactor only while green.
+4. Run focused tests during the loop and the relevant full regression suite before
+   sign-off. Update documentation when public behavior changed.
+5. Diagnose and repair focused or regression failures within the autonomy repair budget.
+   Pause only for a material user-owned decision, missing access, security/privacy risk,
+   scope expansion, or an undeclared Git, remote, or destructive effect.
+6. Run a separate verifier pass against the plan and repository gates. Do not describe
+   unverified work as done.
+7. Return a typed evidence receipt containing changed paths, RED/GREEN commands and
+   outcomes, full-suite result, documentation, risks, and remaining work.
 
-## Implementation Authorization
+Budget: at most eight specialist calls, three concurrent workers with disjoint file
+ownership, and one retry for a blocked worker. Do not commit, push, or open a PR unless
+the user explicitly requested those separate actions.
 
-ยอมรับ authority ได้สองแบบ:
+## Workspace Authority
 
-- request ปัจจุบันขอให้ code plan ที่ระบุและอนุมัติแล้วโดยตรง
-- ใน flow plan-to-dev คำตอบล่าสุดอนุมัติ plan ฉบับที่เพิ่งแสดงอย่างชัดเจน
+Accept any of these as bounded workspace authority:
 
-ห้ามนับคำยืนยันจาก `ask-me`, การเลือกให้สร้าง plan หรือข้อความ “plan แล้ว dev” ก่อนเห็น
-plan เป็น codeation approval ถ้า authority ไม่ครบ ห้ามเขียน code, tests หรือ docs
+- The current request explicitly asks to implement, fix, update, refactor, or test an
+  identified outcome.
+- The current request explicitly asks to plan and then implement an identified outcome.
+- The current request asks to implement a referenced reviewed plan.
 
-## Output Format
+An `ask-me` summary alone remains read-only. A plan-only request remains plan-only. When
+the implementation outcome is explicit but a plan file is absent, derive a bounded
+micro-plan from repository evidence and acceptance criteria. Record assumptions and keep
+working; ask only when one material decision changes scope, risk, cost, or success.
 
-```markdown
-## Implementation Progress
-- Task ที่เสร็จ: <task name>
-- Files ที่เปลี่ยน: <list>
-- Tests: <pass/fail summary>
-- Commit: <hash, proposed message หรือ "not authorized">
-- Task ถัดไป: <name หรือ "done">
-- Deviations: <none หรือ description>
-```
+## Autonomy Profile
 
-## มาตรฐาน Plan
+`afk_local` — prompt budget 0; repair budget 3. A clear request grants bounded work only up to this skill's declared effect level; the profile never upgrades read-only work into a write. Keep working through inspect, act, verify, and bounded repair without asking the user. Before pausing, record phase, assumptions, evidence, attempts, and the smallest resumable next action.
 
-ถ้า plan ที่ให้มายังไม่ผ่านมาตรฐานต่อไปนี้ ให้หยุดและขอแก้หรือสร้าง approved plan ก่อน:
-- Tasks เป็น action 2-5 นาทีที่ตรวจสอบได้แบบอิสระ
-- ทุก task มี file path ที่ชัดหรือขั้นตอน discovery ที่ชัด
-- ทุกการเปลี่ยน behavior มีขั้นตอน TDD
-- Plan บอกว่าจะไม่ build อะไร
-- Acceptance criteria สังเกตได้และ test ได้
+## Evidence Receipt
 
-## ข้อควรระวัง
+Return `spk.evidence/v1` with status, plan or micro-plan reference, workspace-authority
+source, changed artifacts, RED/GREEN and regression verification, documentation,
+risks, and next action.
 
-- ห้ามแก้ workspace โดยไม่มี approved plan และ codeation authority ของ scope นั้น
-- อย่าข้าม test ถ้า test harness ไม่มี ให้ flag `NEEDS_TEST_HARNESS`
-- ห้าม commit, push หรือเปิด PR เว้นแต่ผู้ใช้อนุญาต action นั้นแยกต่างหาก
-- ถ้า task ใหญ่เกินไป ให้แยกก่อน code
-- อย่าแก้ไฟล์นอก scope ของ plan โดยไม่ถาม
+## Guardrails
+
+- Stay inside the approved plan and preserve unrelated user changes.
+- Never modify the workspace without a clear explicit implementation outcome and bounded
+  workspace authority for that scope.
+- Never skip a failing gate, invent test results, or describe unverified work as done.
+- Do not commit, push, create a PR, or deploy without separate explicit authorization.
+
+
+## Upstream Discipline
+
+The following material is retained from the pinned Matt Pocock skill and applies unless an Apipoj Skills approval or evidence guardrail above is stricter.
+
+Implement the work described by the user in the spec or tickets.
+
+Use /tdd where possible, at pre-agreed seams.
+
+Run typechecking regularly, single test files regularly, and the full test suite once at the end.
+
+Once done, use /code-review to review the work.
+
+Prepare a clear commit message, but commit only when the user separately authorizes
+that exact Git write.

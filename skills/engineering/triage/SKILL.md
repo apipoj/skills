@@ -18,6 +18,10 @@ disable-model-invocation: true
 
 คัดกรอง issue และ pull request ให้พร้อมตัดสินใจหรือพร้อมส่งต่อให้ agent ทำงาน
 
+## Autonomy Profile
+
+`decision_aware` — ตรวจ fact และทำ draft ได้ถึง effect level ที่ skill ประกาศ โดย read-only ยังต้อง read-only แล้วถามได้สูงสุดหนึ่ง decision สำคัญ; prompt budget 1, repair budget 3 รอบ ก่อนหยุดต้องบันทึก decision ledger, evidence และ next action ที่ทำต่อได้
+
 ## Evidence Receipt
 
 รายงาน artifact, คำสั่งตรวจสอบ, ผลจริง, ความเสี่ยง และ next action ที่เล็กที่สุด

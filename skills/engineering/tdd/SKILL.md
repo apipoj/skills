@@ -60,6 +60,10 @@ description: พัฒนา behavior ทีละ slice ด้วยวงจ�
 - ถ้าแก้ bug ให้รวม regression test ที่ fail ก่อน fix
 - ห้าม commit, push หรือ deploy เว้นแต่ผู้ใช้อนุญาต action นั้นแยกต่างหาก
 
+## Autonomy Profile
+
+`afk_local` — ทำงานต่อเองได้ถึง effect level ที่ skill นี้ประกาศเท่านั้น และห้ามยกระดับ read-only เป็น write; prompt budget 0, repair budget 3 รอบ ก่อนหยุดต้องบันทึก phase, assumption, evidence, attempts และ next action ที่ทำต่อได้
+
 ## ข้อควรระวัง
 
 - อย่ายอมรับ tests ที่ pass ก่อน implementation

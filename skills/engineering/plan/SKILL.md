@@ -11,8 +11,7 @@ description: วางแผนการเปลี่ยนแปลงซอ�
 - ถ้าอยู่ใน git worktree ให้รัน `git status --short` และ `git log -3 --oneline`; ถ้าไม่ใช่ git repo ให้ข้าม git context และทำงานต่อ
 - ดู project structure (CLAUDE.md, AGENTS.md, package.json, tsconfig, pyproject.toml, go.mod, Cargo.toml ฯลฯ)
 - ดู plans ที่มีอยู่ใน `ai_context/wiki/plans/` ถ้ามี
-- อ่าน handoff receipt ถ้ามี และบันทึกว่า user ต้องการ plan อย่างเดียวหรือต้องการให้ถาม
-  เพื่อเริ่ม dev หลังเห็น plan
+- อ่าน handoff receipt ถ้ามี และบันทึก authority เป็น `plan_only` หรือ `plan_and_implement`
 
 ## Workflow
 
@@ -45,24 +44,15 @@ description: วางแผนการเปลี่ยนแปลงซอ�
 - บันทึกที่ `ai_context/wiki/plans/YYYY-MM-DD-<slug>.md`
 - อัพเดต wiki index และ log
 
-### 7. Handoff ไป Dev เมื่อมีการขอไว้
+### 7. Handoff ไป Dev
 
-ใช้ขั้นนี้เฉพาะเมื่อ request ปัจจุบันหรือ handoff จาก `ask-me` ขอ flow แบบ plan-to-dev
-หลัง verifier รับ plan แล้ว ให้แสดง scope ของ reviewed plan และถาม:
+- `plan_only` — ตรวจ plan แล้วหยุด
+- `plan_and_implement` — คำขอเดิมระบุผลลัพธ์ local แบบ end-to-end ชัด reviewed plan
+  ทำหน้าที่จำกัด scope และบันทึก authority ไม่ใช่ approval gate ใหม่ ส่งต่อไป `code` แล้วทำต่อ
+  โดยไม่ถามซ้ำ
 
-```markdown
-## แผนพร้อมแล้ว
-
-การเริ่ม dev จะเขียนหรือแก้ code, tests และ docs ใน workspace ตาม plan ที่แสดงนี้
-
-เริ่ม dev ตาม plan นี้ไหม?
-
-คำแนะนำ: ถ้า plan ถูกต้อง ให้ตอบ "เริ่มพัฒนาตาม plan"; ถ้าต้องแก้ ให้บอกจุดที่ต้องแก้ก่อน
-```
-
-ข้อความก่อนเห็น plan เช่น “ทำ plan แล้วเริ่ม dev” อนุญาตเฉพาะ planning เพราะตอนนั้นยังไม่มี
-plan ให้ตรวจ เริ่ม workflow `code` ได้หลัง user อนุมัติ plan ฉบับที่เพิ่งแสดงอย่างชัดเจน
-เท่านั้น ถ้า plan ยัง blocked, verify ไม่ผ่าน หรือมี decision สำคัญค้างอยู่ ห้ามถามเพื่อเริ่ม dev
+ถ้า plan ยัง blocked, verify ไม่ผ่าน หรือมี decision สำคัญที่ผู้ใช้ต้องตัดสินใจ ให้เก็บ
+checkpoint และถามเฉพาะ decision นั้น
 
 ## Output Format
 
@@ -89,14 +79,19 @@ plan ให้ตรวจ เริ่ม workflow `code` ได้หลัง
 - Acceptance criteria สังเกตได้และ test ได้
 - ถ้าความไม่แน่นอนเปลี่ยน architecture ให้ถามคำถามเดียวที่เจาะจงแทนที่จะเดา
 
+## Autonomy Profile
+
+`afk_local` — ทำงานต่อเองได้ถึง effect level ที่ skill นี้ประกาศเท่านั้น และห้ามยกระดับ read-only เป็น write; prompt budget 0, repair budget 3 รอบ ก่อนหยุดต้องบันทึก phase, assumption, evidence, attempts และ next action ที่ทำต่อได้
+
 ## Evidence Receipt
 
 คืน `spk.evidence/v1` ที่มี plan artifact, repository evidence, acceptance criteria,
-verifier result, assumptions, risks, handoff intent และ
-`implementation_authorized: false` จนกว่าจะได้คำตอบใหม่หลังแสดง plan
+verifier result, assumptions, risks, `authority_mode` และ
+`implementation_authorized: true|false` ตามคำขอเดิม
 
 ## ข้อควรระวัง
 
-- ห้าม implement, commit, push หรือ deploy ระหว่าง planning
-- ห้ามนับคำยืนยันสรุปหรือคำขอ “plan แล้ว dev” ก่อนเห็น plan เป็น approval ของ plan
+- ห้ามแก้ production source ขณะที่ planning ยัง unresolved หรือ verify ไม่ผ่าน
+- ถ้าคำขอชัดว่า plan-and-implement ให้ carry workspace authority ไป implementation โดยไม่สร้าง approval ซ้ำ
+- plan-only ไม่อนุญาต implementation, Git, remote หรือ destructive effect
 - ถ้า scope สำคัญเปลี่ยน ให้กลับไปถาม user แทนการส่งต่อไป dev

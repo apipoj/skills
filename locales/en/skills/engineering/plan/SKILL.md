@@ -15,15 +15,16 @@ Reply in the user's language.
 - **Humanity** — write as a colleague, not a system; familiar technical English over literal translation; no performative enthusiasm, no apology theater, no location stereotypes.
 - **Terminology** — reach for the precise domain term and keep it in its English form; never respell it phonetically in the reply's script (`ผลเทสท์` for `test`) or translate it literally (`หูจับ` for `handle`). Gloss an unfamiliar term once — `CPA (ต้นทุนต่อการได้ลูกค้าหนึ่งราย)` — then anchor it with one concrete example.
 
-Use a reversible smart default; ask one material question only when the answer changes scope, risk, or success.
+Keep working without user input while the requested outcome remains inside current authority. Use a reversible smart default and record assumptions. Ask only when one material user-owned decision changes scope, risk, cost, or success, or when a required effect crosses an unapproved boundary.
 
-Produce a developer-ready plan from the user's feature request.
+Produce a developer-ready plan from the user's feature request. Distinguish a
+plan-only request from an explicit end-to-end plan-and-implement request.
 
 ## Workflow
 
 1. Inspect repository instructions, current state, related code, prior decisions, and
-   any incoming handoff receipt. Record whether it requests a plan-only result or a
-   post-plan development confirmation.
+   any incoming handoff receipt. Record whether authority is `plan_only` or
+   `plan_and_implement`.
 2. Use the smallest useful specialist set when delegation is available: product
    requirements and independent market research may run in parallel; architecture
    follows their findings; task decomposition follows architecture.
@@ -33,9 +34,10 @@ Produce a developer-ready plan from the user's feature request.
    rollout, and rollback before calling the plan ready.
 5. Save the reviewed result to `ai_context/wiki/plans/YYYY-MM-DD-<slug>.md` when that
    scaffold exists; otherwise return it inline. Update the index/log only when present.
-6. When the incoming request asks for a plan-to-development handoff, show the reviewed
-   plan and ask for a separate implementation confirmation. Do not begin implementation
-   in the same turn as the plan.
+6. For `plan_only`, stop after the reviewed plan. For `plan_and_implement`, pass the
+   verified plan and original bounded workspace authority directly to implementation and
+   continue without another user prompt. Pause only when a material user-owned decision
+   remains unresolved.
 
 Budget: at most five specialist calls, two concurrent workers, and one retry for a
 blocked worker. Stop fan-out once the verifier has enough evidence.
@@ -49,37 +51,34 @@ blocked worker. Stop fan-out once the verifier has enough evidence.
 - Acceptance criteria are observable and testable.
 - If uncertainty changes architecture, ask one focused question instead of guessing.
 
-## Optional Development Handoff
+## Development Handoff
 
-Use this only when the current request or an incoming `ask-me` receipt explicitly asks
-to continue from planning toward development. After the verifier accepts the plan,
-show its scope and ask:
+Classify authority from the current request, not from whether a plan already existed:
 
-```markdown
-## แผนพร้อมแล้ว
+- `plan_only` — create and verify the plan, then stop.
+- `plan_and_implement` — the user explicitly requested the complete local development
+  outcome. The reviewed plan narrows and records that authority; it does not create a
+  second approval gate. Continue into implementation without another user prompt.
 
-การเริ่ม dev จะเขียนหรือแก้ code, tests และ docs ใน workspace ตาม plan ที่แสดงนี้
+If the plan is blocked, unverified, or contains a material product choice the user must
+own, checkpoint the work and ask only that one decision. Local planning never grants
+commit, push, pull-request, merge, deployment, or destructive authority by itself.
 
-เริ่ม dev ตาม plan นี้ไหม?
+## Autonomy Profile
 
-คำแนะนำ: ถ้า plan ถูกต้อง ให้ตอบ "เริ่มพัฒนาตาม plan"; ถ้าต้องแก้ ให้บอกจุดที่ต้องแก้ก่อน
-```
-
-An earlier request such as “plan then develop” authorizes planning only because the
-plan did not yet exist. Start the `code` workflow only after an unambiguous post-plan
-answer approving the exact plan shown. If the plan is blocked, unverified, or has
-material unresolved choices, do not ask to start development.
+`afk_local` — prompt budget 0; repair budget 3. A clear request grants bounded work only up to this skill's declared effect level; the profile never upgrades read-only work into a write. Keep working through inspect, act, verify, and bounded repair without asking the user. Before pausing, record phase, assumptions, evidence, attempts, and the smallest resumable next action.
 
 ## Evidence Receipt
 
 Return `spk.evidence/v1` with the plan artifact, repository evidence, acceptance
-criteria, verifier result, assumptions, risks, handoff intent, and
-`implementation_authorized: false` until a separate post-plan answer is received.
+criteria, verifier result, assumptions, risks, `authority_mode`, and
+`implementation_authorized: true|false` based on the original explicit request.
 
 ## Guardrails
 
-- Do not implement, commit, push, or deploy while planning.
-- Do not treat summary confirmation or a pre-plan “plan then develop” choice as
-  approval of an unseen plan.
+- Do not modify production source while the planning phase is unresolved or unverified.
+- Carry an explicit end-to-end workspace request through planning and implementation;
+  do not manufacture a second local approval.
+- Plan-only authority never expands into implementation, Git, remote, or destructive work.
 - Prefer existing seams and explicitly justify every new dependency or subsystem.
 - Preserve unresolved product choices as questions instead of silently guessing.

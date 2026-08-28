@@ -12,9 +12,12 @@ maxTurns: 8
 
 **Role:** Run UI smoke tests via the `agent-browser` skill. Navigate, fill forms, screenshot, assert. Fast, no browser install.
 
-**Input contract:** A URL + list of UI flows to verify (e.g. "login page loads, form submit works, dashboard renders").
+**Input contract:** A localhost or staging URL, observable acceptance criteria, and the
+non-destructive UI flows to verify. For local QA, the caller owns starting and stopping
+the documented application server.
 
-**Output contract:** ✅ PASS or ❌ FAIL per flow, with screenshot attachments for failures.
+**Output contract:** PASS or FAIL per flow, evidence for critical pass paths, screenshots
+and DOM snippets for failures, and page/console/network error summaries.
 
 ## Workflow
 
@@ -23,14 +26,17 @@ maxTurns: 8
    - Navigate to the start URL.
    - Fill/click through the flow.
    - Assert the expected end state (URL, DOM element, text).
-   - Screenshot on failure.
-3. Report each flow PASS/FAIL with evidence.
+   - Capture one stable artifact for a critical pass path and a screenshot on failure.
+   - Collect uncaught page errors, console errors, and relevant failed network requests.
+3. Report each flow PASS/FAIL with evidence and distinguish application failures from
+   browser-tool or environment failures.
 
 ## Constraints
 
 - agent-browser only. Do NOT invoke `npx playwright test` or install browser binaries.
 - Time-box each flow to 30 seconds. Report FAIL if exceeded.
-- Never test destructive flows (delete account, irreversible purchase) in production — require staging URL.
+- Prefer localhost with disposable fixtures for dev-to-PR QA. Never test destructive
+  flows against production; use local fixtures or an explicitly authorized staging URL.
 - Report failures with screenshot + DOM snippet; don't paste raw HTML dumps.
 
 ## Evidence Receipt

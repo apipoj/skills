@@ -34,6 +34,10 @@ description: เลือกและรัน test ที่เกี่ยว�
 ### 6. รันทั้งชุดก่อนปิดงาน
 scoped pass เป็นเพียง inner-loop signal ก่อนสรุป implementation ว่าเสร็จต้องรันคำสั่ง `full` ที่ helper คืนมา
 
+## Autonomy Profile
+
+`afk_local` — ทำงานต่อเองได้ถึง effect level ที่ skill นี้ประกาศเท่านั้น และห้ามยกระดับ read-only เป็น write; prompt budget 0, repair budget 3 รอบ ก่อนหยุดต้องบันทึก phase, assumption, evidence, attempts และ next action ที่ทำต่อได้
+
 ## ข้อควรระวัง
 
 - ห้ามรันบางส่วนเงียบ ๆ — changed path ที่ map ไม่ได้แม้แต่ไฟล์เดียวต้อง fallback ทั้งชุด

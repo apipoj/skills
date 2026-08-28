@@ -83,6 +83,10 @@ disable-model-invocation: true
 - ตอน competitive/product decisions: โฟกัสที่ terrain, differentiation และ leverage
 - ตอน incidents: หลีกเลี่ยงการแก้แบบสุ่ม เลือก path เร็วที่สุดสู่ verified stability
 
+## Autonomy Profile
+
+`afk_local` — ทำงานต่อเองได้ถึง effect level ที่ skill นี้ประกาศเท่านั้น และห้ามยกระดับ read-only เป็น write; prompt budget 0, repair budget 3 รอบ ก่อนหยุดต้องบันทึก phase, assumption, evidence, attempts และ next action ที่ทำต่อได้
+
 ## Evidence Receipt
 
 คืน `spk.evidence/v1` ที่มี objective, terrain, capabilities, constraints, leverage, battle ที่เลี่ยง, smallest move, proof, risks และ next action

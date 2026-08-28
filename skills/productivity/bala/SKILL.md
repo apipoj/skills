@@ -72,6 +72,10 @@ Action ถัดไปที่เล็กที่สุด: <action ที่
 - ก่อน review: แยกความมั่นใจออกจากหลักฐานและจำกัด scope ของ review
 - ระหว่าง debug: ชะลอการเดาและกลับไปที่ root-cause discipline
 
+## Autonomy Profile
+
+`afk_local` — ทำงานต่อเองได้ถึง effect level ที่ skill นี้ประกาศเท่านั้น และห้ามยกระดับ read-only เป็น write; prompt budget 0, repair budget 3 รอบ ก่อนหยุดต้องบันทึก phase, assumption, evidence, attempts และ next action ที่ทำต่อได้
+
 ## Evidence Receipt
 
 คืน `spk.evidence/v1` ที่มี ratings ทั้งห้าพร้อมหลักฐาน, imbalance หลัก, action ที่เล็กที่สุด, proof signal, risks และ next action

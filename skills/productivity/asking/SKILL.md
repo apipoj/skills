@@ -38,6 +38,10 @@ description: สัมภาษณ์ผู้ใช้เป็นรอบ ๆ
 
 จบเมื่อ frontier ว่าง คือทุกกิ่งของต้นไม้ decision ถูกไปเยือนแล้ว ไม่มีอะไรถูกสมมติเงียบ ๆ ไว้ อย่าลงมือทำจนกว่าผู้ใช้จะยืนยันว่าเข้าใจตรงกันแล้ว
 
+## Autonomy Profile
+
+`decision_aware` — ตรวจ fact และทำ draft ได้ถึง effect level ที่ skill ประกาศ โดย read-only ยังต้อง read-only แล้วถามได้สูงสุดหนึ่ง decision สำคัญ; prompt budget 1, repair budget 3 รอบ ก่อนหยุดต้องบันทึก decision ledger, evidence และ next action ที่ทำต่อได้
+
 ## Evidence Receipt
 
 รายงาน artifact, คำสั่งตรวจสอบ, ผลจริง, ความเสี่ยง และ next action ที่เล็กที่สุด

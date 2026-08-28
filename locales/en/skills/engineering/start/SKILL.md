@@ -1,10 +1,11 @@
 ---
 name: start
-description: Start with the smallest fitting Apipoj Skills workflow while preserving approval boundaries.
-disable-model-invocation: true
+description: Route a software-engineering request to the smallest appropriate SPK workflow, state its effect level, and preserve required approval gates.
 ---
 
-# Start
+# Start with Apipoj Skills
+
+Give the user the shortest safe path from intent to a useful result. When intent is clear, route immediately; do not turn routing into a second planning ceremony.
 
 ## Response Rules
 
@@ -16,84 +17,81 @@ Reply in the user's language.
 - **Humanity** — write as a colleague, not a system; familiar technical English over literal translation; no performative enthusiasm, no apology theater, no location stereotypes.
 - **Terminology** — reach for the precise domain term and keep it in its English form; never respell it phonetically in the reply's script (`ผลเทสท์` for `test`) or translate it literally (`หูจับ` for `handle`). Gloss an unfamiliar term once — `CPA (ต้นทุนต่อการได้ลูกค้าหนึ่งราย)` — then anchor it with one concrete example.
 
-Use a reversible smart default; ask one material question only when the answer changes scope, risk, or success.
+Keep working without user input while the requested outcome remains inside current authority. Use a reversible smart default and record assumptions. Ask only when one material user-owned decision changes scope, risk, cost, or success, or when a required effect crosses an unapproved boundary.
 
 When a decision or confirmation is needed, use the host's structured choice prompt if one is available; otherwise present a numbered list. Options must be genuinely distinct with exactly one recommended, every label names the real outcome, and a free-form answer stays possible.
 
-You don't remember every skill, so ask.
+As the router, reveal advanced detail only when it helps the current decision.
 
-A **flow** is a path through the skills. Most paths run along one **main flow**, and two **on-ramps** merge onto it. Everything else is standalone, or a vocabulary layer that runs underneath.
+## Workflow
 
-## The main flow: idea → ship
+1. Read the request and repository instructions. Separate facts you can inspect from decisions only the user can make.
+2. If intent is clear, choose one canonical workflow immediately. Otherwise ask one material question; do not show the full roster as a substitute for routing.
+3. State the selected workflow and its actual effect:
+   - `read_only` — inspect and report only.
+   - `workspace_write` — create or edit local files in the approved scope.
+   - `git_write` — change recoverable local Git state when the explicit workflow request grants that bounded authority.
+   - `external_write` — change a remote only through the selected workflow's declared approval mode.
+   - `destructive` — remove data only after showing exact targets and receiving approval.
+4. Route by outcome:
+   - sharpen an idea or decision → `ask-me`, `asking`, or `ask-with-docs`
+   - create an engineering plan → `plan`; publish an existing discussion as a spec → `to-spec`
+   - split work → `to-tickets`; map a large foggy effort → `wayfinder`
+   - implement, fix, or plan-and-implement → `code`; use a strict red-green loop → `tdd`
+   - investigate a failure → `debug`; review a diff → `code-review`; get fast test feedback → `test-changes`
+   - answer a code-shape question → `prototype`; compare UI directions → `design-options`
+   - improve module shape → `codebase-design` or `improve-codebase`
+   - triage incoming work → `triage`; resolve Git conflicts → `fix-conflicts`
+   - inspect or build project knowledge → `ask-project`, `research`, `add-knowledge`, `domain-modeling`, or `check-wiki`
+   - configure or orient a repository → `setup` or `load-project`; check installation → `doctor`
+   - prepare delivery → `check-release`, `pr`, `task-to-pr`, or `deploy`; remove Apipoj Skills → `uninstall`
+   - carry context to a fresh session → `handoff`; learn a topic → `teach`
+5. Run the selected workflow through its verified outcome. An explicit end-to-end request
+   carries bounded workspace authority through planning and implementation; continue
+   through planning and implementation without another local confirmation.
+6. Finish with the result first, then concise evidence, risks, and the next smallest action.
 
-The route most work travels. You have an idea and want it built.
+### Phase boundaries
 
-1. **`/ask-with-docs`** — sharpen the idea by interview. Start here when you **have a codebase**: it's stateful, retaining what it learns in `CONTEXT.md` and ADRs. (No codebase? Use `/ask-me` — see Standalone. Both use the same `/asking` discipline; `ask-with-docs` is the one that leaves a paper trail.)
-2. **Branch — can you settle every question in conversation?** If a question needs a runnable answer (state, business logic, a UI you have to see), detour through a prototype, bridged by **`/handoff`** in both directions (a prototype lives in its own directory, which is exactly what `/handoff` is for — see Phase boundaries):
-   - **`/handoff`** out, then open a fresh session against that file,
-   - **`/prototype`** to answer the question with throwaway code,
-   - **`/handoff`** back what you learned, and reference it from the original idea thread.
-3. **Branch — is this a multi-session build?**
-   - **Yes** → **`/to-spec`** (turn the thread into a spec), then **`/to-tickets`** to split it into tracer-bullet tickets, each declaring its **blocking edges**. On a local tracker that's one file per ticket under `.scratch/<feature>/issues/`, worked blockers-first by hand; on a real tracker the edges become native blocking links, so any ticket whose blockers are done can be grabbed — kick off **`/code`** per ticket, **clearing context between each one**.
-   - **No** → **`/code`** right here, in the same context window.
+A phase is a chunk of work inside a session. At the boundary between two of them, work these five
+options top to bottom; the first yes wins. Decide only at a boundary — mid-phase, continue or split
+the rest into subagents.
 
-   Either way, **`/code`** builds each issue by driving **`/tdd`** internally — one red-green slice at a time — then closes out by running **`/code-review`**, a two-axis review (Standards + Spec) of the diff, before committing. Reach for **`/tdd`** on its own when you just want to build a concrete behaviour test-first without a full spec, and **`/code-review`** on its own whenever you want to review a branch or PR against a fixed point.
+1. **Continue** — the next phase needs this one as a primary source, or ~150k tokens of smart zone
+   remain. Costs nothing and loses nothing, so rule it out first.
+2. **`/clear`** — everything here is disposable. The cheapest move, and the old session stays
+   resumable. Getting it wrong is one-way: you lose the *why*, and the diff will not give it back.
+3. **`handoff`** — only for a new harness, a new directory, a colleague, or forking a side task found
+   mid-phase. What it buys is portability; if nothing is travelling, skip it.
+4. **Subagent** — the task is scoped tightly enough to run unattended.
+5. **`/compact`** — otherwise. Pass an instruction so the summary keeps what the next phase needs.
+   The default, at the bottom of the tree rather than the first reach.
 
-### Context hygiene
+Every move except Continue turns a primary source into a lossy secondary one, which is why the first
+question comes first.
 
-Keep steps 1–3 in **one unbroken context window** — don't compact or clear until after `/to-tickets` — so the questions, spec, and tickets all build on the same thinking. Each `/code` then starts fresh, working from the ticket.
+## Autonomy Profile
 
-The limit on this is the **[smart zone](https://www.aihero.dev/ai-coding-dictionary/smart-zone)**: the window (~150k tokens on state-of-the-art models) within which the model still reasons sharply. If a session approaches it before `/to-tickets`, don't push on degraded — `/compact` at the nearest phase boundary and carry on (see Phase boundaries).
+`afk_local` — prompt budget 0; repair budget 3. A clear request grants bounded work only up to this skill's declared effect level; the profile never upgrades read-only work into a write. Keep working through inspect, act, verify, and bounded repair without asking the user. Before pausing, record phase, assumptions, evidence, attempts, and the smallest resumable next action.
+## Evidence Receipt
 
-## On-ramps
+Return:
 
-A starting situation that generates work, then merges onto the main flow.
+```yaml
+schema: spk.evidence/v1
+workflow: <canonical skill>
+effect: <read_only|workspace_write|git_write|external_write|destructive>
+reason: <one sentence>
+status: <complete|needs_user_input|blocked>
+approval_required: <true|false>
+```
 
-- **Bugs and requests piling up** → **`/triage`**. It moves issues through triage roles and produces agent-ready issues, which **`/code`** later picks up.
+## Guardrails
 
-  Triage is only for issues **you didn't create** — bug reports, incoming feature requests, anything that arrives raw. Tickets that `/to-tickets` produced are already agent-ready, so **don't triage them**.
-
-- **Something's broken** → **`/debug`**. For the hard ones: the bug that resists a first glance, the intermittent flake, the regression that crept in between two known-good states. It refuses to theorise until it has a **tight feedback loop** — one command that already goes red on *this* bug — then fixes with a regression test. Its post-mortem hands off to **`/improve-codebase`** when the real finding is that there's no good seam to lock the bug down.
-
-- **A huge, foggy effort — a greenfield project or a huge feature build, too big for one session** → **`/wayfinder`**, the most cognitively demanding flow here. When the way from here to the destination isn't visible yet, it charts a **shared map** of **decision tickets** on the issue tracker and resolves them one at a time — producing **decisions, not deliverables** — until the fog is pushed back and the way is clear. Where **`/ask-with-docs`** sharpens an idea you can hold in one session, wayfinder is for the idea you can't — and it's slower and denser, so save it for exactly that, never a well-scoped feature.
-
-  When the map clears, **it hands off, it doesn't build**: merge onto the main flow at **`/to-spec`**, which collapses the map's linked decisions into a buildable plan, then `/to-tickets` and `/code` as usual. Looping the map straight into `/code` skips that collapse and throws the linked detail away — go straight to `/code` only when the effort turned out genuinely small.
-
-## Codebase health
-
-Not feature work — upkeep.
-
-- **`/improve-codebase`** — run whenever you have a spare moment to keep the codebase good for agents to operate in. It surfaces **deepening opportunities**; picking one _generates an idea_ you can take into the main flow at `/ask-with-docs`. It's the survey that finds the candidates; **`/codebase-design`** (below) is the bench you design the chosen one on.
-
-## Vocabulary underneath
-
-Two model-invoked references that run *beneath* the other skills — each the single source of truth for its vocabulary. Reach for them directly when the **words**, not the process, are the problem; or let the skills above pull them in.
-
-- **`/domain-modeling`** — sharpen the project's *domain* language: challenge a fuzzy term, resolve an overloaded word ("account" doing three jobs), record a hard-to-reverse decision as an ADR. It's the active discipline `/ask-with-docs` drives to keep `CONTEXT.md` a clean glossary.
-- **`/codebase-design`** — the deep-module vocabulary (module, interface, depth, seam, adapter, leverage, locality) for designing a module's *shape*: a lot of behaviour behind a small interface at a clean seam. `/tdd` and `/improve-codebase` both speak it.
-
-## Phase boundaries
-
-A **phase** is a chunk of work inside a session — the questioning, the implementation, the QA. At the **boundary** between two of them you have five options, and picking between them is the fuzziest decision in this whole map:
-
-- **Continue** — stay put. Costs nothing, loses nothing.
-- **`/clear`** — empty the window, when nothing here matters to what's next.
-- **`/handoff`** — write a portable markdown file. Narrow: only for a **new harness**, a **new directory**, a **colleague**, or forking a side task **mid-phase**. What it buys is portability.
-- **Subagent** — send a tightly-scoped task to its own window and get a report back.
-- **`/compact`** — compress this context and seed a fresh session with it. The **default**, at the bottom of the tree rather than the first reach.
-
-Read [PHASE-BOUNDARIES.md](PHASE-BOUNDARIES.md) for the ordered tree — the five questions, the reasoning behind each branch, and why the primary-source cost makes **Continue** the one to rule out first. Make the decision **at** a boundary; mid-phase, continue or split the rest into subagents.
-
-## Standalone
-
-Off the main flow entirely.
-
-- **`/ask-me`** — the same one-question-at-a-time interview as `/ask-with-docs`, but for when you have **no codebase**. Stateless: it saves nothing locally, builds no `CONTEXT.md`. Reach for it to sharpen any plan or design that doesn't live in a repo.
-- **`/prototype`** — a small, throwaway program that answers one design question: does this state model feel right, or what should this UI look like. Throwaway from day one — keep the answer, delete the code. It's the detour in step 2 of the main flow, but reach for it any time a design question is hard to settle on paper.
-- **`/research`** — delegate reading legwork to a **background agent**: it investigates a question against **primary sources**, then leaves a cited Markdown file in the repo. Keep working while it reads. The file it produces is something to take *into* the main flow at `/ask-with-docs` — research feeds the thinking, it doesn't replace it.
-- **`/teach`** — learn a concept over multiple sessions, using the current directory as a stateful workspace.
-- **`/write-skills`** — reference for writing and editing skills well.
-
-## Precondition
-
-**`/setup`** — run before your first engineering flow to configure the issue tracker, triage labels, and doc layout the other skills assume. Custom issue trackers also work.
+- The router carries explicit bounded authority but never invents it. A plan-only request
+  remains plan-only; an explicit end-to-end request continues through local implementation.
+- `task-to-pr` may run autonomously only for one identified task and never merge or deploy.
+- Never auto-run standalone `pr`, `deploy`, or `uninstall` across their approval boundary.
+- Prefer one clear recommendation and one workflow over a large pipeline.
+- `bala` and `sunzi` ship in the default bundle but remain manual-only and outside automatic routing.
+- Report missing evidence instead of guessing.

@@ -46,6 +46,10 @@ Budget: deploy attempt หนึ่งครั้ง, smoke หนึ่ง pas
 
 จับ token ที่ไหนก็ได้ในข้อความที่ยินยอม ไม่สน case ของ hex ตัด backtick กับ quote ที่ล้อมออก และรับ prefix ตั้งแต่ 12 ตัวขึ้นไปที่ match digest ปัจจุบันได้ตัวเดียว approval ใช้ได้ต่อเมื่อ digest เต็ม 64 ตัวที่คำนวณใหม่ตรงกับ state ที่เพิ่งตรวจสด หนึ่ง approval คุมหนึ่ง intent และไม่ยกไปใช้กับ retry หลังมีอะไรเปลี่ยน
 
+## Autonomy Profile
+
+`boundary_gated` — เตรียม intent ให้ครบแล้วขออนุมัติ boundary เพียงครั้งเดียว prompt budget 1, repair budget 2 รอบ ก่อนหยุดต้องบันทึก phase, assumption, evidence, attempts และ next action ที่ทำต่อได้
+
 ## Evidence Receipt
 
 คืน `spk.evidence/v1` ที่มี revision/URL, approval digest, commands, verification results, timings, artifacts, risks และ next action

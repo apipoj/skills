@@ -48,6 +48,10 @@ copy `templates/wizard/template.sh` ไปยัง path ปลายทาง �
 - **อย่ารันเองจนจบ** มันเปิด browser และหยุดรอคนพิมพ์ ให้ไล่ตรวจแบบ static แทน: ทุกค่าจากขั้นที่ 1 ถูกเก็บครบและไปอยู่ที่ที่ขั้นที่ 1 บอกไว้ และทุกชื่อใน `set_secret` ตรงกับการอ้าง `secrets.*` ใน CI เป๊ะ
 - บอกผู้ใช้ว่ารันอย่างไร ถ้าเป็นเส้นทางตั้งค่าที่ใช้ซ้ำได้ ให้ commit และลิงก์จาก README เพื่อให้คนถัดไปรัน script แทนที่จะมาถาม AI ใหม่
 
+## Autonomy Profile
+
+`afk_local` — ทำงานต่อเองได้ถึง effect level ที่ skill นี้ประกาศเท่านั้น และห้ามยกระดับ read-only เป็น write; prompt budget 0, repair budget 3 รอบ ก่อนหยุดต้องบันทึก phase, assumption, evidence, attempts และ next action ที่ทำต่อได้
+
 ## ข้อควรระวัง
 
 - ห้ามรัน wizard ที่สร้างขึ้นเอง คนเป็นคนรัน
