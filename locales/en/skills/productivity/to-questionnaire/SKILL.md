@@ -5,6 +5,8 @@ disable-model-invocation: true
 ---
 # To Questionnaire
 
+`to-questionnaire` produces a questionnaire document for a third party to answer and asks the user nothing about the subject — use `ask-me` for one decision per message with a gated handoff, or `asking` for batched full-frontier rounds, when the user themselves should be interviewed.
+
 ## Response Rules
 
 Reply in the user's language.
@@ -19,35 +21,30 @@ Keep working without user input while the requested outcome remains inside curre
 
 When a decision or confirmation is needed, use the host's structured choice prompt if one is available; otherwise present a numbered list. Options must be genuinely distinct with exactly one recommended, every label names the real outcome, and a free-form answer stays possible.
 
-Turn something the user cannot answer alone into a **questionnaire** — a Markdown document they hand to one person to fill in async, or fill out together over a meeting. The recipient holds knowledge the user lacks; the questionnaire pulls it out of them.
+Turn something the user cannot answer alone into a questionnaire for the one person who can.
 
-## Grill the send, not the subject
+Grill the **send**, not the subject. Interview the user only about what they can always answer — who
+it goes to, and what they need back. The questions then target the gap between what the recipient
+knows and what the user needs. Never interview the user about the subject they cannot answer; that
+gap is why they reached for this skill.
 
-This is the skill's one principle. Interview the user only about the **send**, which they can always answer: who it goes to, and what they need back. The questions in the document then target the **gap** between what the recipient knows and what the user needs.
+## Workflow
 
-Never interview the user about the subject they cannot answer — that gap is why they reached for this skill.
+1. Ask, in one exchange, who receives this — their role, expertise, and relationship to the user.
+   This fixes the tone and how much context the document must carry. Done when you know who they
+   are and what they know that the user doesn't.
+2. Ask, in one exchange, which decisions or facts the user cannot resolve alone and needs back from
+   this person. Done when you have a concrete list of what they must walk away able to decide.
+3. Write questions aimed at that gap to `to-questionnaire-<slug>.md` in the current directory and
+   report the path. Done when the file exists and every item from step 2 is covered.
 
-## Step 1: Who is it going to?
+## Document Structure
 
-Ask, in one exchange, the recipient's role, expertise, and relationship to the user. This fixes the questionnaire's tone and how much context it must carry.
-
-**Done when:** you know who the recipient is and what they know that the user doesn't.
-
-## Step 2: What do you need back?
-
-Ask, in one exchange, the specific decisions or facts the user cannot resolve alone and needs from this person.
-
-**Done when:** you have a concrete list of what the user must walk away able to do or decide.
-
-## Step 3: Write the questionnaire
-
-Draft questions aimed at the gap from steps 1–2, following the document structure below. Write it to `to-questionnaire-<slug>.md` in the current directory (slug from the topic) and report the path.
-
-**Done when:** the file exists and every item the user named in step 2 is covered by a question.
-
-## Document structure
-
-Frame the document as a **discovery questionnaire**: the user lacks context, the recipient holds it. Order questions most-important-first — async means you may only get one pass — and group them under `##` headings by theme once there are more than a handful.
+Frame the document as a discovery questionnaire: the user lacks context, the recipient holds it.
+Open with a purpose line naming the decision that rides on it, then a short context brief so the
+recipient can answer without coming back to ask. Order questions most-important-first, because async
+may give only one pass, and group them under `##` headings by theme once there are more than a
+handful. Close with an open slot for anything the recipient thinks you should know.
 
 ```markdown
 # <Questionnaire title>
@@ -73,8 +70,13 @@ Frame the document as a **discovery questionnaire**: the user lacks context, the
 
 `decision_aware` — prompt budget 1; repair budget 3. Inspect facts and prepare the smallest useful draft within this skill's declared effect level; read-only skills stay read-only. Use recommended reversible assumptions and bundle only the one material decision that changes outcome, scope, risk, cost, or success. Before pausing, return the decision ledger, recommended default, evidence, and a resumable next action.
 
+## Evidence Receipt
+
+Return `spk.evidence/v1` with the recipient summary, the list of needed answers, the written file
+path, coverage confirmation, risks, and next action.
+
 ## Guardrails
 
-- Keep exact technical identifiers unchanged.
+- Match the user's language and keep Thai cultural fit while preserving exact technical identifiers.
 - Write only the questionnaire file; do not change other project files.
 - Report evidence gaps instead of guessing at what the recipient knows.

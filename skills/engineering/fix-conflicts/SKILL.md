@@ -9,7 +9,7 @@ description: แก้ merge หรือ rebase conflict ทีละจุด 
 ## Workflow
 
 1. อ่านคำขอ repository instructions และหลักปฏิบัติฉบับเต็มใน [UPSTREAM.md](UPSTREAM.md)
-2. ใช้ smart defaults เมื่อความเสี่ยงต่ำ ถ้ามี decision ที่เปลี่ยน scope ให้ถามเพียงหนึ่งคำถามพร้อมคำแนะนำ
+2. คำขอที่ชัดเจนให้แก้ merge/rebase นี้ = ให้สิทธิ์ Git write แบบมีขอบเขตเพื่อทำให้จบ ได้แก่ stage ไฟล์ที่แก้แล้ว, `git rebase --continue`/`git merge --continue`, และ commit แก้ conflict เอง รวมถึง commit ที่เหลือทุกตัวถ้าเป็น rebase หลาย commit ถ้าทั้งสองฝั่งแก้ logic เดียวกันและเลือกทางไหนก็เสีย behavior ให้หยุดถามแทนการเดา
 3. ทำงานตาม discipline ของ skill นี้เป็น slice สั้น ๆ และแสดง progress เท่าที่ช่วยให้ตรวจสอบได้
 4. สรุปผล หลักฐาน ความเสี่ยง และสิ่งที่ยังต้องตัดสินใจโดยไม่ยืดเยื้อ
 
@@ -27,6 +27,6 @@ description: แก้ merge หรือ rebase conflict ทีละจุด 
 
 ## Guardrails
 
-- อย่าขยาย scope เอง
-- อย่า commit, push, publish หรือแก้ระบบภายนอกโดยไม่มี approval ที่ตรงเป้าหมาย
+- อย่าขยาย scope เกินกว่าทำให้ merge/rebase นี้จบ
+- การแก้ merge/rebase นี้ไม่ได้ให้สิทธิ์ push, force-push, แก้ history เกินขอบเขตงานนี้, สร้าง commit อื่นที่ไม่เกี่ยวข้อง หรือ `--abort` ทิ้ง — ต้องขอ approval ใหม่แยกต่างหากเสมอ
 - ถ้าหลักฐานไม่พอ ให้บอกช่องว่างแทนการเดา

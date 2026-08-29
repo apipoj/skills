@@ -4,6 +4,8 @@ description: Interview the user in rounds, asking every question whose prerequis
 ---
 # Asking in rounds
 
+`asking` asks the user's whole settled frontier in one batched round with a recommendation each — use `ask-me` instead for one decision per message with a gated handoff, and `to-questionnaire` when the questions belong in a document for a third party to answer, not to the user.
+
 ## Response Rules
 
 Reply in the user's language.

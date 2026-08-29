@@ -18,12 +18,25 @@ Reply in the user's language.
 
 Keep working without user input while the requested outcome remains inside current authority. Use a reversible smart default and record assumptions. Ask only when one material user-owned decision changes scope, risk, cost, or success, or when a required effect crosses an unapproved boundary.
 
+## Teaching Workspace
+
+Treat the current directory as the teaching workspace. Read the full practice in [UPSTREAM.md](UPSTREAM.md) before starting, then keep this file contract (the format references already live in this folder — open them before writing):
+
+- `MISSION.md` — the real reason the learner wants this topic. Use the format in [MISSION-FORMAT.md](./MISSION-FORMAT.md). Every lesson must trace back to it.
+- `./lessons/NNNN-<slug>.html` — lessons, one file per tightly-scoped topic. Numbers increment from the highest file already in the folder.
+- `./learning-records/NNNN-<slug>.md` — records of what was genuinely learned (not merely covered). Use the format in [LEARNING-RECORD-FORMAT.md](./LEARNING-RECORD-FORMAT.md); use it to calculate the next session's zone of proximal development.
+- `RESOURCES.md` — trusted knowledge sources and communities. Use the format in [RESOURCES-FORMAT.md](./RESOURCES-FORMAT.md); start it before citing anything in a lesson if it doesn't exist yet.
+- `GLOSSARY.md` — terms the learner **genuinely understands**. Use the format in [GLOSSARY-FORMAT.md](./GLOSSARY-FORMAT.md). Add a term only once it clears that bar, never right after it is introduced.
+
 ## Workflow
 
-1. Read the request, repository instructions, and full practice in [UPSTREAM.md](UPSTREAM.md).
-2. Use smart defaults when risk is low. If a decision changes scope, ask exactly one material question with a recommendation.
-3. Apply this skill's discipline in short slices and show only the progress needed for verification.
-4. Close with the outcome, evidence, risks, and remaining decisions without padding.
+1. Read `MISSION.md`, `./learning-records/`, and the format files above where they already exist. If `MISSION.md` is missing or the learner's level is unknown, **assess it with questions first** — what they already know, the real goal, the time and constraints — never guess the level.
+2. Create or update `MISSION.md` from the answers. If the mission changes from what was previously agreed, confirm with the user before changing it and record a learning record of the change.
+3. Find the zone of proximal development from `./learning-records/`, then produce **exactly one lesson per session** as `./lessons/NNNN-<slug>.html` — short, self-contained, tied to the mission, and citing a trustworthy source from `RESOURCES.md`.
+4. After the lesson, record what was genuinely learned to `./learning-records/NNNN-<slug>.md` per its format, and update `GLOSSARY.md` per `GLOSSARY-FORMAT.md` when a term is now used correctly (once a term is in the glossary, reuse it in every later lesson).
+5. Propose the smallest next step for the next session.
+
+**Done when:** this session's lesson is written, the learning record is updated, and a next step has been proposed.
 
 ## Focus
 
@@ -35,10 +48,12 @@ Teach a concept or skill in short sequenced lessons with missions and proof of u
 
 ## Evidence Receipt
 
-Report artifacts, verification commands, observed results, risks, and the smallest next action.
+Report the paths of files actually written or changed (lesson, learning record, and mission or glossary if touched), verification commands, observed results, risks, and the smallest next action.
 
 ## Guardrails
 
+- Assess the learner's level and mission before writing a lesson; never assume prior knowledge.
+- Produce exactly one lesson per session and pair it with a learning record.
 - Do not expand scope on your own.
 - Do not commit, push, publish, or change external systems without exact approval for the target.
 - If evidence is incomplete, report the gap instead of guessing.

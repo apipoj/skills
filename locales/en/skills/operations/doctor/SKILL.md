@@ -27,14 +27,15 @@ Diagnose the installed plugin without changing project or plugin state.
    the installed plugin location and do not prefer a same-named project file.
 2. Locate `scripts/spk-doctor.cjs` under that root. Run it with Node from the target
    project as the current working directory. If structured output is supported,
-   request it; otherwise parse only documented key/value output.
+   request it with the `--json` flag; otherwise parse only documented key/value output.
 3. Inspect its diagnostics for manifest discovery, skill/agent counts, hooks, MCP,
    runtime prerequisites, scaffold state, permissions, host compatibility, and
    version drift.
 4. Independently verify only failed or ambiguous read-only checks. Do not install,
    regenerate, rewrite configuration, authenticate, or restart services.
-5. Rank findings as `ERROR`, `WARN`, or `OK`. Give an exact repair command for each
-   failure, but do not execute it.
+5. Rank each check as `pass`, `warn`, or `fail`, and summarize the overall result as
+   `ok`, `warning`, or `error`. Give an exact repair command for each failure, but do
+   not execute it.
 
 ## Autonomy Profile
 
@@ -47,10 +48,10 @@ Return:
 ```json
 {
   "schema": "spk.doctor/v1",
-  "status": "OK | DEGRADED | BROKEN",
+  "status": "ok | warning | error",
   "host": "<detected host>",
   "plugin_root": "<resolved path>",
-  "checks": [{"name": "<check>", "status": "OK | WARN | ERROR", "evidence": "<fact>"}],
+  "checks": [{"id": "<check id>", "status": "pass | warn | fail", "message": "<fact>", "remediation": "<fix, when the script provides one>"}],
   "repair_commands": ["<exact command and argv>"]
 }
 ```

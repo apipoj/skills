@@ -1,14 +1,19 @@
 // hooks/PreToolUse/gitignore-guard.cjs
 // Layer 5 of SPK's wiki security: during wiki-build, blocks Read/Grep/Glob on
-// files matched by .gitignore. Exempts ai_context/sources/ (the designated
-// ingest inbox).
+// files matched by .gitignore. Exempts the ai_context/ tree itself: the wiki,
+// the sources/ ingest inbox, and runtime markers are the workspace the build
+// operates on, and init-ai-context excludes ai_context/ via .git/info/exclude
+// by default — without the exemption the build would be blocked from reading
+// its own wiki.
 //
 // Activation: SPK_WIKI_BUILD=true in the env, OR the marker file
 // ai_context/.spk-wiki-build exists. Skills can't set env vars for hooks
-// mid-session, so /spk:add-knowledge and /spk:check-wiki create the marker before
-// dispatching wiki work and remove it after. The marker expires after
-// MARKER_TTL_MS so a crashed wiki-build can never leave the guard blocking
-// ordinary sessions forever.
+// mid-session, so /spk:add-knowledge creates the marker before dispatching wiki
+// work and removes it after. /spk:check-wiki never creates this marker — it only
+// checks for one before running, to refuse overlapping with an in-progress build
+// or another audit, and clears a stale one (past MARKER_TTL_MS) with the exact
+// cleanup command. The marker expires after MARKER_TTL_MS so a crashed wiki-build
+// can never leave the guard blocking ordinary sessions forever.
 
 const fs = require('fs');
 const os = require('os');
@@ -227,10 +232,16 @@ function extractReadPath(toolName, toolInput) {
 function isExempt(filePath, root) {
   const info = pathWithinRoot(filePath, root);
   if (!info) return false;
-  const underSources = relative =>
+  // The whole plugin workspace is exempt, not just sources/: ai_context/ is
+  // git-excluded by default (machine-local .git/info/exclude entry), so
+  // treating it as "ignored project content" would block the wiki-build from
+  // reading the very wiki it maintains. Both the lexical and the resolved
+  // real path must stay inside ai_context/ — a symlink pointing elsewhere in
+  // (or out of) the repo is still subject to the guard.
+  const underAiContext = relative =>
     typeof relative === 'string' &&
-    (relative === 'ai_context/sources' || relative.startsWith('ai_context/sources/'));
-  return underSources(info.relative) && underSources(info.realRelative);
+    (relative === 'ai_context' || relative.startsWith('ai_context/'));
+  return underAiContext(info.relative) && underAiContext(info.realRelative);
 }
 
 function isExactMarkerCleanup(event, root) {

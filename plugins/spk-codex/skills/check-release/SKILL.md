@@ -29,19 +29,14 @@ commands and exit results rather than a prose assurance.
 
 ## Required Gates
 
-Run or explicitly justify skipping each gate:
+Run the aggregate commands below and report results exactly as the run reports them (pass/fail per gate) — never report "release ready" without having actually run them:
 
 ```bash
-npm run validate:manifest
-npm run regen:check
-npm run verify:sync
-npm run verify:refs
-npm run verify:descriptions
-npm run verify:agents
-npm run verify:gates
-npm run verify:native
+npm run verify:release
 npm test -- --runInBand
 ```
+
+`npm run verify:release` is the canonical command that already chains every real gate. The authoritative gate roster lives in `package.json`'s `scripts.verify:release` field — do not hardcode a gate list here again, or this skill will drift from `package.json`.
 
 Also check:
 - `git status --short --branch`

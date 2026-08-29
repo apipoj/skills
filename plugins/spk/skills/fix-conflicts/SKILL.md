@@ -20,7 +20,7 @@ Keep working without user input while the requested outcome remains inside curre
 ## Workflow
 
 1. Read the request, repository instructions, and full practice in [UPSTREAM.md](UPSTREAM.md).
-2. Use smart defaults when risk is low. If a decision changes scope, ask exactly one material question with a recommendation.
+2. An explicit request to resolve this merge or rebase grants the bounded Git writes needed to finish it: staging resolved files, `git rebase --continue`/`git merge --continue`, and the conflict-resolution commit itself, including every remaining commit of a multi-commit rebase. If both sides changed the same logic and either choice loses behavior, stop and ask instead of guessing.
 3. Apply this skill's discipline in short slices and show only the progress needed for verification.
 4. Close with the outcome, evidence, risks, and remaining decisions without padding.
 
@@ -38,6 +38,6 @@ Report artifacts, verification commands, observed results, risks, and the smalle
 
 ## Guardrails
 
-- Do not expand scope on your own.
-- Do not commit, push, publish, or change external systems without exact approval for the target.
+- Do not expand scope beyond finishing this merge/rebase.
+- Finishing this merge/rebase never authorizes push, force-push, a history rewrite beyond this operation, a new unrelated commit, or abandoning with `--abort` — those still need fresh, separate approval.
 - If evidence is incomplete, report the gap instead of guessing.

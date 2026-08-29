@@ -239,6 +239,31 @@ describe('gitignore-guard', () => {
     expect(result.reason).toMatch(/gitignore/i);
   });
 
+  test('a machine-locally excluded ai_context/ stays readable during wiki-build', () => {
+    // Regression: init-ai-context excludes ai_context/ via .git/info/exclude
+    // by default. That must not make the guard block the wiki-build from its
+    // own wiki, while genuinely ignored project content stays blocked.
+    const dir = makeRepo(['.env']);
+    fs.writeFileSync(path.join(dir, '.env'), 'SECRET=1');
+    fs.mkdirSync(path.join(dir, 'ai_context/wiki'), { recursive: true });
+    fs.writeFileSync(path.join(dir, 'ai_context/wiki/SCHEMA.md'), 'schema');
+    fs.mkdirSync(path.join(dir, '.git/info'), { recursive: true });
+    fs.writeFileSync(path.join(dir, '.git/info/exclude'), '/ai_context/\n');
+    const { ensureAiContextExcluded } = require('../plugins/spk/scripts/init-ai-context.cjs');
+    expect(ensureAiContextExcluded(dir))
+      .toEqual({ excluded: false, reason: 'already ignored' });
+
+    const env = { SPK_WIKI_BUILD: 'true', SPK_PROJECT_ROOT: dir };
+    expect(shouldBlock({
+      tool_name: 'Read',
+      tool_input: { file_path: 'ai_context/wiki/SCHEMA.md' }
+    }, env).block).toBe(false);
+    expect(shouldBlock({
+      tool_name: 'Read',
+      tool_input: { file_path: '.env' }
+    }, env).block).toBe(true);
+  });
+
   test('sources exemption requires both lexical and resolved paths in real sources', () => {
     const dir = makeRepo(['ai_context/sources/']);
     fs.mkdirSync(path.join(dir, 'ai_context/sources'), { recursive: true });

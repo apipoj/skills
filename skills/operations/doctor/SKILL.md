@@ -9,10 +9,11 @@ description: วินิจฉัยสุขภาพการติดตั�
 ## Workflow
 
 1. หารากชุดติดตั้งจาก trusted host metadata หรือตัวแปรรากที่ host ให้ ปฏิเสธ root นอกตำแหน่งติดตั้งและห้ามเลือกไฟล์ชื่อเดียวกันใน project
-2. หา `scripts/spk-doctor.cjs` ใต้ root แล้วรันด้วย Node โดยใช้ target project เป็น cwd ขอ structured output ถ้ารองรับ
+2. หา `scripts/spk-doctor.cjs` ใต้ root แล้วรันด้วย Node โดยใช้ target project เป็น cwd ถ้ารองรับให้ขอ structured output ด้วย flag `--json` ถ้าไม่รองรับให้ parse เฉพาะ key/value output ที่มีเอกสารรองรับ
 3. ตรวจ diagnostics สำหรับ manifest discovery, skill/agent counts, hooks, MCP, runtime prerequisites, scaffold, permissions, host compatibility และ version drift
 4. verify ซ้ำเฉพาะ check ที่ fail/ambiguous แบบ read-only ห้าม install, regenerate, rewrite config, auth หรือ restart
-5. จัดระดับ `ERROR`, `WARN`, `OK` ให้ exact repair command ทุก failure แต่ห้าม execute
+5. จัดระดับแต่ละ check เป็น `pass`, `warn` หรือ `fail` แล้วสรุปผลรวมเป็น `ok`, `warning`
+   หรือ `error` ให้ exact repair command ทุก failure แต่ห้าม execute
 
 ## Autonomy Profile
 
@@ -25,10 +26,10 @@ description: วินิจฉัยสุขภาพการติดตั�
 ```json
 {
   "schema": "spk.doctor/v1",
-  "status": "OK | DEGRADED | BROKEN",
+  "status": "ok | warning | error",
   "host": "<detected host>",
-  "install_root": "<resolved path>",
-  "checks": [{"name": "<check>", "status": "OK | WARN | ERROR", "evidence": "<fact>"}],
+  "plugin_root": "<resolved path>",
+  "checks": [{"id": "<check id>", "status": "pass | warn | fail", "message": "<fact>", "remediation": "<fix, when the script provides one>"}],
   "repair_commands": ["<exact command + argv>"]
 }
 ```

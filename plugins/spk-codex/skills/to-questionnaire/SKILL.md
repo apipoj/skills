@@ -7,6 +7,8 @@ description: Turn a decision the user cannot answer alone into a Markdown questi
 
 # To Questionnaire
 
+`to-questionnaire` produces a questionnaire document for a third party to answer and asks the user nothing about the subject — use `ask-me` for one decision per message with a gated handoff, or `asking` for batched full-frontier rounds, when the user themselves should be interviewed.
+
 ## Response Rules
 
 Reply in the user's language.
@@ -38,11 +40,33 @@ gap is why they reached for this skill.
 3. Write questions aimed at that gap to `to-questionnaire-<slug>.md` in the current directory and
    report the path. Done when the file exists and every item from step 2 is covered.
 
+## Document Structure
+
 Frame the document as a discovery questionnaire: the user lacks context, the recipient holds it.
 Open with a purpose line naming the decision that rides on it, then a short context brief so the
 recipient can answer without coming back to ask. Order questions most-important-first, because async
 may give only one pass, and group them under `##` headings by theme once there are more than a
 handful. Close with an open slot for anything the recipient thinks you should know.
+
+```markdown
+# <Questionnaire title>
+
+**Purpose:** why this questionnaire exists and the decision riding on it.
+
+**Context you need first:** the short brief that lets the recipient answer without coming back to ask.
+
+## <Question theme>
+
+1. **<Question title>**
+   <Question body, with options where they help.>
+
+2. **<Question title>**
+   <Question body.>
+
+## Anything we forgot to ask
+
+<An open slot for what the recipient thinks you should know.>
+```
 
 ## Autonomy Profile
 

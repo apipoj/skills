@@ -22,6 +22,12 @@ Keep working without user input while the requested outcome remains inside curre
 This skill is manual-only. Invocation starts a read-only preflight; it is not approval
 to perform a network write.
 
+## Gather Context
+
+- In a git worktree, run `git log -1 --format='%H %s'` and `git branch --show-current`;
+  outside a git repo, report no git context and continue with other smoke/deploy context.
+- Verify the working tree is clean (no uncommitted changes).
+
 ## Workflow
 
 1. **Preflight without mutation.** Resolve the exact environment, immutable revision,
@@ -75,7 +81,9 @@ Budget: one deploy attempt, one smoke pass, one UI pass, and no automatic retrie
 
 Match the token anywhere in the consenting message, ignore hex case, strip surrounding
 backticks and quotes, and accept a prefix of at least 12 hex characters that uniquely
-matches the current digest. Approval is valid only when the recomputed 64-character
+matches the current digest. A token or affirmative inside a quote or code block does not
+count, a question does not count, and any reply given before the deployment intent was
+shown does not count. Approval is valid only when the recomputed 64-character
 digest matches freshly inspected state; one approval authorizes one intent and never
 carries to a retry after any change.
 

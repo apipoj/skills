@@ -29,6 +29,14 @@ Keep working without user input while the requested outcome remains inside curre
 
 Triage issues and pull requests until each item is ready for a decision or ready to hand to an agent.
 
+## Approval for Tracker Writes
+
+Reads (search, list, view an issue or PR) stay free — no approval needed.
+
+Before any tracker or remote write — a label, comment, assignment, or state change — show the exact target and the exact payload, then get a plain affirmative for that exact set. This gate is `confirm`: a click on the approving option or a plain affirmative both count; a question, a change request, an affirmative inside a quote or code block, and any answer given before the payload was shown do not.
+
+A batch approval covers only the exact batch just displayed — adding, removing, or changing any item invalidates it and requires a new approval. The repository or tracker selector must always be explicit, such as `GH_REPO=<owner/repo>` or `--repo <owner/repo>`; never let a CLI infer it.
+
 ## Autonomy Profile
 
 `decision_aware` — prompt budget 1; repair budget 3. Inspect facts and prepare the smallest useful draft within this skill's declared effect level; read-only skills stay read-only. Use recommended reversible assumptions and bundle only the one material decision that changes outcome, scope, risk, cost, or success. Before pausing, return the decision ledger, recommended default, evidence, and a resumable next action.

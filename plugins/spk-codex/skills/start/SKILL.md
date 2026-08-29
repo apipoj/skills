@@ -36,7 +36,8 @@ As the router, reveal advanced detail only when it helps the current decision.
    - `external_write` — change a remote only through the selected workflow's declared approval mode.
    - `destructive` — remove data only after showing exact targets and receiving approval.
 4. Route by outcome:
-   - sharpen an idea or decision → `ask-me`, `asking`, or `ask-with-docs`
+   - sharpen an idea or decision → `ask-me`, `asking`, or `ask-with-docs`; turn a decision only an absent expert can answer into a questionnaire for them → `to-questionnaire`
+   - the last reply didn't land, or the user says "wait, what?" (or "งง") → `wait-what`
    - create an engineering plan → `plan`; publish an existing discussion as a spec → `to-spec`
    - split work → `to-tickets`; map a large foggy effort → `wayfinder`
    - implement, fix, or plan-and-implement → `code`; use a strict red-green loop → `tdd`
@@ -45,9 +46,11 @@ As the router, reveal advanced detail only when it helps the current decision.
    - improve module shape → `codebase-design` or `improve-codebase`
    - triage incoming work → `triage`; resolve Git conflicts → `fix-conflicts`
    - inspect or build project knowledge → `ask-project`, `research`, `add-knowledge`, `domain-modeling`, or `check-wiki`
-   - configure or orient a repository → `setup` or `load-project`; check installation → `doctor`
+   - configure or orient a repository → `setup` or `load-project`; author a bash setup wizard for human-only steps → `wizard`; check installation → `doctor`
    - prepare delivery → `check-release`, `pr`, `task-to-pr`, or `deploy`; remove Apipoj Skills → `uninstall`
-   - carry context to a fresh session → `handoff`; learn a topic → `teach`
+   - carry context to a fresh session → `handoff`; learn a topic → `teach`; write agent docs or skills → `write-skills`
+
+   When the outcome maps to a manual-only skill (`disable-model-invocation`), present the `/<name>` command to the user and stop instead of invoking it.
 5. Run the selected workflow through its verified outcome. An explicit end-to-end request
    carries bounded workspace authority through planning and implementation; continue
    through planning and implementation without another local confirmation.

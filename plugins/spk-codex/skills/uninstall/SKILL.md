@@ -23,10 +23,12 @@ This skill is manual-only and runs directly in the current conversation.
 
 ## Workflow
 
-1. **Inventory read-only.** Prefer `.spk/installed.json` as ownership evidence. Resolve
+1. **Inventory read-only.** Prefer `.spk/manifest.json` as ownership evidence. Resolve
    every candidate to a normalized path inside the workspace. For legacy installs,
    identify only files with an SPK ownership marker or an exact registered agent/skill
-   name. Never infer ownership from a broad directory name.
+   name. Never infer ownership from a broad directory name. A modern plugin install also
+   owns `ai_context/.spk-version`, cache entries under `.claude/spk-webfetch-cache/`, and
+   the SPK-marked block in `.git/info/exclude`.
 2. **Preview exact effects.** List every file to remove, every text range to edit,
    missing/stale records, and everything preserved. Always preserve
    `ai_context/wiki/`, `ai_context/sources/`, human-authored context, credentials, and
@@ -48,9 +50,10 @@ This skill is manual-only and runs directly in the current conversation.
 6. **Apply narrowly.** Remove only approved SPK-owned files and only the approved SPK
    marker block from shared files. Never recursively remove `.claude/` or any other
    broad directory. Remove an empty directory only after proving it is empty.
-7. **Verify.** Confirm every approved artifact is gone, preserved paths are byte-for-
-   byte unchanged, and no path escaped the workspace. Report recovery information for
-   any host trash/quarantine mechanism used.
+7. **Verify.** Confirm every approved artifact is gone, confirm every preserved path in
+   the evidence receipt still exists and appears in neither `removed` nor `edited`, and
+   confirm no path escaped the workspace. Report recovery information for any host
+   trash/quarantine mechanism used.
 
 ## Approval Protocol
 

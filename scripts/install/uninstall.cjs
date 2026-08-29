@@ -18,6 +18,22 @@ const COMMAND_PATTERN = /^\/[a-z][a-z0-9]*(?:-[a-z0-9]+)*$/;
 const MAX_MANIFEST_BYTES = 1024 * 1024;
 const MAX_SHARED_FILE_BYTES = 4 * 1024 * 1024;
 
+// Modern plugin-install runtime artifacts (not written by the legacy installer
+// above, so they must be inventoried independently of a legacy manifest).
+const VERSION_MARKER_RELATIVE = 'ai_context/.spk-version';
+const WEBFETCH_CACHE_DIR_RELATIVE = '.claude/spk-webfetch-cache';
+const WEBFETCH_CACHE_FILE_PATTERN = /^[0-9a-f]{32}\.json$/;
+
+// Mirrors plugins/spk/scripts/init-ai-context.cjs EXCLUDE_LINES exactly. Kept as
+// a literal copy rather than a cross-tree require — scripts/ and
+// plugins/spk/scripts/ are independently governed trees (see their AGENTS.md) —
+// so tests/uninstall.test.js asserts the two stay identical.
+const GIT_EXCLUDE_LINES = [
+  '# Apipoj Skills (SPK): machine-local runtime artifacts must not dirty the tree.',
+  '# Delete these lines to track ai_context/ in Git.'
+];
+const GIT_EXCLUDE_RELATIVE = '.git/info/exclude';
+
 function sha256(value) {
   return crypto.createHash('sha256').update(value).digest('hex');
 }
@@ -184,6 +200,95 @@ function markerEdits(content) {
   return edits;
 }
 
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+// init-ai-context.cjs writes exactly: the two GIT_EXCLUDE_LINES comments, then
+// one pattern line `/` + a git-prefix (empty, or one or more `dir/` segments
+// for a project below the repo root) + `ai_context/`. Match only that exact
+// three-line shape, anchored on the two literal comment lines, so an edited or
+// partial block (a changed comment, an extra inserted line, a removed pattern
+// line) never matches and is left untouched.
+function gitExcludeBlockPattern() {
+  const [first, second] = GIT_EXCLUDE_LINES.map(escapeRegExp);
+  return new RegExp(`\\n?${first}\\n${second}\\n/[^\\n]*ai_context/\\n?`, 'g');
+}
+
+function gitExcludeEdits(content) {
+  const edits = [];
+  for (const match of content.matchAll(gitExcludeBlockPattern())) {
+    edits.push({
+      start: match.index,
+      end: match.index + match[0].length,
+      expected_sha256: sha256(match[0]),
+      replacement_sha256: sha256('\n')
+    });
+  }
+  return edits;
+}
+
+function stripGitExcludeBlock(content) {
+  return content.replace(gitExcludeBlockPattern(), '\n');
+}
+
+// A project's `.git` is a directory in a normal checkout but a plain file (
+// `gitdir: ...`) in a linked worktree. Skip the exclude-file inventory rather
+// than mis-walk a worktree's real git-common-dir.
+function gitDirectoryIsPlain(root) {
+  let stat;
+  try {
+    stat = fs.lstatSync(path.join(root, '.git'));
+  } catch (error) {
+    if (error.code === 'ENOENT') return false;
+    throw error;
+  }
+  return stat.isDirectory();
+}
+
+// Shared files this module may edit (never fully remove). Each source is
+// self-contained: how to find its SPK-owned range(s) and how to produce the
+// content with them stripped.
+const TEXT_EDIT_SOURCES = [
+  {
+    relativePath: 'CLAUDE.md',
+    label: 'Shared CLAUDE.md',
+    findEdits: markerEdits,
+    strip: stripSpkMarkers
+  },
+  {
+    relativePath: GIT_EXCLUDE_RELATIVE,
+    label: 'Git exclude file',
+    findEdits: gitExcludeEdits,
+    strip: stripGitExcludeBlock,
+    precheck: gitDirectoryIsPlain
+  }
+];
+
+function maxBytesForTarget(relativePath) {
+  return relativePath === '.spk/manifest.json' || relativePath === VERSION_MARKER_RELATIVE
+    ? MAX_MANIFEST_BYTES
+    : MAX_SHARED_FILE_BYTES;
+}
+
+// `.claude/spk-webfetch-cache/` is a flat, fully SPK-owned directory of
+// `<32-hex>.json` cache entries (see plugins/spk/scripts/webfetch-cache.cjs).
+// Only files matching that exact shape are inventoried — a symlink or a
+// foreign file left in the directory is neither matched nor removed, and the
+// directory is only ever proposed for cleanup once nothing foreign remains.
+function webfetchCacheTargets(root) {
+  const directory = assertSafePath(root, WEBFETCH_CACHE_DIR_RELATIVE, 'SPK webfetch cache directory');
+  if (!directory.exists) return { files: [], directory: null };
+  if (!directory.stat.isDirectory()) {
+    throw new Error('SPK webfetch cache path must be a directory');
+  }
+  const files = fs.readdirSync(directory.path, { withFileTypes: true })
+    .filter(entry => entry.isFile() && WEBFETCH_CACHE_FILE_PATTERN.test(entry.name))
+    .map(entry => `${WEBFETCH_CACHE_DIR_RELATIVE}/${entry.name}`)
+    .sort();
+  return { files, directory: directory.path };
+}
+
 function buildUninstallPlan(projectRoot) {
   if (typeof projectRoot !== 'string' || projectRoot.length === 0) {
     throw new Error('projectRoot must be a non-empty path');
@@ -193,24 +298,22 @@ function buildUninstallPlan(projectRoot) {
   const rootStat = fs.statSync(root);
   if (!rootStat.isDirectory()) throw new Error('projectRoot must be a directory');
 
+  // Legacy install records (agents/commands/hooks copied under .claude/ plus
+  // .spk/manifest.json) are optional — a modern plugin install never writes
+  // them. Modern runtime artifacts (below) are inventoried either way.
   const legacy = readLegacyManifest(root);
-  if (!legacy) {
-    return {
-      schema: 'spk.approval/v1',
-      status: 'NOT_INSTALLED',
-      operation: 'uninstall',
-      project_root: root,
-      removed: 0,
-      reason: 'No .spk/manifest.json — nothing to uninstall'
-    };
-  }
+  const { agentNames, commandNames } = legacy
+    ? validatedManifestNames(legacy.manifest)
+    : { agentNames: [], commandNames: [] };
+  const webfetchCache = webfetchCacheTargets(root);
 
-  const { agentNames, commandNames } = validatedManifestNames(legacy.manifest);
   const relativeTargets = [
     ...agentNames.map(name => `.claude/agents/${name}.md`),
     ...commandNames.map(name => `.claude/commands/${name}.md`),
-    ...SPK_HOOKS,
-    '.spk/manifest.json'
+    ...(legacy ? SPK_HOOKS : []),
+    ...webfetchCache.files,
+    '.spk/manifest.json',
+    VERSION_MARKER_RELATIVE
   ];
 
   const targets = [];
@@ -219,7 +322,7 @@ function buildUninstallPlan(projectRoot) {
       root,
       relativePath,
       `Uninstall target ${relativePath}`,
-      relativePath === '.spk/manifest.json' ? MAX_MANIFEST_BYTES : MAX_SHARED_FILE_BYTES
+      maxBytesForTarget(relativePath)
     );
     if (!file) continue;
     targets.push({
@@ -230,41 +333,62 @@ function buildUninstallPlan(projectRoot) {
   }
 
   const textEdits = [];
-  const claudeMd = readSafeRegularFile(
-    root,
-    'CLAUDE.md',
-    'Shared CLAUDE.md',
-    MAX_SHARED_FILE_BYTES
-  );
-  if (claudeMd) {
-    const content = claudeMd.content.toString('utf8');
-    const edits = markerEdits(content);
-    if (edits.length > 0) {
-      textEdits.push({
-        path: claudeMd.path,
-        relative_path: 'CLAUDE.md',
-        expected_sha256: sha256(claudeMd.content),
-        result_sha256: sha256(stripSpkMarkers(content)),
-        ranges: edits
+  for (const source of TEXT_EDIT_SOURCES) {
+    if (source.precheck && !source.precheck(root)) continue;
+    const file = readSafeRegularFile(root, source.relativePath, source.label, MAX_SHARED_FILE_BYTES);
+    if (!file) continue;
+    const content = file.content.toString('utf8');
+    const edits = source.findEdits(content);
+    if (edits.length === 0) continue;
+    textEdits.push({
+      path: file.path,
+      relative_path: source.relativePath,
+      expected_sha256: sha256(file.content),
+      result_sha256: sha256(source.strip(content)),
+      ranges: edits
+    });
+  }
+
+  const emptyDirectories = [];
+  if (legacy) {
+    const spkDirectory = assertSafePath(root, '.spk', 'Legacy SPK directory');
+    if (!spkDirectory.exists || !spkDirectory.stat.isDirectory()) {
+      throw new Error('Legacy SPK directory must be a real directory');
+    }
+    const manifestBasename = path.basename(legacy.path);
+    const otherEntries = fs.readdirSync(spkDirectory.path)
+      .filter(name => name !== manifestBasename)
+      .sort();
+    if (otherEntries.length === 0) {
+      emptyDirectories.push({
+        path: spkDirectory.path,
+        relative_path: '.spk',
+        after_removing: ['.spk/manifest.json']
+      });
+    }
+  }
+  if (webfetchCache.directory) {
+    const cacheBasenames = new Set(webfetchCache.files.map(file => path.basename(file)));
+    const remaining = fs.readdirSync(webfetchCache.directory)
+      .filter(name => !cacheBasenames.has(name));
+    if (remaining.length === 0) {
+      emptyDirectories.push({
+        path: webfetchCache.directory,
+        relative_path: WEBFETCH_CACHE_DIR_RELATIVE,
+        after_removing: webfetchCache.files
       });
     }
   }
 
-  const emptyDirectories = [];
-  const spkDirectory = assertSafePath(root, '.spk', 'Legacy SPK directory');
-  if (!spkDirectory.exists || !spkDirectory.stat.isDirectory()) {
-    throw new Error('Legacy SPK directory must be a real directory');
-  }
-  const manifestBasename = path.basename(legacy.path);
-  const otherEntries = fs.readdirSync(spkDirectory.path)
-    .filter(name => name !== manifestBasename)
-    .sort();
-  if (otherEntries.length === 0) {
-    emptyDirectories.push({
-      path: spkDirectory.path,
-      relative_path: '.spk',
-      after_removing: ['.spk/manifest.json']
-    });
+  if (targets.length === 0 && textEdits.length === 0) {
+    return {
+      schema: 'spk.approval/v1',
+      status: 'NOT_INSTALLED',
+      operation: 'uninstall',
+      project_root: root,
+      removed: 0,
+      reason: 'No SPK-owned artifacts found — nothing to uninstall'
+    };
   }
 
   const preserve = [
@@ -296,7 +420,11 @@ function buildUninstallPlan(projectRoot) {
     })),
     empty_directories: emptyDirectories.map(directory => directory.path),
     preserve,
-    resume_instruction: `Run again with the exact token: spk-approve:${intentDigest}`,
+    // approval_mode is `confirm` (see SKILL.md): the user approves the preview
+    // shown above with a plain affirmative or a chosen option, never by typing
+    // this digest. The exact token below is what the calling agent — not the
+    // user — passes back in to resume.
+    resume_instruction: `After the user approves this preview (a plain affirmative counts), call uninstall() again with approvalToken: "spk-approve:${intentDigest}".`,
     _intent: intent
   };
 }
@@ -306,7 +434,7 @@ function verifyCurrentFile(root, target) {
     root,
     target.relative_path,
     `Approved uninstall target ${target.relative_path}`,
-    target.relative_path === '.spk/manifest.json' ? MAX_MANIFEST_BYTES : MAX_SHARED_FILE_BYTES
+    maxBytesForTarget(target.relative_path)
   );
   if (!current || sha256(current.content) !== target.expected_sha256) {
     throw new Error(`Approved uninstall target changed: ${target.relative_path}`);
@@ -375,7 +503,11 @@ function uninstall(projectRoot, options = {}) {
 
   const edited = [];
   for (const { edit, file } of verifiedEdits) {
-    const result = stripSpkMarkers(file.content.toString('utf8'));
+    const source = TEXT_EDIT_SOURCES.find(candidate => candidate.relativePath === edit.relative_path);
+    if (!source) {
+      throw new Error(`Approved text edit has no known handler: ${edit.relative_path}`);
+    }
+    const result = source.strip(file.content.toString('utf8'));
     if (sha256(result) !== edit.result_sha256) {
       throw new Error(`Approved text edit no longer matches: ${edit.relative_path}`);
     }
@@ -454,5 +586,15 @@ module.exports = {
   canonicalJson,
   markerEdits,
   stripSpkMarkers,
-  uninstall
+  uninstall,
+  webfetchCacheTargets,
+  gitExcludeEdits,
+  stripGitExcludeBlock,
+  gitDirectoryIsPlain,
+  maxBytesForTarget,
+  GIT_EXCLUDE_LINES,
+  GIT_EXCLUDE_RELATIVE,
+  VERSION_MARKER_RELATIVE,
+  WEBFETCH_CACHE_DIR_RELATIVE,
+  WEBFETCH_CACHE_FILE_PATTERN
 };

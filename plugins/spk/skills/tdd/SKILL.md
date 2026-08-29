@@ -1,6 +1,6 @@
 ---
 name: tdd
-description: Implement behavior through strict red, green, and refactor cycles with a verified failing test first and regression evidence before completion.
+description: Implement behavior through a strict, explicitly requested test-first red-green-refactor cycle — a failing test before any code, then the minimum to pass, then refactor — with regression evidence before completion.
 ---
 # Test-Driven Development
 
@@ -16,7 +16,8 @@ Reply in the user's language.
 
 Keep working without user input while the requested outcome remains inside current authority. Use a reversible smart default and record assumptions. Ask only when one material user-owned decision changes scope, risk, cost, or success, or when a required effect crosses an unapproved boundary.
 
-Run a strict RED-GREEN-REFACTOR loop for the requested behavior.
+Run a strict RED-GREEN-REFACTOR loop for the requested behavior. This is the strict
+red-green-refactor loop; use the `code` skill otherwise.
 
 ## Workflow
 

@@ -1,10 +1,10 @@
 ---
 name: tdd
-description: พัฒนา behavior ทีละ slice ด้วยวงจร RED, GREEN และ refactor พร้อมหลักฐานจาก test จริง
+description: พัฒนา behavior ด้วยวงจร TDD แบบเข้มงวดที่ผู้ใช้ขอทดสอบก่อนอย่างชัดเจน เขียน test ให้ fail ก่อนแล้วค่อย implement ขั้นต่ำให้ผ่าน จากนั้น refactor พร้อมหลักฐานจาก test จริง
 ---
 # tdd
 
-รัน TDD loop แบบเข้มงวด: เขียน test ที่ fail ยืนยันว่า fail ด้วยเหตุผลที่ถูกต้อง implement ขั้นต่ำให้ pass refactor แล้วทำซ้ำ
+รัน TDD loop แบบเข้มงวด: เขียน test ที่ fail ยืนยันว่า fail ด้วยเหตุผลที่ถูกต้อง implement ขั้นต่ำให้ pass refactor แล้วทำซ้ำ นี่คือ strict red-green-refactor loop ถ้าไม่ได้ขอแบบนี้ชัดเจน ให้ใช้ skill `code` แทน
 
 ## รวบรวม Context
 

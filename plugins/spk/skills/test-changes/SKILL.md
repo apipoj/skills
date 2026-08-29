@@ -25,7 +25,7 @@ Run this workflow directly in the current conversation.
 1. **Resolve the packaged planner.** Locate the installed plugin root from the host's
    plugin metadata or environment. Common environment keys are `SPK_PLUGIN_ROOT`,
    `PLUGIN_ROOT`, and the legacy `CLAUDE_PLUGIN_ROOT`. The helper is
-   `scripts/test-changes.cjs` under that root. Do not prefer a same-named script in the
+   `scripts/scoped-tests.cjs` under that root. Do not prefer a same-named script in the
    user's repository.
 
 2. **Collect changed files.** Use explicit paths supplied by the user; otherwise use
@@ -33,8 +33,8 @@ Run this workflow directly in the current conversation.
    explicit paths.
 
 3. **Create a plan.** Invoke the helper with the project as current working directory:
-   `node <plugin-root>/scripts/test-changes.cjs -- <path>...`. It returns
-   `spk.test-changes/v1` JSON with `mode`, `runner`, `selected`, `unmapped`, `focused`,
+   `node <plugin-root>/scripts/scoped-tests.cjs -- <path>...`. It returns
+   `spk.scoped-tests/v1` JSON with `mode`, `runner`, `selected`, `unmapped`, `focused`,
    and `full`. Treat its `command` and `args` as an argv array; never concatenate them
    into a shell string.
 

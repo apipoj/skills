@@ -29,7 +29,10 @@ workflow, not feature planning.
    the workspace. For a URL, fetch only that URL and record the final URL.
 2. **Prepare safely.** Ensure `ai_context/sources/` and `ai_context/wiki/` exist. Before
    storing raw content, verify the destination is ignored using
-   `git check-ignore --no-index`; if it is not ignored, stop without copying.
+   `git check-ignore --no-index`; if it is not ignored, stop without copying. If the
+   workspace is not a git repository, `git check-ignore` errors instead of answering —
+   fail closed the same way: report `NOT_A_GIT_REPO`, copy nothing, and tell the user
+   to add the file to `ai_context/sources/` themselves.
 3. **Fingerprint and deduplicate.** Before arming the shell guard, compute SHA-256 over
    the explicitly authorized source bytes. If the wiki log
    already records the same hash, report the existing pages and do not rewrite them.
@@ -40,7 +43,10 @@ workflow, not feature planning.
    from the stored source or writing wiki content. While it is active, use only
    non-shell read/search/write tools; shell execution is fail-closed except for an
    exact marker-cleanup command. Remove the marker in a finally-style cleanup on every
-   success, failure, cancellation, or blocked return.
+   success, failure, cancellation, or blocked return. The marker expires on its own
+   after 2 hours; the exact POSIX cleanup command is `rm -f ai_context/.spk-wiki-build`,
+   and the exact per-shell spellings are listed in `scripts/gitignore-guard.cjs`
+   (`MARKER_CLEANUP_COMMANDS`).
 6. **Extract conservatively.** Read the wiki schema. Create or update only notable
    `concept`, `entity`, `decision`, `plan`, or `learning` pages. Every non-obvious claim
    needs a source citation. Redact secret-shaped values as
@@ -50,7 +56,8 @@ workflow, not feature planning.
    checks over the proposed wiki diff before writing. Fail closed on secret-scan
    errors.
 8. **Record evidence.** Append one log entry with UTC timestamp, source path/URL,
-   content hash, pages created/updated, redaction count, and verification result.
+   content hash formatted as `hash=<first 16 hex characters of the source's sha256>`,
+   pages created/updated, redaction count, and verification result.
 9. **Cleanup and report.** Remove the guard and return a typed evidence receipt with
    source hash, wiki paths, verification, risks, and any skipped claims.
 

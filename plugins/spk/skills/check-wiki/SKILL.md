@@ -24,13 +24,16 @@ Audit project wiki content without reading raw private sources.
 1. Resolve the requested wiki scope, defaulting to `ai_context/wiki/`.
 2. Refuse to inspect `ai_context/sources/`, ignored paths, credentials, or environment
    files.
-3. Acquire the overlap guard outside the repository or in memory so the audit remains
-   read-only without a project marker. Release it in a finally-style cleanup on success
-   or failure.
+3. Check for the wiki-build marker `ai_context/.spk-wiki-build` before starting. If it
+   exists and is less than 2 hours old, refuse to run: a wiki build or another audit may
+   be in progress. If it is older than 2 hours, it is stale — remove it with exactly
+   `rm -f ai_context/.spk-wiki-build` (or the platform-equivalent cleanup command) before
+   continuing. The audit itself never creates this marker. Keep audit working notes in
+   memory or under the OS temp directory, never in the repository.
 4. Check orphan pages, contradictions, stale claims, missing citations, dead links,
    index drift, and secret-shaped strings.
 5. Rank evidence-backed findings and propose fixes; do not apply them unless requested.
-6. Run an explicit verifier pass over the report and cleanup state.
+6. Run an explicit verifier pass over the report and marker state.
 
 ## Autonomy Profile
 
@@ -39,7 +42,7 @@ Audit project wiki content without reading raw private sources.
 ## Evidence Receipt
 
 Return `spk.evidence/v1` with audited pages, ranked findings, verification results,
-guard cleanup, proposed fixes, risks, and next action. Identify the run as a read-only audit.
+marker check outcome, proposed fixes, risks, and next action. Identify the run as a read-only audit.
 
 ## Guardrails
 
@@ -49,4 +52,7 @@ guard cleanup, proposed fixes, risks, and next action. Identify the run as a rea
 - Do not apply proposed fixes unless the current request explicitly asks to fix the wiki.
 - Keep audit mode read-only. Mechanical repairs may run only in explicit fix mode;
   semantic changes remain recommendations.
-- Fail closed on secret-scan failure and always release the external guard.
+- Fail closed on secret-scan failure.
+- Never create the wiki-build marker; only check it, refuse to run while a fresh one
+  exists, and remove a stale one (older than 2 hours) with the exact cleanup command
+  before continuing.

@@ -1,10 +1,12 @@
 ---
 name: ask-me
-description: Run a manual Thai-first, read-only decision interview, confirm a compact brief, then recommend one context-fit deliverable or a gated plan-to-development handoff.
+description: Run a manual Thai-first, read-only decision interview that asks one question at a time, confirm a compact brief, then recommend one context-fit deliverable or a gated plan-to-development handoff.
 disable-model-invocation: true
 ---
 
 # Ask Me
+
+`ask-me` asks the user one decision per message with a gated handoff to the next workflow — use `asking` instead when the whole settled frontier should be asked in one batched round, and use `to-questionnaire` when the questions belong in a document for a third party to answer, not to the user.
 
 ## Response Rules
 

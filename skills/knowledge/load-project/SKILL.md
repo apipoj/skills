@@ -42,6 +42,9 @@ Scan source-code folders และสร้างหรืออัพเดต 
 - ยืนยันว่า `CLAUDE.md` ทุกไฟล์ที่อยู่คู่กับ `AGENTS.md` มีแค่ `@AGENTS.md`
 - ยืนยันว่าเคารพ .gitignore
 
+สำหรับ monorepo ขนาดใหญ่มาก ให้ delegate ได้สูงสุด 3 source roots ที่ไม่ overlap กันแบบ
+parallel ถ้า delegate ไม่ได้ให้ fallback มา scan แบบ sequential ใน main thread แทน
+
 ## Output Format
 
 ```markdown

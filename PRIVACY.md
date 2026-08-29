@@ -51,13 +51,26 @@ source material placed in `ai_context/sources/` is ignored from Git by the
 scaffolded policy, but users remain responsible for reviewing repository
 status before committing.
 
+Unless the project already ignores or tracks `ai_context/`, the scaffold also
+adds a machine-local exclude entry for it to `.git/info/exclude` so runtime
+artifacts do not appear as untracked changes. That entry never leaves the
+user's machine — it is not part of the repository — and deleting it restores
+normal Git visibility for users who want to commit their wiki. The uninstall
+workflow removes this exact entry automatically; it can also be deleted by
+hand at any time.
+
 WebFetch cache entries are stored in the project-local
 `.claude/spk-webfetch-cache/` directory. An expired entry is removed when that
 exact URL-and-prompt key is checked again; otherwise it remains local until it
 is overwritten or the user deletes the directory. Disabling the cache stops
-reads and writes but does not delete existing entries.
+reads and writes but does not delete existing entries; the uninstall workflow
+removes them.
 
-SPK does not receive or retain copies of these local files. Users can remove plugin-managed runtime state and uninstall the plugin at any time. User-owned `ai_context/wiki/` and `ai_context/sources/` content is preserved during uninstall unless the user deletes it separately.
+SPK does not receive or retain copies of these local files. Users can remove
+plugin-managed runtime state — the version marker, the WebFetch cache, and the
+machine-local Git-exclude entry among them — and uninstall the plugin at any
+time. User-owned `ai_context/wiki/` and `ai_context/sources/` content is
+preserved during uninstall unless the user deletes it separately.
 
 ## Security
 

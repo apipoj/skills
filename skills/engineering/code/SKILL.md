@@ -1,10 +1,12 @@
 ---
 name: code
-description: ลงมือพัฒนาคำขอที่ชัดหรือแผนที่ review แล้วจนผ่าน test และ local verification โดยไม่ถามอนุมัติ workspace ซ้ำ
+description: ลงมือพัฒนาคำขอที่ชัดหรือแผนที่ review แล้วจนผ่าน test และ local verification โดยไม่ถามอนุมัติ workspace ซ้ำ สลับไปใช้ tdd แทนเฉพาะเมื่อผู้ใช้ขอ test-first loop แบบเข้มงวดชัดเจน
 ---
 # ลงมือพัฒนาและตรวจให้ครบ
 
-Implement คำขอที่ชัดหรือ reviewed plan ภายใน scope แบบ TDD ตรวจสอบงาน และอัปเดต docs
+Implement คำขอที่ชัดหรือ reviewed plan ภายใน scope แบบ TDD ตรวจสอบงาน และอัปเดต docs นี่คือ
+default loop สำหรับ implementation ทั่วไป ถ้าผู้ใช้ขอ TDD loop แบบเข้มงวดโดยเฉพาะ ให้ใช้ skill
+`tdd` แทน
 
 ## รวบรวม Context
 
@@ -31,6 +33,9 @@ Implement คำขอที่ชัดหรือ reviewed plan ภายใ�
 6. **อัพเดต docs** ถ้า plan มี docs tasks ให้ทำตาม workflow
 7. **รายงานความคืบหน้า** สรุปว่าทำอะไรไป ถัดไปคืออะไร และมี deviation จาก plan ไหม
 
+Budget: เรียก specialist ได้ไม่เกินแปดครั้ง, concurrent worker ไม่เกินสามคนที่แยก file
+ownership กัน และ retry ได้หนึ่งครั้งสำหรับ worker ที่ติดขัด
+
 ## Implementation Authorization
 
 ยอมรับ bounded workspace authority ได้สามแบบ:
@@ -56,12 +61,8 @@ Implement คำขอที่ชัดหรือ reviewed plan ภายใ�
 
 ## มาตรฐาน Plan
 
-ถ้า plan ที่ให้มายังไม่ผ่านมาตรฐานต่อไปนี้ ให้หยุดและขอแก้หรือสร้าง approved plan ก่อน:
-- Tasks เป็น action 2-5 นาทีที่ตรวจสอบได้แบบอิสระ
-- ทุก task มี file path ที่ชัดหรือขั้นตอน discovery ที่ชัด
-- ทุกการเปลี่ยน behavior มีขั้นตอน TDD
-- Plan บอกว่าจะไม่ build อะไร
-- Acceptance criteria สังเกตได้และ test ได้
+ถ้า plan ที่ให้มาไม่ผ่านมาตรฐานคุณภาพของ workflow `plan` ให้ปฏิเสธและขอแก้หรือสร้าง approved
+plan ก่อนเริ่ม implement
 
 ## Autonomy Profile
 

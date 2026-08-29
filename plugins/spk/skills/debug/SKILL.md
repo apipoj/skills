@@ -18,20 +18,58 @@ Keep working without user input while the requested outcome remains inside curre
 
 Run a systematic root-cause investigation before any fix is attempted.
 
-Use this for failing tests, production bugs, build errors, regressions, unexpected behavior, or any situation where guessing would waste time.
+Use this for failing tests, production bugs, build errors, regressions, unexpected behavior, or any situation where guessing would waste time. This workflow only diagnoses: it proposes fixes and instrumentation as recommendations for the implementer, and never writes to source files itself.
+
+## Redact
+
+This skill has you show commands, outputs and captured artifacts. **Redact every secret first** — write `<REDACTED>` in its place. Build loops against env vars, so the credential stays in the environment rather than in what you show. Captured artifacts carry auth headers: quote only the lines that carry the signal.
+
+If the redacted output is not enough to diagnose the bug, say so and ask the user.
+
+## Gather Context
+
+- In a git worktree, run `git status --short`, `git log -5 --oneline`, and `git diff --stat`; outside a git repo, skip git context and work from what's available.
+- Capture the complete error output, test failure, or unexpected behavior.
 
 ## Workflow
 
-1. Read the exact error and obtain the smallest deterministic reproduction.
-2. Capture the failing command and expected-versus-actual behavior.
-3. Compare the broken path with a working analogue and trace the data/control boundary
-   where they diverge.
-4. State one falsifiable hypothesis at a time and run the smallest discriminating test.
-5. Stop once evidence identifies the root cause. Recommend the smallest fix and the
-   regression test that fails before it.
+Run this systematic 4-step root-cause process before recommending any fix.
 
-Delegate an independent reproduction or trace only when it can run without overlapping
-changes. This workflow diagnoses; it does not patch source code.
+### Step 1: Read the error and reproduce
+- Capture the exact error message, stack trace, or failing assertion.
+- Identify the minimal reproduction steps.
+- If you cannot reproduce it, return `NEEDS_REPRO` naming exactly what's missing.
+
+### Step 2: Compare against a working pattern
+- Find a similar code path or test that behaves correctly.
+- Diff the working path against the failing one to isolate the divergence.
+- Check recent commits that plausibly caused it.
+
+### Step 3: Generate and test hypotheses
+- Write hypotheses one at a time.
+- Test each with a targeted experiment (log, breakpoint, unit test).
+- Discard a disproven hypothesis before forming the next one.
+- If three hypotheses fail in a row, flag `POSSIBLE_ARCHITECTURE_ISSUE`.
+
+### Step 4: Recommend a fix
+- State the root cause with evidence.
+- List every affected file:line.
+- Recommend the smallest fix.
+- Recommend the regression test that would catch this.
+
+Delegate an independent reproduction or trace only when it can run without overlapping changes. This workflow diagnoses; it does not patch source code.
+
+## Output Format
+
+```markdown
+## Debug Report
+- Error: <exact error or behavior>
+- Root cause: <evidence-backed explanation>
+- Affected locations: <file:line list>
+- Recommended fix: <smallest change>
+- Regression test: <test that would catch this>
+- Status: <FIX_READY | NEEDS_REPRO | POSSIBLE_ARCHITECTURE_ISSUE>
+```
 
 ## Autonomy Profile
 
@@ -39,19 +77,17 @@ changes. This workflow diagnoses; it does not patch source code.
 
 ## Evidence Receipt
 
-Return `spk.evidence/v1` with the reproduction command/result, observations,
-hypotheses tested, proven root cause, affected paths, regression-test recommendation,
-risks, and next action.
+Return `spk.evidence/v1` with the reproduction command/result, hypotheses tested, the
+proven root cause, affected file:line locations, the recommended fix and regression test
+from the Debug Report above, risks, and next action.
 
 ## Guardrails
 
-- No fixes before root cause evidence.
-- Redact every secret before showing any command, output, or captured artifact; write
-  `<REDACTED>` in its place and drive loops through env vars.
-- If reproduction is impossible, return `NEEDS_REPRO` with exact missing information.
-- If 3 attempted fixes have already failed, flag `POSSIBLE_ARCHITECTURE_ISSUE` instead of proposing a fourth patch.
-- Never probe production data, credentials, destructive actions, or external services
-  without explicit operator approval in the main conversation.
+- No fixes before root-cause evidence.
+- If reproduction is impossible, return `NEEDS_REPRO` with the exact missing information.
+- If three fixes attempted by the implementer have failed, flag `POSSIBLE_ARCHITECTURE_ISSUE` instead of proposing a fourth patch.
+- Never edit source code yourself — return the diagnosis, and propose fixes or instrumentation as recommendations for the implementer to apply.
+- For production data, credentials, destructive actions, or external services, stop and ask the operator first.
 
 
 ## Upstream Discipline

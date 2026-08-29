@@ -9,13 +9,13 @@ Skill นี้เป็น manual-only และทำโดยตรงใน 
 
 ## Workflow
 
-1. **Inventory read-only** ใช้ `.spk/installed.json` เป็น ownership evidence ก่อน normalize ทุก candidate ให้อยู่ใน workspace Legacy install รับเฉพาะ SPK marker หรือ registered exact name ห้ามเดาจาก directory กว้าง
+1. **Inventory read-only** ใช้ `.spk/manifest.json` เป็น ownership evidence ก่อน normalize ทุก candidate ให้อยู่ใน workspace Legacy install รับเฉพาะ SPK marker หรือ registered exact name ห้ามเดาจาก directory กว้าง Modern plugin install เป็นเจ้าของ `ai_context/.spk-version`, cache entry ใน `.claude/spk-webfetch-cache/`, และ SPK block ใน `.git/info/exclude` ด้วย
 2. **Preview exact effects** list ทุก file/range ที่จะลบ, stale record และทุกอย่างที่ preserve ต้องรักษา wiki, sources, human-authored context, credentials และ non-SPK files
 3. **Bind intent** canonicalize operation, exact paths, text ranges, expected hashes และ preserve list แล้วใช้ SHA-256 lowercase hex ครบ 64 ตัว
 4. **ขอ approval** แสดง preview แล้วถามผ่าน structured choice prompt ของ host ถ้ามี ถ้าไม่มีให้ใช้ numbered list ตั้ง label ของตัวเลือกที่อนุมัติด้วย scope จริง เช่น `ลบไฟล์ SPK 7 ไฟล์ใน .claude/` ห้าม label ว่า `Approve` เฉย ๆ gate นี้เป็น `confirm` กดตัวเลือกนั้นหรือตอบรับธรรมดาก็นับทั้งคู่ แต่คำถาม การขอแก้ คำตอบรับที่อยู่ใน quote หรือ code block และคำตอบที่มาก่อนแสดง preview ไม่นับ ถ้ายังไม่อนุมัติให้คืน envelope แล้วหยุด
 5. **Resume safely** re-read ownership กับ hashes แล้วคำนวณ digest ใหม่ก่อนลบทุกครั้ง drift ใด ๆ ต้องขอ approval ใหม่ เวลาเรียก uninstall module ให้ส่ง digest ที่ module ออกให้ user อนุมัติ preview ไม่ใช่อนุมัติตัว digest
 6. **Apply narrowly** ลบเฉพาะ approved SPK-owned files และ marker block ที่อนุมัติ ห้าม recursive remove `.claude/` หรือ broad directory ลบ empty directory ได้หลังพิสูจน์ว่าว่าง
-7. **Verify** ยืนยัน targets หาย, preserved paths byte-for-byte เหมือนเดิม, ไม่มี path escape workspace และรายงาน recovery ถ้าใช้ trash/quarantine
+7. **Verify** ยืนยัน targets หาย, ยืนยันว่าทุก preserved path ใน evidence receipt ยังอยู่และไม่ปรากฏใน `removed` หรือ `edited`, ไม่มี path escape workspace และรายงาน recovery ถ้าใช้ trash/quarantine
 
 ## Approval Protocol
 

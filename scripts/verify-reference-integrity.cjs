@@ -7,6 +7,8 @@ const REPO_ROOT = path.join(__dirname, '..');
 const COMMAND_REF_RE = /\/spk:([a-z][a-z0-9-]*)/g;
 const SPK_REF_RE = /(?<!\/)\bspk:([a-z][a-z0-9-]*)/g;
 const MARKDOWN_LINK_RE = /!?\[[^\]]*\]\(\s*(?:<([^>]+)>|([^\s)]+))/g;
+const SCRIPT_REF_RE = /\bscripts\/([A-Za-z0-9][\w.-]*\.cjs)\b/g;
+const CANONICAL_SCRIPTS_DIR = 'plugins/spk/scripts';
 
 const DEFAULT_SCAN_ROOTS = [
   'README.md',
@@ -92,6 +94,15 @@ function isPackagedSkillFile(relFile) {
   return packaged && ['SKILL.md', 'UPSTREAM.md'].includes(path.basename(relFile));
 }
 
+// Only the canonical (hand-authored) payload is checked against the real
+// scripts/ directory. The generated Codex payload (plugins/spk-codex/) is a
+// mechanical copy produced by generate-platform-artifacts.cjs and verified
+// against its own source by `npm run verify:platforms`; re-checking it here
+// would just re-report the same drift under a rule this script cannot fix.
+function isCanonicalSkillFile(relFile) {
+  return relFile.startsWith('plugins/spk/skills/') && path.basename(relFile) === 'SKILL.md';
+}
+
 function localMarkdownTarget(rawTarget) {
   const withoutFragment = rawTarget.split('#', 1)[0];
   if (!withoutFragment || withoutFragment.startsWith('/') || /^[a-z][a-z0-9+.-]*:/i.test(withoutFragment)) {
@@ -129,6 +140,14 @@ function collectReferencesFromFile(rootDir, relFile) {
         if (target) {
           refs.push({ type: 'local', target, file: relFile, line: idx + 1 });
         }
+      }
+    }
+
+    if (isCanonicalSkillFile(relFile)) {
+      SCRIPT_REF_RE.lastIndex = 0;
+      let scriptMatch;
+      while ((scriptMatch = SCRIPT_REF_RE.exec(line)) !== null) {
+        refs.push({ type: 'script', name: scriptMatch[1], file: relFile, line: idx + 1 });
       }
     }
   });
@@ -181,6 +200,14 @@ function collectReferenceIntegrityErrors(rootDir = REPO_ROOT, files = null) {
         if (!commands.has(ref.name)) {
           errors.push(`${ref.file}:${ref.line}: unknown /spk:${ref.name} command`);
         }
+      } else if (ref.type === 'script') {
+        const target = path.resolve(rootDir, CANONICAL_SCRIPTS_DIR, ref.name);
+        if (!fs.existsSync(target)) {
+          errors.push(
+            `${ref.file}:${ref.line}: missing script reference scripts/${ref.name} ` +
+            `(expected ${CANONICAL_SCRIPTS_DIR}/${ref.name})`,
+          );
+        }
       } else if (!commands.has(ref.name) && !agents.has(ref.name)) {
         errors.push(`${ref.file}:${ref.line}: unknown spk:${ref.name} reference`);
       }
@@ -206,11 +233,13 @@ if (require.main === module) main();
 
 module.exports = {
   DEFAULT_SCAN_ROOTS,
+  CANONICAL_SCRIPTS_DIR,
   collectReferenceIntegrityErrors,
   collectReferencesFromFile,
   collectResolverCoverageErrors,
   isUnderScanRoots,
   isPackagedSkillFile,
+  isCanonicalSkillFile,
   listTrackedScanFiles,
   localMarkdownTarget,
 };

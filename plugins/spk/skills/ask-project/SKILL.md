@@ -1,6 +1,6 @@
 ---
 name: ask-project
-description: Answer a project question from the local wiki first, cite exact evidence, and use external research only when local knowledge is insufficient.
+description: Answer a project question from this repository's local wiki first, cite exact evidence, and use external research only when local knowledge is insufficient.
 ---
 
 # Wiki-First Query

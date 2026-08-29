@@ -26,7 +26,8 @@ description: เริ่มงานกับ AI แบบไทยเป็น
    - `external_write` — เปลี่ยน remote ตาม approval mode ที่ workflow นั้นประกาศ
    - `destructive` — ลบข้อมูลหลังแสดง target ที่แน่นอนและได้รับอนุมัติ
 4. Route ตาม outcome:
-   - ทำ idea หรือเรื่องที่ต้องตัดสินใจให้ชัด → `ask-me`, `asking`, `ask-with-docs`
+   - ทำ idea หรือเรื่องที่ต้องตัดสินใจให้ชัด → `ask-me`, `asking`, `ask-with-docs`; เรื่องที่ตอบเองไม่ได้ต้องส่งให้ผู้เชี่ยวชาญที่ไม่อยู่ตรงหน้าตอบ → `to-questionnaire`
+   - คำตอบก่อนหน้ายังไม่โดน หรือผู้ใช้บอกว่า "งง" → `wait-what`
    - ทำ engineering plan → `plan`; สรุป discussion เป็น spec → `to-spec`
    - แตกงาน → `to-tickets`; งานใหญ่ที่ยังมีหมอก → `wayfinder`
    - implement, fix หรือ plan-and-implement → `code`; ต้องการ RED-GREEN ชัด → `tdd`
@@ -35,9 +36,11 @@ description: เริ่มงานกับ AI แบบไทยเป็น
    - ปรับรูปทรง module → `codebase-design`, `improve-codebase`
    - คัดกรองงานเข้า → `triage`; แก้ Git conflict → `fix-conflicts`
    - ใช้หรือเพิ่มความรู้โปรเจกต์ → `ask-project`, `research`, `add-knowledge`, `domain-modeling`, `check-wiki`
-   - ตั้งค่าหรือทำความรู้จัก repo → `setup`, `load-project`; ตรวจ installation → `doctor`
+   - ตั้งค่าหรือทำความรู้จัก repo → `setup`, `load-project`; เขียน bash setup wizard สำหรับขั้นตอนที่ต้องทำเองเท่านั้น → `wizard`; ตรวจ installation → `doctor`
    - เตรียมส่งงาน → `check-release`, `pr`, `task-to-pr`, `deploy`; ถอนระบบ → `uninstall`
-   - ส่งต่อ context → `handoff`; เรียนรู้เรื่องใหม่ → `teach`
+   - ส่งต่อ context → `handoff`; เรียนรู้เรื่องใหม่ → `teach`; เขียน agent docs หรือ skill → `write-skills`
+
+   ถ้า outcome ตรงกับ skill แบบ manual-only (`disable-model-invocation`) ให้บอกคำสั่ง `/<name>` ให้ผู้ใช้แล้วหยุด ไม่ต้องเรียกใช้เอง
 5. รัน workflow ที่เลือกไปจนถึงผลลัพธ์ที่ตรวจได้ คำขอแบบ end-to-end ที่ชัดให้ bounded
    workspace authority ต่อเนื่องผ่าน plan, implementation, test และ local QA โดยไม่ถาม
    อนุมัติ local ซ้ำ
