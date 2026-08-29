@@ -8,10 +8,12 @@
 //
 // Activation: SPK_WIKI_BUILD=true in the env, OR the marker file
 // ai_context/.spk-wiki-build exists. Skills can't set env vars for hooks
-// mid-session, so /spk:add-knowledge and /spk:check-wiki create the marker before
-// dispatching wiki work and remove it after. The marker expires after
-// MARKER_TTL_MS so a crashed wiki-build can never leave the guard blocking
-// ordinary sessions forever.
+// mid-session, so /spk:add-knowledge creates the marker before dispatching wiki
+// work and removes it after. /spk:check-wiki never creates this marker — it only
+// checks for one before running, to refuse overlapping with an in-progress build
+// or another audit, and clears a stale one (past MARKER_TTL_MS) with the exact
+// cleanup command. The marker expires after MARKER_TTL_MS so a crashed wiki-build
+// can never leave the guard blocking ordinary sessions forever.
 
 const fs = require('fs');
 const os = require('os');

@@ -11,6 +11,12 @@ description: ตรวจ wiki ของโปรเจกต์เพื่อ�
 - ลิสต์ไฟล์ทั้งหมดใน `ai_context/wiki/`
 - อ่าน `ai_context/wiki/index.md` สำหรับ catalog
 - อ่าน `ai_context/wiki/log.md` สำหรับ activity ล่าสุด
+- ห้ามตรวจ `ai_context/sources/`, ignored paths, credential หรือ environment file ใด ๆ
+- เช็ค marker file `ai_context/.spk-wiki-build` ก่อนเริ่มเสมอ ถ้ามีอยู่และอายุน้อยกว่า 2
+  ชั่วโมง ให้ปฏิเสธการรัน เพราะอาจมี wiki build หรือ audit อื่นทำงานอยู่พร้อมกัน ถ้า marker
+  เก่ากว่า 2 ชั่วโมงถือว่า stale ให้ลบด้วยคำสั่งตรงตัว `rm -f ai_context/.spk-wiki-build`
+  (หรือคำสั่งเทียบเท่าตาม platform) ก่อนทำต่อ audit เองไม่สร้าง marker นี้ และเก็บ working
+  notes ไว้ใน memory หรือใต้ OS temp directory เท่านั้น ห้ามเก็บใน repo
 
 ## Audit Checks
 
@@ -66,7 +72,9 @@ description: ตรวจ wiki ของโปรเจกต์เพื่อ�
 
 ## ข้อควรระวัง
 
-- ใช้ overlap guard นอก repo หรือใน memory เพื่อให้ audit ไม่มี project write และ cleanup เสมอ
+- อ่าน wiki pages เท่านั้น ห้ามตรวจ raw private source
+- เช็ค wiki-build marker (`ai_context/.spk-wiki-build`) ก่อนรันเสมอ ห้ามสร้าง marker นี้เอง
+  และลบเฉพาะ marker ที่ stale เกิน 2 ชั่วโมงด้วยคำสั่งตรงตัวเท่านั้น
 - audit mode ห้ามแก้ wiki; mechanical repair ทำได้เมื่อคำขอปัจจุบันระบุ fix ชัด ส่วน semantic repair ให้เสนอแนะก่อน
 - Flag secrets เป็น Critical ไม่ว่า context อะไร
 - รายงาน findings เรียงตาม severity

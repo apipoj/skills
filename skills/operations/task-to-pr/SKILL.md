@@ -58,21 +58,34 @@ production action, unrelated tracker write, credential exposure หรือ sco
    บันทึก task snapshot, path hashes, parent/tree, exact message, identity/signing/hook,
    expected remote SHA/ref, explicit repository selector/environment, PR digests,
    command argv และ `payload_digest` พร้อม non-null
-   conditional/idempotency precondition
+   conditional/idempotency precondition โดย `payload_digest` ต้องครอบคลุม tool/API argument
+   หรือ wire request แบบ semantic ครบถ้วน: method, endpoint, path/query, header ที่กระทบ
+   behavior และ body/arguments ยกเว้นเฉพาะ authentication secret กับ transport metadata
+   ที่ไม่กระทบ semantics digest นี้ไว้จับ drift เพื่อความปลอดภัย ไม่ใช่ approval token ของ user
 8. **Commit และ publish โดยไม่ถามซ้ำ** revalidate material state, stage เฉพาะ task paths,
    verify complete staged patch, commit แล้วตรวจ parent/tree/task patch/message/identity
    ก่อน push เฉพาะ non-protected PR ref พร้อม bound repository selector สร้างหรืออัปเดต PR
-   แล้วตรวจว่า URL อยู่ใน selected repository ใช้ `If-Match`, version token,
+   โดยเลือก draft ไว้ก่อนเมื่อ verification ที่จำเป็นยังไม่ครบ แล้วตรวจว่า URL อยู่ใน
+   selected repository ใช้ `If-Match`, version token,
    create-if-absent หรือ bound idempotency key กับ task write ห้าม write ถ้า enforce
    precondition ไม่ได้
 9. **Observe และ repair published head** ตรวจ required CI, task-relevant checks,
    automated review, mergeability และ feedback ปัจจุบัน วินิจฉัยก่อนซ่อม ซ่อมเฉพาะใน
    scope แล้ว rerun tests, fresh review และ browser QA ที่เกี่ยวข้อง จากนั้น commit/push
-   โดยไม่ถามซ้ำ จำกัด post-publication repair สองรอบและ observation สามครั้งต่อ head
+   โดยไม่ถามซ้ำ จำกัด post-publication repair สองรอบและ observation สามครั้งต่อ head ห้าม
+   remotely rerun หรือ cancel CI และห้ามรอไม่มีกำหนด
 10. **จบตามหลักฐาน** คืน `READY_FOR_HUMAN_MERGE` เมื่อ latest head mergeable, required
     CI ผ่านหรือไม่มี, task-relevant checks ผ่านหรือพิสูจน์ว่าไม่เกี่ยว, browser QA ที่ต้องทำ
     ผ่าน, important feedback ถูกแก้ และ acceptance criteria ครบ ไม่เช่นนั้นคืน `BLOCKED`
     พร้อม branch/worktree ที่เก็บไว้และ checkpoint ที่ resume ได้
+
+## Task Snapshot Drift
+
+Task snapshot digest จาก step 1 คือ hash ณ จุดเวลาหนึ่ง ไม่ใช่การรับประกันตลอดไป ให้
+re-fetch task source แล้วคำนวณ `task_snapshot_digest` ใหม่ทุกครั้งที่ resume และอีกครั้ง
+ทันทีก่อนเปิดหรือ publish pull request ถ้า acceptance criteria, scope หรือ field ใดที่นิยาม
+task เปลี่ยนไป หรือ task ถูกปิดแล้ว ให้หยุดด้วย `BLOCKED` พร้อมแสดง diff metadata ที่ไม่กระทบ
+อย่าง assignee, labels, จำนวน comment ไม่ทำให้ snapshot ใช้ไม่ได้
 
 ## Run Receipt
 
@@ -85,6 +98,10 @@ production action, unrelated tracker write, credential exposure หรือ sco
   "target": {"repository": "<owner/repo>", "worktree": "<absolute path>", "base_sha": "<sha>", "head_sha": "<sha>", "remote": "<remote>", "ref": "<PR ref>", "repository_selector": "GH_REPO=<owner/repo>"},
   "paths": [{"path": "<task path>", "sha256": "<hash>"}],
   "task_patch_digest": "<sha256>",
+  "expected_staged_diff_digest": "<sha256 หลัง stage>",
+  "proposed_commit": {"parent_sha": "<sha>", "tree_sha": "<sha>", "message": "<exact>"},
+  "pull_request": {"operation": "create | update", "state": "draft | ready"},
+  "task_writes": [{"target": "<identified task>", "payload_digest": "<sha256>", "precondition": "<non-null>"}],
   "browser_qa": {"status": "PASS | FAIL | NOT_APPLICABLE", "flows": [], "artifacts": []},
   "repairs": {"local": 0, "browser": 0, "post_publication": 0},
   "phase": "<current phase>",

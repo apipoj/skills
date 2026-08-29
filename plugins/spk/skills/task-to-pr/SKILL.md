@@ -125,6 +125,15 @@ expansion. Those boundaries require a separate workflow and authority.
     and no acceptance criterion is partial or missing. Otherwise return `BLOCKED` with the
     retained branch/worktree and a durable resumable checkpoint.
 
+## Task Snapshot Drift
+
+The task snapshot digest from step 1 is a point-in-time hash, not a standing guarantee.
+Re-fetch the task source and recompute `task_snapshot_digest` on every resume and again
+immediately before opening or publishing the pull request. If acceptance criteria, scope,
+or any field that defines the task changed, or the task was closed, stop with `BLOCKED`
+and show the diff. Incidental metadata — assignee, labels, comment count — does not
+invalidate the snapshot.
+
 ## Run Receipt
 
 Maintain this machine-readable state throughout the run:
