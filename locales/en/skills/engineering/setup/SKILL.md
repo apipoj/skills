@@ -3,7 +3,6 @@ name: setup
 description: Configure this repo for the engineering skills — set up its issue tracker, triage label vocabulary, and domain doc layout. Run once before first use of the other engineering skills.
 disable-model-invocation: true
 ---
-
 # Setup Apipoj Skills
 
 ## Response Rules
@@ -51,7 +50,7 @@ Lead each section with the recommended answer so the user can accept it in a wor
 
 **Section A — Issue tracker.**
 
-> Explainer: The "issue tracker" is where issues live for this repo. Skills like `to-tickets`, `triage`, `to-spec`, and `qa` read from and write to it — they need to know whether to call `gh issue create`, write a markdown file under `.scratch/`, or follow some other workflow you describe. Pick the place you actually track work for this repo.
+> Explainer: The "issue tracker" is where issues live for this repo. Skills like `to-tickets`, `triage`, `to-spec`, and `check-release` read from and write to it — they need to know whether to call `gh issue create`, write a markdown file under `.scratch/`, or follow some other workflow you describe. Pick the place you actually track work for this repo.
 
 Default posture: these skills were designed for GitHub. If a `git remote` points at GitHub, propose that. If a `git remote` points at GitLab (`gitlab.com` or a self-hosted host), propose GitLab. Otherwise (or if the user prefers), offer:
 
@@ -129,6 +128,25 @@ For "other" issue trackers, write `docs/agents/issue-tracker.md` from scratch us
 
 Tell the user the setup is complete and which engineering skills will now read from these files. Mention they can edit `docs/agents/*.md` directly later — re-running this skill is only necessary if they want to switch issue trackers or restart from scratch.
 
+
+## Workflow
+
+1. Orient to the request and repository evidence.
+2. Apply the discipline above in the smallest useful slice.
+3. Verify the result against the requested outcome.
+
+
 ## Autonomy Profile
 
 `decision_aware` — prompt budget 1; repair budget 3. Inspect facts and prepare the smallest useful draft within this skill's declared effect level; read-only skills stay read-only. Use recommended reversible assumptions and bundle only the one material decision that changes outcome, scope, risk, cost, or success. Before pausing, return the decision ledger, recommended default, evidence, and a resumable next action.
+
+## Evidence Receipt
+
+Return `spk.evidence/v1` with inputs, artifacts, verification, risks, and next action.
+
+
+## Guardrails
+
+- Preserve user scope and unrelated changes.
+- Do not commit, push, publish, or mutate external systems without separate exact approval.
+- Report missing evidence instead of guessing.

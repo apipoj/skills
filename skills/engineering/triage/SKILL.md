@@ -18,6 +18,14 @@ disable-model-invocation: true
 
 คัดกรอง issue และ pull request ให้พร้อมตัดสินใจหรือพร้อมส่งต่อให้ agent ทำงาน
 
+## Approval ก่อนเขียน Tracker
+
+การอ่าน (search, list, view issue/PR) ทำได้อิสระ ไม่ต้องขอ approval
+
+ก่อนเขียนอะไรลง tracker หรือระบบภายนอก — ใส่ label, comment, assign หรือเปลี่ยน state — ต้องแสดง target และ payload ที่แน่นอน แล้วขอคำตอบรับแบบตรงไปตรงมา (plain affirmative) สำหรับชุดนั้นเป๊ะ ๆ gate นี้เป็น `confirm`: กดตัวเลือกที่อนุมัติหรือตอบรับธรรมดานับทั้งคู่ ส่วนคำถาม การขอแก้ คำตอบรับที่อยู่ใน quote หรือ code block และคำตอบที่มาก่อนแสดง payload ไม่นับ
+
+การอนุมัติแบบ batch ครอบคลุมเฉพาะ batch ที่แสดงตอนนั้น เพิ่ม ลบ หรือเปลี่ยนรายการใดก็ทำให้ approval เดิมเป็นโมฆะ ต้องขอใหม่ ต้องระบุ repository/tracker selector ให้ชัดเจนเสมอ เช่น `GH_REPO=<owner/repo>` หรือ `--repo <owner/repo>` ห้ามปล่อยให้ CLI เดาเอง
+
 ## Autonomy Profile
 
 `decision_aware` — ตรวจ fact และทำ draft ได้ถึง effect level ที่ skill ประกาศ โดย read-only ยังต้อง read-only แล้วถามได้สูงสุดหนึ่ง decision สำคัญ; prompt budget 1, repair budget 3 รอบ ก่อนหยุดต้องบันทึก decision ledger, evidence และ next action ที่ทำต่อได้

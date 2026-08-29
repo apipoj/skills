@@ -74,7 +74,9 @@ Budget: one deploy attempt, one smoke pass, one UI pass, and no automatic retrie
 
 Match the token anywhere in the consenting message, ignore hex case, strip surrounding
 backticks and quotes, and accept a prefix of at least 12 hex characters that uniquely
-matches the current digest. Approval is valid only when the recomputed 64-character
+matches the current digest. A token or affirmative inside a quote or code block does not
+count, a question does not count, and any reply given before the deployment intent was
+shown does not count. Approval is valid only when the recomputed 64-character
 digest matches freshly inspected state; one approval authorizes one intent and never
 carries to a retry after any change.
 

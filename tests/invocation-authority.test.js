@@ -17,8 +17,11 @@ function makeTemp() {
 }
 
 // two skills: `manual` is user-invoked, `router` is model-invocable and is the
-// one whose body the tests put text into
-function fixture(routerBody, manualBody = '# Manual\n') {
+// one whose body the tests put text into. `routerUpstream`, when given, adds
+// an UPSTREAM.md to router's canonical and en-mirror folders — the shape a
+// router's "read the full practice in UPSTREAM.md" pointer actually ships as,
+// and a non-SKILL.md file the gate must scan too.
+function fixture(routerBody, manualBody = '# Manual\n', routerUpstream = null) {
   const dir = makeTemp();
   const contract = {
     skills: [
@@ -43,6 +46,10 @@ function fixture(routerBody, manualBody = '# Manual\n') {
   write('locales/en/skills/x/router/SKILL.md', routerBody);
   write('plugins/spk/skills/manual/SKILL.md', manualBody);
   write('locales/en/skills/x/manual/SKILL.md', manualBody);
+  if (routerUpstream !== null) {
+    write('plugins/spk/skills/router/UPSTREAM.md', routerUpstream);
+    write('locales/en/skills/x/router/UPSTREAM.md', routerUpstream);
+  }
   return { dir, contract };
 }
 
@@ -54,7 +61,7 @@ afterEach(() => {
 
 describe('invocation authority gate', () => {
   test('passes a body that invokes nothing user-invoked', () => {
-    const { dir, contract } = fixture('# Router\n\nRun `/debug` when a test fails.\n');
+    const { dir, contract } = fixture('# Router\n\nRun `/router` again when a test fails.\n');
     expect(collectInvocationAuthorityErrors(dir, contract)).toEqual([]);
   });
 
@@ -124,5 +131,45 @@ describe('invocation authority gate', () => {
 
   test('every shipped skill and mirror satisfies the gate', () => {
     expect(collectInvocationAuthorityErrors(ROOT, CONTRACT)).toEqual([]);
+  });
+
+  // the class of bug this whole gate exists for lives in the reference file a
+  // thin SKILL.md points at just as often as in SKILL.md itself
+  test('flags a stale/unknown skill id referenced in an UPSTREAM.md', () => {
+    const { dir, contract } = fixture(
+      '# Router\n',
+      undefined,
+      'Once the user picks a candidate, run the `/grilling` skill to walk the decision tree.\n',
+    );
+    expect(collectInvocationAuthorityErrors(dir, contract)).toEqual([
+      'plugins/spk/skills/router/UPSTREAM.md:1: references unknown skill id `grilling`',
+      'locales/en/skills/x/router/UPSTREAM.md:1: references unknown skill id `grilling`',
+    ]);
+  });
+
+  test('leaves a known roster id referenced in an UPSTREAM.md alone', () => {
+    const { dir, contract } = fixture('# Router\n', undefined, 'Run `/router` again on a fresh idea.\n');
+    expect(collectInvocationAuthorityErrors(dir, contract)).toEqual([]);
+  });
+
+  test('flags an agent-directed invocation of a manual-only skill outside SKILL.md', () => {
+    const { dir, contract } = fixture(
+      '# Router\n',
+      undefined,
+      'The tracker should have been provided to you — run `/manual` if not.\n',
+    );
+    expect(collectInvocationAuthorityErrors(dir, contract)).toEqual([
+      'plugins/spk/skills/router/UPSTREAM.md:1: instructs the agent to invoke `manual`, which is user-invoked',
+      'locales/en/skills/x/router/UPSTREAM.md:1: instructs the agent to invoke `manual`, which is user-invoked',
+    ]);
+  });
+
+  test('the user-directed rewrite of that same UPSTREAM.md instruction reads as clean', () => {
+    const { dir, contract } = fixture(
+      '# Router\n',
+      undefined,
+      'The tracker should have been provided to you — tell the user to run `/manual` if not.\n',
+    );
+    expect(collectInvocationAuthorityErrors(dir, contract)).toEqual([]);
   });
 });

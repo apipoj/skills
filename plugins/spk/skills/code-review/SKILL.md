@@ -16,24 +16,78 @@ Reply in the user's language.
 
 Keep working without user input while the requested outcome remains inside current authority. Use a reversible smart default and record assumptions. Ask only when one material user-owned decision changes scope, risk, cost, or success, or when a required effect crosses an unapproved boundary.
 
-Review the requested diff, branch, pull request, wiki, or working tree. Default an
-ambiguous scope to the current diff.
+Review the requested diff, branch, pull request, wiki, or working tree. Default an ambiguous scope to the current diff.
+
+## Gather Context
+
+- In a git worktree, run `git status --short --branch --untracked-files=all`.
+- In a git worktree, run `git diff --stat` and `git diff --name-status`.
+- In a git worktree, run `git log -5 --oneline`; outside a git repo, skip git context and review from whatever scope the user gave.
 
 ## Workflow
 
-1. Inspect exact scope and repository instructions.
-2. Run isolated standards and specification passes. Independent read-only lenses for
-   correctness, security, maintainability, and tests/docs may run concurrently.
-3. Give each reviewer the same immutable scope and require file/line evidence.
-4. Deduplicate by root cause, then run an explicit verifier node over the proposed
-   PASS/HOLD decision.
-5. Return the report and a concise typed evidence receipt in the conversation.
-6. Run only checks or tests known not to write project files. If a command may write
-   caches, snapshots, lockfiles, generated artifacts, or other project state, report
-   the exact command as a recommended verification step instead of running it.
+Run each of the five review passes below independently, then merge findings before
+reporting. Independent read-only
+lenses for correctness, security, maintainability, and tests/docs may run concurrently as
+specialist calls, each given the same immutable scope and required to cite file/line
+evidence. Deduplicate by root cause, then run an explicit verifier pass over the proposed
+verdict before it is reported.
 
-Budget: at most six specialist calls, four concurrent read-only lenses, and one retry
-for missing evidence.
+Budget: at most six specialist calls, four concurrent read-only lenses, and one retry for
+missing evidence.
+
+### Pass 1: Correctness and Edge Cases
+- Logic errors, off-by-one, null/undefined handling
+- Edge cases: empty inputs, boundary values, concurrent access
+- Error handling: are errors caught, logged, and surfaced correctly?
+
+### Pass 2: Security and Secrets
+- Hardcoded secrets, API keys, tokens, credentials
+- Authorization checks on sensitive endpoints
+- Input validation and sanitization
+- Any secret-shaped line is fail-closed until proven safe.
+
+### Pass 3: Maintainability and Scope
+- Does the change match the stated goal?
+- Scope creep: are unrelated changes mixed in?
+- Code duplication that should be extracted
+- Naming clarity and consistency
+
+### Pass 4: Tests and Docs
+- Do new behaviors have test coverage?
+- Do the existing tests still pass?
+- Does the change carry docs (API docs, README, inline comments)?
+- Docs drift: update docs whenever behavior, commands, manifests, or public workflow changes.
+
+### Pass 5: Ship-Readiness Gate
+- The final quality gate: does this ship?
+- Any Critical or Important issue means HOLD.
+
+Run only checks or tests known not to write project files. If a command may write caches,
+snapshots, lockfiles, generated artifacts, or other project state, report the exact
+command as a recommended verification step instead of running it.
+
+## Output Format
+
+```markdown
+## Review Report
+- Scope: <what was reviewed>
+- Files: <count and list>
+
+### Findings
+
+#### Critical (blocks merge)
+- <file:line> <issue> - <why it matters> - <fix>
+
+#### Important (should fix in this PR)
+- <file:line> <issue> - <why it matters> - <fix>
+
+#### Minor (can follow up later)
+- <file:line> <issue> - <suggestion>
+
+### Verdict
+<APPROVE | HOLD | REQUEST_CHANGES>
+```
 
 ## Review Contract
 
@@ -51,14 +105,16 @@ for missing evidence.
 ## Evidence Receipt
 
 Return `spk.evidence/v1` with reviewed scope, ranked findings, file/line evidence,
-verification commands/results, PASS/HOLD decision, risks, and next action.
+verification commands/results, the APPROVE/HOLD/REQUEST_CHANGES verdict, risks, and next
+action.
 
 ## Guardrails
 
-- Review only; do not create or modify project files, including reports, caches,
-  snapshots, lockfiles, or generated artifacts. Do not fix, stage, commit, push,
-  or deploy.
-- Critical or Important evidence means HOLD until fixed or explicitly accepted.
+- Review only. Never create or modify project files — including reports, caches,
+  snapshots, lockfiles, and generated artifacts — and never fix, stage, commit, push, or
+  deploy. If a verification command may write files, report the command for the user to
+  run instead.
+- Critical or Important findings mean HOLD until fixed or explicitly accepted.
 - Do not report style preferences as blockers without a concrete risk.
 
 

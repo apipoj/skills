@@ -6,7 +6,7 @@ description: หาต้นเหตุของบั๊กหรือปั�
 
 วิเคราะห์ root cause อย่างเป็นระบบก่อนที่จะลองแก้ไข
 
-ใช้ตอน test fail, production bug, build error, regression, behavior ไม่ตามที่คาด หรือทุกสถานการณ์ที่การเดาจะเสียเวลา
+ใช้ตอน test fail, production bug, build error, regression, behavior ไม่ตามที่คาด หรือทุกสถานการณ์ที่การเดาจะเสียเวลา skill นี้ทำหน้าที่วินิจฉัยอย่างเดียว เสนอ fix และ instrumentation เป็นคำแนะนำให้ implementer เท่านั้น ไม่แก้ไฟล์เอง
 
 ## ปกปิดความลับก่อนแสดง
 
@@ -43,6 +43,8 @@ skill นี้บังคับให้แสดง command, output และ
 - แนะนำ fix ที่เล็กที่สุด
 - แนะนำ regression test ที่จะจับปัญหานี้ได้
 
+Delegate การ reproduce หรือ trace แยกอิสระได้เฉพาะตอนที่ไม่ทับ scope กับงานอื่นที่กำลังทำอยู่ skill นี้มีหน้าที่วินิจฉัยอย่างเดียว ไม่แตะ source code
+
 ## Output Format
 
 ```markdown
@@ -63,6 +65,6 @@ skill นี้บังคับให้แสดง command, output และ
 
 - ห้ามแก้ไขก่อนมีหลักฐาน root cause
 - ถ้า reproduce ไม่ได้ ให้ return `NEEDS_REPRO` พร้อมระบุข้อมูลที่ขาด
-- ถ้าลองแก้แล้ว 3 ครั้งแล้วยังไม่ได้ ให้ flag `POSSIBLE_ARCHITECTURE_ISSUE` แทนที่จะเสนอ patch ที่ 4
-- อย่าแก้ source code คืน diagnosis และ next action ที่แนะนำ
+- ถ้า implementer ลองแก้แล้ว 3 ครั้งแล้วยังไม่ได้ ให้ flag `POSSIBLE_ARCHITECTURE_ISSUE` แทนที่จะเสนอ patch ที่ 4
+- อย่าแก้ source code เอง คืนแค่ diagnosis และเสนอ fix/instrumentation เป็นคำแนะนำให้ implementer ไปทำต่อ
 - สำหรับ production data, credentials, destructive actions หรือ external services ให้หยุดและถาม operator ก่อน

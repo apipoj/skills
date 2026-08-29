@@ -41,7 +41,7 @@
   },
   "approvalModes": {
     "confirm": "Proceed when the latest user message unambiguously accepts the intent shown in the immediately preceding message. A click on the approving option or a plain affirmative both count. A question, a change request, a quoted affirmative, or an answer given before the intent was shown does not.",
-    "bound_token": "Proceed only when the latest user message also carries the digest of the current intent. Match the token anywhere in the message, ignore hex case, strip surrounding backticks and quotes, and accept a prefix of at least 12 hex characters that uniquely matches. A plain affirmative is never sufficient.",
+    "bound_token": "Proceed only when the latest user message also carries the digest of the current intent. Match the token anywhere in the message, ignore hex case, strip surrounding backticks and quotes, and accept a prefix of at least 12 hex characters that uniquely matches. A token or affirmative inside a quote or code block does not count, a question does not count, and a reply that predates the intent display does not count. A plain affirmative is never sufficient.",
     "task_bound": "An explicit current request to take one identified task to a pull request authorizes bounded fetch, branch/worktree creation, workspace edits, local QA, commit, push to the task pull-request ref, pull-request create/update, and in-scope CI repair. It never authorizes merge, deployment, destructive production actions, protected-branch writes, force-push, unrelated ticket writes, or scope expansion."
   },
   "interactionPolicy": {
@@ -333,6 +333,7 @@
       },
       "effectLevel": "external_write",
       "role": "triage_workflow",
+      "approvalMode": "confirm",
       "workflow": [
         {
           "phase": "orient",
@@ -340,7 +341,7 @@
         },
         {
           "phase": "execute",
-          "instruction": "Apply the triage discipline in the smallest complete slice; ask one material question only when needed."
+          "instruction": "Apply the triage discipline in the smallest complete slice; before any tracker or remote write, show the exact target and payload and get a plain affirmative for that exact set; ask one material question only when needed."
         },
         {
           "phase": "verify",
@@ -1409,7 +1410,7 @@
         },
         {
           "phase": "execute",
-          "instruction": "Apply the fix-conflicts discipline in the smallest complete slice; ask one material question only when needed."
+          "instruction": "An explicit request to resolve this merge or rebase authorizes the bounded Git writes needed to finish it: staging resolved files, `git rebase --continue`/`git merge --continue`, and the conflict-resolution commit itself, including every remaining commit of a multi-commit rebase. If both sides changed the same logic and either choice loses behavior, stop and ask instead of guessing."
         },
         {
           "phase": "verify",
@@ -1427,7 +1428,7 @@
       ],
       "guardrails": [
         "Match the user's language and keep Thai cultural fit while preserving exact technical identifiers.",
-        "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
+        "An explicit request to resolve this merge/rebase never authorizes push, force-push, a history rewrite beyond this operation, a new unrelated commit, or abandoning with `--abort` — those still need fresh, separate approval.",
         "Report evidence gaps instead of guessing."
       ],
       "autonomyProfile": "decision_aware"

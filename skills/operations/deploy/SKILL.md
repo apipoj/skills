@@ -44,7 +44,7 @@ Budget: deploy attempt หนึ่งครั้ง, smoke หนึ่ง pas
 }
 ```
 
-จับ token ที่ไหนก็ได้ในข้อความที่ยินยอม ไม่สน case ของ hex ตัด backtick กับ quote ที่ล้อมออก และรับ prefix ตั้งแต่ 12 ตัวขึ้นไปที่ match digest ปัจจุบันได้ตัวเดียว approval ใช้ได้ต่อเมื่อ digest เต็ม 64 ตัวที่คำนวณใหม่ตรงกับ state ที่เพิ่งตรวจสด หนึ่ง approval คุมหนึ่ง intent และไม่ยกไปใช้กับ retry หลังมีอะไรเปลี่ยน
+จับ token ที่ไหนก็ได้ในข้อความที่ยินยอม ไม่สน case ของ hex ตัด backtick กับ quote ที่ล้อมออก และรับ prefix ตั้งแต่ 12 ตัวขึ้นไปที่ match digest ปัจจุบันได้ตัวเดียว token หรือคำตอบรับที่อยู่ใน quote หรือ code block ไม่นับ คำถามไม่นับ และคำตอบที่มาก่อนแสดง deployment intent ก็ไม่นับ approval ใช้ได้ต่อเมื่อ digest เต็ม 64 ตัวที่คำนวณใหม่ตรงกับ state ที่เพิ่งตรวจสด หนึ่ง approval คุมหนึ่ง intent และไม่ยกไปใช้กับ retry หลังมีอะไรเปลี่ยน
 
 ## Autonomy Profile
 

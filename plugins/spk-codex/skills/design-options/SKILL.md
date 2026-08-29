@@ -52,6 +52,22 @@ approval record. No production source changes occur in this workflow.
 - Do not copy third-party UI wholesale. Translate references into principles.
 - Do not ignore `DESIGN.md` unless the user asks to explore outside the design system.
 
+## Anti-Slop Gates
+
+Check every variant before presenting it. Every item below must answer **no** (distilled from [hallmark](https://github.com/Nutlope/hallmark) by Together AI, MIT license):
+
+- Generic AI template (hero → 3 feature cards → CTA → footer), or structure repeated from another variant?
+- Hero fully centered (eyebrow + title + lede + CTA all on the same center axis)? No more than 2 centered elements.
+- Display font is Inter/Roboto/Open Sans/Poppins? Purple-to-blue gradient (especially gradient text)? Italic heading?
+- More than 3 font families? Base color is pure `#000`/`#fff` or zero-chroma gray? Accent color covers more than ~5% of the viewport?
+- Cards nested inside cards, a 3-column icon-over-heading grid, icons mixed from multiple libraries, or emoji (✨🚀⚡) used as feature icons?
+- `transition: all`, the same hover-scale everywhere, or animating `width`/`height`/`top`/`left`? (animate only transform/opacity)
+- Motion with no `prefers-reduced-motion` fallback? A fade-in focus ring? Any interactive element missing a default/hover/focus-visible/active/disabled state?
+- Contrast below 4.5:1 (body) / 3:1 (large text, icons, focus ring)? A dark-background section that forgot to flip text color? A button whose text color nearly matches its background?
+- Jane Doe / John Smith, or a generic startup name (Acme, Nexus)? Prose wider than 45–75ch? Spacing off the 4px scale?
+
+**Self-critique before presenting:** score each variant 1–5 on Philosophy / Hierarchy / Execution / Specificity / Restraint / Variety. Fix anything scoring below 3 before presenting, and record the scores on the board.
+
 ## Artifact Convention
 
 ```text
