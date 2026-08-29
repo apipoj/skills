@@ -1,6 +1,7 @@
 // tests/init-ai-context.test.js
 const {
-  runInit, needsScaffold, autoUpdateNudge, initProjectRoot, userSettingsHome
+  runInit, needsScaffold, autoUpdateNudge, initProjectRoot, userSettingsHome,
+  ensureAiContextExcluded
 } = require('../plugins/spk/scripts/init-ai-context.cjs');
 const fs = require('fs');
 const path = require('path');
@@ -230,6 +231,108 @@ describe('init-ai-context', () => {
       expect(fs.existsSync(path.join(proj, 'ai_context', '.spk-version'))).toBe(false);
     });
   }
+
+  describe('machine-local Git exclusion', () => {
+    function initGitRepo(proj) {
+      execFileSync('git', ['init'], { cwd: proj, stdio: 'ignore' });
+    }
+
+    test('excludes an untracked scaffold so clean-tree gates stay green', () => {
+      const proj = makeTmpProject();
+      const plugin = makePluginRoot();
+      initGitRepo(proj);
+      runInit(proj, plugin, '3.1.0');
+
+      const result = ensureAiContextExcluded(proj);
+
+      expect(result.excluded).toBe(true);
+      const exclude = fs.readFileSync(
+        path.join(proj, '.git', 'info', 'exclude'), 'utf-8'
+      );
+      expect(exclude).toContain('/ai_context/');
+      // The dirty-tree symptom itself: git must report nothing pending.
+      const status = execFileSync('git', ['status', '--porcelain'], {
+        cwd: proj, encoding: 'utf-8'
+      });
+      expect(status.trim()).toBe('');
+    });
+
+    test('idempotent — a second run sees the entry as already ignored', () => {
+      const proj = makeTmpProject();
+      const plugin = makePluginRoot();
+      initGitRepo(proj);
+      runInit(proj, plugin, '3.1.0');
+      expect(ensureAiContextExcluded(proj).excluded).toBe(true);
+
+      const again = ensureAiContextExcluded(proj);
+
+      expect(again).toEqual({ excluded: false, reason: 'already ignored' });
+      const exclude = fs.readFileSync(
+        path.join(proj, '.git', 'info', 'exclude'), 'utf-8'
+      );
+      expect(exclude.match(/\/ai_context\//g)).toHaveLength(1);
+    });
+
+    test('respects a project that already ignores ai_context/ itself', () => {
+      const proj = makeTmpProject();
+      const plugin = makePluginRoot();
+      initGitRepo(proj);
+      fs.writeFileSync(path.join(proj, '.gitignore'), '/ai_context/\n');
+      runInit(proj, plugin, '3.1.0');
+
+      const result = ensureAiContextExcluded(proj);
+
+      expect(result).toEqual({ excluded: false, reason: 'already ignored' });
+      const exclude = path.join(proj, '.git', 'info', 'exclude');
+      if (fs.existsSync(exclude)) {
+        expect(fs.readFileSync(exclude, 'utf-8')).not.toContain('ai_context');
+      }
+    });
+
+    test('never overrides a user who tracks ai_context/ in Git', () => {
+      const proj = makeTmpProject();
+      const plugin = makePluginRoot();
+      initGitRepo(proj);
+      runInit(proj, plugin, '3.1.0');
+      execFileSync('git', ['add', 'ai_context/wiki/index.md'], { cwd: proj, stdio: 'ignore' });
+
+      const result = ensureAiContextExcluded(proj);
+
+      expect(result.excluded).toBe(false);
+      expect(result.reason).toMatch(/tracked/);
+      const exclude = path.join(proj, '.git', 'info', 'exclude');
+      if (fs.existsSync(exclude)) {
+        expect(fs.readFileSync(exclude, 'utf-8')).not.toContain('ai_context');
+      }
+    });
+
+    test('no-op outside a git repository and before any scaffold exists', () => {
+      const proj = makeTmpProject();
+      expect(ensureAiContextExcluded(proj))
+        .toEqual({ excluded: false, reason: 'no ai_context/ directory present' });
+      const plugin = makePluginRoot();
+      runInit(proj, plugin, '3.1.0');
+      expect(ensureAiContextExcluded(proj))
+        .toEqual({ excluded: false, reason: 'not a git repository' });
+    });
+
+    test('appends after existing exclude content without clobbering it', () => {
+      const proj = makeTmpProject();
+      const plugin = makePluginRoot();
+      initGitRepo(proj);
+      runInit(proj, plugin, '3.1.0');
+      const excludeFile = path.join(proj, '.git', 'info', 'exclude');
+      fs.mkdirSync(path.dirname(excludeFile), { recursive: true });
+      fs.writeFileSync(excludeFile, '*.scratch');
+
+      const result = ensureAiContextExcluded(proj);
+
+      expect(result.excluded).toBe(true);
+      const exclude = fs.readFileSync(excludeFile, 'utf-8');
+      expect(exclude).toContain('*.scratch\n');
+      expect(exclude).toContain('/ai_context/');
+    });
+  });
 
   test('Codex-standard plugin and project roots scaffold without a Claude nudge', () => {
     const proj = makeTmpProject();

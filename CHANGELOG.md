@@ -1,5 +1,11 @@
 # Apipoj Skills
 
+## Unreleased
+
+### Fixed
+
+- The `ai_context/` scaffold no longer dirties consumer working trees. The SessionStart hook kept writing project-local runtime artifacts that showed up as untracked, so every clean-working-tree gate (deploy preflight, PR prepare, release checks) rejected the tree. Unless the project already ignores `ai_context/` or deliberately tracks it, the hook now adds a machine-local exclude entry to `.git/info/exclude` — never to the tracked `.gitignore`, because editing a tracked file would itself dirty the tree the entry exists to keep clean. The healing runs every session, so installs that predate the fix pick it up too, and deleting the commented entry restores normal Git visibility for users who commit their wiki.
+
 ## 6.5.0 - 2026-08-28
 
 ### Added

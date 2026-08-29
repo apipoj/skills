@@ -2,6 +2,11 @@
 // SessionStart hook: scaffold ai_context/ templates into user's project.
 // Idempotent via version marker file.
 //
+// The scaffold also keeps ai_context/ out of `git status`: unless the project
+// already ignores or tracks it, a machine-local entry goes into
+// .git/info/exclude — never into the tracked .gitignore, because editing a
+// tracked file would itself dirty the tree the entry exists to keep clean.
+//
 // Also nudges (once per plugin version, piggybacking on the same marker) to
 // enable marketplace auto-update. ADVISORY ONLY: a hook must never write into
 // the user's settings.json — it only reads both scopes to avoid nagging users
@@ -10,8 +15,9 @@
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
+const { spawnSync } = require('child_process');
 const runtime = require('./runtime-core.cjs');
-const { pathWithinRoot } = require('./gitignore-guard.cjs');
+const { pathWithinRoot, gitEnvironment } = require('./gitignore-guard.cjs');
 
 const VERSION_MARKER = '.spk-version';
 const SOURCES_GITIGNORE = '*\n!.gitignore\n';
@@ -199,6 +205,92 @@ function runInit(projectRoot, pluginRoot, pluginVersion) {
   return { scaffolded: true, version: pluginVersion };
 }
 
+// Machine-local Git exclusion for the scaffold. The runtime keeps writing
+// project-local artifacts under ai_context/, and an untracked ai_context/
+// makes every clean-working-tree gate (deploy preflight, PR prepare, release
+// checks) report a dirty tree. Unless the user already decided otherwise —
+// by tracking ai_context/ or ignoring it themselves — exclude it via
+// .git/info/exclude, which is local-only and never shows up in `git status`.
+const EXCLUDE_LINES = [
+  '# Apipoj Skills (SPK): machine-local runtime artifacts must not dirty the tree.',
+  '# Delete these lines to track ai_context/ in Git.'
+];
+
+function excludeGit(args, root) {
+  try {
+    return spawnSync('git', args, {
+      cwd: root,
+      env: gitEnvironment(),
+      encoding: 'utf-8',
+      stdio: ['ignore', 'pipe', 'ignore'],
+      timeout: 5000
+    });
+  } catch {
+    return null;
+  }
+}
+
+function excludeGitStdout(result) {
+  return result && !result.error && result.status === 0
+    ? String(result.stdout || '').trim()
+    : null;
+}
+
+function ensureAiContextExcluded(projectRoot) {
+  if (!lstatIfPresent(path.join(projectRoot, 'ai_context'))) {
+    return { excluded: false, reason: 'no ai_context/ directory present' };
+  }
+  const commonDir = excludeGitStdout(excludeGit(['rev-parse', '--git-common-dir'], projectRoot));
+  if (commonDir === null || commonDir === '') {
+    return { excluded: false, reason: 'not a git repository' };
+  }
+  // projectRoot may sit below the repository root; anchor the pattern there.
+  const prefix = excludeGitStdout(excludeGit(['rev-parse', '--show-prefix'], projectRoot));
+  if (prefix === null) {
+    return { excluded: false, reason: 'could not resolve the repository prefix' };
+  }
+  const tracked = excludeGitStdout(excludeGit(['ls-files', '--cached', '--', 'ai_context'], projectRoot));
+  if (tracked === null) {
+    return { excluded: false, reason: 'could not read the git index' };
+  }
+  if (tracked !== '') {
+    return { excluded: false, reason: 'ai_context/ is tracked — the user chose to commit it' };
+  }
+  const ignored = excludeGit(
+    ['check-ignore', '--quiet', '--', 'ai_context/' + VERSION_MARKER],
+    projectRoot
+  );
+  if (!ignored || ignored.error || (ignored.status !== 0 && ignored.status !== 1)) {
+    return { excluded: false, reason: 'could not verify ignore status' };
+  }
+  if (ignored.status === 0) {
+    return { excluded: false, reason: 'already ignored' };
+  }
+
+  const excludeFile = path.join(path.resolve(projectRoot, commonDir), 'info', 'exclude');
+  let existing = '';
+  try {
+    const stat = lstatIfPresent(excludeFile);
+    if (stat) {
+      if (!stat.isFile()) {
+        return { excluded: false, reason: 'unsafe info/exclude destination' };
+      }
+      existing = fs.readFileSync(excludeFile, 'utf-8');
+    }
+  } catch {
+    return { excluded: false, reason: 'could not read info/exclude' };
+  }
+  const pattern = '/' + prefix.replace(/\\/g, '/') + 'ai_context/';
+  const body = (existing && !existing.endsWith('\n') ? existing + '\n' : existing) +
+    EXCLUDE_LINES.join('\n') + '\n' + pattern + '\n';
+  try {
+    runtime.atomicWrite(excludeFile, body);
+  } catch {
+    return { excluded: false, reason: 'could not write info/exclude' };
+  }
+  return { excluded: true, file: excludeFile, pattern };
+}
+
 // Read-only check across settings scopes: is auto-update already on for the
 // spk marketplace? Returns the nudge text when it is not, null when it is.
 function userSettingsHome(options = {}) {
@@ -258,6 +350,15 @@ function main() {
   }
 
   const result = runInit(projectRoot, pluginRoot, version);
+  // Every session, not just scaffold sessions: installs that predate this
+  // exclusion (or projects whose ai_context/ was recreated) heal here too.
+  const exclusion = ensureAiContextExcluded(projectRoot);
+  if (exclusion.excluded) {
+    process.stderr.write(
+      '[SPK] excluded ai_context/ via .git/info/exclude (machine-local) so runtime ' +
+      'artifacts stop showing as untracked; delete those lines to track your wiki in Git.\n'
+    );
+  }
   if (result.scaffolded) {
     process.stderr.write(`[SPK] scaffolded ai_context/ for v${version}\n`);
     // Once per plugin version (same cadence as the scaffold), not every session.
@@ -280,6 +381,7 @@ if (require.main === module) main();
 
 module.exports = {
   runInit, needsScaffold, readMarker, writeMarker, autoUpdateNudge,
+  ensureAiContextExcluded, EXCLUDE_LINES,
   copyRecursive, destinationsAreContained, existingAiContextTreeIsSafe,
   destinationFileIsSafe, initDestinationIsSafe, writeSourcesGitignore,
   initProjectRoot, userSettingsHome, MANAGED_FILES, SOURCES_GITIGNORE

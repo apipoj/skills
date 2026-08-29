@@ -51,6 +51,12 @@ source material placed in `ai_context/sources/` is ignored from Git by the
 scaffolded policy, but users remain responsible for reviewing repository
 status before committing.
 
+Unless the project already ignores or tracks `ai_context/`, the scaffold also
+adds a machine-local exclude entry for it to `.git/info/exclude` so runtime
+artifacts do not appear as untracked changes. That entry never leaves the
+user's machine — it is not part of the repository — and deleting it restores
+normal Git visibility for users who want to commit their wiki.
+
 WebFetch cache entries are stored in the project-local
 `.claude/spk-webfetch-cache/` directory. An expired entry is removed when that
 exact URL-and-prompt key is checked again; otherwise it remains local until it
