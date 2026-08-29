@@ -28,7 +28,9 @@ The delightful UX is already solved by `templates/wizard/template.sh` — stage-
 
 A wizard is ephemeral by default — built for one run, saved to a scratch or `scripts/` path, deleted when the job is done. Commit it only when the user wants a repeatable setup path that should live in the repo.
 
-## Step 1: Scope the procedure
+## Workflow
+
+### Step 1: Scope the procedure
 
 Work out every manual step the human must take and every value captured along the way. Read the repo first — don't ask cold:
 
@@ -39,7 +41,7 @@ Then show the user the ordered list of stages and the values each produces, and 
 
 **Done when:** every stage is named in order, and for each captured value you know (a) where the human gets it, (b) where it is written (`.env`, a GitHub secret, both, or nowhere — some stages are pure actions), and (c) whether it is secret and therefore needs hidden entry.
 
-## Step 2: Map each stage's journey
+### Step 2: Map each stage's journey
 
 For each stage, write the precise path a human follows: which URL to open, what to do there, where the value is shown, which variable it fills — e.g. "Dashboard → Developers → API keys → Reveal test key → copy".
 
@@ -47,13 +49,13 @@ Where you don't actually know the current UI or the exact command, **say so** an
 
 **Done when:** every stage traces to concrete instructions a stranger could follow.
 
-## Step 3: Author the wizard
+### Step 3: Author the wizard
 
 Copy `templates/wizard/template.sh` to the target path. Replace the example stage with one `stage` per step, in dependency order. Use the library helpers — `stage`, `say`/`step`, `open_url`, `ask`/`ask_secret`, `write_env`, `set_secret`/`set_var`, `pause`/`confirm` — and set `TOTAL_STAGES` to the number of stages you wrote.
 
 Hold the bar the template sets: open the URL before asking for its value, use `ask_secret` for anything secret, `write_env` every persisted value, `set_secret` only the values CI actually needs, and `confirm` before any irreversible action. Each `stage` clears the screen so only the current step is visible — keep a stage to one focused task so nothing the human needs scrolls away. **Don't touch the library above the marker.**
 
-## Step 4: Verify and hand off
+### Step 4: Verify and hand off
 
 - Run `bash -n <script>`, and `shellcheck` if it is available.
 - `chmod +x <script>`.
@@ -63,6 +65,11 @@ Hold the bar the template sets: open the URL before asking for its value, use `a
 ## Autonomy Profile
 
 `afk_local` — prompt budget 0; repair budget 3. A clear request grants bounded work only up to this skill's declared effect level; the profile never upgrades read-only work into a write. Keep working through inspect, act, verify, and bounded repair without asking the user. Before pausing, record phase, assumptions, evidence, attempts, and the smallest resumable next action.
+
+## Evidence Receipt
+
+Return `spk.evidence/v1` with the stage-to-value map, the script path, the `bash -n` and `shellcheck`
+results, what was verified statically, risks, and next action.
 
 ## Guardrails
 

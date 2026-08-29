@@ -19,6 +19,8 @@
 | `verify-agent-contracts.cjs` | Agent markdown files meet structural contracts |
 | `verify-grep-gates.cjs` | Grep-based checks for forbidden patterns |
 | `verify-native-skills.cjs` | Native Thai skills align with manifest command list |
+| `verify-mirror-parity.cjs` | EN mirror SKILL.md bodies are byte-identical to their canonical `plugins/spk` payload |
+| `verify-autonomy-profiles.cjs` | Embedded "Autonomy Profile" paragraphs match their declared `contracts/workflows.json` profile verbatim |
 | `check-upstream-drift.cjs` | Verifies the reviewed Matt Pocock source pin, reports promoted-skill drift against an optional checkout, and verifies retained reference pages against docs/upstream/reference-hashes.json |
 | `sync-upstream-docs.cjs` | Regenerates the retained upstream reference pages from a pinned checkout and writes their sha256 index |
 | `scoped-tests.cjs` | Maps changed paths to a conservative Jest inner-loop plan |

@@ -10,6 +10,8 @@
 - `agent-manifest-sync.test.js` — agent files match manifest agents roster
 - `agent-contracts.test.js` — agent markdown structural contracts
 - `native-skills.test.js` — native Thai skills align with manifest
+- `mirror-parity.test.js` — EN mirror SKILL.md bodies are byte-identical to their canonical payload
+- `autonomy-profiles.test.js` — embedded Autonomy Profile paragraphs match their contract profile verbatim
 - `platform-artifacts.test.js` — canonical contract and deterministic Claude/Codex metadata generation
 - `skilllab.test.js` — behavioral corpus, scoring, baselines, and gated live-adapter protocol
 - `release-metadata.test.js` — versions, public counts, tags, roster semantics, and repository secret scanning
