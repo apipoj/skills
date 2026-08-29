@@ -41,8 +41,9 @@ description: วางแผนการเปลี่ยนแปลงซอ�
 - บันทึก risks และ mitigations
 
 ### 6. บันทึก Plan
-- บันทึกที่ `ai_context/wiki/plans/YYYY-MM-DD-<slug>.md`
-- อัพเดต wiki index และ log
+- บันทึกที่ `ai_context/wiki/plans/YYYY-MM-DD-<slug>.md` เมื่อ scaffold นี้มีอยู่ ถ้าไม่มีให้
+  ส่งคืน plan แบบ inline แทน
+- อัพเดต wiki index และ log เฉพาะตอนที่มีอยู่จริง
 
 ### 7. Handoff ไป Dev
 
@@ -53,6 +54,9 @@ description: วางแผนการเปลี่ยนแปลงซอ�
 
 ถ้า plan ยัง blocked, verify ไม่ผ่าน หรือมี decision สำคัญที่ผู้ใช้ต้องตัดสินใจ ให้เก็บ
 checkpoint และถามเฉพาะ decision นั้น
+
+Budget: เรียก specialist ได้ไม่เกินห้าครั้ง, concurrent worker ไม่เกินสองคน และ retry ได้
+หนึ่งครั้งสำหรับ worker ที่ติดขัด หยุด fan-out ทันทีที่ verifier มีหลักฐานพอ
 
 ## Output Format
 

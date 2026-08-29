@@ -19,7 +19,8 @@ Reply in the user's language.
 
 Keep working without user input while the requested outcome remains inside current authority. Use a reversible smart default and record assumptions. Ask only when one material user-owned decision changes scope, risk, cost, or success, or when a required effect crosses an unapproved boundary.
 
-Run a strict RED-GREEN-REFACTOR loop for the requested behavior.
+Run a strict RED-GREEN-REFACTOR loop for the requested behavior. This is the strict
+red-green-refactor loop; use the `code` skill otherwise.
 
 ## Workflow
 

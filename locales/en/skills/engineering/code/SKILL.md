@@ -17,6 +17,8 @@ Reply in the user's language.
 Keep working without user input while the requested outcome remains inside current authority. Use a reversible smart default and record assumptions. Ask only when one material user-owned decision changes scope, risk, cost, or success, or when a required effect crosses an unapproved boundary.
 
 Implement the explicit request or supplied reviewed plan without broadening its scope.
+This is the default implementation loop; use the `tdd` skill instead when the user asks
+for a strict test-first loop.
 
 ## Workflow
 
@@ -55,6 +57,11 @@ An `ask-me` summary alone remains read-only. A plan-only request remains plan-on
 the implementation outcome is explicit but a plan file is absent, derive a bounded
 micro-plan from repository evidence and acceptance criteria. Record assumptions and keep
 working; ask only when one material decision changes scope, risk, cost, or success.
+
+## Plan Quality Bar
+
+Reject a supplied plan that does not meet the `plan` skill's plan quality bar; ask for a
+revision or an approved plan before implementing.
 
 ## Autonomy Profile
 

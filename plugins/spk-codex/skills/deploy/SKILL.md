@@ -22,6 +22,12 @@ Keep working without user input while the requested outcome remains inside curre
 This skill is manual-only. Invocation starts a read-only preflight; it is not approval
 to perform a network write.
 
+## Gather Context
+
+- In a git worktree, run `git log -1 --format='%H %s'` and `git branch --show-current`;
+  outside a git repo, report no git context and continue with other smoke/deploy context.
+- Verify the working tree is clean (no uncommitted changes).
+
 ## Workflow
 
 1. **Preflight without mutation.** Resolve the exact environment, immutable revision,
