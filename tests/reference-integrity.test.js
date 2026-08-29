@@ -7,6 +7,7 @@ const {
   collectReferenceIntegrityErrors,
   collectResolverCoverageErrors,
   isUnderScanRoots,
+  isCanonicalSkillFile,
 } = require('../scripts/verify-reference-integrity.cjs');
 
 function writeJson(file, data) {
@@ -145,6 +146,64 @@ describe('SPK reference integrity', () => {
       expect(collectReferenceIntegrityErrors(root, [upstream])).toEqual([
         `${upstream}:1: missing local reference tests.md`,
       ]);
+    } finally {
+      fs.rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  test('reports a canonical skill body referencing a script.cjs that does not exist', () => {
+    const root = makeFixtureRoot();
+    try {
+      const skill = 'plugins/spk/skills/test-changes/SKILL.md';
+      writeText(
+        path.join(root, skill),
+        'Invoke `node <plugin-root>/scripts/test-changes.cjs -- <path>...` for a plan.\n',
+      );
+      writeText(
+        path.join(root, 'plugins/spk/scripts/scoped-tests.cjs'),
+        '// real helper, different name\n',
+      );
+
+      expect(collectReferenceIntegrityErrors(root, [skill])).toEqual([
+        `${skill}:1: missing script reference scripts/test-changes.cjs ` +
+        '(expected plugins/spk/scripts/test-changes.cjs)',
+      ]);
+    } finally {
+      fs.rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  test('accepts a canonical skill body referencing a script.cjs that exists', () => {
+    const root = makeFixtureRoot();
+    try {
+      const skill = 'plugins/spk/skills/test-changes/SKILL.md';
+      writeText(
+        path.join(root, skill),
+        'Invoke `node <plugin-root>/scripts/scoped-tests.cjs -- <path>...` for a plan.\n',
+      );
+      writeText(
+        path.join(root, 'plugins/spk/scripts/scoped-tests.cjs'),
+        '// real helper\n',
+      );
+
+      expect(collectReferenceIntegrityErrors(root, [skill])).toEqual([]);
+    } finally {
+      fs.rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  test('does not re-check the generated Codex payload for script references', () => {
+    const root = makeFixtureRoot();
+    try {
+      const skill = 'plugins/spk-codex/skills/test-changes/SKILL.md';
+      writeText(
+        path.join(root, skill),
+        'Invoke `node <plugin-root>/scripts/test-changes.cjs -- <path>...` for a plan.\n',
+      );
+      // No plugins/spk/scripts/test-changes.cjs exists anywhere in this fixture,
+      // yet the generated payload must not raise the canonical-only rule.
+      expect(collectReferenceIntegrityErrors(root, [skill])).toEqual([]);
+      expect(isCanonicalSkillFile(skill)).toBe(false);
     } finally {
       fs.rmSync(root, { recursive: true, force: true });
     }

@@ -15,13 +15,13 @@ description: เลือกและรัน test ที่เกี่ยว�
 ## Workflow
 
 ### 1. หา packaged planner
-หารากชุดติดตั้งจาก metadata หรือตัวแปรรากที่ host ให้ แล้วใช้ `scripts/test-changes.cjs` ใต้รากนั้น ห้ามเลือกไฟล์ชื่อเดียวกันใน repo ของ user ก่อน
+หารากชุดติดตั้งจาก metadata หรือตัวแปรรากที่ host ให้ แล้วใช้ `scripts/scoped-tests.cjs` ใต้รากนั้น ห้ามเลือกไฟล์ชื่อเดียวกันใน repo ของ user ก่อน
 
 ### 2. รวบรวมไฟล์ที่เปลี่ยน
 ถ้า user ระบุ paths ให้ใช้ paths นั้น ไม่งั้นใช้ทั้ง tracked และ untracked changes ของ repo ถ้าอยู่นอก git worktree ต้องระบุ paths เอง
 
 ### 3. สร้างแผนแบบ structured
-จาก project cwd รัน `node <install-root>/scripts/test-changes.cjs -- <path>...` helper จะคืน JSON schema `spk.test-changes/v1` ที่มี `mode`, `runner`, `selected`, `unmapped`, `focused` และ `full` ใช้ `command` กับ `args` เป็น argv array ห้ามต่อเป็น shell string
+จาก project cwd รัน `node <install-root>/scripts/scoped-tests.cjs -- <path>...` helper จะคืน JSON schema `spk.scoped-tests/v1` ที่มี `mode`, `runner`, `selected`, `unmapped`, `focused` และ `full` ใช้ `command` กับ `args` เป็น argv array ห้ามต่อเป็น shell string
 
 ### 4. รันอย่างปลอดภัย
 - `mode: scoped` → รัน `focused.command` พร้อม `focused.args`

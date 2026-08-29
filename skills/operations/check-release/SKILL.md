@@ -9,19 +9,14 @@ disable-model-invocation: true
 
 ## สิ่งที่ต้องตรวจ
 
-รันหรือระบุเหตุผลถ้าข้าม:
+รันคำสั่งรวมด้านล่าง แล้วรายงานผลตามที่ script รายงานจริง (pass/fail ต่อ gate) — ห้ามสรุปว่า "พร้อม release" ถ้ายังไม่ได้รันจริง:
 
 ```bash
-npm run validate:manifest
-npm run regen:check
-npm run verify:sync
-npm run verify:refs
-npm run verify:descriptions
-npm run verify:agents
-npm run verify:gates
-npm run verify:native
+npm run verify:release
 npm test -- --runInBand
 ```
+
+`npm run verify:release` คือคำสั่งรวมที่ chain ทุก gate จริงไว้แล้ว รายการ gate ที่เป็น authoritative อยู่ใน `package.json` field `scripts.verify:release` เท่านั้น ห้าม hardcode รายชื่อ gate ซ้ำไว้ที่นี่ เพื่อไม่ให้ skill นี้ drift ออกจาก `package.json` อีก
 
 ## Git readiness
 

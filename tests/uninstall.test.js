@@ -2,7 +2,13 @@
 const {
   buildUninstallPlan,
   uninstall,
-  stripSpkMarkers
+  stripSpkMarkers,
+  gitExcludeEdits,
+  stripGitExcludeBlock,
+  gitDirectoryIsPlain,
+  GIT_EXCLUDE_LINES,
+  VERSION_MARKER_RELATIVE,
+  WEBFETCH_CACHE_DIR_RELATIVE
 } = require('../scripts/install/uninstall.cjs');
 const fs = require('fs');
 const path = require('path');
@@ -45,6 +51,14 @@ function makeInstalled(baseDirectory) {
 function approve(dir, token) {
   const preview = buildUninstallPlan(dir);
   return uninstall(dir, { approvalToken: token || preview.approval_token });
+}
+
+function makeGitDir(dir) {
+  fs.mkdirSync(path.join(dir, '.git/info'), { recursive: true });
+}
+
+function gitExcludeBlockText() {
+  return `${GIT_EXCLUDE_LINES.join('\n')}\n/ai_context/\n`;
 }
 
 afterEach(() => {
@@ -234,5 +248,163 @@ describe('untrusted legacy manifests and filesystem paths', () => {
 
     expect(() => buildUninstallPlan(dir)).toThrow(/symbolic link/);
     expect(fs.readFileSync(path.join(outsideDirectory, 'planner.md'), 'utf8')).toBe('outside');
+  });
+});
+
+describe('modern plugin-install artifacts', () => {
+  test('inventories and removes ai_context/.spk-version with no legacy manifest at all', () => {
+    const dir = makeTemp('spk-modern-version-');
+    fs.mkdirSync(path.join(dir, 'ai_context'), { recursive: true });
+    fs.writeFileSync(path.join(dir, VERSION_MARKER_RELATIVE), '1.2.3');
+
+    const preview = buildUninstallPlan(dir);
+    expect(preview.status).toBe('NEEDS_USER_INPUT');
+    expect(preview.paths).toContain(path.join(dir, VERSION_MARKER_RELATIVE));
+
+    const result = approve(dir);
+    expect(result.status).toBe('APPLIED');
+    expect(fs.existsSync(path.join(dir, VERSION_MARKER_RELATIVE))).toBe(false);
+  });
+
+  test('inventories and removes webfetch cache entries and the directory once empty', () => {
+    const dir = makeTemp('spk-webfetch-');
+    const cacheDir = path.join(dir, WEBFETCH_CACHE_DIR_RELATIVE);
+    fs.mkdirSync(cacheDir, { recursive: true });
+    const key = 'a'.repeat(32);
+    fs.writeFileSync(path.join(cacheDir, `${key}.json`), '{"body":"cached"}');
+
+    const preview = buildUninstallPlan(dir);
+    expect(preview.paths).toContain(path.join(cacheDir, `${key}.json`));
+
+    const result = approve(dir);
+    expect(result.status).toBe('APPLIED');
+    expect(fs.existsSync(path.join(cacheDir, `${key}.json`))).toBe(false);
+    expect(fs.existsSync(cacheDir)).toBe(false);
+  });
+
+  test('never matches or removes a file that is not a cache-shaped entry', () => {
+    const dir = makeTemp('spk-webfetch-foreign-');
+    const cacheDir = path.join(dir, WEBFETCH_CACHE_DIR_RELATIVE);
+    fs.mkdirSync(cacheDir, { recursive: true });
+    const key = 'b'.repeat(32);
+    fs.writeFileSync(path.join(cacheDir, `${key}.json`), '{"body":"cached"}');
+    fs.writeFileSync(path.join(cacheDir, 'notes.txt'), 'user left this here');
+
+    const result = approve(dir);
+    expect(result.status).toBe('APPLIED');
+    expect(fs.existsSync(path.join(cacheDir, `${key}.json`))).toBe(false);
+    // A foreign file blocks the directory from being treated as empty and
+    // removed — never delete or recursively clear a directory with unowned
+    // content in it.
+    expect(fs.readFileSync(path.join(cacheDir, 'notes.txt'), 'utf8')).toBe('user left this here');
+    expect(fs.existsSync(cacheDir)).toBe(true);
+  });
+
+  test('is a no-op when neither legacy nor modern artifacts are present', () => {
+    const dir = makeTemp('spk-modern-noinst-');
+    const result = uninstall(dir);
+    expect(result).toMatchObject({ status: 'NOT_INSTALLED', removed: 0 });
+  });
+});
+
+describe('.git/info/exclude SPK block removal', () => {
+  test('removes exactly the SPK block and preserves surrounding content', () => {
+    const dir = makeTemp('spk-exclude-');
+    makeGitDir(dir);
+    const excludeFile = path.join(dir, '.git/info/exclude');
+    fs.writeFileSync(
+      excludeFile,
+      `*.log\n${gitExcludeBlockText()}node_modules/\n`
+    );
+
+    const result = approve(dir);
+    expect(result.status).toBe('APPLIED');
+    const content = fs.readFileSync(excludeFile, 'utf8');
+    expect(content).toContain('*.log');
+    expect(content).toContain('node_modules/');
+    expect(content).not.toContain('ai_context/');
+    expect(content).not.toContain(GIT_EXCLUDE_LINES[0]);
+  });
+
+  test('removes an SPK block nested under a project-subdirectory prefix', () => {
+    const dir = makeTemp('spk-exclude-nested-');
+    makeGitDir(dir);
+    const excludeFile = path.join(dir, '.git/info/exclude');
+    fs.writeFileSync(excludeFile, `${GIT_EXCLUDE_LINES.join('\n')}\n/apps/web/ai_context/\n`);
+
+    const result = approve(dir);
+    expect(result.status).toBe('APPLIED');
+    expect(fs.readFileSync(excludeFile, 'utf8')).toBe('\n');
+  });
+
+  test('refuses to touch a block whose comment text was modified', () => {
+    const dir = makeTemp('spk-exclude-modified-');
+    makeGitDir(dir);
+    const excludeFile = path.join(dir, '.git/info/exclude');
+    const modified = `# Apipoj Skills (SPK): edited by hand\n${GIT_EXCLUDE_LINES[1]}\n/ai_context/\n`;
+    fs.writeFileSync(excludeFile, modified);
+
+    expect(gitExcludeEdits(modified)).toEqual([]);
+    // Also present, unrelated SPK-owned artifacts still get uninstalled, but
+    // the mismatched exclude block is left exactly as the user made it.
+    const dirWithVersion = dir;
+    fs.mkdirSync(path.join(dirWithVersion, 'ai_context'), { recursive: true });
+    fs.writeFileSync(path.join(dirWithVersion, VERSION_MARKER_RELATIVE), '1.0.0');
+
+    const result = approve(dir);
+    expect(result.status).toBe('APPLIED');
+    expect(result.edited).toEqual([]);
+    expect(fs.readFileSync(excludeFile, 'utf8')).toBe(modified);
+  });
+
+  test('refuses to touch a block missing its pattern line', () => {
+    const dir = makeTemp('spk-exclude-truncated-');
+    makeGitDir(dir);
+    const excludeFile = path.join(dir, '.git/info/exclude');
+    const truncated = `${GIT_EXCLUDE_LINES.join('\n')}\n`;
+    fs.writeFileSync(excludeFile, truncated);
+
+    expect(gitExcludeEdits(truncated)).toEqual([]);
+    expect(stripGitExcludeBlock(truncated)).toBe(truncated);
+  });
+
+  test('is skipped, not crashed on, inside a linked worktree where .git is a file', () => {
+    const dir = makeTemp('spk-exclude-worktree-');
+    fs.writeFileSync(path.join(dir, '.git'), 'gitdir: /somewhere/else/.git/worktrees/x\n');
+    expect(gitDirectoryIsPlain(dir)).toBe(false);
+
+    fs.mkdirSync(path.join(dir, 'ai_context'), { recursive: true });
+    fs.writeFileSync(path.join(dir, VERSION_MARKER_RELATIVE), '1.0.0');
+    const result = approve(dir);
+    expect(result.status).toBe('APPLIED');
+    expect(fs.readFileSync(path.join(dir, '.git'), 'utf8')).toBe('gitdir: /somewhere/else/.git/worktrees/x\n');
+  });
+
+  test('stays in sync with plugins/spk/scripts/init-ai-context.cjs EXCLUDE_LINES', () => {
+    const initAiContext = require('../plugins/spk/scripts/init-ai-context.cjs');
+    expect(GIT_EXCLUDE_LINES).toEqual(initAiContext.EXCLUDE_LINES);
+  });
+});
+
+describe('wiki and sources preservation alongside modern-artifact removal', () => {
+  test('preserves ai_context/wiki and ai_context/sources while removing the version marker', () => {
+    const dir = makeTemp('spk-preserve-');
+    fs.mkdirSync(path.join(dir, 'ai_context/wiki'), { recursive: true });
+    fs.mkdirSync(path.join(dir, 'ai_context/sources'), { recursive: true });
+    fs.writeFileSync(path.join(dir, 'ai_context/wiki/page.md'), 'wiki content');
+    fs.writeFileSync(path.join(dir, 'ai_context/sources/raw.txt'), 'source content');
+    fs.writeFileSync(path.join(dir, VERSION_MARKER_RELATIVE), '1.2.3');
+
+    const preview = buildUninstallPlan(dir);
+    expect(preview.preserve).toContain(path.join(dir, 'ai_context/wiki'));
+    expect(preview.preserve).toContain(path.join(dir, 'ai_context/sources'));
+
+    const result = approve(dir);
+    expect(result.status).toBe('APPLIED');
+    expect(fs.existsSync(path.join(dir, VERSION_MARKER_RELATIVE))).toBe(false);
+    expect(fs.readFileSync(path.join(dir, 'ai_context/wiki/page.md'), 'utf8')).toBe('wiki content');
+    expect(fs.readFileSync(path.join(dir, 'ai_context/sources/raw.txt'), 'utf8')).toBe('source content');
+    expect(result.preserved).toContain(path.join(dir, 'ai_context/wiki'));
+    expect(result.preserved).toContain(path.join(dir, 'ai_context/sources'));
   });
 });
