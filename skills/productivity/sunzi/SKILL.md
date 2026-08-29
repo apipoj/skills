@@ -22,19 +22,19 @@ disable-model-invocation: true
 - ถาม: "อะไรที่เรารู้เกี่ยวกับตัวเราและสถานการณ์ที่จะเปลี่ยนการเคลื่อนไหว?"
 
 ### 2. ชนะก่อนต่อสู้
-- สร้างเงื่อนไขก่อนเขียน code: ชี้ acceptance, ลดความไม่แน่นอน, เพิ่ม diagnostics, แยก blast radius
+- สร้างเงื่อนไขก่อนเขียน code: ชี้ acceptance, ลดความไม่แน่นอน, เพิ่ม diagnostics, แยก blast radius (ขอบเขตความเสียหายถ้าพลาด)
 - สัญญาณดี: implementation ดูชัดแล้วหลัง discovery
 - สัญญาณร้าย: เริ่ม code ตอนที่ objective ยังคลุมเครือ
 - ถาม: "เงื่อนไขอะไรที่เราปรับปรุงได้ก่อนเพื่อให้งานง่ายขึ้น?"
 
 ### 3. เลือก Terrain
 - Terrain คือ code ownership, architecture boundaries, dependencies, CI, deployment paths, customer context และ timing
-- สัญญาณดี: plan ทำงานร่วมกับ seams ที่มีอยู่
+- สัญญาณดี: plan ทำงานร่วมกับ seams (รอยต่อของระบบที่แก้ได้ง่าย) ที่มีอยู่
 - สัญญาณร้าย: plan ต่อสู้กับ repo, framework หรือ release calendar
 - ถาม: "เส้นทางที่ง่ายที่สุดผ่านระบบคืออะไร?"
 
 ### 4. หลีกเลี่ยงการบุกตรงที่แพง
-- ชอบ leverage: small adapter, config fix, test harness, staged rollout หรือ documentation change มากกว่า rewrite เสี่ยง
+- เลือก leverage: small adapter, config fix, test harness, staged rollout หรือ documentation change ก่อน rewrite เสี่ยง
 - สัญญาณดี: files ที่แตะน้อยลง, rollback ชัดขึ้น, proof เร็วขึ้น
 - สัญญาณร้าย: refactor ใหญ่เพราะ agent อยากได้ clean slate
 - ถาม: "battle ไหนที่ไม่ควรสู้?"
@@ -94,5 +94,5 @@ disable-model-invocation: true
 ## ข้อควรระวัง
 
 - เก็บให้เป็น secular, practical, engineering/product-focused และ testable
-- อย่าโรแมนติกความขัดแย้ง หรือแนะนำการหลอกลวงที่เป็นอันตราย
+- อย่าทำให้ความขัดแย้งดูเป็นเรื่องเท่ หรือแนะนำการหลอกลวงที่เป็นอันตราย
 - ไม่แก้ source code เว้นแต่ user ขอ implementation โดยตรง

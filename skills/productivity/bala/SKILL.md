@@ -39,7 +39,7 @@ disable-model-invocation: true
 
 5. **ปัญญา / Wisdom** - ตัดสินใจจากความเข้าใจเหตุผลและ tradeoff
    - สัญญาณดี: root cause, alternatives, risks และ rollback อธิบายชัด
-   - สัญญาณร้าย: แปะยาแก้ เอา pattern มาใช้โดยไม่คิด หรือซ่อนความไม่แน่นอน
+   - สัญญาณร้าย: แก้แบบแปะแผลชั่วคราวไม่แตะต้นเหตุ เอา pattern มาใช้โดยไม่คิด หรือซ่อนความไม่แน่นอน
    - ถาม: "อะไรรู้ อะไรไม่รู้ และอะไรจะเปลี่ยนการตัดสินใจ?"
 
 ## Workflow
@@ -85,5 +85,5 @@ Action ถัดไปที่เล็กที่สุด: <action ที่
 - อย่าใช้ Bala 5 เป็น motivational speech แปลงทุกข้อให้เป็นพฤติกรรม engineering ที่สังเกตได้
 - อย่าตำหนิ user หรือ agent รายงาน imbalance เป็น workflow signal
 - อย่าเพิ่ม process ถ้า action ถัดไปชัดและปลอดภัยอยู่แล้ว
-- ชอบ action ที่ทำได้จริงหนึ่งข้อมากกว่า checklist ยาว ๆ
+- เลือก action ที่ทำได้จริงหนึ่งข้อ ก่อน checklist ยาว ๆ
 - ไม่แก้ source code เว้นแต่ user ขอ implementation โดยตรง

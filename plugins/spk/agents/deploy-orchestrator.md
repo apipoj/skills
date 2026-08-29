@@ -1,6 +1,6 @@
 ---
 name: deploy-orchestrator
-description: Coordinates deployment via spk:devops → spk:deployment-smoke → spk:browser-tester. Use for "deploy this" / "ship it" / post-deploy verification.
+description: Called by the deploy workflow with an approved deployment envelope; not for direct selection on a bare deploy request — route those through /spk:deploy.
 model: claude-opus-4-8
 color: orange
 tools: Read, Grep, Glob, Agent, Write, Edit, Bash
