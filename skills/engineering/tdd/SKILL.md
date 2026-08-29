@@ -1,6 +1,6 @@
 ---
 name: tdd
-description: พัฒนา behavior ทีละ slice ด้วยวงจร RED, GREEN และ refactor พร้อมหลักฐานจาก test จริง
+description: พัฒนา behavior ด้วยวงจร TDD แบบเข้มงวดที่ผู้ใช้ขอทดสอบก่อนอย่างชัดเจน เขียน test ให้ fail ก่อนแล้วค่อย implement ขั้นต่ำให้ผ่าน จากนั้น refactor พร้อมหลักฐานจาก test จริง
 ---
 # tdd
 

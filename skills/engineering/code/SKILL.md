@@ -1,6 +1,6 @@
 ---
 name: code
-description: ลงมือพัฒนาคำขอที่ชัดหรือแผนที่ review แล้วจนผ่าน test และ local verification โดยไม่ถามอนุมัติ workspace ซ้ำ
+description: ลงมือพัฒนาคำขอที่ชัดหรือแผนที่ review แล้วจนผ่าน test และ local verification โดยไม่ถามอนุมัติ workspace ซ้ำ สลับไปใช้ tdd แทนเฉพาะเมื่อผู้ใช้ขอ test-first loop แบบเข้มงวดชัดเจน
 ---
 # ลงมือพัฒนาและตรวจให้ครบ
 

@@ -1,6 +1,6 @@
 ---
 name: code
-description: Implement an explicit software request or reviewed plan through tested, documented, locally verified workspace changes without a second approval gate.
+description: Implement an explicit software request or reviewed plan through tested, documented workspace changes without a second approval gate; use tdd instead when the user explicitly asks for a strict test-first loop.
 ---
 # Implementation
 

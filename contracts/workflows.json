@@ -76,12 +76,13 @@
           "shortDescription": "Route a software-engineering request to the smallest appropriate SPK workflow, state its effect ",
           "defaultPrompt": "Start my current request with the simplest safe workflow.",
           "triggers": [
-            "use start",
-            "start workflow"
+            "not sure which SPK workflow fits this task",
+            "just get this done the simplest safe way possible"
           ],
           "negativeTriggers": [
             "the request is outside this workflow",
-            "the user selected a narrower skill"
+            "the user selected a narrower skill",
+            "the user already names a specific SPK workflow to use"
           ]
         },
         "th": {
@@ -90,12 +91,13 @@
           "shortDescription": "เริ่มงานกับ AI แบบไทยเป็นหลัก โดยเลือก workflow ที่เล็กและตรงที่สุดให้ผู้ใช้ ไม่ต้องจำรายชื่อ skill",
           "defaultPrompt": "เริ่มงานนี้แบบพร้อมใช้ด้วย workflow ที่ง่ายและปลอดภัยที่สุด",
           "triggers": [
-            "ใช้ start",
-            "ทำงานแบบ start"
+            "ไม่รู้จะเลือก workflow ไหนดี ช่วยเลือกให้หน่อย",
+            "จัดการงานนี้แบบง่ายและปลอดภัยที่สุดให้หน่อย"
           ],
           "negativeTriggers": [
             "คำขออยู่นอกขอบเขต workflow นี้",
-            "ผู้ใช้เลือก skill ที่แคบกว่าแล้ว"
+            "ผู้ใช้เลือก skill ที่แคบกว่าแล้ว",
+            "ผู้ใช้ระบุชื่อ workflow ที่ต้องการใช้อยู่แล้ว"
           ]
         }
       },
@@ -153,8 +155,8 @@
           "shortDescription": "Diagnose a reproducible software failure by tightening the red feedback loop, testing one hypoth",
           "defaultPrompt": "Use debug for my current request.",
           "triggers": [
-            "use debug",
-            "debug workflow"
+            "this test keeps failing and I can't figure out why",
+            "reproduce this bug and prove the root cause before fixing it"
           ],
           "negativeTriggers": [
             "the request is outside this workflow",
@@ -167,8 +169,8 @@
           "shortDescription": "หาต้นเหตุของบั๊กหรือปัญหาความเร็วทีละสมมติฐาน และพิสูจน์สาเหตุก่อนเสนอวิธีแก้",
           "defaultPrompt": "ใช้ debug กับคำขอนี้",
           "triggers": [
-            "ใช้ debug",
-            "ทำงานแบบ debug"
+            "โค้ดมัน error ไม่รู้ว่าทำไม ช่วยดูให้หน่อย",
+            "ช่วยหา root cause ของบั๊กนี้ก่อนแก้หน่อย"
           ],
           "negativeTriggers": [
             "คำขออยู่นอกขอบเขต workflow นี้",
@@ -530,30 +532,32 @@
       "locales": {
         "en": {
           "displayName": "Tdd",
-          "description": "Implement behavior through strict red, green, and refactor cycles with a verified failing test first and regression evidence before completion.",
+          "description": "Implement behavior through a strict, explicitly requested test-first red-green-refactor cycle — a failing test before any code, then the minimum to pass, then refactor — with regression evidence before completion.",
           "shortDescription": "Implement behavior through strict red, green, and refactor cycles with a verified failing test f",
           "defaultPrompt": "Use tdd for my current request.",
           "triggers": [
-            "use tdd",
-            "tdd workflow"
+            "do this test-first: red, green, refactor",
+            "write a failing test before touching the implementation"
           ],
           "negativeTriggers": [
             "the request is outside this workflow",
-            "the user selected a narrower skill"
+            "the user selected a narrower skill",
+            "the user asks for implementation with no explicit test-first request"
           ]
         },
         "th": {
           "displayName": "พัฒนาแบบ TDD",
-          "description": "พัฒนา behavior ทีละ slice ด้วยวงจร RED, GREEN และ refactor พร้อมหลักฐานจาก test จริง",
+          "description": "พัฒนา behavior ด้วยวงจร TDD แบบเข้มงวดที่ผู้ใช้ขอทดสอบก่อนอย่างชัดเจน เขียน test ให้ fail ก่อนแล้วค่อย implement ขั้นต่ำให้ผ่าน จากนั้น refactor พร้อมหลักฐานจาก test จริง",
           "shortDescription": "พัฒนา behavior ทีละ slice ด้วยวงจร RED, GREEN และ refactor พร้อมหลักฐานจาก test จริง",
           "defaultPrompt": "ใช้ tdd กับคำขอนี้",
           "triggers": [
-            "ใช้ tdd",
-            "ทำงานแบบ tdd"
+            "ทำแบบ TDD เขียน test ก่อนทีละ step",
+            "เขียน test ให้ fail ก่อนแล้วค่อย implement ตาม TDD"
           ],
           "negativeTriggers": [
             "คำขออยู่นอกขอบเขต workflow นี้",
-            "ผู้ใช้เลือก skill ที่แคบกว่าแล้ว"
+            "ผู้ใช้เลือก skill ที่แคบกว่าแล้ว",
+            "ผู้ใช้ขอ implementation โดยไม่ได้ขอ test-first ชัดเจน"
           ]
         }
       },
@@ -911,30 +915,32 @@
       "locales": {
         "en": {
           "displayName": "Code",
-          "description": "Implement an explicit software request or reviewed plan through tested, documented, locally verified workspace changes without a second approval gate.",
+          "description": "Implement an explicit software request or reviewed plan through tested, documented workspace changes without a second approval gate; use tdd instead when the user explicitly asks for a strict test-first loop.",
           "shortDescription": "Implement and verify an explicit request without a second local approval",
           "defaultPrompt": "Use code for my current request.",
           "triggers": [
-            "use code",
-            "code workflow"
+            "implement this feature with tests",
+            "just build this and ship it, no strict TDD loop needed"
           ],
           "negativeTriggers": [
             "the request is outside this workflow",
-            "the user selected a narrower skill"
+            "the user selected a narrower skill",
+            "the user explicitly asks for a strict test-first or TDD workflow"
           ]
         },
         "th": {
           "displayName": "ลงมือพัฒนาตามแผน",
-          "description": "ลงมือพัฒนาคำขอที่ชัดหรือแผนที่ review แล้วจนผ่าน test และ local verification โดยไม่ถามอนุมัติ workspace ซ้ำ",
+          "description": "ลงมือพัฒนาคำขอที่ชัดหรือแผนที่ review แล้วจนผ่าน test และ local verification โดยไม่ถามอนุมัติ workspace ซ้ำ สลับไปใช้ tdd แทนเฉพาะเมื่อผู้ใช้ขอ test-first loop แบบเข้มงวดชัดเจน",
           "shortDescription": "พัฒนาและตรวจคำขอที่ชัดโดยไม่ขออนุมัติ local ซ้ำ",
           "defaultPrompt": "ใช้ code กับคำขอนี้",
           "triggers": [
-            "ใช้ code",
-            "ทำงานแบบ code"
+            "implement feature นี้พร้อม test ให้หน่อย",
+            "เขียนโค้ดให้เสร็จเลย ไม่ต้องทำ TDD เข้มงวด"
           ],
           "negativeTriggers": [
             "คำขออยู่นอกขอบเขต workflow นี้",
-            "ผู้ใช้เลือก skill ที่แคบกว่าแล้ว"
+            "ผู้ใช้เลือก skill ที่แคบกว่าแล้ว",
+            "ผู้ใช้ขอ workflow test-first หรือ TDD แบบเข้มงวดชัดเจน"
           ]
         }
       },
@@ -995,8 +1001,8 @@
           "shortDescription": "Disposable prototype for one design question",
           "defaultPrompt": "Use prototype for my current request.",
           "triggers": [
-            "use prototype",
-            "prototype workflow"
+            "throw together a quick prototype to test this UI idea",
+            "spike this before we commit to a real implementation"
           ],
           "negativeTriggers": [
             "the request is outside this workflow",
@@ -1009,8 +1015,8 @@
           "shortDescription": "สร้าง prototype แบบทิ้งได้เพื่อพิสูจน์คำถามด้าน logic, state หรือ UI ก่อนลงทุนทำ production",
           "defaultPrompt": "ใช้ prototype กับคำขอนี้",
           "triggers": [
-            "ใช้ prototype",
-            "ทำงานแบบ prototype"
+            "ทำ prototype เร็ว ๆ ทดสอบไอเดีย UI นี้หน่อย",
+            "ขอลอง spike ก่อนตัดสินใจ implement จริงหน่อย"
           ],
           "negativeTriggers": [
             "คำขออยู่นอกขอบเขต workflow นี้",
@@ -1067,30 +1073,32 @@
       "locales": {
         "en": {
           "displayName": "Research",
-          "description": "Research a question from primary sources and store findings with verifiable citations.",
+          "description": "Investigate a question using external, primary web sources — not this repository's own knowledge — and store the findings in a cited research doc with verifiable citations.",
           "shortDescription": "Cited primary-source research notes",
           "defaultPrompt": "Use research for my current request.",
           "triggers": [
-            "use research",
-            "research workflow"
+            "look up current best practices for this from external sources",
+            "search the web and write up findings with citations"
           ],
           "negativeTriggers": [
             "the request is outside this workflow",
-            "the user selected a narrower skill"
+            "the user selected a narrower skill",
+            "the answer already lives in this repository or its wiki"
           ]
         },
         "th": {
           "displayName": "ค้นคว้าจากแหล่งหลัก",
-          "description": "ค้นคว้าคำถามจาก primary sources และเก็บข้อค้นพบพร้อม citation ที่ตรวจย้อนกลับได้",
+          "description": "ค้นคว้าคำถามจากแหล่งภายนอกหรือเว็บ ไม่ใช่ความรู้ที่ repo นี้มีอยู่แล้ว แล้วเก็บข้อค้นพบเป็นเอกสาร research พร้อม citation ที่ตรวจย้อนกลับได้",
           "shortDescription": "ค้นคว้าคำถามจาก primary sources และเก็บข้อค้นพบพร้อม citation ที่ตรวจย้อนกลับได้",
           "defaultPrompt": "ใช้ research กับคำขอนี้",
           "triggers": [
-            "ใช้ research",
-            "ทำงานแบบ research"
+            "หาข้อมูลเรื่องนี้จากเว็บให้หน่อย",
+            "ช่วยค้นแหล่งภายนอกแล้วสรุปพร้อม citation ให้หน่อย"
           ],
           "negativeTriggers": [
             "คำขออยู่นอกขอบเขต workflow นี้",
-            "ผู้ใช้เลือก skill ที่แคบกว่าแล้ว"
+            "ผู้ใช้เลือก skill ที่แคบกว่าแล้ว",
+            "คำตอบมีอยู่แล้วใน repo นี้หรือ wiki ของมัน"
           ]
         }
       },
@@ -1147,8 +1155,8 @@
           "shortDescription": "Ubiquitous language and ADRs",
           "defaultPrompt": "Use domain-modeling for my current request.",
           "triggers": [
-            "use domain-modeling",
-            "domain-modeling workflow"
+            "we keep using this term inconsistently across the codebase",
+            "let's write this decision down in CONTEXT.md"
           ],
           "negativeTriggers": [
             "the request is outside this workflow",
@@ -1161,8 +1169,8 @@
           "shortDescription": "สร้างและปรับภาษากลางของ project พร้อมทดสอบคำศัพท์กับกรณีขอบและบันทึก decision ที่ควรจำ",
           "defaultPrompt": "ใช้ domain-modeling กับคำขอนี้",
           "triggers": [
-            "ใช้ domain-modeling",
-            "ทำงานแบบ domain-modeling"
+            "ทีมใช้คำศัพท์นี้ไม่ตรงกันในโค้ด ช่วยเคลียร์ให้หน่อย",
+            "ช่วยบันทึก decision นี้ลง CONTEXT.md หน่อย"
           ],
           "negativeTriggers": [
             "คำขออยู่นอกขอบเขต workflow นี้",
@@ -1223,8 +1231,8 @@
           "shortDescription": "Deep-module shape and seams",
           "defaultPrompt": "Use codebase-design for my current request.",
           "triggers": [
-            "use codebase-design",
-            "codebase-design workflow"
+            "this module is getting hard to change, help me restructure it",
+            "design a cleaner interface between these two components"
           ],
           "negativeTriggers": [
             "the request is outside this workflow",
@@ -1237,8 +1245,8 @@
           "shortDescription": "ใช้แนวคิด deep module, interface, seam, adapter, leverage และ locality เพื่อออกแบบ code ที่เปลี่",
           "defaultPrompt": "ใช้ codebase-design กับคำขอนี้",
           "triggers": [
-            "ใช้ codebase-design",
-            "ทำงานแบบ codebase-design"
+            "module นี้แก้ยากขึ้นเรื่อย ๆ ช่วยออกแบบใหม่หน่อย",
+            "ช่วยออกแบบ interface ระหว่าง component สองตัวนี้ให้ดีขึ้น"
           ],
           "negativeTriggers": [
             "คำขออยู่นอกขอบเขต workflow นี้",
@@ -1299,8 +1307,8 @@
           "shortDescription": "Review a requested diff or branch in independent correctness, security, maintainability, test, d",
           "defaultPrompt": "Use code-review for my current request.",
           "triggers": [
-            "use code-review",
-            "code-review workflow"
+            "review this PR before I merge it",
+            "take a look at this diff for correctness and security issues"
           ],
           "negativeTriggers": [
             "the request is outside this workflow",
@@ -1313,8 +1321,8 @@
           "shortDescription": "รีวิว diff แยกด้านมาตรฐาน สเปก ความถูกต้อง security tests และความพร้อมส่งมอบ",
           "defaultPrompt": "ใช้ code-review กับคำขอนี้",
           "triggers": [
-            "ใช้ code-review",
-            "ทำงานแบบ code-review"
+            "ช่วย review PR นี้ก่อน merge หน่อย",
+            "ช่วยดู diff นี้ว่ามีปัญหา correctness หรือ security ไหม"
           ],
           "negativeTriggers": [
             "คำขออยู่นอกขอบเขต workflow นี้",
@@ -1375,8 +1383,8 @@
           "shortDescription": "Intent-preserving conflict resolution",
           "defaultPrompt": "Use fix-conflicts for my current request.",
           "triggers": [
-            "use fix-conflicts",
-            "fix-conflicts workflow"
+            "I've got merge conflicts after this rebase, help me resolve them",
+            "walk me through fixing these conflict markers hunk by hunk"
           ],
           "negativeTriggers": [
             "the request is outside this workflow",
@@ -1389,8 +1397,8 @@
           "shortDescription": "แก้ merge หรือ rebase conflict ทีละจุด โดยรักษาเจตนาของทั้งสองฝั่งและตรวจผลก่อนทำต่อ",
           "defaultPrompt": "ใช้ fix-conflicts กับคำขอนี้",
           "triggers": [
-            "ใช้ fix-conflicts",
-            "ทำงานแบบ fix-conflicts"
+            "rebase แล้วเจอ merge conflict ช่วยแก้ให้หน่อย",
+            "ช่วยไล่แก้ conflict marker ทีละจุดให้หน่อย"
           ],
           "negativeTriggers": [
             "คำขออยู่นอกขอบเขต workflow นี้",
@@ -1451,12 +1459,14 @@
           "shortDescription": "Interview in rounds over the settled frontier until the design tree resolves",
           "defaultPrompt": "Use asking for my current request.",
           "triggers": [
-            "use asking",
-            "asking workflow"
+            "grill me on this plan until every question is resolved",
+            "stress-test this proposal",
+            "challenge my thinking on this decision"
           ],
           "negativeTriggers": [
             "the request is outside this workflow",
-            "the user selected a narrower skill"
+            "the user selected a narrower skill",
+            "the user wants one decision at a time rather than batched interview rounds"
           ]
         },
         "th": {
@@ -1465,12 +1475,14 @@
           "shortDescription": "ถามเป็นรอบ ๆ ทุกคำถามที่พร้อมตอบในรอบเดียว จนต้นไม้ decision คลี่หมด",
           "defaultPrompt": "ใช้ asking กับคำขอนี้",
           "triggers": [
-            "ใช้ asking",
-            "ทำงานแบบ asking"
+            "ช่วย grill แผนนี้หน่อย",
+            "stress-test proposal นี้ให้หน่อย",
+            "ลองหาช่องโหว่ในแผนนี้ให้หน่อย"
           ],
           "negativeTriggers": [
             "คำขออยู่นอกขอบเขต workflow นี้",
-            "ผู้ใช้เลือก skill ที่แคบกว่าแล้ว"
+            "ผู้ใช้เลือก skill ที่แคบกว่าแล้ว",
+            "ผู้ใช้อยากให้ถามทีละ decision ไม่ใช่เป็นรอบชุดใหญ่"
           ]
         }
       },
@@ -1769,7 +1781,7 @@
       "locales": {
         "en": {
           "displayName": "Ask Me",
-          "description": "Run a manual Thai-first, read-only decision interview, confirm a compact brief, then recommend one context-fit deliverable or a gated plan-to-development handoff.",
+          "description": "Run a manual Thai-first, read-only decision interview that asks one question at a time, confirm a compact brief, then recommend one context-fit deliverable or a gated plan-to-development handoff.",
           "shortDescription": "Clarify naturally in Thai and route the next output",
           "defaultPrompt": "Interview me in concise, natural Thai, then recommend the next context-fit deliverable.",
           "triggers": [
@@ -1779,7 +1791,8 @@
           ],
           "negativeTriggers": [
             "an ordinary factual question or clarification without an interview request",
-            "the user requests immediate planning or implementation and explicitly declines questions"
+            "the user requests immediate planning or implementation and explicitly declines questions",
+            "the user wants rapid-fire or batched-round questioning rather than one decision at a time"
           ]
         },
         "th": {
@@ -1794,7 +1807,8 @@
           ],
           "negativeTriggers": [
             "คำถามข้อเท็จจริงหรือ clarification ปกติที่ไม่ได้ขอการสัมภาษณ์",
-            "ผู้ใช้ขอให้วางแผนหรือลงมือทันทีและระบุว่าไม่ต้องถาม"
+            "ผู้ใช้ขอให้วางแผนหรือลงมือทันทีและระบุว่าไม่ต้องถาม",
+            "ผู้ใช้อยากให้ถามรัวๆ หรือเป็นรอบชุดใหญ่ ไม่ใช่ทีละข้อ"
           ]
         }
       },
@@ -2662,7 +2676,7 @@
       "locales": {
         "en": {
           "displayName": "Ask Project",
-          "description": "Answer a project question from the local wiki first, cite exact evidence, and use external research only when local knowledge is insufficient.",
+          "description": "Answer a project question from this repository's local wiki first, cite exact evidence, and use external research only when local knowledge is insufficient.",
           "shortDescription": "Answer from project knowledge with citations",
           "defaultPrompt": "Answer this project question from the local wiki and cite the evidence.",
           "triggers": [
@@ -2677,7 +2691,7 @@
         },
         "th": {
           "displayName": "ถามข้อมูลโปรเจกต์",
-          "description": "ตอบคำถามเกี่ยวกับโปรเจกต์จาก wiki ภายในพร้อมอ้างหลักฐาน และค้นภายนอกเมื่อข้อมูลในโปรเจกต์ไม่พอ",
+          "description": "ตอบคำถามเกี่ยวกับโปรเจกต์จาก wiki ภายใน repo นี้ก่อนเสมอ พร้อมอ้างหลักฐาน และค้นภายนอกเฉพาะเมื่อข้อมูลในโปรเจกต์ไม่พอ",
           "shortDescription": "ตอบคำถามเกี่ยวกับโปรเจกต์จาก wiki ภายในพร้อมอ้างหลักฐาน และค้นภายนอกเมื่อข้อมูลในโปรเจกต์ไม่พอ",
           "defaultPrompt": "ตอบคำถามนี้จาก wiki ภายในและอ้างหลักฐาน",
           "triggers": [
@@ -3325,7 +3339,7 @@
     "afk_local": {
       "promptBudget": 0,
       "repairBudget": 3,
-      "invocationAuthority": "A clear request grants bounded work only up to the selected skill's declared effect level; this profile never upgrades read-only work into a write.",
+      "invocationAuthority": "A clear request grants bounded work only up to the selected skill's declared effect level; this profile never upgrades read-only work into a write. The promptBudget counts only mid-flow interruptions of an otherwise autonomous run; the items listed in pauseOnlyFor, and the universal one-material-question rule at workflow entry, sit outside that budget.",
       "continuation": "Keep working through inspect, act, verify, and bounded repair without asking the user.",
       "pauseOnlyFor": [
         "missing access or credentials",
@@ -3338,7 +3352,7 @@
     "decision_aware": {
       "promptBudget": 1,
       "repairBudget": 3,
-      "invocationAuthority": "Inspect facts and prepare the smallest useful draft within the selected skill's declared effect level before asking for a decision; read-only profiles stay read-only.",
+      "invocationAuthority": "Inspect facts and prepare the smallest useful draft within the selected skill's declared effect level before asking for a decision; read-only profiles stay read-only. For an interview-shaped skill, the question rounds conducted with the user are the workflow itself, not budgeted interruptions of it.",
       "continuation": "Use recommended reversible assumptions and bundle only the one material decision that changes outcome, scope, risk, cost, or success.",
       "pauseOnlyFor": [
         "one material user-owned decision",
