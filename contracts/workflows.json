@@ -1557,28 +1557,35 @@
       "role": "handoff_workflow",
       "workflow": [
         {
-          "phase": "orient",
-          "instruction": "Read the request, repository evidence, Thai-first defaults, and the exact approval boundary."
+          "phase": "gather",
+          "instruction": "Read the current conversation and repository evidence; treat any user-supplied argument as the next session's focus and scope the document to it."
         },
         {
-          "phase": "execute",
-          "instruction": "Apply the handoff discipline in the smallest complete slice; ask one material question only when needed."
+          "phase": "capture",
+          "instruction": "Capture the goal, current state, decisions with rationale, gotchas, next steps, and the paths of files touched. Reference existing specs, plans, ADRs, issues, commits, or diffs by path or URL instead of duplicating their content, and redact secrets, credentials, or personal data."
+        },
+        {
+          "phase": "write",
+          "instruction": "Write the handoff to the workspace root as handoff-<ISO-date>-<slug>.md by default, matching this skill's workspace_write effect level. Use a different destination, such as the OS temp directory, only when the user explicitly asks for one."
         },
         {
           "phase": "verify",
-          "instruction": "Verify the observable outcome and return concise evidence, risks, and the next action."
+          "instruction": "Confirm the file exists, includes a suggested-skills section for the next session, and report the written path with concise evidence and the next action."
         }
       ],
       "artifacts": [
-        "handoff result",
-        "verification evidence"
+        "handoff-<ISO-date>-<slug>.md",
+        "suggested-skills section"
       ],
       "evidence": [
-        "inputs used",
-        "observable result",
-        "verification status"
+        "written handoff path",
+        "sections captured: goal, state, decisions and rationale, gotchas, next steps, file paths touched",
+        "redaction check for secrets and personal data"
       ],
       "guardrails": [
+        "Default to writing the handoff at the workspace root, not the OS temp directory; use another destination only on explicit user request.",
+        "Reference existing artifacts (specs, plans, ADRs, issues, commits, diffs) by path or URL instead of duplicating their content.",
+        "Redact secrets, credentials, and personal data before writing.",
         "Match the user's language and keep Thai cultural fit while preserving exact technical identifiers.",
         "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
         "Report evidence gaps instead of guessing."
@@ -1633,28 +1640,39 @@
       "role": "teach_workflow",
       "workflow": [
         {
-          "phase": "orient",
-          "instruction": "Read the request, repository evidence, Thai-first defaults, and the exact approval boundary."
+          "phase": "assess",
+          "instruction": "Read any existing MISSION.md, learning-records, and the format references present in the workspace (MISSION-FORMAT.md, LEARNING-RECORD-FORMAT.md, RESOURCES-FORMAT.md, GLOSSARY-FORMAT.md). When the mission or the learner's level is unclear, ask questions to establish it before writing anything."
         },
         {
-          "phase": "execute",
-          "instruction": "Apply the teach discipline in the smallest complete slice; ask one material question only when needed."
+          "phase": "mission",
+          "instruction": "Create or update MISSION.md using MISSION-FORMAT.md so every lesson stays grounded in the learner's real goal."
+        },
+        {
+          "phase": "lesson",
+          "instruction": "Produce exactly one lesson per session as ./lessons/NNNN-<slug>.html, sized to the learner's zone of proximal development."
+        },
+        {
+          "phase": "record",
+          "instruction": "Write a learning record to ./learning-records/NNNN-<slug>.md using LEARNING-RECORD-FORMAT.md, and update GLOSSARY.md via GLOSSARY-FORMAT.md when a term is genuinely understood."
         },
         {
           "phase": "verify",
-          "instruction": "Verify the observable outcome and return concise evidence, risks, and the next action."
+          "instruction": "Confirm the lesson file and learning record exist, report their paths, and propose the smallest next step."
         }
       ],
       "artifacts": [
-        "teach result",
-        "verification evidence"
+        "MISSION.md",
+        "./lessons/NNNN-<slug>.html",
+        "./learning-records/NNNN-<slug>.md"
       ],
       "evidence": [
-        "inputs used",
-        "observable result",
-        "verification status"
+        "written lesson and learning-record paths",
+        "mission and glossary updates when made",
+        "proposed next step"
       ],
       "guardrails": [
+        "Assess the learner's level and mission before writing a lesson; never assume prior knowledge.",
+        "Produce exactly one lesson per session and pair it with a learning record.",
         "Match the user's language and keep Thai cultural fit while preserving exact technical identifiers.",
         "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
         "Report evidence gaps instead of guessing."

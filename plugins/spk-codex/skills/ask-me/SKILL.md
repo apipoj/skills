@@ -7,6 +7,8 @@ description: Run a manual Thai-first, read-only decision interview, confirm a co
 
 # Ask Me
 
+`ask-me` asks the user one decision per message with a gated handoff to the next workflow — use `asking` instead when the whole settled frontier should be asked in one batched round, and use `to-questionnaire` when the questions belong in a document for a third party to answer, not to the user.
+
 ## Response Rules
 
 Reply in the user's language.

@@ -5,6 +5,8 @@ disable-model-invocation: true
 ---
 # สร้างชุดคำถาม
 
+`to-questionnaire` ทำเอกสารชุดคำถามให้บุคคลที่สามตอบ ไม่ได้ถามผู้ใช้เรื่องเนื้อหาเลย — ถ้าต้องถามผู้ใช้เองทีละหนึ่ง decision ต่อข้อความแบบมี gated handoff ให้ใช้ `ask-me` และถ้าต้องถามผู้ใช้เองทั้ง frontier เป็นรอบ ให้ใช้ `asking`
+
 เมื่อต้องให้ตัดสินใจหรือยืนยัน ให้ใช้ structured choice prompt ของ host ถ้ามี ถ้าไม่มีให้ใช้ numbered list ตัวเลือกต้องต่างกันจริงและมีข้อแนะนำหนึ่งข้อ ทุก label ต้องบอกผลลัพธ์จริง และตอบแบบ free-form ได้เสมอ
 
 เปลี่ยนเรื่องที่ผู้ใช้ตอบคนเดียวไม่ได้ให้เป็น **ชุดคำถาม** — เอกสาร Markdown ที่ส่งให้คนคนเดียวกรอกแบบ async หรือนั่งกรอกด้วยกันในที่ประชุม คนรับมีความรู้ที่ผู้ใช้ไม่มี ชุดคำถามคือเครื่องมือดึงความรู้นั้นออกมา
@@ -60,6 +62,10 @@ disable-model-invocation: true
 ## Autonomy Profile
 
 `decision_aware` — ตรวจ fact และทำ draft ได้ถึง effect level ที่ skill ประกาศ โดย read-only ยังต้อง read-only แล้วถามได้สูงสุดหนึ่ง decision สำคัญ; prompt budget 1, repair budget 3 รอบ ก่อนหยุดต้องบันทึก decision ledger, evidence และ next action ที่ทำต่อได้
+
+## Evidence Receipt
+
+คืนผลตาม schema `spk.evidence/v1` พร้อมสรุปคนรับ รายการสิ่งที่ต้องได้กลับมา, path ไฟล์ที่เขียนจริง, การยืนยันว่าครอบคลุมครบทุกเรื่องจากขั้นที่ 2, ความเสี่ยง และ next action
 
 ## ข้อควรระวัง
 

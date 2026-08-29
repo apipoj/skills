@@ -4,6 +4,8 @@ description: Interview the user in rounds, asking every question whose prerequis
 ---
 # Asking in rounds
 
+`asking` asks the user's whole settled frontier in one batched round with a recommendation each — use `ask-me` instead for one decision per message with a gated handoff, and `to-questionnaire` when the questions belong in a document for a third party to answer, not to the user.
+
 ## Response Rules
 
 Reply in the user's language.
@@ -18,35 +20,31 @@ Keep working without user input while the requested outcome remains inside curre
 
 When a decision or confirmation is needed, use the host's structured choice prompt if one is available; otherwise present a numbered list. Options must be genuinely distinct with exactly one recommended, every label names the real outcome, and a free-form answer stays possible.
 
-Interview the user relentlessly until you reach a shared understanding. Map this as a **design tree**: every decision branches into the decisions that hang off it.
+Interview the user relentlessly until you reach a shared understanding. Map the work as a **design
+tree**: every decision branches into the decisions that hang off it.
 
-## Work in rounds
+## Workflow
 
-The **frontier** is every decision whose prerequisites are already settled — the questions you can ask *now* without guessing at answers you haven't heard yet.
+1. Compute the **frontier** — every decision whose prerequisites are already settled, meaning the
+   questions answerable *now* without guessing at answers not yet heard.
+2. Ask the whole frontier in one round. Number each question and give a recommended answer, in this
+   format:
 
-Ask the whole frontier in one round: number each question and give your recommended answer. Then wait for the user's answers before the next round.
+   ```
+   ❓ **Q1** - **<question title>**: <question body, may run to several paragraphs or offer choices>
 
-Each round the user answers reshapes the tree — settled decisions push the frontier outward and unblock questions that depended on them. Recompute the frontier and ask the next round. A question whose answer depends on another question still open in this round belongs to a *later* round, not this one.
+   ➡️ <your recommended answer>
+   ```
 
-## Question format
-
-```
-❓ **Q1** - **<question title>**: <question body, might be multiple paragraphs, including multiple choices>
-
-➡️ <your recommended answer>
-```
-
-## Facts are the agent's job
-
-Finding *facts* is your job, never the user's. When a frontier question needs a fact from the environment (filesystem, tools, etc.), dispatch a sub-agent to find it — don't ask the user for anything you could look up yourself.
-
-Don't block on it: a running exploration is an unsettled prerequisite, so only the questions downstream of it wait for the sub-agent to report — ask the rest of the frontier now.
-
-The *decisions* are the user's — put each to them and wait.
-
-## When it's done
-
-The session is done when the frontier is empty: every branch of the design tree visited, nothing left silently assumed. Do not act on it until the user confirms you have reached a shared understanding.
+3. Wait for the user's answers. Each round reshapes the tree: settled decisions push the frontier
+   outward and unblock questions that depended on them. Recompute and ask the next round. A question
+   whose answer depends on another question still open in this round belongs to a *later* round.
+4. Finding **facts** is the agent's job, never the user's. When a frontier question needs a fact from
+   the environment, dispatch a sub-agent to find it rather than asking. Don't block on it — a running
+   exploration is an unsettled prerequisite, so only the questions downstream of it wait; ask the
+   rest of the frontier now. The **decisions** are the user's: put each to them and wait.
+5. Done when the frontier is empty — every branch visited, nothing silently assumed. Do not act until
+   the user confirms shared understanding.
 
 ## Autonomy Profile
 
@@ -54,7 +52,8 @@ The session is done when the frontier is empty: every branch of the design tree 
 
 ## Evidence Receipt
 
-Report the artifact, the verification command, the real result, the risks, and the smallest next action.
+Return `spk.evidence/v1` with the artifact, the verification command, the real result, risks, and the
+smallest next action.
 
 ## Guardrails
 

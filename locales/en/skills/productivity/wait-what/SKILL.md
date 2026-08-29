@@ -17,20 +17,26 @@ Reply in the user's language.
 
 Keep working without user input while the requested outcome remains inside current authority. Use a reversible smart default and record assumptions. Ask only when one material user-owned decision changes scope, risk, cost, or success, or when a required effect crosses an unapproved boundary.
 
-Wait — that last message didn't land. Re-pitch it.
+The last message did not land. Say it again, better.
 
-Find the exact message that didn't land, and name the knowledge it assumed the user already had. Then say it again with **the missing context first**, before the substance.
+## Workflow
 
-Use plain language and drop the jargon that isn't carrying weight. If the project has a `CONTEXT.md`, use its vocabulary rather than borrowed terms — a word the team already agreed on always communicates better than a generic one.
-
-If the confusion came from a wrong assumption rather than from wording, **say so plainly** and fix the assumption first. Re-explaining the same thing in prettier words helps nothing when the premise is wrong.
+1. Identify the exact message that did not land and name the assumed knowledge that made it opaque.
+2. Say it again with the missing context first, in plain language, using the project's own vocabulary
+   from `CONTEXT.md` when it exists. If the confusion came from a wrong assumption rather than from
+   wording, say so plainly and fix the assumption instead of rephrasing.
 
 ## Autonomy Profile
 
 `afk_local` — prompt budget 0; repair budget 3. A clear request grants bounded work only up to this skill's declared effect level; the profile never upgrades read-only work into a write. Keep working through inspect, act, verify, and bounded repair without asking the user. Before pausing, record phase, assumptions, evidence, attempts, and the smallest resumable next action.
 
+## Evidence Receipt
+
+Return `spk.evidence/v1` with the message being re-pitched, the context that was missing, and the
+vocabulary source used.
+
 ## Guardrails
 
 - Explain again; never change the work or any file.
-- Use the project's own vocabulary instead of borrowed jargon.
+- Match the user's language with Thai cultural fit and the project's own vocabulary instead of borrowed jargon.
 - Say plainly when the confusion came from a wrong assumption rather than from wording.

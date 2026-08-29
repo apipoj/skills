@@ -18,12 +18,19 @@ Reply in the user's language.
 
 Keep working without user input while the requested outcome remains inside current authority. Use a reversible smart default and record assumptions. Ask only when one material user-owned decision changes scope, risk, cost, or success, or when a required effect crosses an unapproved boundary.
 
+## Destination
+
+Write the handoff as `handoff-<ISO-date>-<slug>.md` (e.g. `handoff-2026-08-29-refactor-auth.md`) **at the current workspace's project root** — not the OS temp directory — because this skill's effect level is `workspace_write`. Use another destination (such as the OS temp directory or a specific path) only when the user asks for one.
+
 ## Workflow
 
-1. Read the request, repository instructions, and full practice in [UPSTREAM.md](UPSTREAM.md).
-2. Use smart defaults when risk is low. If a decision changes scope, ask exactly one material question with a recommendation.
-3. Apply this skill's discipline in short slices and show only the progress needed for verification.
-4. Close with the outcome, evidence, risks, and remaining decisions without padding.
+1. Read the current conversation and the full practice in [UPSTREAM.md](UPSTREAM.md). If the user passed an argument, treat it as what the next session will focus on and tailor the document to it.
+2. Capture the goal, current state, key decisions with rationale, gotchas, actionable next steps, and the paths of files touched or relevant. Do not duplicate content already captured in other artifacts (specs, plans, ADRs, issues, commits, diffs); reference them by path or URL instead.
+3. Add a "Suggested Skills" section naming the skills the next session should invoke.
+4. Redact sensitive information everywhere it appears — API keys, passwords, tokens, personally identifiable information — before writing the file.
+5. Write the file to the destination above and report the path actually written.
+
+**Done when:** the handoff file is written, includes every required section, and its path has been reported.
 
 ## Focus
 
@@ -35,10 +42,13 @@ Compress only the context a fresh session needs so the next agent can continue w
 
 ## Evidence Receipt
 
-Report artifacts, verification commands, observed results, risks, and the smallest next action.
+Report the written handoff path, verification commands, observed results, risks, and the smallest next action.
 
 ## Guardrails
 
+- Default to writing at the project root; use the OS temp directory or another destination only when the user asks.
+- Reference existing artifacts (specs, plans, ADRs, issues, commits, diffs) by path or URL instead of duplicating their content.
+- Redact secrets, credentials, and personal data before writing the file.
 - Do not expand scope on your own.
 - Do not commit, push, publish, or change external systems without exact approval for the target.
 - If evidence is incomplete, report the gap instead of guessing.
