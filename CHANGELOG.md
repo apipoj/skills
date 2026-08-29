@@ -1,6 +1,6 @@
 # Apipoj Skills
 
-## Unreleased
+## 6.6.0 - 2026-08-29
 
 ### Added
 
@@ -13,7 +13,6 @@
 - Approval model: `triage` (the only external-write workflow without an approval mode) is now confirm-gated with a displayed target+payload envelope; `fix-conflicts` gains bounded authority to actually finish a merge/rebase; `deploy`'s bound_token gate gains the quoted/question/pre-intent consent exclusions its siblings had; `task-to-pr` re-fetches and re-digests its task snapshot on resume and before publish.
 - Source-of-truth drift: payload-only content back-ported into the Thai sources (task-to-pr, ask-project, check-wiki, load-project, code, plan, setup, the interview trio) and Thai-only content shipped into the runtime (design-options' Anti-Slop Gates, deploy's Gather Context preflight, debug's RCA structure and report format, code-review's five passes and three-value verdict); stale mostly-Thai EN mirrors rebuilt; `teach` and `handoff` received real file contracts; `doctor`'s receipt now matches what spk-doctor.cjs emits; `add-knowledge` specifies the `hash=` log format auto-ingest depends on and fails closed outside a git repo.
 - Discoverability: `start` routes all 40 workflows (four had fallen out) and presents manual-only skills as commands to the user; bucket READMEs corrected; calqued Thai phrasing in bala/sunzi/asking replaced with natural wording.
-
 - The wiki-build guard (`gitignore-guard.cjs`) now exempts the whole `ai_context/` tree, not just `ai_context/sources/`. With `ai_context/` machine-locally excluded by default, the old sources-only exemption made the guard block the wiki-build from reading its own wiki (`add-knowledge` steps 6–8 failed closed); the same failure already existed in any project that ignored `ai_context/` itself. Symlink escapes out of `ai_context/` are still blocked via the resolved-path check.
 - The `ai_context/` scaffold no longer dirties consumer working trees. The SessionStart hook kept writing project-local runtime artifacts that showed up as untracked, so every clean-working-tree gate (deploy preflight, PR prepare, release checks) rejected the tree. Unless the project already ignores `ai_context/` or deliberately tracks it, the hook now adds a machine-local exclude entry to `.git/info/exclude` — never to the tracked `.gitignore`, because editing a tracked file would itself dirty the tree the entry exists to keep clean. The healing runs every session, so installs that predate the fix pick it up too, and deleting the commented entry restores normal Git visibility for users who commit their wiki.
 
