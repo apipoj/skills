@@ -104,7 +104,7 @@ npx skills@latest add apipoj/skills
 | `/spk:to-tickets` | direct main-thread workflow | พิมพ์เอง |
 | `/spk:to-questionnaire` | direct main-thread workflow | พิมพ์เอง |
 | `/spk:wayfinder` | direct main-thread workflow | พิมพ์เอง |
-| `/spk:code` | build-orchestrator | agent เรียกเองได้ |
+| `/spk:code` | direct main-thread workflow | agent เรียกเองได้ |
 | `/spk:prototype` | designer | agent เรียกเองได้ |
 | `/spk:research` | researcher | agent เรียกเองได้ |
 | `/spk:domain-modeling` | direct main-thread workflow | agent เรียกเองได้ |
@@ -155,4 +155,4 @@ Version และ roster ใช้ `manifest.json` เป็น source of truth 
 
 ## Upstream และ license
 
-ฐาน upstream คือ `mattpocock/skills@84fdeffd12f2ee307994d1eb6feb48173b6e0502` ภายใต้ MIT License การ sync รอบถัดไปต้อง review และ localize ก่อนเสมอ ดู `NOTICE` และ `docs/upstream/`
+ฐาน upstream คือ `mattpocock/skills@6654f6b60cd9d5be8b54c6fafe44346dabeb3b76` ภายใต้ MIT License การ sync รอบถัดไปต้อง review และ localize ก่อนเสมอ ดู `NOTICE` และ `docs/upstream/`

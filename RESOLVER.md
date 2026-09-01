@@ -25,7 +25,7 @@ Rules:
 | `/spk:to-tickets` | direct main-thread workflow | typed only |
 | `/spk:to-questionnaire` | direct main-thread workflow | typed only |
 | `/spk:wayfinder` | direct main-thread workflow | typed only |
-| `/spk:code` | build-orchestrator | model or typed |
+| `/spk:code` | direct main-thread workflow | model or typed |
 | `/spk:prototype` | designer | model or typed |
 | `/spk:research` | researcher | model or typed |
 | `/spk:domain-modeling` | direct main-thread workflow | model or typed |

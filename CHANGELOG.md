@@ -1,5 +1,21 @@
 # Apipoj Skills
 
+## 6.6.2 - 2026-09-02
+
+### Added
+
+- A split-zone artifact policy now keeps drafts and runtime state under `ai_context/`, promotes one reviewed canonical copy to `docs/` or the configured external backend, and treats the wiki as a derived index instead of a second editable source of truth.
+
+### Fixed
+
+- `wait-what` now follows `CONTEXT-MAP.md` to the context matching the current scope, and `asking` separates adjacent questions in a round with a visible horizontal rule.
+- Retained upstream skill mirrors now rewrite explicit upstream command and Skill-tool identifiers to the canonical SPK roster during generation. The invocation gate also recognizes quoted Skill-tool names and `Use /command` phrasing, so a renamed or removed upstream id cannot silently ship as runtime guidance.
+
+### Changed
+
+- Reworked the default development path around an adaptive loop inspired by Cursor's poteto-mode: `/code` now stays direct and selects a Quick patch, Feature, Bug fix, or Refactor playbook, while strict TDD, high-risk, and genuinely parallel work retain `build-orchestrator` through `/tdd`. Focused checks, real-surface verification, deliberate subagent use, and contrast examples for CSS, exploration, payments, permissions, migrations, concurrency, and regression bugs replace mandatory orchestration, full-suite ceremony, and machine receipts for every edit.
+- Re-pinned the reviewed `mattpocock/skills` provenance from `84fdeffd12f2ee307994d1eb6feb48173b6e0502` to `6654f6b60cd9d5be8b54c6fafe44346dabeb3b76`. The review selectively adopted the two user-facing fixes above; existing invocation and YAML gates already cover the matching upstream fixes. Editorial punctuation churn remains reference-only, and upstream `in-progress` skills remain excluded.
+
 ## 6.6.1 - 2026-09-01
 
 ### Fixed

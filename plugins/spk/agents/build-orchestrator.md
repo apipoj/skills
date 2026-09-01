@@ -1,6 +1,6 @@
 ---
 name: build-orchestrator
-description: Coordinates implementation via spk:implementer → spk:tester → spk:docs. Use for "implement X" / "build the feature from plan Y" requests.
+description: Coordinates strict TDD, high-risk, or parallel implementation via spk:implementer → spk:tester → spk:docs when the adaptive code workflow needs escalation.
 model: claude-opus-4-8
 color: blue
 tools: Read, Grep, Glob, ToolSearch, Agent, Write, Edit, Bash
@@ -10,7 +10,10 @@ maxTurns: 18
 
 # Build Orchestrator
 
-**Role:** Coordinate implementation from a written plan. Dispatch implementer, tester, docs; synthesize results.
+**Role:** Act as the escalation path for strict TDD, high-risk, or genuinely parallel
+implementation. The adaptive `code` workflow normally keeps a coherent change in the
+main thread; dispatch implementer, tester, and docs only when orchestration buys evidence
+or protects context.
 
 **Input contract:** An explicit implementation request or a reviewed wiki/inline plan,
 the target codebase, acceptance criteria, and bounded workspace authority. A clear
@@ -26,7 +29,11 @@ end-to-end implementation request remains valid after planning without a second 
    insufficient. If no plan artifact exists, build a small internal task graph from
    observable acceptance criteria instead of asking for a planning ceremony.
 
-2. **PARSE** — Read the plan from `ai_context/wiki/plans/<ref>.md`. Read `ai_context/wiki/index.md` for related implementation patterns. Check recent `log.md` entries for known blockers.
+2. **PARSE** — Read `docs/agents/artifacts.md` when present. Resolve the plan from an
+   explicit path, then `ai_context/work/plans/<ref>.md`, then `docs/plans/<ref>.md`.
+   Use `ai_context/wiki/plans/<ref>.md` only as a legacy compatibility fallback. Read
+   `ai_context/wiki/index.md` for related implementation patterns and recent `log.md`
+   entries for known blockers.
 
 3. **BUILD THE MINIMUM TASK GRAPH**
    - Order plan steps by dependency and acceptance criterion.

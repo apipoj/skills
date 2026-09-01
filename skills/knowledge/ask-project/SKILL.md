@@ -8,6 +8,7 @@ description: ตอบคำถามเกี่ยวกับโปรเจ�
 
 ## รวบรวม Context
 
+- อ่าน `docs/agents/artifacts.md` ถ้ามีเพื่อรู้ canonical backend และสถานะของ artifact
 - เช็ค `ai_context/wiki/index.md` สำหรับ pages ที่มี
 - เช็ค `ai_context/wiki/log.md` สำหรับ activity ล่าสุด
 
@@ -17,6 +18,8 @@ description: ตอบคำถามเกี่ยวกับโปรเจ�
 - ค้น wiki index และ pages ที่เกี่ยวข้องที่เล็กที่สุดพอ
 - เช็ค concept pages, decision pages และ entity pages
 - Cross-reference pages ที่เกี่ยวข้อง
+- ตาม pointer ไป canonical artifact เมื่อคำตอบพึ่ง decision, plan, spec หรือ shared research
+- ถ้า wiki ขัดกับ canonical artifact ให้ canonical ชนะและถือว่า wiki stale
 - ถ้า wiki ครบและยังไม่ stale ให้ตอบพร้อมอ้าง page/path แล้วข้ามไป step 3
 
 ### 2. External Fallback
@@ -66,3 +69,4 @@ description: ตอบคำถามเกี่ยวกับโปรเจ�
 - อย่าแก้ wiki pages เว้นแต่ user เห็นด้วยหรือ workflow ปัจจุบันอนุญาตไว้ชัดเจน
 - อย่านำเสนอ wiki content ที่ stale เป็นข้อเท็จจริงปัจจุบัน
 - ห้ามเปิดเผย raw private source หรือ credential
+- ห้ามนำเสนอ local draft เป็น approved decision หรือ canonical plan/spec

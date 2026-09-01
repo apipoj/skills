@@ -14,6 +14,12 @@ const BANNER_NOTICE =
 
 const NO_COUNTERPART = '> **Canonical SPK skill:** ไม่มี — SPK ไม่ได้ ship สกิลนี้';
 
+// SPK-native replacements that cannot be derived from a Matt-origin contract
+// entry. Keep this list explicit so a new divergence requires review.
+const UPSTREAM_SKILL_ID_OVERRIDES = {
+  'grill-me': 'ask-me',
+};
+
 // Upstream page -> the SPK skill it documents. `null` means SPK ships no
 // counterpart. A page missing from this map is a review gate, not a default:
 // the next re-pin must decide where it belongs before it can ship.
@@ -140,6 +146,39 @@ function indexUpstreamSkillFiles(files) {
   return index;
 }
 
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+// Retained UPSTREAM.md files are runtime guidance, not the verbatim reference
+// pages under docs/. Rewrite only explicit command/code identifiers so an
+// upstream rename cannot tell SPK to invoke a command that is not in its
+// roster. Ordinary prose and the provenance reference pages remain untouched.
+function canonicalizeUpstreamSkillBody(body, contract) {
+  let canonical = body;
+  const replacementMap = new Map(Object.entries(UPSTREAM_SKILL_ID_OVERRIDES));
+  for (const skill of contract.skills) {
+    if (skill.origin?.repository !== 'mattpocock/skills') continue;
+    replacementMap.set(skill.origin.skill, skill.id);
+  }
+  const replacements = [...replacementMap]
+    .filter(([upstreamId, localId]) => upstreamId !== localId)
+    .sort(([left], [right]) => right.length - left.length);
+
+  for (const [upstreamId, localId] of replacements) {
+    const escaped = escapeRegExp(upstreamId);
+    canonical = canonical.replace(
+      new RegExp(`/${escaped}(?=[^a-z0-9-]|$)`, 'g'),
+      `/${localId}`,
+    );
+    canonical = canonical.replace(
+      new RegExp(`([\\"'\`])${escaped}\\1`, 'g'),
+      (_, quote) => `${quote}${localId}${quote}`,
+    );
+  }
+  return canonical;
+}
+
 function buildUpstreamSkillArtifactMap(upstreamDir, pin, contract, repoRoot = REPO_ROOT) {
   const upstreamIndex = indexUpstreamSkillFiles(listUpstreamSkillFiles(upstreamDir, pin));
   const artifacts = new Map();
@@ -154,7 +193,10 @@ function buildUpstreamSkillArtifactMap(upstreamDir, pin, contract, repoRoot = RE
         `${skill.id}: pinned upstream skill ${skill.origin.skill} has no SKILL.md`,
       );
     }
-    const skillBody = readUpstreamPage(upstreamDir, pin, upstream.skillPath);
+    const skillBody = canonicalizeUpstreamSkillBody(
+      readUpstreamPage(upstreamDir, pin, upstream.skillPath),
+      contract,
+    );
     const upstreamRoot = path.posix.dirname(upstream.skillPath);
 
     for (const locale of ['th', 'en']) {
@@ -166,10 +208,10 @@ function buildUpstreamSkillArtifactMap(upstreamDir, pin, contract, repoRoot = RE
         if (relative.startsWith('agents/')) continue;
         const localTarget = path.posix.join(localRoot, relative);
         if (fs.existsSync(path.join(repoRoot, localTarget))) continue;
-        artifacts.set(
-          localTarget,
+        artifacts.set(localTarget, canonicalizeUpstreamSkillBody(
           readUpstreamPage(upstreamDir, pin, upstreamAuxiliary),
-        );
+          contract,
+        ));
       }
     }
   }
@@ -265,6 +307,7 @@ module.exports = {
   bodyOf,
   buildUpstreamSkillArtifactMap,
   buildHashIndex,
+  canonicalizeUpstreamSkillBody,
   canonicalLine,
   listUpstreamPages,
   listUpstreamSkillFiles,

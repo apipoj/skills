@@ -22,11 +22,14 @@ Keep working without user input while the requested outcome remains inside curre
 Produce a developer-ready plan from the user's feature request. Distinguish a
 plan-only request from an explicit end-to-end plan-and-implement request.
 
+Before writing a project artifact, read `docs/agents/artifacts.md` when present. It is
+the routing source of truth; do not hardcode a competing destination.
+
 ## Workflow
 
-1. Inspect repository instructions, current state, related code, prior decisions, and
-   any incoming handoff receipt. Record whether authority is `plan_only` or
-   `plan_and_implement`.
+1. Inspect repository instructions, `docs/agents/artifacts.md` when present, current
+   state, related code, prior decisions, and any incoming handoff receipt. Record whether
+   authority is `plan_only` or `plan_and_implement`.
 2. Use the smallest useful specialist set when delegation is available: product
    requirements and independent market research may run in parallel; architecture
    follows their findings; task decomposition follows architecture.
@@ -34,8 +37,12 @@ plan-only request from an explicit end-to-end plan-and-implement request.
    back to sequential work in the main conversation when subagents are unavailable.
 4. Run an explicit verifier pass over acceptance criteria, feasibility, test commands,
    rollout, and rollback before calling the plan ready.
-5. Save the reviewed result to `ai_context/wiki/plans/YYYY-MM-DD-<slug>.md` when that
-   scaffold exists; otherwise return it inline. Update the index/log only when present.
+5. Resolve the destination through the artifact policy. By default, save the reviewed
+   local plan to `ai_context/work/plans/YYYY-MM-DD-<slug>.md`. Promote it to
+   `docs/plans/YYYY-MM-DD-<slug>.md` only when the policy or explicit request makes it a
+   team-shared or audit-relevant record. A wiki entry may summarize and point to the plan,
+   but must not duplicate its body. If no writable scaffold or configured destination
+   exists, return the plan inline.
 6. For `plan_only`, stop after the reviewed plan. For `plan_and_implement`, pass the
    verified plan and original bounded workspace authority directly to implementation and
    continue without another user prompt. Pause only when a material user-owned decision
@@ -74,7 +81,8 @@ commit, push, pull-request, merge, deployment, or destructive authority by itsel
 
 Return `spk.evidence/v1` with the plan artifact, repository evidence, acceptance
 criteria, verifier result, assumptions, risks, `authority_mode`, and
-`implementation_authorized: true|false` based on the original explicit request.
+`implementation_authorized: true|false` based on the original explicit request. Include
+the actual draft path and canonical path when promotion occurred.
 
 ## Guardrails
 
@@ -82,5 +90,6 @@ criteria, verifier result, assumptions, risks, `authority_mode`, and
 - Carry an explicit end-to-end workspace request through planning and implementation;
   do not manufacture a second local approval.
 - Plan-only authority never expands into implementation, Git, remote, or destructive work.
+- Never keep editable plan bodies in both the wiki and a canonical team path.
 - Prefer existing seams and explicitly justify every new dependency or subsystem.
 - Preserve unresolved product choices as questions instead of silently guessing.

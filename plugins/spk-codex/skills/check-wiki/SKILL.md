@@ -33,7 +33,8 @@ Audit project wiki content without reading raw private sources.
    continuing. The audit itself never creates this marker. Keep audit working notes in
    memory or under the OS temp directory, never in the repository.
 4. Check orphan pages, contradictions, stale claims, missing citations, dead links,
-   index drift, and secret-shaped strings.
+   index drift, secret-shaped strings, broken canonical pointers, and copied canonical
+   bodies.
 5. Rank evidence-backed findings and propose fixes; do not apply them unless requested.
 6. Run an explicit verifier pass over the report and marker state.
 
@@ -55,6 +56,8 @@ marker check outcome, proposed fixes, risks, and next action. Identify the run a
 - Keep audit mode read-only. Mechanical repairs may run only in explicit fix mode;
   semantic changes remain recommendations.
 - Fail closed on secret-scan failure.
+- Treat `docs/agents/artifacts.md` and its canonical targets as read-only comparison
+  evidence; report stale pointers or duplicated bodies without rewriting either side.
 - Never create the wiki-build marker; only check it, refuse to run while a fresh one
   exists, and remove a stale one (older than 2 hours) with the exact cleanup command
   before continuing.

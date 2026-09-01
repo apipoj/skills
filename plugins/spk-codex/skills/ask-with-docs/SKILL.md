@@ -21,7 +21,8 @@ Keep working without user input while the requested outcome remains inside curre
 
 ## Workflow
 
-1. Read the request, repository instructions, and full practice in [UPSTREAM.md](UPSTREAM.md).
+1. Read the request, repository instructions, `docs/agents/artifacts.md` when present,
+   and the full practice in [UPSTREAM.md](UPSTREAM.md).
 2. Use smart defaults when risk is low. If a decision changes scope, ask exactly one material question with a recommendation.
 3. Apply this skill's discipline in short slices and show only the progress needed for verification.
 4. Close with the outcome, evidence, risks, and remaining decisions without padding.
@@ -29,6 +30,10 @@ Keep working without user input while the requested outcome remains inside curre
 ## Focus
 
 Ask one material decision at a time to sharpen a plan or design while updating project vocabulary and durable rationale.
+
+Keep resolved vocabulary in `CONTEXT.md` (or the mapped context glossary) and durable
+architecture rationale in `docs/adr/`. These are canonical team artifacts, not local wiki
+bodies. The wiki may store only a summary and pointer.
 
 ## Autonomy Profile
 

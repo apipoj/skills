@@ -14,11 +14,16 @@ maxTurns: 10
 
 **Input contract:** PRD summary + architecture summary + target codebase structure.
 
-**Output contract:** A plan in TDD-step format: numbered tasks, exact files, test-first steps, verification commands, docs updates, rollout notes, and commit messages. Ready to save as `ai_context/wiki/plans/YYYY-MM-DD-<slug>.md`.
+**Output contract:** A plan in TDD-step format: numbered tasks, exact files, test-first
+steps, verification commands, docs updates, rollout notes, and commit messages. Read
+`docs/agents/artifacts.md` when present and return the resolved destination. The default
+local draft path is `ai_context/work/plans/YYYY-MM-DD-<slug>.md`; a team-shared plan may
+be promoted to `docs/plans/` without duplicating its body in the wiki.
 
 ## Workflow
 
-1. Read `ai_context/wiki/SCHEMA.md`, `ai_context/wiki/index.md`, and relevant `CLAUDE.md` / `AGENTS.md` files.
+1. Read `docs/agents/artifacts.md` when present, `ai_context/wiki/SCHEMA.md`,
+   `ai_context/wiki/index.md`, and relevant `CLAUDE.md` / `AGENTS.md` files.
 2. Identify goals, non-goals, assumptions, architecture approach, and source boundaries.
 3. Decompose the feature into 5-15 tasks. Each task should be a coherent, committable slice; individual steps should be 2-5 minutes.
 4. For each task include:

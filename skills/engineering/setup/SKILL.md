@@ -1,6 +1,6 @@
 ---
 name: setup
-description: ตั้งค่า issue tracker, domain docs และ defaults ที่ skill อื่นใช้ร่วมกันใน repository นี้
+description: ตั้งค่า issue tracker, domain docs และ artifact routing แบบ split-zone ที่ skill อื่นใช้ร่วมกันใน repository นี้
 disable-model-invocation: true
 ---
 # ตั้งค่า Apipoj Skills
@@ -12,6 +12,8 @@ Scaffold ค่า config ระดับ repo ที่ engineering skills อ�
 - **Issue tracker** — ที่ที่ issue ของ repo นี้อยู่ (default เป็น GitHub; local markdown ก็รองรับตั้งแต่แรก)
 - **Triage labels** — string ที่ใช้แทนบทบาท triage มาตรฐาน 5 แบบ
 - **Domain docs** — `CONTEXT.md` และ ADR อยู่ที่ไหน และกฎการอ่านสำหรับ consumer
+- **Artifact routing** — local draft, เอกสาร canonical ของทีม และงานส่งภายนอกอยู่ที่ไหน
+  รวมถึงกฎ promotion และ retention
 
 skill นี้เป็นแบบ prompt-driven ไม่ใช่ script ที่ทำงานตายตัว ให้ explore ก่อน แสดงสิ่งที่เจอ ยืนยันกับ user แล้วค่อยเขียน
 
@@ -25,7 +27,8 @@ skill นี้เป็นแบบ prompt-driven ไม่ใช่ script ท
 - `AGENTS.md` และ `CLAUDE.md` ที่ root — มีไฟล์ไหนอยู่แล้วบ้าง มี section `## Agent skills` อยู่แล้วหรือยัง
 - `CONTEXT.md` และ `CONTEXT-MAP.md` ที่ root
 - `docs/adr/` และ `src/*/docs/adr/` ที่มีอยู่
-- `docs/agents/` — output เดิมของ skill นี้มีอยู่แล้วหรือยัง
+- `docs/agents/` — output เดิมของ skill นี้มีอยู่แล้วหรือยัง โดยเฉพาะ
+  `docs/agents/artifacts.md`
 - `.scratch/` — สัญญาณว่ามี convention local-markdown issue tracker อยู่แล้ว
 - skill `triage` ติดตั้งอยู่ไหม (มีโฟลเดอร์ skill `triage` อยู่ข้าง ๆ skill นี้ หรือ `triage` อยู่ใน skill ที่ใช้ได้) ข้อนี้เป็นตัวตัดสินว่า Section B จะรันหรือไม่
 - สัญญาณ monorepo — `pnpm-workspace.yaml`, field `workspaces` ใน `package.json`, หรือ `packages/*` ที่มี `src/` ของตัวเองและมีของจริงอยู่ข้างใน ให้เสนอเฉพาะตอนที่เป็น multi-package repo ขนาดใหญ่จริง ๆ ถ้าไม่เจอสัญญาณเหล่านี้แปลว่า single-context ซึ่งเป็นกรณีส่วนใหญ่ของ repo ทั่วไป
@@ -61,12 +64,27 @@ skill นี้เป็นแบบ prompt-driven ไม่ใช่ script ท
 
 เสนอ **multi-context** — `CONTEXT-MAP.md` ที่ root ชี้ไปหา `CONTEXT.md` ของแต่ละ context — เฉพาะตอนที่ exploration เจอสัญญาณ monorepo แล้วค่อยยืนยันว่าจะใช้ layout แบบไหน
 
+**Section D — Artifact routing** ใช้ split-zone default โดยไม่ต้องถามเพิ่ม:
+
+- `ai_context/` เป็น local/private working state และยังถูก exclude จาก Git เป็นค่าเริ่มต้น
+- `CONTEXT.md`, `docs/` หรือ issue/document system ที่ตั้งค่าไว้เก็บ canonical records
+- plan, spec, research, questionnaire และ handoff เริ่มที่ `ai_context/work/` แล้วค่อย
+  promote เมื่อ policy หรือคำขอระบุ
+- `ai_context/wiki/` เก็บ derived memory, summary และ pointer ห้ามคัดลอก body ของ
+  canonical artifact
+
+ถ้ามี policy เดิมที่เลือกปลายทางต่างออกไป ให้รักษาไว้และแสดงเฉพาะความต่างที่สำคัญ
+ถ้า repo ไม่ได้บอกชัดว่าใช้ repo-backed deliverables หรือ external document system ให้
+ปล่อย customer delivery เป็น unconfigured ห้ามเดา backend ที่จะส่งถึง recipient
+
 ### 3. ยืนยันและแก้ไข
 
 แสดง draft ให้ user ดู:
 
 - block `## Agent skills` ที่จะเพิ่มเข้าไปในไฟล์ `CLAUDE.md` หรือ `AGENTS.md` (ดูกฎการเลือกไฟล์ในขั้นตอนที่ 4)
-- เนื้อหาของ `docs/agents/issue-tracker.md`, `docs/agents/domain.md` และ `docs/agents/triage-labels.md` (ไฟล์หลังเฉพาะตอนที่ `triage` ติดตั้งอยู่)
+- เนื้อหาของ `docs/agents/issue-tracker.md`, `docs/agents/domain.md`,
+  `docs/agents/artifacts.md` และ `docs/agents/triage-labels.md` (ไฟล์หลังเฉพาะตอนที่
+  `triage` ติดตั้งอยู่)
 
 ให้ user แก้ก่อนเขียนจริงได้
 
@@ -98,6 +116,11 @@ Block นี้:
 ### Domain docs
 
 [สรุปหนึ่งบรรทัดของ layout — "single-context" หรือ "multi-context"] ดู `docs/agents/domain.md`
+
+### Artifacts
+
+Local draft อยู่ใต้ `ai_context/`; canonical team artifact ใช้ `docs/` หรือ backend ที่
+ตั้งค่าไว้ ดู `docs/agents/artifacts.md`
 ```
 
 ใส่ sub-block `### Triage labels` และเขียน `docs/agents/triage-labels.md` เฉพาะตอนที่ `triage` ติดตั้งอยู่และ Section B รันจริง ถ้าไม่ใช่ ให้ข้ามทั้งสองอย่าง
@@ -109,12 +132,16 @@ Block นี้:
 - [issue-tracker-local.md](./issue-tracker-local.md) — local-markdown issue tracker
 - [triage-labels.md](./triage-labels.md) — label mapping (เฉพาะตอนที่ `triage` ติดตั้งอยู่)
 - [domain.md](./domain.md) — กฎ consumer ของ domain docs + layout
+- [artifacts.md](./artifacts.md) — artifact routing, promotion, visibility และ retention
 
 สำหรับ issue tracker แบบ "อื่น ๆ" ให้เขียน `docs/agents/issue-tracker.md` จากศูนย์โดยใช้คำอธิบายของ user
 
 ### 5. เสร็จสิ้น
 
-บอก user ว่า setup เสร็จแล้ว และ engineering skill ไหนบ้างที่จะอ่านจากไฟล์พวกนี้ต่อไป บอกด้วยว่าแก้ `docs/agents/*.md` เองภายหลังได้เลย รัน skill นี้ซ้ำจำเป็นเฉพาะตอนอยากเปลี่ยน issue tracker หรือเริ่มใหม่ทั้งหมด
+บอก user ว่า setup เสร็จแล้ว และ engineering skill ไหนบ้างที่จะอ่านจากไฟล์พวกนี้ต่อไป
+บอกว่า artifact-writing skills จะอ่าน `docs/agents/artifacts.md` และแก้
+`docs/agents/*.md` เองภายหลังได้ รัน skill นี้ซ้ำเมื่ออยากเปลี่ยน routing policy, issue
+tracker หรือเริ่มใหม่ทั้งหมด
 
 ## Autonomy Profile
 

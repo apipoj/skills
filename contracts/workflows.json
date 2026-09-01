@@ -274,7 +274,8 @@
         }
       ],
       "artifacts": [
-        "ask-with-docs result",
+        "CONTEXT.md or mapped context glossary updates",
+        "docs/adr/NNNN-<slug>.md when ADR criteria are met",
         "verification evidence"
       ],
       "evidence": [
@@ -283,6 +284,7 @@
         "verification status"
       ],
       "guardrails": [
+        "Keep glossary and ADR bodies in their canonical team paths; the local wiki may store only summaries and pointers.",
         "Match the user's language and keep Thai cultural fit while preserving exact technical identifiers.",
         "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
         "Report evidence gaps instead of guessing."
@@ -456,8 +458,8 @@
       "locales": {
         "en": {
           "displayName": "Setup",
-          "description": "Configure this repo for the engineering skills — set up its issue tracker, triage label vocabulary, and domain doc layout. Run once before first use of the other engineering skills.",
-          "shortDescription": "Configure this repo for the engineering skills — set up its issue tracker, triage label vocabula",
+          "description": "Configure this repo for the engineering skills — set up its issue tracker, triage vocabulary, domain docs, and split-zone artifact routing. Run once before first use of the other engineering skills.",
+          "shortDescription": "Configure issue tracking, domain docs, and artifact routing",
           "defaultPrompt": "Use setup for my current request.",
           "triggers": [
             "use setup",
@@ -470,8 +472,8 @@
         },
         "th": {
           "displayName": "ตั้งค่า Apipoj Skills",
-          "description": "ตั้งค่า issue tracker, domain docs และ defaults ที่ skill อื่นใช้ร่วมกันใน repository นี้",
-          "shortDescription": "ตั้งค่า issue tracker, domain docs และ defaults ที่ skill อื่นใช้ร่วมกันใน repository นี้",
+          "description": "ตั้งค่า issue tracker, domain docs และ artifact routing แบบ split-zone ที่ skill อื่นใช้ร่วมกันใน repository นี้",
+          "shortDescription": "ตั้งค่า issue tracker, domain docs และ artifact routing กลาง",
           "defaultPrompt": "ใช้ setup กับคำขอนี้",
           "triggers": [
             "ใช้ setup",
@@ -491,11 +493,11 @@
       "workflow": [
         {
           "phase": "orient",
-          "instruction": "Read the request, repository evidence, Thai-first defaults, and the exact approval boundary."
+          "instruction": "Read the request, repository evidence, existing docs/agents configuration, Thai-first defaults, and the exact approval boundary."
         },
         {
           "phase": "execute",
-          "instruction": "Apply the setup discipline in the smallest complete slice; ask one material question only when needed."
+          "instruction": "Configure issue tracking, domain docs, triage vocabulary when installed, and the split-zone artifact routing policy at docs/agents/artifacts.md. Keep ai_context local by default and canonical team artifacts under docs or the configured external backend."
         },
         {
           "phase": "verify",
@@ -503,8 +505,10 @@
         }
       ],
       "artifacts": [
-        "setup result",
-        "verification evidence"
+        "docs/agents/artifacts.md",
+        "docs/agents/domain.md",
+        "docs/agents/issue-tracker.md",
+        "AGENTS.md or CLAUDE.md policy pointer"
       ],
       "evidence": [
         "inputs used",
@@ -645,11 +649,11 @@
       "workflow": [
         {
           "phase": "orient",
-          "instruction": "Read the request, repository evidence, Thai-first defaults, and the exact approval boundary."
+          "instruction": "Read the request, repository evidence, docs/agents/artifacts.md when present, docs/agents/issue-tracker.md, Thai-first defaults, and the exact approval boundary."
         },
         {
           "phase": "execute",
-          "instruction": "Apply the to-spec discipline in the smallest complete slice; ask one material question only when needed."
+          "instruction": "Write a reviewable local draft to ai_context/work/specs/YYYY-MM-DD-spec-<slug>.md by default. Promote it only to the single canonical backend selected by the artifact policy, and never treat a local draft and tracker issue as two editable sources of truth."
         },
         {
           "phase": "verify",
@@ -657,8 +661,8 @@
         }
       ],
       "artifacts": [
-        "to-spec result",
-        "verification evidence"
+        "ai_context/work/specs/YYYY-MM-DD-spec-<slug>.md",
+        "canonical issue or docs/specs path after authorized promotion"
       ],
       "evidence": [
         "inputs used",
@@ -805,11 +809,11 @@
         },
         {
           "phase": "write",
-          "instruction": "Write questions aimed at the gap, most important first, to to-questionnaire-<slug>.md in the current directory and report the path."
+          "instruction": "Read docs/agents/artifacts.md when present, then write questions aimed at the gap, most important first, to ai_context/work/questionnaires/YYYY-MM-DD-questionnaire-<slug>.md by default and report the path. Promote to a configured deliverable backend only on an explicit request; creating the file never authorizes sending it."
         }
       ],
       "artifacts": [
-        "questionnaire file",
+        "ai_context/work/questionnaires/YYYY-MM-DD-questionnaire-<slug>.md",
         "recipient and need summary"
       ],
       "evidence": [
@@ -820,7 +824,8 @@
       "guardrails": [
         "Interview the user about the send, never about the subject they cannot answer.",
         "Match the user's language and keep Thai cultural fit while preserving exact technical identifiers.",
-        "Write only the questionnaire file; do not change other project files.",
+        "Write only the questionnaire file and any required parent directory; do not change unrelated project files.",
+        "Creating or promoting a questionnaire never authorizes sending it to the recipient.",
         "Report evidence gaps instead of guessing at what the recipient knows."
       ],
       "autonomyProfile": "decision_aware"
@@ -915,8 +920,8 @@
       "locales": {
         "en": {
           "displayName": "Code",
-          "description": "Implement an explicit software request or reviewed plan through tested, documented workspace changes without a second approval gate; use tdd instead when the user explicitly asks for a strict test-first loop.",
-          "shortDescription": "Implement and verify an explicit request without a second local approval",
+          "description": "Implement an explicit software request or reviewed plan with an adaptive loop that matches rigor to a quick patch, feature, bug fix, or refactor; use tdd for an explicitly strict test-first path.",
+          "shortDescription": "Match development rigor to the task shape, then implement and verify",
           "defaultPrompt": "Use code for my current request.",
           "triggers": [
             "implement this feature with tests",
@@ -930,8 +935,8 @@
         },
         "th": {
           "displayName": "ลงมือพัฒนาตามแผน",
-          "description": "ลงมือพัฒนาคำขอที่ชัดหรือแผนที่ review แล้วจนผ่าน test และ local verification โดยไม่ถามอนุมัติ workspace ซ้ำ สลับไปใช้ tdd แทนเฉพาะเมื่อผู้ใช้ขอ test-first loop แบบเข้มงวดชัดเจน",
-          "shortDescription": "พัฒนาและตรวจคำขอที่ชัดโดยไม่ขออนุมัติ local ซ้ำ",
+          "description": "ลงมือพัฒนาคำขอที่ชัดหรือแผนที่ review แล้วด้วย adaptive loop ที่เลือกระดับความเข้มตาม Quick patch, Feature, Bug fix หรือ Refactor และใช้ tdd เมื่อผู้ใช้ขอ test-first แบบเข้มงวด",
+          "shortDescription": "เลือกระดับความเข้มตามรูปทรงงานแล้วพัฒนาและตรวจให้ครบ",
           "defaultPrompt": "ใช้ code กับคำขอนี้",
           "triggers": [
             "implement feature นี้พร้อม test ให้หน่อย",
@@ -952,19 +957,23 @@
       "workflow": [
         {
           "phase": "authorize",
-          "instruction": "Treat a clear explicit implementation, fix, update, or plan-and-implement request as bounded workspace authority. If no plan artifact exists, build an internal micro-plan from acceptance criteria instead of stopping."
+          "instruction": "Treat a clear explicit implementation, fix, update, or plan-and-implement request as bounded workspace authority. Resolve plans through docs/agents/artifacts.md, then ai_context/work/plans, docs/plans, and finally ai_context/wiki/plans as a legacy compatibility fallback. If no plan artifact exists, build an internal micro-plan from acceptance criteria instead of stopping."
+        },
+        {
+          "phase": "shape",
+          "instruction": "Classify the request once as a Quick patch, Feature, Bug fix, or Refactor. Choose the smallest justified change, name the data or domain shape only when state and branching warrant it, and keep subagents optional unless independent work or context protection makes them useful."
         },
         {
           "phase": "execute",
-          "instruction": "Implement dependency-ordered slices with RED/GREEN evidence, preserving unrelated work and using reversible assumptions inside scope."
-        },
-        {
-          "phase": "repair",
-          "instruction": "Run focused and regression gates, diagnose failures, and repair autonomously within the profile budget. Pause only for a material user-owned decision, security risk, missing access, scope expansion, or an undeclared Git/remote/destructive effect."
+          "instruction": "For a Quick patch, edit directly and run the smallest relevant check. For a Feature, name the user-visible outcome and useful data shape before the smallest working slice. For a Bug fix, reproduce the failure and prove root cause before changing code. For a Refactor, pin current behavior, subtract before adding, and prove equivalence."
         },
         {
           "phase": "verify",
-          "instruction": "Run an independent verifier, update documentation, and return exact evidence plus a resumable checkpoint for any remaining blocker."
+          "instruction": "Verify the real artifact or surface with focused tests and broader gates proportional to blast radius and repository instructions. Escalate to strict TDD, design work, parallel specialists, or an independent verifier only when risk warrants it, then return concise user-facing evidence."
+        },
+        {
+          "phase": "repair",
+          "instruction": "Diagnose failures and repair autonomously within the profile budget. Pause only for a material user-owned decision, security risk, missing access, scope expansion, or an undeclared Git, remote, or destructive effect."
         }
       ],
       "artifacts": [
@@ -1110,11 +1119,11 @@
       "workflow": [
         {
           "phase": "orient",
-          "instruction": "Read the request, repository evidence, Thai-first defaults, and the exact approval boundary."
+          "instruction": "Read the request, repository evidence, docs/agents/artifacts.md when present, Thai-first defaults, and the exact approval boundary."
         },
         {
           "phase": "execute",
-          "instruction": "Apply the research discipline in the smallest complete slice; ask one material question only when needed."
+          "instruction": "Research against primary sources and write the cited draft to ai_context/work/research/YYYY-MM-DD-research-<slug>.md by default. Promote reusable or team-shared findings to docs/research only when the artifact policy or explicit request calls for it."
         },
         {
           "phase": "verify",
@@ -1122,8 +1131,8 @@
         }
       ],
       "artifacts": [
-        "research result",
-        "verification evidence"
+        "ai_context/work/research/YYYY-MM-DD-research-<slug>.md",
+        "docs/research/YYYY-MM-DD-research-<slug>.md after reviewed promotion"
       ],
       "evidence": [
         "inputs used",
@@ -1198,7 +1207,8 @@
         }
       ],
       "artifacts": [
-        "domain-modeling result",
+        "CONTEXT.md or mapped context glossary updates",
+        "docs/adr/NNNN-<slug>.md when ADR criteria are met",
         "verification evidence"
       ],
       "evidence": [
@@ -1207,6 +1217,7 @@
         "verification status"
       ],
       "guardrails": [
+        "Keep glossary and ADR bodies in their canonical team paths; the local wiki may store only summaries and pointers.",
         "Match the user's language and keep Thai cultural fit while preserving exact technical identifiers.",
         "Do not expand scope or cross a Git, external, or destructive boundary without exact approval.",
         "Report evidence gaps instead of guessing."
@@ -1498,7 +1509,7 @@
         },
         {
           "phase": "execute",
-          "instruction": "Apply the asking discipline in the smallest complete slice; ask one material question only when needed."
+          "instruction": "Apply the asking discipline in the smallest complete slice; separate adjacent questions in the same round with a horizontal rule, and ask one material question only when needed."
         },
         {
           "phase": "verify",
@@ -1578,7 +1589,7 @@
         },
         {
           "phase": "write",
-          "instruction": "Write the handoff to the workspace root as handoff-<ISO-date>-<slug>.md by default, matching this skill's workspace_write effect level. Use a different destination, such as the OS temp directory, only when the user explicitly asks for one."
+          "instruction": "Read docs/agents/artifacts.md when present, then write the handoff to ai_context/work/handoffs/YYYY-MM-DDTHHMMSSZ-<slug>.md by default. Use a different destination only when the policy or user explicitly selects one."
         },
         {
           "phase": "verify",
@@ -1586,7 +1597,7 @@
         }
       ],
       "artifacts": [
-        "handoff-<ISO-date>-<slug>.md",
+        "ai_context/work/handoffs/YYYY-MM-DDTHHMMSSZ-<slug>.md",
         "suggested-skills section"
       ],
       "evidence": [
@@ -1595,7 +1606,7 @@
         "redaction check for secrets and personal data"
       ],
       "guardrails": [
-        "Default to writing the handoff at the workspace root, not the OS temp directory; use another destination only on explicit user request.",
+        "Default to the local handoff work directory; use another destination only when docs/agents/artifacts.md or the user explicitly selects one.",
         "Reference existing artifacts (specs, plans, ADRs, issues, commits, diffs) by path or URL instead of duplicating their content.",
         "Redact secrets, credentials, and personal data before writing.",
         "Match the user's language and keep Thai cultural fit while preserving exact technical identifiers.",
@@ -1894,7 +1905,7 @@
       "locales": {
         "en": {
           "displayName": "Wait What",
-          "description": "Stop and re-pitch the last message that did not land — add the missing context, drop the jargon, and use the project's own vocabulary from CONTEXT.md.",
+          "description": "Stop and re-pitch the last message that did not land — add the missing context, drop the jargon, and use the project's own vocabulary from CONTEXT.md, following CONTEXT-MAP.md when the repo has more than one context.",
           "shortDescription": "Re-pitch the last message in plain language with the missing context",
           "defaultPrompt": "Use wait-what for my current request.",
           "triggers": [
@@ -1908,7 +1919,7 @@
         },
         "th": {
           "displayName": "งงตรงไหน",
-          "description": "หยุดแล้วอธิบายข้อความล่าสุดใหม่ให้เข้าใจ เติม context ที่ขาด เลี่ยงศัพท์เทคนิคที่ไม่จำเป็น และใช้คำศัพท์ของโปรเจกต์จาก CONTEXT.md",
+          "description": "หยุดแล้วอธิบายข้อความล่าสุดใหม่ให้เข้าใจ เติม context ที่ขาด เลี่ยงศัพท์เทคนิคที่ไม่จำเป็น และใช้คำศัพท์ของโปรเจกต์จาก CONTEXT.md โดยตาม CONTEXT-MAP.md เมื่อมีหลาย context",
           "shortDescription": "อธิบายข้อความล่าสุดใหม่ด้วยภาษาที่เข้าใจง่ายและ context ที่ขาดไป",
           "defaultPrompt": "ใช้ wait-what กับข้อความล่าสุด",
           "triggers": [
@@ -1933,7 +1944,7 @@
         },
         {
           "phase": "repitch",
-          "instruction": "Say it again with the missing context first, in plain language, using the project's own vocabulary from CONTEXT.md when it exists."
+          "instruction": "Say it again with the missing context first, in plain language. Follow CONTEXT-MAP.md to the CONTEXT.md that matches this scope when the repo has more than one context, then use the project's own vocabulary."
         }
       ],
       "artifacts": [
@@ -1941,7 +1952,8 @@
       ],
       "evidence": [
         "the message being re-pitched",
-        "the context that was missing"
+        "the context that was missing",
+        "the CONTEXT-MAP.md to CONTEXT.md vocabulary route when applicable"
       ],
       "guardrails": [
         "Explain again; never change the work or any file.",
@@ -2021,11 +2033,12 @@
         },
         {
           "phase": "handoff",
-          "instruction": "Classify the incoming authority as plan-only or plan-and-implement. A plan-only request stops after the reviewed plan. A clear plan-and-implement or direct implementation request carries bounded workspace authority; after verification, continue automatically into implementation without another user prompt unless a material user-owned decision remains."
+          "instruction": "Resolve the destination through docs/agents/artifacts.md. Save the reviewed local plan to ai_context/work/plans/YYYY-MM-DD-<slug>.md by default; promote a team-shared plan to docs/plans without duplicating its body in the wiki. Classify authority as plan-only or plan-and-implement. A plan-only request stops after the reviewed plan. A clear plan-and-implement or direct implementation request must continue automatically after verification unless a material user-owned decision remains."
         }
       ],
       "artifacts": [
-        "ai_context/wiki/plans/YYYY-MM-DD-<slug>.md",
+        "ai_context/work/plans/YYYY-MM-DD-<slug>.md",
+        "docs/plans/YYYY-MM-DD-<slug>.md after reviewed promotion",
         "dependency-ordered task graph"
       ],
       "evidence": [
@@ -2551,7 +2564,7 @@
         },
         {
           "phase": "reconcile",
-          "instruction": "Compare existing wiki pages, preserve newer evidence, and surface contradictions."
+          "instruction": "Compare existing wiki pages and docs/agents/artifacts.md when present, follow canonical pointers, preserve newer evidence, and surface contradictions. Treat ai_context/work sources as non-authoritative drafts."
         },
         {
           "phase": "write",
@@ -2575,7 +2588,8 @@
       ],
       "guardrails": [
         "Never add-knowledge ignored, credential-bearing, or unapproved private material.",
-        "Never replace user-owned wiki history with a template."
+        "Never replace user-owned wiki history with a template.",
+        "Never duplicate a canonical artifact body in the wiki; store a cited summary and pointer."
       ],
       "autonomyProfile": "afk_local"
     },
@@ -2713,7 +2727,7 @@
       "workflow": [
         {
           "phase": "search",
-          "instruction": "Read the wiki index, follow the smallest relevant page set, and preserve source boundaries."
+          "instruction": "Read docs/agents/artifacts.md when present, then the wiki index and the smallest relevant page set. Follow canonical pointers and preserve source boundaries."
         },
         {
           "phase": "assess",
@@ -2739,7 +2753,9 @@
       ],
       "guardrails": [
         "Do not treat absent wiki content as evidence.",
-        "Do not make external calls when local evidence fully answers the question."
+        "Do not make external calls when local evidence fully answers the question.",
+        "If derived memory conflicts with a canonical artifact, use the canonical artifact and report the wiki as stale.",
+        "Never present a local draft as an approved decision or canonical plan/spec."
       ],
       "autonomyProfile": "afk_local"
     },
@@ -2794,7 +2810,7 @@
       "workflow": [
         {
           "phase": "inventory",
-          "instruction": "Enumerate wiki pages, index entries, links, citations, provenance, schema expectations, and allowed private-source boundaries."
+          "instruction": "Enumerate wiki pages, index entries, links, citations, provenance, schema expectations, docs/agents/artifacts.md when present, canonical pointers, and allowed private-source boundaries."
         },
         {
           "phase": "guard",
@@ -2802,7 +2818,7 @@
         },
         {
           "phase": "analyze",
-          "instruction": "Detect orphans, dead links, conflicting claims, stale evidence, missing citations, schema drift, and secret-shaped content."
+          "instruction": "Detect orphans, dead links, conflicting claims, stale evidence, missing citations, schema drift, secret-shaped content, broken canonical pointers, and duplicated canonical bodies."
         },
         {
           "phase": "rank",

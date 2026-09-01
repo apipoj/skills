@@ -40,7 +40,7 @@ As the router, reveal advanced detail only when it helps the current decision.
    - the last reply didn't land, or the user says "wait, what?" (or "งง") → `wait-what`
    - create an engineering plan → `plan`; publish an existing discussion as a spec → `to-spec`
    - split work → `to-tickets`; map a large foggy effort → `wayfinder`
-   - implement, fix, or plan-and-implement → `code`; use a strict red-green loop → `tdd`
+   - implement, fix, refactor, or plan-and-implement → adaptive `code`; use strict red-green or risk-driven orchestration → `tdd`
    - investigate a failure → `debug`; review a diff → `code-review`; get fast test feedback → `test-changes`
    - answer a code-shape question → `prototype`; compare UI directions → `design-options`
    - improve module shape → `codebase-design` or `improve-codebase`
@@ -49,6 +49,14 @@ As the router, reveal advanced detail only when it helps the current decision.
    - configure or orient a repository → `setup` or `load-project`; author a bash setup wizard for human-only steps → `wizard`; check installation → `doctor`
    - prepare delivery → `check-release`, `pr`, `task-to-pr`, or `deploy`; remove Apipoj Skills → `uninstall`
    - carry context to a fresh session → `handoff`; learn a topic → `teach`; write agent docs or skills → `write-skills`
+
+   Development-mode examples — default to `code`; choose `tdd` when the user explicitly
+   requests test-first work or high-risk behavior has a reliable, cost-effective test seam:
+   - copy, CSS, configuration, simple wiring, or an internal refactor → `code`
+   - an exploratory feature whose behavior is still moving → `code` until its data shape and contract settle
+   - payment calculation, permission logic, migration, or concurrency with a stable seam → `tdd`
+   - a reproducible bug with a reliable regression test → `tdd`; when the seam is poor,
+     let `code` preserve the runtime reproduction first
 
    When the outcome maps to a manual-only skill (`disable-model-invocation`), present the `/<name>` command to the user and stop instead of invoking it.
 5. Run the selected workflow through its verified outcome. An explicit end-to-end request
