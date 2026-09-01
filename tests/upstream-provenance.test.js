@@ -20,7 +20,7 @@ const {
 
 describe('reviewed upstream provenance', () => {
   test('pins the approved Matt Pocock commit', () => {
-    expect(PINNED_UPSTREAM_COMMIT).toBe('84fdeffd12f2ee307994d1eb6feb48173b6e0502');
+    expect(PINNED_UPSTREAM_COMMIT).toBe('6654f6b60cd9d5be8b54c6fafe44346dabeb3b76');
     expect(collectUpstreamProvenanceErrors(ROOT)).toEqual([]);
   });
 

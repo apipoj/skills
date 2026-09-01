@@ -19,6 +19,12 @@ function makePluginRoot() {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'spk-pluginroot-'));
   fs.mkdirSync(path.join(dir, 'templates/ai_context/wiki'), { recursive: true });
   fs.mkdirSync(path.join(dir, 'templates/ai_context/sources'), { recursive: true });
+  fs.mkdirSync(path.join(dir, 'templates/ai_context/runtime'), { recursive: true });
+  for (const segment of ['archive', 'handoffs', 'plans', 'questionnaires', 'research', 'specs']) {
+    fs.mkdirSync(path.join(dir, 'templates/ai_context/work', segment), { recursive: true });
+    fs.writeFileSync(path.join(dir, 'templates/ai_context/work', segment, '.gitkeep'), '');
+  }
+  fs.writeFileSync(path.join(dir, 'templates/ai_context/runtime/.gitkeep'), '');
   fs.writeFileSync(path.join(dir, 'templates/ai_context/wiki/SCHEMA.md'), 'SCHEMA v3.1.0');
   fs.writeFileSync(path.join(dir, 'templates/ai_context/wiki/index.md'), 'INDEX');
   fs.writeFileSync(path.join(dir, 'templates/ai_context/wiki/log.md'), 'LOG');
@@ -35,6 +41,13 @@ describe('init-ai-context', () => {
     expect(fs.existsSync(path.join(proj, 'ai_context/wiki/SCHEMA.md'))).toBe(true);
     expect(fs.existsSync(path.join(proj, 'ai_context/wiki/index.md'))).toBe(true);
     expect(fs.existsSync(path.join(proj, 'ai_context/sources/.gitkeep'))).toBe(true);
+    expect(fs.existsSync(path.join(proj, 'ai_context/runtime/.gitkeep'))).toBe(true);
+    expect(fs.existsSync(path.join(proj, 'ai_context/work/plans/.gitkeep'))).toBe(true);
+    expect(fs.existsSync(path.join(proj, 'ai_context/work/handoffs/.gitkeep'))).toBe(true);
+    expect(fs.existsSync(path.join(proj, 'ai_context/work/questionnaires/.gitkeep'))).toBe(true);
+    expect(fs.existsSync(path.join(proj, 'ai_context/work/research/.gitkeep'))).toBe(true);
+    expect(fs.existsSync(path.join(proj, 'ai_context/work/specs/.gitkeep'))).toBe(true);
+    expect(fs.existsSync(path.join(proj, 'ai_context/work/archive/.gitkeep'))).toBe(true);
     expect(fs.readFileSync(path.join(proj, 'ai_context/sources/.gitignore'), 'utf-8'))
       .toBe('*\n!.gitignore\n');
   });

@@ -11,6 +11,8 @@ description: ตรวจ wiki ของโปรเจกต์เพื่อ�
 - ลิสต์ไฟล์ทั้งหมดใน `ai_context/wiki/`
 - อ่าน `ai_context/wiki/index.md` สำหรับ catalog
 - อ่าน `ai_context/wiki/log.md` สำหรับ activity ล่าสุด
+- อ่าน `docs/agents/artifacts.md` เป็น read-only comparison policy ถ้ามี และตรวจ pointer
+  ไป canonical targets โดยไม่แก้ไฟล์เหล่านั้น
 - ห้ามตรวจ `ai_context/sources/`, ignored paths, credential หรือ environment file ใด ๆ
 - เช็ค marker file `ai_context/.spk-wiki-build` ก่อนเริ่มเสมอ ถ้ามีอยู่และอายุน้อยกว่า 2
   ชั่วโมง ให้ปฏิเสธการรัน เพราะอาจมี wiki build หรือ audit อื่นทำงานอยู่พร้อมกัน ถ้า marker
@@ -39,6 +41,8 @@ description: ตรวจ wiki ของโปรเจกต์เพื่อ�
 ### 5. Link Integrity
 - Internal wiki links ที่ชี้ไป pages ที่ไม่มี
 - Cross-references ที่ขาด
+- Canonical artifact pointers ที่เสียหรือ stale
+- Body ของ canonical artifact ที่ถูกคัดลอกมาไว้ใน wiki จนอาจ drift
 
 ### 6. Secret Scan
 - Scan wiki pages ทั้งหมดสำหรับ secrets ที่อาจมี: API keys, tokens, credentials, passwords
@@ -78,3 +82,4 @@ description: ตรวจ wiki ของโปรเจกต์เพื่อ�
 - audit mode ห้ามแก้ wiki; mechanical repair ทำได้เมื่อคำขอปัจจุบันระบุ fix ชัด ส่วน semantic repair ให้เสนอแนะก่อน
 - Flag secrets เป็น Critical ไม่ว่า context อะไร
 - รายงาน findings เรียงตาม severity
+- รายงาน stale pointer หรือ body ซ้ำโดยไม่ rewrite canonical artifact หรือ wiki ใน audit mode

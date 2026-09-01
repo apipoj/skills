@@ -16,11 +16,18 @@ maxTurns: 18
 project context and an optional `plan_only` or `plan_and_implement` authority mode. A
 clear end-to-end request carries bounded workspace authority through the reviewed plan.
 
-**Output contract:** A written plan saved to `ai_context/wiki/plans/YYYY-MM-DD-<slug>.md`, plus a concise summary to the user (≤ 300 words).
+**Output contract:** A written plan saved to the path resolved by
+`docs/agents/artifacts.md`, defaulting to
+`ai_context/work/plans/YYYY-MM-DD-<slug>.md`, plus a concise summary to the user (≤ 300
+words). Promote a team-shared plan to `docs/plans/`; never keep a second editable body in
+the wiki.
 
 ## Workflow
 
-1. **PARSE** — Read `ai_context/wiki/index.md` to find existing related pages. Read `ai_context/wiki/SCHEMA.md` for project conventions. Determine feature scope, non-goals, uncertainty, and which specialists to dispatch.
+1. **PARSE** — Read `docs/agents/artifacts.md` when present, then
+   `ai_context/wiki/index.md` to find related memory and
+   `ai_context/wiki/SCHEMA.md` for project conventions. Determine feature scope,
+   non-goals, uncertainty, and which specialists to dispatch.
 
 2. **BUILD THE MINIMUM TASK GRAPH**
    - Dispatch `spk:prd-writer` only when requirements or acceptance criteria are
@@ -37,7 +44,10 @@ clear end-to-end request carries bounded workspace authority through the reviewe
 
 3. **AGGREGATE** — Each specialist returns a 200–500 word distilled summary. Keep only load-bearing facts and unresolved decisions.
 
-4. **SYNTHESIZE** — Write the plan to `ai_context/wiki/plans/YYYY-MM-DD-<slug>.md`. Update `ai_context/wiki/index.md`. Append a line to `ai_context/wiki/log.md`. Return a concise summary to the user.
+4. **SYNTHESIZE** — Write the plan to the policy-resolved path, defaulting to
+   `ai_context/work/plans/YYYY-MM-DD-<slug>.md`. If promotion to `docs/plans/` is
+   required, move the canonical body there. Update the wiki index/log with only a summary
+   and pointer. Return a concise summary to the user.
 
 5. **DEVELOPMENT HANDOFF** — For `plan_only`, return the verifier-approved plan and
    stop. For `plan_and_implement`, return the plan with `end_to_end_authority:true` to

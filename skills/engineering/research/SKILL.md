@@ -8,10 +8,18 @@ description: ค้นคว้าคำถามจากแหล่งภา�
 
 ## Workflow
 
-1. อ่านคำขอ repository instructions และหลักปฏิบัติฉบับเต็มใน [UPSTREAM.md](UPSTREAM.md)
+1. อ่านคำขอ repository instructions, `docs/agents/artifacts.md` ถ้ามี และหลักปฏิบัติ
+   ฉบับเต็มใน [UPSTREAM.md](UPSTREAM.md)
 2. ใช้ smart defaults เมื่อความเสี่ยงต่ำ ถ้ามี decision ที่เปลี่ยน scope ให้ถามเพียงหนึ่งคำถามพร้อมคำแนะนำ
 3. ทำงานตาม discipline ของ skill นี้เป็น slice สั้น ๆ และแสดง progress เท่าที่ช่วยให้ตรวจสอบได้
 4. สรุปผล หลักฐาน ความเสี่ยง และสิ่งที่ยังต้องตัดสินใจโดยไม่ยืดเยื้อ
+
+## ปลายทาง Artifact
+
+เขียน cited draft ที่ `ai_context/work/research/YYYY-MM-DD-research-<slug>.md` เป็น
+ค่าเริ่มต้น Promote ไป `docs/research/YYYY-MM-DD-research-<slug>.md` เฉพาะเมื่อ artifact
+policy หรือคำขอระบุว่าเป็นข้อมูล reusable/team-shared ให้บันทึก canonical path และให้ wiki
+เก็บเพียง pointer ห้ามคัดลอก body ซ้ำ
 
 ## จุดเน้น
 

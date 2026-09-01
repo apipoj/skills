@@ -21,8 +21,11 @@ Answer the user's question from project knowledge before using external sources.
 
 ## Workflow
 
-1. Read `ai_context/wiki/index.md` and the smallest relevant linked pages.
-2. If the wiki is sufficient and current, answer with page/path citations.
+1. Read `docs/agents/artifacts.md` when present, then `ai_context/wiki/index.md` and the
+   smallest relevant linked pages. Follow canonical artifact pointers when the answer
+   depends on a decision, plan, spec, or shared research document.
+2. If the wiki and canonical target are sufficient and current, answer with page/path
+   citations. If they conflict, the canonical artifact wins and the wiki is stale.
 3. If it is silent or stale, research current primary sources and clearly distinguish
    repository facts from external findings.
 4. Verify high-stakes or surprising claims with an independent primary source.
@@ -42,4 +45,5 @@ used, freshness/uncertainty, risks, and next action.
 
 - Do not present stale wiki content as current fact.
 - Never expose raw private sources or credentials.
+- Never present a local draft as an approved decision or canonical plan/spec.
 - Prefer primary sources and clearly label inference.

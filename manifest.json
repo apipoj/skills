@@ -1,6 +1,6 @@
 {
-  "version": "6.6.1",
-  "released": "2026-09-01",
+  "version": "6.6.2",
+  "released": "2026-09-02",
   "brand": "Apipoj Skills",
   "slug": "spk",
   "tagline": "Thai-first, ready-to-use engineering skills with evidence and safe defaults",
@@ -183,7 +183,7 @@
     },
     {
       "name": "/code",
-      "orchestrator": "build-orchestrator"
+      "direct": true
     },
     {
       "name": "/prototype",

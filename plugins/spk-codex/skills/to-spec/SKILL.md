@@ -21,10 +21,20 @@ Keep working without user input while the requested outcome remains inside curre
 
 ## Workflow
 
-1. Read the request, repository instructions, and full practice in [UPSTREAM.md](UPSTREAM.md).
+1. Read the request, repository instructions, `docs/agents/artifacts.md` and
+   `docs/agents/issue-tracker.md` when present, and the full practice in
+   [UPSTREAM.md](UPSTREAM.md).
 2. Use smart defaults when risk is low. If a decision changes scope, ask exactly one material question with a recommendation.
 3. Apply this skill's discipline in short slices and show only the progress needed for verification.
 4. Close with the outcome, evidence, risks, and remaining decisions without padding.
+
+## Artifact Destination
+
+Write the reviewable draft to `ai_context/work/specs/YYYY-MM-DD-spec-<slug>.md` by
+default. Promote it to exactly one canonical backend selected by
+`docs/agents/artifacts.md`: the configured issue tracker, or `docs/specs/` for a
+file-based project. Keep the draft local when external publication is not authorized.
+Never maintain the tracker issue and a Markdown file as two editable sources of truth.
 
 ## Focus
 

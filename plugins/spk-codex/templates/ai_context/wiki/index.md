@@ -17,6 +17,12 @@ Last updated: (empty — filled on first ingest)
 ## Learnings (0)
 (none yet)
 
+## Canonical Artifact Pointers (0)
+(none yet)
+
 ---
 
-Drop a source file into `ai_context/sources/` and run `/spk:add-knowledge <path>` (or let auto-ingest pick it up) to populate the wiki.
+Drop a source file into `ai_context/sources/` and run `/spk:add-knowledge <path>`
+(or let auto-ingest pick it up) to populate derived memory. Local drafts belong under
+`ai_context/work/`; shared canonical documents belong under `docs/`, `CONTEXT.md`,
+or the backend selected in `docs/agents/artifacts.md`.

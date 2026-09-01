@@ -22,6 +22,10 @@ Keep working without user input while the requested outcome remains inside curre
 Run this workflow directly in the current conversation. It is a knowledge-maintenance
 workflow, not feature planning.
 
+Read `docs/agents/artifacts.md` when present. Treat `ai_context/wiki/` as derived memory,
+not a second canonical document store. A page about a canonical artifact contains a
+summary and pointer, never a copied body.
+
 ## Workflow
 
 1. **Resolve exactly one source.** Accept one user-supplied local file or URL. Reject
@@ -48,7 +52,8 @@ workflow, not feature planning.
    and the exact per-shell spellings are listed in `scripts/gitignore-guard.cjs`
    (`MARKER_CLEANUP_COMMANDS`).
 6. **Extract conservatively.** Read the wiki schema. Create or update only notable
-   `concept`, `entity`, `decision`, `plan`, or `learning` pages. Every non-obvious claim
+   `concept`, `entity`, `decision`, `plan`, or `learning` pages. A `decision` or `plan`
+   page is a derived summary and pointer to its canonical artifact. Every non-obvious claim
    needs a source citation. Redact secret-shaped values as
    `<REDACTED:type origin=sources/file:line>`; never copy the value.
 7. **Link and verify.** Maintain frontmatter, internal links/backlinks, and
@@ -79,4 +84,7 @@ verification commands/results, redaction count, risks, and next action.
 - `ai_context/sources/` is private raw input; `ai_context/wiki/` must remain commit-safe.
 - Never add-knowledge more than the explicitly supplied source.
 - Never overwrite user-authored wiki content without merging and preserving intent.
+- A source under `ai_context/work/` remains a non-authoritative draft even when the user
+  explicitly selects it for ingestion; label that status and do not promote it implicitly.
+- Never duplicate a canonical artifact body in the wiki.
 - No guard file may remain after the workflow exits.

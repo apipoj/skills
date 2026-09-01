@@ -10,7 +10,9 @@ description: วางแผนการเปลี่ยนแปลงซอ�
 
 - ถ้าอยู่ใน git worktree ให้รัน `git status --short` และ `git log -3 --oneline`; ถ้าไม่ใช่ git repo ให้ข้าม git context และทำงานต่อ
 - ดู project structure (CLAUDE.md, AGENTS.md, package.json, tsconfig, pyproject.toml, go.mod, Cargo.toml ฯลฯ)
-- ดู plans ที่มีอยู่ใน `ai_context/wiki/plans/` ถ้ามี
+- อ่าน `docs/agents/artifacts.md` ถ้ามี เพื่อ resolve ปลายทางก่อนเขียน artifact
+- ดู plans ตาม policy ก่อน จาก `ai_context/work/plans/`, `docs/plans/` และ
+  `ai_context/wiki/plans/` เฉพาะ legacy compatibility
 - อ่าน handoff receipt ถ้ามี และบันทึก authority เป็น `plan_only` หรือ `plan_and_implement`
 
 ## Workflow
@@ -41,9 +43,11 @@ description: วางแผนการเปลี่ยนแปลงซอ�
 - บันทึก risks และ mitigations
 
 ### 6. บันทึก Plan
-- บันทึกที่ `ai_context/wiki/plans/YYYY-MM-DD-<slug>.md` เมื่อ scaffold นี้มีอยู่ ถ้าไม่มีให้
-  ส่งคืน plan แบบ inline แทน
-- อัพเดต wiki index และ log เฉพาะตอนที่มีอยู่จริง
+- ใช้ `docs/agents/artifacts.md` เป็น routing source of truth
+- ค่าเริ่มต้นคือ `ai_context/work/plans/YYYY-MM-DD-<slug>.md`
+- Promote ไป `docs/plans/YYYY-MM-DD-<slug>.md` เฉพาะเมื่อ policy หรือคำขอระบุว่าเป็น
+  team-shared/audit record ถ้าไม่มีปลายทางที่เขียนได้ให้ส่งคืน plan แบบ inline
+- wiki เก็บได้เฉพาะ summary และ pointer ห้ามคัดลอก body ของ plan ซ้ำ
 
 ### 7. Handoff ไป Dev
 
@@ -91,11 +95,13 @@ Budget: เรียก specialist ได้ไม่เกินห้าคร
 
 คืน `spk.evidence/v1` ที่มี plan artifact, repository evidence, acceptance criteria,
 verifier result, assumptions, risks, `authority_mode` และ
-`implementation_authorized: true|false` ตามคำขอเดิม
+`implementation_authorized: true|false` ตามคำขอเดิม พร้อม draft path และ canonical path
+จริงเมื่อมีการ promote
 
 ## ข้อควรระวัง
 
 - ห้ามแก้ production source ขณะที่ planning ยัง unresolved หรือ verify ไม่ผ่าน
 - ถ้าคำขอชัดว่า plan-and-implement ให้ carry workspace authority ไป implementation โดยไม่สร้าง approval ซ้ำ
 - plan-only ไม่อนุญาต implementation, Git, remote หรือ destructive effect
+- ห้ามเก็บ plan body ที่แก้ไขได้ทั้งใน wiki และ canonical team path พร้อมกัน
 - ถ้า scope สำคัญเปลี่ยน ให้กลับไปถาม user แทนการส่งต่อไป dev

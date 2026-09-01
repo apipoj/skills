@@ -1,6 +1,6 @@
 ---
 name: setup
-description: Configure this repo for the engineering skills — set up its issue tracker, triage label vocabulary, and domain doc layout. Run once before first use of the other engineering skills.
+description: Configure this repo for the engineering skills — set up its issue tracker, triage vocabulary, domain docs, and split-zone artifact routing. Run once before first use of the other engineering skills.
 disable-model-invocation: true
 ---
 # Setup Apipoj Skills
@@ -24,6 +24,8 @@ Scaffold the per-repo configuration that the engineering skills assume:
 - **Issue tracker** — where issues live (GitHub by default; local markdown is also supported out of the box)
 - **Triage labels** — the strings used for the five canonical triage roles
 - **Domain docs** — where `CONTEXT.md` and ADRs live, and the consumer rules for reading them
+- **Artifact routing** — where local drafts, team records, and external deliverables live,
+  plus the promotion and retention rules between them
 
 This is a prompt-driven skill, not a deterministic script. Explore, present what you found, confirm with the user, then write.
 
@@ -37,7 +39,8 @@ Look at the current repo to understand its starting state. Read whatever exists;
 - `AGENTS.md` and `CLAUDE.md` at the repo root — does either exist? Is there already an `## Agent skills` section in either?
 - `CONTEXT.md` and `CONTEXT-MAP.md` at the repo root
 - `docs/adr/` and any `src/*/docs/adr/` directories
-- `docs/agents/` — does this skill's prior output already exist?
+- `docs/agents/` — does this skill's prior output already exist, especially
+  `docs/agents/artifacts.md`?
 - `.scratch/` — sign that a local-markdown issue tracker convention is already in use
 - Is the `triage` skill installed? (a `triage` skill folder alongside this one, or `triage` in your available skills.) This decides whether Section B runs at all.
 - Monorepo signals — a `pnpm-workspace.yaml`, a `workspaces` field in `package.json`, or a populated `packages/*` with its own `src/`. Present only in a genuinely large multi-package repo; their absence means single-context, which is almost every repo.
@@ -73,12 +76,28 @@ The defaults are the five canonical roles, each label string equal to its name: 
 
 Offer **multi-context** — a root `CONTEXT-MAP.md` pointing to per-context `CONTEXT.md` files — only when exploration found monorepo signals. Then confirm which layout they want.
 
+**Section D — Artifact routing.** Use the split-zone default without another question:
+
+- `ai_context/` is local/private working state and remains excluded from Git by default.
+- `CONTEXT.md`, `docs/`, or the configured issue/document system hold canonical records.
+- local plans, specs, research, questionnaires, and handoffs start under
+  `ai_context/work/` and are promoted only when policy or an explicit request calls for it.
+- `ai_context/wiki/` stores derived memory, summaries, and pointers; it never duplicates
+  a canonical artifact body.
+
+If an existing policy selects different destinations, preserve it and show the material
+differences instead of replacing it. Leave customer delivery unconfigured when the repo
+does not reveal a deliberate repo-backed or external document system; do not guess a
+recipient-facing backend.
+
 ### 3. Confirm and edit
 
 Show the user a draft of:
 
 - The `## Agent skills` block to add to whichever of `CLAUDE.md` / `AGENTS.md` is being edited (see step 4 for selection rules)
-- The contents of `docs/agents/issue-tracker.md`, `docs/agents/domain.md`, and `docs/agents/triage-labels.md` (the last only when `triage` is installed)
+- The contents of `docs/agents/issue-tracker.md`, `docs/agents/domain.md`,
+  `docs/agents/artifacts.md`, and `docs/agents/triage-labels.md` (the last only when
+  `triage` is installed)
 
 Let them edit before writing.
 
@@ -110,6 +129,11 @@ The block:
 ### Domain docs
 
 [one-line summary of layout — "single-context" or "multi-context"]. See `docs/agents/domain.md`.
+
+### Artifacts
+
+Local drafts stay under `ai_context/`; canonical team artifacts use `docs/` or the
+configured backend. See `docs/agents/artifacts.md`.
 ```
 
 Include the `### Triage labels` sub-block, and write `docs/agents/triage-labels.md`, only when `triage` is installed and Section B ran. When it isn't, both are omitted.
@@ -121,12 +145,16 @@ Then write the docs files using the seed templates in this skill folder as a sta
 - [issue-tracker-local.md](./issue-tracker-local.md) — local-markdown issue tracker
 - [triage-labels.md](./triage-labels.md) — label mapping (only if `triage` is installed)
 - [domain.md](./domain.md) — domain doc consumer rules + layout
+- [artifacts.md](./artifacts.md) — artifact routing, promotion, visibility, and retention
 
 For "other" issue trackers, write `docs/agents/issue-tracker.md` from scratch using the user's description.
 
 ### 5. Done
 
-Tell the user the setup is complete and which engineering skills will now read from these files. Mention they can edit `docs/agents/*.md` directly later — re-running this skill is only necessary if they want to switch issue trackers or restart from scratch.
+Tell the user the setup is complete and which engineering skills will now read from these
+files. Mention that artifact-writing skills read `docs/agents/artifacts.md`, and that the
+user can edit `docs/agents/*.md` directly later. Re-running this skill is only necessary
+when they want to change routing policy, switch issue trackers, or restart from scratch.
 
 
 ## Workflow

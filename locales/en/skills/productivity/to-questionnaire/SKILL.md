@@ -23,6 +23,8 @@ When a decision or confirmation is needed, use the host's structured choice prom
 
 Turn something the user cannot answer alone into a questionnaire for the one person who can.
 
+Read `docs/agents/artifacts.md` when present before choosing the file destination.
+
 Grill the **send**, not the subject. Interview the user only about what they can always answer — who
 it goes to, and what they need back. The questions then target the gap between what the recipient
 knows and what the user needs. Never interview the user about the subject they cannot answer; that
@@ -35,8 +37,11 @@ gap is why they reached for this skill.
    are and what they know that the user doesn't.
 2. Ask, in one exchange, which decisions or facts the user cannot resolve alone and needs back from
    this person. Done when you have a concrete list of what they must walk away able to decide.
-3. Write questions aimed at that gap to `to-questionnaire-<slug>.md` in the current directory and
-   report the path. Done when the file exists and every item from step 2 is covered.
+3. Write questions aimed at that gap to
+   `ai_context/work/questionnaires/YYYY-MM-DD-questionnaire-<slug>.md` by default and
+   report the path. Promote it to a configured deliverable destination only when the
+   artifact policy or user explicitly requests promotion. Done when the file exists and
+   every item from step 2 is covered. Creating or promoting it never authorizes sending it.
 
 ## Document Structure
 
@@ -78,5 +83,7 @@ path, coverage confirmation, risks, and next action.
 ## Guardrails
 
 - Match the user's language and keep Thai cultural fit while preserving exact technical identifiers.
-- Write only the questionnaire file; do not change other project files.
+- Write only the questionnaire file and its required parent directory; do not change
+  unrelated project files.
+- Creating or promoting the questionnaire never authorizes sending it to the recipient.
 - Report evidence gaps instead of guessing at what the recipient knows.

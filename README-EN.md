@@ -102,7 +102,7 @@ Use one installation method per project to avoid duplicate skills.
 | `/spk:to-tickets` | direct main-thread workflow | typed only |
 | `/spk:to-questionnaire` | direct main-thread workflow | typed only |
 | `/spk:wayfinder` | direct main-thread workflow | typed only |
-| `/spk:code` | build-orchestrator | model or typed |
+| `/spk:code` | direct main-thread workflow | model or typed |
 | `/spk:prototype` | designer | model or typed |
 | `/spk:research` | researcher | model or typed |
 | `/spk:domain-modeling` | direct main-thread workflow | model or typed |
@@ -153,4 +153,4 @@ npm run verify:release
 
 ## Upstream and license
 
-The pinned base is `mattpocock/skills@84fdeffd12f2ee307994d1eb6feb48173b6e0502`, licensed under MIT. Future updates are reviewed and localized before release. See `NOTICE` and `docs/upstream/`.
+The pinned base is `mattpocock/skills@6654f6b60cd9d5be8b54c6fafe44346dabeb3b76`, licensed under MIT. Future updates are reviewed and localized before release. See `NOTICE` and `docs/upstream/`.

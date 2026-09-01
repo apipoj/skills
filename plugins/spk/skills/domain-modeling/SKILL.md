@@ -19,7 +19,8 @@ Keep working without user input while the requested outcome remains inside curre
 
 ## Workflow
 
-1. Read the request, repository instructions, and full practice in [UPSTREAM.md](UPSTREAM.md).
+1. Read the request, repository instructions, `docs/agents/artifacts.md` when present,
+   and the full practice in [UPSTREAM.md](UPSTREAM.md).
 2. Use smart defaults when risk is low. If a decision changes scope, ask exactly one material question with a recommendation.
 3. Apply this skill's discipline in short slices and show only the progress needed for verification.
 4. Close with the outcome, evidence, risks, and remaining decisions without padding.
@@ -27,6 +28,10 @@ Keep working without user input while the requested outcome remains inside curre
 ## Focus
 
 Build and refine the project's shared domain language, stress-test terms on edge cases, and record decisions worth keeping.
+
+`CONTEXT.md` (or its mapped context file) is the canonical glossary. `docs/adr/` is the
+canonical home for qualifying architecture decisions. Never duplicate either body in
+`ai_context/wiki/`; store a summary and pointer there when useful.
 
 ## Autonomy Profile
 

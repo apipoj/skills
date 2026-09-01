@@ -34,6 +34,7 @@ const VERB =
   '(?:run|runs|invoke|invokes|call|calls|launch|launches|trigger|triggers' +
   '|hands?\\s+off\\s+to|handed\\s+off\\s+to|routes?\\s+to|delegates?\\s+to' +
   '|เรียกใช้|เรียก|ให้ใช้)';
+const GENERIC_VERB = `(?:${VERB}|use|uses)`;
 // "run the `/x` skill", "hand off to a `/x` session"
 const FILLER = '(?:\\s+(?:the|a|an))*\\s+';
 // The negation has to sit against the verb — "Never auto-run `pr`" is a rule,
@@ -50,7 +51,8 @@ const USER_DIRECTED_BEFORE = /(?:\bthe user\b|ผู้ใช้)\s*(?:to|should
 // to *some* skill from the same shape used for a path or a plain object of
 // the verb — the unknown-id check below relies on this the same way the
 // fixed-id check above does.
-const GENERIC_REF = new RegExp(`${VERB}${FILLER}\`?/([a-z][a-z0-9-]+)\\b`, 'gi');
+const GENERIC_REF = new RegExp(`${GENERIC_VERB}${FILLER}\`?/([a-z][a-z0-9-]+)\\b`, 'gi');
+const SKILL_TOOL_NAME = /["'`]([a-z][a-z0-9-]+)["'`]/g;
 
 // Reported paths stay POSIX-style on every platform, matching the other gates.
 // Every shipped `.md` file in the skill's folder is a target, not only
@@ -101,6 +103,7 @@ function collectInvocationAuthorityErrors(rootDir = REPO_ROOT, contract = CONTRA
 
       const lines = fs.readFileSync(file, 'utf8').replace(/\r\n/g, '\n').split('\n');
       lines.forEach((line, index) => {
+        const reported = new Set();
         for (const { id, re } of patterns) {
           if (id === skill.id) continue;
           const hit = re.exec(line);
@@ -110,6 +113,7 @@ function collectInvocationAuthorityErrors(rootDir = REPO_ROOT, contract = CONTRA
           errors.push(
             `${relative}:${index + 1}: instructs the agent to invoke \`${id}\`, which is user-invoked`,
           );
+          reported.add(id);
           break;
         }
 
@@ -117,10 +121,29 @@ function collectInvocationAuthorityErrors(rootDir = REPO_ROOT, contract = CONTRA
         let genericHit = GENERIC_REF.exec(line);
         while (genericHit) {
           const id = genericHit[1];
-          if (!roster.has(id)) {
+          if (!roster.has(id) && !reported.has(id)) {
             errors.push(`${relative}:${index + 1}: references unknown skill id \`${id}\``);
+            reported.add(id);
           }
           genericHit = GENERIC_REF.exec(line);
+        }
+
+        if (/\bSkill tool\b/i.test(line)) {
+          SKILL_TOOL_NAME.lastIndex = 0;
+          let namedHit = SKILL_TOOL_NAME.exec(line);
+          while (namedHit) {
+            const id = namedHit[1];
+            if (!reported.has(id) && !roster.has(id)) {
+              errors.push(`${relative}:${index + 1}: references unknown skill id \`${id}\``);
+              reported.add(id);
+            } else if (!reported.has(id) && manual.includes(id) && id !== skill.id) {
+              errors.push(
+                `${relative}:${index + 1}: instructs the agent to invoke \`${id}\`, which is user-invoked`,
+              );
+              reported.add(id);
+            }
+            namedHit = SKILL_TOOL_NAME.exec(line);
+          }
         }
       });
     }

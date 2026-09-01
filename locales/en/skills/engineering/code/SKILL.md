@@ -1,8 +1,8 @@
 ---
 name: code
-description: Implement an explicit software request or reviewed plan through tested, documented workspace changes without a second approval gate; use tdd instead when the user explicitly asks for a strict test-first loop.
+description: Implement an explicit software request or reviewed plan with an adaptive loop that matches rigor to a quick patch, feature, bug fix, or refactor; use tdd for an explicitly strict test-first path.
 ---
-# Implementation
+# Adaptive Development
 
 ## Response Rules
 
@@ -17,32 +17,62 @@ Reply in the user's language.
 Keep working without user input while the requested outcome remains inside current authority. Use a reversible smart default and record assumptions. Ask only when one material user-owned decision changes scope, risk, cost, or success, or when a required effect crosses an unapproved boundary.
 
 Implement the explicit request or supplied reviewed plan without broadening its scope.
-This is the default implementation loop; use the `tdd` skill instead when the user asks
-for a strict test-first loop.
+This is the default local development loop. Choose the task shape once, then use the
+smallest workflow that can prove the result. Use `tdd` when the user explicitly asks for
+strict test-first work or when a high-risk seam makes that rigor worth its cost.
+
+When a plan is relevant, read `docs/agents/artifacts.md` first. Resolve an explicit path,
+then `ai_context/work/plans/`, then `docs/plans/`. Read
+`ai_context/wiki/plans/` only as a legacy compatibility fallback and never treat that
+fallback as canonical.
+
+## Working Principles
+
+- Prefer the smallest justified change. Delete, reuse, or simplify before adding an
+  abstraction, dependency, file, or workflow.
+- Name the data shape or domain shape before code only when state, branching, or repeated
+  assumptions make that model useful. Otherwise prefer boring local code.
+- Verify the real artifact or surface the user will experience. Compilation alone is not
+  evidence that UI, CLI, API, migration, or generated output works.
+- Subagents are optional and deliberate. Use them only for independent scopes, competing
+  designs, or bulky context that would obscure the main thread; keep a coherent small
+  change in the main thread.
 
 ## Workflow
 
-1. Read repository instructions, current diff, relevant code, acceptance criteria, and
-   authority. Treat a clear explicit implementation, fix, update, or
+1. Read repository instructions, the current diff, relevant code, acceptance criteria,
+   and authority. Treat a clear explicit implementation, fix, update, refactor, test, or
    plan-and-implement request as bounded workspace authority. If no plan artifact exists,
    build an internal micro-plan instead of stopping.
-2. Split work by acceptance criterion. Delegate only independent, disjoint slices; use
-   sequential work for shared files or dependent steps.
-3. For each behavior, record a failing RED test before the minimum GREEN change, then
-   refactor only while green.
-4. Run focused tests during the loop and the relevant full regression suite before
-   sign-off. Update documentation when public behavior changed.
-5. Diagnose and repair focused or regression failures within the autonomy repair budget.
-   Pause only for a material user-owned decision, missing access, security/privacy risk,
-   scope expansion, or an undeclared Git, remote, or destructive effect.
-6. Run a separate verifier pass against the plan and repository gates. Do not describe
-   unverified work as done.
-7. Return a typed evidence receipt containing changed paths, RED/GREEN commands and
-   outcomes, full-suite result, documentation, risks, and remaining work.
-
-Budget: at most eight specialist calls, three concurrent workers with disjoint file
-ownership, and one retry for a blocked worker. Do not commit, push, or open a PR unless
-the user explicitly requested those separate actions.
+2. Classify the request once and follow the matching playbook:
+   - **Quick patch** — inspect the evidence, make the smallest change directly, and run
+     the smallest check that can catch a regression. No plan artifact, subagent, or
+     independent verifier is required by default.
+   - **Feature** — name the user-visible outcome and useful data shape, write a short
+     dependency-ordered micro-plan, implement the smallest working slice, and exercise the
+     real surface when one exists.
+   - **Bug fix** — reproduce the bug or failure on the same surface, isolate and prove the
+     root cause, then make the smallest fix. Capture a failing regression test first when
+     the seam is cheap and reliable; otherwise preserve the runtime reproduction as RED
+     evidence and verify that exact reproduction after the fix.
+   - **Refactor** — pin current behavior with a focused test, snapshot, type check, or other
+     equivalence evidence. Subtract before adding, preserve behavior, and show that the
+     result reduces reader load or structural risk.
+3. Run focused tests during the change. Run broader regression, type, lint, build, browser,
+   or release gates in proportion to blast radius and repository instructions. A full
+   suite is required when the repository or release gate requires it, not as ceremony for
+   every local edit.
+4. Update documentation when public behavior, commands, APIs, data, or operations changed.
+5. Escalate when evidence warrants it: cross-boundary design, security, concurrency,
+   migrations, contested architecture, or a large diff may need `plan`, `codebase-design`,
+   strict `tdd`, parallel specialists, or an independent verifier. Escalation is a risk
+   decision, not the default path.
+6. Diagnose and repair in-scope failures within the autonomy repair budget. Pause only for
+   a material user-owned decision, missing access, security or privacy risk, scope
+   expansion, or an undeclared Git, remote, or destructive effect.
+7. Finish with concise user-facing evidence: what changed, what was verified, what remains
+   uncertain, and the next action only when one exists. Do not expose YAML, JSON, schemas,
+   empty fields, or internal receipts unless the user asks for machine-readable output.
 
 ## Workspace Authority
 
@@ -58,41 +88,33 @@ the implementation outcome is explicit but a plan file is absent, derive a bound
 micro-plan from repository evidence and acceptance criteria. Record assumptions and keep
 working; ask only when one material decision changes scope, risk, cost, or success.
 
-## Plan Quality Bar
-
-Reject a supplied plan that does not meet the `plan` skill's plan quality bar; ask for a
-revision or an approved plan before implementing.
-
 ## Autonomy Profile
 
 `afk_local` — prompt budget 0; repair budget 3. A clear request grants bounded work only up to this skill's declared effect level; the profile never upgrades read-only work into a write. Keep working through inspect, act, verify, and bounded repair without asking the user. Before pausing, record phase, assumptions, evidence, attempts, and the smallest resumable next action.
 
 ## Evidence Receipt
 
-Return `spk.evidence/v1` with status, plan or micro-plan reference, workspace-authority
-source, changed artifacts, RED/GREEN and regression verification, documentation,
-risks, and next action.
+Report the outcome in plain user-facing language. Include only changed artifacts, relevant
+verification, material risks or approval boundaries, and a next action when one is useful.
+Do not make the user read an internal receipt format.
 
 ## Guardrails
 
-- Stay inside the approved plan and preserve unrelated user changes.
+- Stay inside the approved scope and preserve unrelated user changes.
 - Never modify the workspace without a clear explicit implementation outcome and bounded
   workspace authority for that scope.
-- Never skip a failing gate, invent test results, or describe unverified work as done.
-- Do not commit, push, create a PR, or deploy without separate explicit authorization.
-
+- Never skip a required failing gate, invent test results, or describe unverified work as
+  done.
+- Do not commit, push, create a PR, deploy, or perform another remote write without
+  separate explicit authorization for that effect.
 
 ## Upstream Discipline
 
-The following material is retained from the pinned Matt Pocock skill and applies unless an Apipoj Skills approval or evidence guardrail above is stricter.
+The pinned Matt Pocock implementation guidance remains a source, with SPK's adaptive loop
+and stricter approval boundaries taking precedence.
 
-Implement the work described by the user in the spec or tickets.
-
-Use /tdd where possible, at pre-agreed seams.
-
-Run typechecking regularly, single test files regularly, and the full test suite once at the end.
-
-Once done, use /code-review to review the work.
-
-Prepare a clear commit message, but commit only when the user separately authorizes
-that exact Git write.
+Implement the work described by the user in the spec or tickets. Use `/tdd` at pre-agreed
+seams when strict RED/GREEN evidence is useful. Run type checks and tests at the cadence
+that matches the change, and run the full suite when the repository or release requires it.
+Use `/code-review` for material or high-risk changes. Prepare a clear commit message, but
+commit only when the user separately authorizes that exact Git write.

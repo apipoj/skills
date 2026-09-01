@@ -30,7 +30,7 @@ description: เริ่มงานกับ AI แบบไทยเป็น
    - คำตอบก่อนหน้ายังไม่โดน หรือผู้ใช้บอกว่า "งง" → `wait-what`
    - ทำ engineering plan → `plan`; สรุป discussion เป็น spec → `to-spec`
    - แตกงาน → `to-tickets`; งานใหญ่ที่ยังมีหมอก → `wayfinder`
-   - implement, fix หรือ plan-and-implement → `code`; ต้องการ RED-GREEN ชัด → `tdd`
+   - implement, fix, refactor หรือ plan-and-implement → adaptive `code`; ต้องการ strict RED-GREEN หรือ orchestration ตามความเสี่ยง → `tdd`
    - failure ที่ยังไม่รู้ต้นเหตุ → `debug`; ตรวจ diff → `code-review`; feedback จาก test แบบเร็ว → `test-changes`
    - ตอบคำถามด้วยของทดลอง → `prototype`; เทียบ UI หลายทาง → `design-options`
    - ปรับรูปทรง module → `codebase-design`, `improve-codebase`
@@ -39,6 +39,14 @@ description: เริ่มงานกับ AI แบบไทยเป็น
    - ตั้งค่าหรือทำความรู้จัก repo → `setup`, `load-project`; เขียน bash setup wizard สำหรับขั้นตอนที่ต้องทำเองเท่านั้น → `wizard`; ตรวจ installation → `doctor`
    - เตรียมส่งงาน → `check-release`, `pr`, `task-to-pr`, `deploy`; ถอนระบบ → `uninstall`
    - ส่งต่อ context → `handoff`; เรียนรู้เรื่องใหม่ → `teach`; เขียน agent docs หรือ skill → `write-skills`
+
+   ตัวอย่างเลือก development mode — default ใช้ `code`; เลือก `tdd` เมื่อผู้ใช้ขอ
+   test-first ชัดเจน หรือ behavior เสี่ยงสูงมี test seam ที่ reliable และคุ้มต้นทุน:
+   - แก้ copy, CSS, config, simple wiring หรือ internal refactor → `code`
+   - สำรวจ feature ที่ behavior ยังไม่นิ่ง → `code` จน data shape และ contract นิ่ง
+   - payment calculation, permission logic, migration หรือ concurrency ที่มี stable seam → `tdd`
+   - bug ที่ reproduce ได้และเขียน regression test ที่ reliable ได้ → `tdd`; ถ้า seam ยังไม่ดี
+     ให้ `code` เก็บ runtime reproduction เป็นหลักฐานก่อน
 
    ถ้า outcome ตรงกับ skill แบบ manual-only (`disable-model-invocation`) ให้บอกคำสั่ง `/<name>` ให้ผู้ใช้แล้วหยุด ไม่ต้องเรียกใช้เอง
 5. รัน workflow ที่เลือกไปจนถึงผลลัพธ์ที่ตรวจได้ คำขอแบบ end-to-end ที่ชัดให้ bounded

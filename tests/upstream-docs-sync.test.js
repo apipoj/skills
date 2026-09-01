@@ -7,6 +7,7 @@ const {
   NO_COUNTERPART,
   bodyOf,
   buildHashIndex,
+  canonicalizeUpstreamSkillBody,
   indexUpstreamSkillFiles,
   normalizeEol,
   renderCanonicalLine,
@@ -107,6 +108,28 @@ describe('upstream reference doc generator', () => {
       ],
     });
     expect(index.get('teach').skillPath).toBe('skills/productivity/teach/SKILL.md');
+  });
+
+  test('rewrites upstream command and Skill tool ids to the canonical SPK roster', () => {
+    const contract = {
+      skills: [
+        { id: 'asking', origin: { repository: 'mattpocock/skills', skill: 'grilling' } },
+        { id: 'setup', origin: { repository: 'mattpocock/skills', skill: 'setup-matt-pocock-skills' } },
+      ],
+    };
+    const upstream = [
+      'Tell the user to run `/setup-matt-pocock-skills`.',
+      'Call the Skill tool with "grilling".',
+      'Use `/grill-me` outside a working directory.',
+      'Keep ordinary prose unchanged.',
+    ].join('\n');
+
+    expect(canonicalizeUpstreamSkillBody(upstream, contract)).toBe([
+      'Tell the user to run `/setup`.',
+      'Call the Skill tool with "asking".',
+      'Use `/ask-me` outside a working directory.',
+      'Keep ordinary prose unchanged.',
+    ].join('\n'));
   });
 
   test('hash index can pin retained upstream skill mirrors alongside docs', () => {

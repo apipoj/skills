@@ -9,7 +9,8 @@ disable-model-invocation: true
 
 ## Workflow
 
-1. อ่านคำขอ repository instructions และหลักปฏิบัติฉบับเต็มใน [UPSTREAM.md](UPSTREAM.md)
+1. อ่านคำขอ repository instructions, `docs/agents/artifacts.md` ถ้ามี และหลักปฏิบัติ
+   ฉบับเต็มใน [UPSTREAM.md](UPSTREAM.md)
 2. ใช้ smart defaults เมื่อความเสี่ยงต่ำ ถ้ามี decision ที่เปลี่ยน scope ให้ถามเพียงหนึ่งคำถามพร้อมคำแนะนำ
 3. ทำงานตาม discipline ของ skill นี้เป็น slice สั้น ๆ และแสดง progress เท่าที่ช่วยให้ตรวจสอบได้
 4. สรุปผล หลักฐาน ความเสี่ยง และสิ่งที่ยังต้องตัดสินใจโดยไม่ยืดเยื้อ
@@ -17,6 +18,10 @@ disable-model-invocation: true
 ## จุดเน้น
 
 ถามทีละ decision เพื่อทำแผนหรือ design ให้ชัด พร้อมอัปเดตศัพท์และเหตุผลสำคัญของ project
+
+เก็บ vocabulary ที่ resolve แล้วใน `CONTEXT.md` หรือ context glossary ที่ map ไว้ และเก็บ
+architecture rationale ที่ควรจำใน `docs/adr/` ทั้งสองเป็น canonical team artifact ไม่ใช่
+body ใน local wiki; wiki เก็บได้เพียง summary และ pointer
 
 ## Autonomy Profile
 

@@ -34,6 +34,12 @@ tree**: every decision branches into the decisions that hang off it.
    ❓ **Q1** - **<question title>**: <question body, may run to several paragraphs or offer choices>
 
    ➡️ <your recommended answer>
+
+   ---
+
+   ❓ **Q2** - **<question title>**: <question body, may run to several paragraphs or offer choices>
+
+   ➡️ <your recommended answer>
    ```
 
 3. Wait for the user's answers. Each round reshapes the tree: settled decisions push the frontier

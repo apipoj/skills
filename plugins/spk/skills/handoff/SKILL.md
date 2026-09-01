@@ -20,7 +20,11 @@ Keep working without user input while the requested outcome remains inside curre
 
 ## Destination
 
-Write the handoff as `handoff-<ISO-date>-<slug>.md` (e.g. `handoff-2026-08-29-refactor-auth.md`) **at the current workspace's project root** — not the OS temp directory — because this skill's effect level is `workspace_write`. Use another destination (such as the OS temp directory or a specific path) only when the user asks for one.
+Read `docs/agents/artifacts.md` when present. By default, write the handoff as
+`ai_context/work/handoffs/YYYY-MM-DDTHHMMSSZ-<slug>.md` (for example,
+`ai_context/work/handoffs/2026-08-29T143000Z-refactor-auth.md`). This is local transit
+state, not a team-canonical record. Use another destination only when the artifact policy
+or user explicitly selects one.
 
 ## Workflow
 
@@ -28,7 +32,8 @@ Write the handoff as `handoff-<ISO-date>-<slug>.md` (e.g. `handoff-2026-08-29-re
 2. Capture the goal, current state, key decisions with rationale, gotchas, actionable next steps, and the paths of files touched or relevant. Do not duplicate content already captured in other artifacts (specs, plans, ADRs, issues, commits, diffs); reference them by path or URL instead.
 3. Add a "Suggested Skills" section naming the skills the next session should invoke.
 4. Redact sensitive information everywhere it appears — API keys, passwords, tokens, personally identifiable information — before writing the file.
-5. Write the file to the destination above and report the path actually written.
+5. Write the file to the resolved destination and report the path actually written. Do
+   not copy its body into the wiki; a short pointer is enough when indexing helps.
 
 **Done when:** the handoff file is written, includes every required section, and its path has been reported.
 
@@ -46,7 +51,8 @@ Report the written handoff path, verification commands, observed results, risks,
 
 ## Guardrails
 
-- Default to writing at the project root; use the OS temp directory or another destination only when the user asks.
+- Default to `ai_context/work/handoffs/`; use another destination only when
+  `docs/agents/artifacts.md` or the user explicitly selects one.
 - Reference existing artifacts (specs, plans, ADRs, issues, commits, diffs) by path or URL instead of duplicating their content.
 - Redact secrets, credentials, and personal data before writing the file.
 - Do not expand scope on your own.

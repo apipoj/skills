@@ -78,6 +78,14 @@ describe('invocation authority gate', () => {
     expect(collectInvocationAuthorityErrors(dir, contract)).toHaveLength(2);
   });
 
+  test('flags use phrasing for an unknown command id', () => {
+    const { dir, contract } = fixture('# Router\n', undefined, 'Use `/grilling` instead.\n');
+    expect(collectInvocationAuthorityErrors(dir, contract)).toEqual([
+      'plugins/spk/skills/router/UPSTREAM.md:1: references unknown skill id `grilling`',
+      'locales/en/skills/x/router/UPSTREAM.md:1: references unknown skill id `grilling`',
+    ]);
+  });
+
   // upstream's own rule: router prose that names skills as labels for a human
   // to pick from is not invoking anything
   test('leaves a bare router mention alone', () => {
@@ -140,6 +148,18 @@ describe('invocation authority gate', () => {
       '# Router\n',
       undefined,
       'Once the user picks a candidate, run the `/grilling` skill to walk the decision tree.\n',
+    );
+    expect(collectInvocationAuthorityErrors(dir, contract)).toEqual([
+      'plugins/spk/skills/router/UPSTREAM.md:1: references unknown skill id `grilling`',
+      'locales/en/skills/x/router/UPSTREAM.md:1: references unknown skill id `grilling`',
+    ]);
+  });
+
+  test('flags a stale Skill tool id referenced without slash syntax', () => {
+    const { dir, contract } = fixture(
+      '# Router\n',
+      undefined,
+      'Call the Skill tool twice, for "grilling" and "router".\n',
     );
     expect(collectInvocationAuthorityErrors(dir, contract)).toEqual([
       'plugins/spk/skills/router/UPSTREAM.md:1: references unknown skill id `grilling`',

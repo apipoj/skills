@@ -19,10 +19,19 @@ Keep working without user input while the requested outcome remains inside curre
 
 ## Workflow
 
-1. Read the request, repository instructions, and full practice in [UPSTREAM.md](UPSTREAM.md).
+1. Read the request, repository instructions, `docs/agents/artifacts.md` when present,
+   and the full practice in [UPSTREAM.md](UPSTREAM.md).
 2. Use smart defaults when risk is low. If a decision changes scope, ask exactly one material question with a recommendation.
 3. Apply this skill's discipline in short slices and show only the progress needed for verification.
 4. Close with the outcome, evidence, risks, and remaining decisions without padding.
+
+## Artifact Destination
+
+Write the cited draft to
+`ai_context/work/research/YYYY-MM-DD-research-<slug>.md` by default. Promote it to
+`docs/research/YYYY-MM-DD-research-<slug>.md` only when the artifact policy or explicit
+request makes the findings reusable or team-shared. Promotion records the canonical path;
+the wiki may link to it but must not duplicate the research body.
 
 ## Focus
 
