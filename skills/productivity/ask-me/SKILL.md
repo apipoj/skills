@@ -149,19 +149,9 @@ Sales deck การพูดถึง repo, product หรือ feature อย
 
 ## Receipt แบบสั้น
 
-ไม่ทวน confirmed brief ให้คืนเฉพาะส่วนที่เปลี่ยนในบทสนทนา:
-
-```yaml
-schema: spk.evidence/v1
-brief_ref: confirmed-summary-above
-recommended: <deliverable>
-selected: <deliverable|stop>
-handoff_kind: <direct_task|workflow|stop>
-next_workflow: <name|null>
-effect: <read_only|workspace_write>
-development_authorized: <true เฉพาะ end-to-end workspace intent ที่ชัด>
-external_write_authorized: false
-```
+สรุปเฉพาะ handoff delta ด้วยภาษาผู้ใช้: recommendation, selection, next step, file
+changes และ approval ที่ยังขาด ห้ามแสดง YAML, JSON, schema หรือ internal field เว้นแต่
+ผู้ใช้ขอ machine-readable output และห้ามทวน confirmed brief
 
 ## Autonomy Profile
 

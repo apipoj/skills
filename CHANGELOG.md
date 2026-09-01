@@ -1,5 +1,11 @@
 # Apipoj Skills
 
+## 6.6.1 - 2026-09-01
+
+### Fixed
+
+- End-of-turn evidence from `start` and `ask-me` now stays concise and user-facing. YAML, JSON, schema names, and internal fields appear only when the user explicitly requests machine-readable output; a cross-platform regression test rejects serialized evidence examples in user-facing skills.
+
 ## 6.6.0 - 2026-08-29
 
 ### Added

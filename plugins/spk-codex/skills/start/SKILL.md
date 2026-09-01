@@ -80,16 +80,10 @@ question comes first.
 `afk_local` — prompt budget 0; repair budget 3. A clear request grants bounded work only up to this skill's declared effect level; the profile never upgrades read-only work into a write. Keep working through inspect, act, verify, and bounded repair without asking the user. Before pausing, record phase, assumptions, evidence, attempts, and the smallest resumable next action.
 ## Evidence Receipt
 
-Return:
-
-```yaml
-schema: spk.evidence/v1
-workflow: <canonical skill>
-effect: <read_only|workspace_write|git_write|external_write|destructive>
-reason: <one sentence>
-status: <complete|needs_user_input|blocked>
-approval_required: <true|false>
-```
+Summarize evidence at the end in concise user-facing language. Include only details that
+help the user decide or continue: the outcome, relevant verification, material risks or
+required approval, and the next action when one exists. Never output YAML, JSON, schema
+names, or internal field names unless the user explicitly asks for machine-readable output.
 
 ## Guardrails
 

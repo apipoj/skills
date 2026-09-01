@@ -157,19 +157,10 @@ local file changes whose format and path must be shown first.
 
 ## Evidence Receipt
 
-Return only the handoff delta, not the confirmed brief:
-
-```yaml
-schema: spk.evidence/v1
-brief_ref: confirmed-summary-above
-recommended: <deliverable>
-selected: <deliverable|stop>
-handoff_kind: <direct_task|workflow|stop>
-next_workflow: <name|null>
-effect: <read_only|workspace_write>
-development_authorized: <true only for an explicit end-to-end workspace intent>
-external_write_authorized: false
-```
+Summarize only the handoff delta in concise user-facing language: recommendation,
+selection, next step, file changes, and needed approval. Never output YAML, JSON, schema
+names, or internal field names unless the user asks for machine-readable output. Do not
+repeat the confirmed brief.
 
 ## Guardrails
 

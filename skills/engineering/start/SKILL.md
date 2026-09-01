@@ -64,14 +64,10 @@ description: เริ่มงานกับ AI แบบไทยเป็น
 
 ## Evidence Receipt
 
-```yaml
-schema: spk.evidence/v1
-workflow: <canonical skill>
-effect: <read_only|workspace_write|git_write|external_write|destructive>
-reason: <เหตุผลหนึ่งประโยค>
-status: <complete|needs_user_input|blocked>
-approval_required: <true|false>
-```
+สรุปหลักฐานท้ายคำตอบด้วยภาษาที่ผู้ใช้อ่านเข้าใจง่ายและกระชับ ใส่เฉพาะสิ่งที่ช่วยให้
+ตัดสินใจหรือทำต่อได้: ผลลัพธ์ หลักฐานสำคัญ ความเสี่ยงหรือ approval ที่ยังต้องใช้ และ
+next action เมื่อมี ห้ามแสดง YAML, JSON, schema name, ชื่อ field ภายใน, enum หรือ field
+ว่าง เว้นแต่ผู้ใช้ขอ machine-readable output โดยตรง
 
 ## Guardrails
 

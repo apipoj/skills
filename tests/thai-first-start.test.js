@@ -34,12 +34,13 @@ describe('Thai-first instant-start router', () => {
     }
   });
 
-  test('preserves approval boundaries and typed evidence', () => {
+  test('preserves approval boundaries and user-facing evidence', () => {
     expect(runtime).toMatch(/read_only/);
     expect(runtime).toMatch(/workspace_write/);
     expect(runtime).toMatch(/git_write/);
     expect(runtime).toMatch(/external_write/);
-    expect(runtime).toContain('spk.evidence/v1');
+    expect(runtime).toMatch(/concise user-facing language/i);
+    expect(runtime).not.toMatch(/```ya?ml|spk\.evidence\/v1/i);
     expect(runtime).toMatch(/approval/i);
   });
 

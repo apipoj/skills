@@ -62,6 +62,30 @@ describe('provider-neutral workflow and authority contracts', () => {
     }
   });
 
+  test('user-facing skills present evidence without serialized receipts', () => {
+    const userFacingRoots = [
+      path.join(ROOT, 'skills'),
+      path.join(ROOT, 'locales', 'en', 'skills'),
+      SHARED_SKILLS,
+    ];
+
+    for (const root of userFacingRoots) {
+      const skillFiles = fs.readdirSync(root, { recursive: true, withFileTypes: true })
+        .filter(entry => entry.isFile() && entry.name === 'SKILL.md')
+        .map(entry => path.join(entry.parentPath, entry.name));
+
+      for (const file of skillFiles) {
+        expect(read(file)).not.toMatch(/```ya?ml\s+schema:\s*spk\.evidence\/v1/i);
+      }
+    }
+
+    for (const name of ['start', 'ask-me']) {
+      const text = read(path.join(SHARED_SKILLS, name, 'SKILL.md'));
+      expect(flat(text)).toMatch(/user-facing language/i);
+      expect(flat(text)).toMatch(/Never output YAML, JSON, schema names, or internal field names/i);
+    }
+  });
+
   test('direct practical workflows do not route work to conflicting roles', () => {
     for (const name of ['ask-me', 'add-knowledge', 'test-changes']) {
       const text = read(path.join(SHARED_SKILLS, name, 'SKILL.md'));
