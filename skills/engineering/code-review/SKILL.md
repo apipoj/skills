@@ -1,93 +1,56 @@
 ---
 name: code-review
-description: รีวิว diff แยกด้านมาตรฐาน สเปก ความถูกต้อง security tests และความพร้อมส่งมอบ
+description: รีวิว code หรือ diff หาปัญหาที่แก้ได้ พร้อมหลักฐานและข้อจำกัดการตรวจ
 ---
+
 # code-review
 
-รัน code review หลาย pass ครอบคลุม correctness, security, maintainability, tests, docs และ ship-readiness
+## Response Rules
 
-## รวบรวม Context
+Reply in the user's language.
 
-- ถ้าอยู่ใน git worktree ให้รัน `git status --short --branch --untracked-files=all`
-- ถ้าอยู่ใน git worktree ให้รัน `git diff --stat` และ `git diff --name-status`
-- ถ้าอยู่ใน git worktree ให้รัน `git log -5 --oneline`; ถ้าไม่ใช่ git repo ให้ข้าม git context และ review จาก scope ที่ user ให้มา
+- **Simplicity** — one idea per sentence; the plain word over the impressive one.
+- **Brevity** — answer first, then stop; no preamble, no restating the request, no summarizing what you just wrote.
+- **Clarity** — lead with the outcome, then what changed and what it costs; label an unverified claim as unverified.
+- **Humanity** — write as a colleague, not a system; familiar technical English over literal translation; no performative enthusiasm, no apology theater, no location stereotypes.
+- **Terminology** — reach for the precise domain term and keep it in its English form; never respell it phonetically in the reply's script (`ผลเทสท์` for `test`) or translate it literally (`หูจับ` for `handle`). Gloss an unfamiliar term once — `CPA (ต้นทุนต่อการได้ลูกค้าหนึ่งราย)` — then anchor it with one concrete example.
 
-## Review Passes
+Keep working without user input while the requested outcome remains inside current authority. Use a reversible smart default and record assumptions. Ask only when one material user-owned decision changes scope, risk, cost, or success, or when a required effect crosses an unapproved boundary.
 
-รันแต่ละ pass แยกกัน รวม findings ก่อนรายงาน pass ที่เป็น read-only lens อิสระ (correctness, security, maintainability, tests/docs) รันพร้อมกันได้เป็น specialist call โดยให้ scope เดียวกันทุกตัวและต้องอ้าง file/line evidence เสมอ จากนั้น deduplicate ตาม root cause แล้วรัน verifier pass แยกอีกครั้งเพื่อตรวจ verdict ที่เสนอมาก่อนรายงานจริง
+Review the user's stated scope. For an unspecified diff review, use current tracked and
+untracked changes. A repository review does not require a comparison branch. If a supplied
+ref is invalid or a diff is empty, report that fact and the resulting scope limitation.
 
-Budget: เรียก specialist ได้สูงสุด 6 ครั้ง, concurrent read-only lens สูงสุด 4 ตัว และ retry ได้ 1 ครั้งถ้า evidence ยังไม่พอ
+## Workflow
 
-### Pass 1: Correctness และ Edge Cases
-- Logic errors, off-by-one, null/undefined handling
-- Edge cases: empty inputs, boundary values, concurrent access
-- Error handling: errors ถูก catch, log และ surface อย่างถูกต้องไหม
+Inspect relevant source, repository standards, and available requirements. Assess correctness,
+security, maintainability, tests, and documentation in proportion to the change. For a complex
+review, consult [REVIEW-LENSES.md](REVIEW-LENSES.md) for standards and spec lenses.
+Missing specs are an evidence gap, not a reason to invent requirements or force setup.
 
-### Pass 2: Security และ Secrets
-- Hardcoded secrets, API keys, tokens, credentials
-- Authorization checks บน sensitive endpoints
-- Input validation และ sanitization
-- ทุกบรรทัดที่ดูเป็น secret คือ fail-closed จนกว่าจะพิสูจน์ว่าปลอดภัย
+Use the current conversation by default. Delegate only independent substantial scopes when
+that improves the review. Verify proposed findings against the actual code, deduplicate by
+root cause, and rank by impact. Keep standards/spec labels when useful within one findings list.
 
-### Pass 3: Maintainability และ Scope
-- การเปลี่ยนแปลงตรงกับ goal ที่ระบุไหม
-- Scope creep: มี changes ไม่เกี่ยวข้องผสมอยู่ไหม
-- Code duplication ที่ควร extract
-- ความชัดเจนและ consistency ของ naming
-
-### Pass 4: Tests และ Docs
-- behaviors ใหม่มี test ครอบคลุมไหม
-- tests เดิมยังผ่านไหม
-- การเปลี่ยนแปลงมี docs หรือยัง (API docs, README, inline comments)
-- Docs drift: ถ้า behavior, commands, manifests หรือ public workflow เปลี่ยน docs ต้องอัพเดต
-
-### Pass 5: Ship-Readiness Gate
-- Quality gate สุดท้าย: จะ ship ไหม
-- มี Critical หรือ Important issues = HOLD
-
-รันเฉพาะ check หรือ test ที่รู้แน่ชัดว่าไม่เขียนไฟล์ในโปรเจกต์ ถ้า command อาจเขียน caches, snapshots,
-lockfiles, generated artifacts หรือ project state อื่น ให้รายงาน command นั้นเป็นขั้นตอน verification
-ที่แนะนำแทนการรันเอง
-
-## Output Format
-
-```markdown
-## Review Report
-- Scope: <สิ่งที่ review>
-- Files: <count และ list>
-
-### Findings
-
-#### Critical (blocks merge)
-- <file:line> <issue> - <ทำไมสำคัญ> - <fix>
-
-#### Important (ควรแก้ใน PR นี้)
-- <file:line> <issue> - <ทำไมสำคัญ> - <fix>
-
-#### Minor (ตามมาทีหลังได้)
-- <file:line> <issue> - <suggestion>
-
-### Verdict
-<APPROVE | HOLD | REQUEST_CHANGES>
-```
-
-## Review Contract
-
-- Critical: security/data loss/build พัง/behavior ผิด; blocks merge
-- Important: ควรแก้ใน PR นี้ก่อน merge
-- Minor: ตามมาทีหลังได้หรือ style suggestion
-- Suggestions ไม่ใช่ blocker เว้นแต่มี concrete risk
-- ทุกบรรทัดที่ดูเป็น secret คือ fail-closed จนกว่าจะพิสูจน์ว่าปลอดภัย
-- ตรวจ docs drift เมื่อ behavior, commands, manifests หรือ public workflow เปลี่ยน
+Review is complete when findings have file/line evidence, a concrete consequence, and an
+actionable fix; state checks performed and unresolved coverage. Critical or Important issues
+mean HOLD until fixed or explicitly accepted. With no actionable findings, say so and disclose
+verification limits. Style preferences alone are not blockers.
 
 ## Autonomy Profile
 
 `afk_local` — ทำงานต่อเองได้ถึง effect level ที่ skill นี้ประกาศเท่านั้น และห้ามยกระดับ read-only เป็น write; prompt budget 0, repair budget 3 รอบ ก่อนหยุดต้องบันทึก phase, assumption, evidence, attempts และ next action ที่ทำต่อได้
 
-## ข้อควรระวัง
+## Evidence Receipt
 
-- review แบบ read-only เท่านั้น ห้ามสร้างหรือแก้ project files รวมถึง reports, caches,
-  snapshots, lockfiles และ generated artifacts และห้าม fix, stage, commit, push หรือ deploy
-  ถ้า verification command อาจเขียนไฟล์ ให้รายงาน command เพื่อให้ user รันแทน
-- ถ้าเจอ Critical หรือ Important ต้อง HOLD จนกว่าจะแก้ หรือ user รับความเสี่ยงนั้นชัดเจน
-- อย่ารายงาน style preference เป็น blocker ถ้าไม่มี concrete risk
+Lead with ranked findings in concise user-facing language, then scope, verification results,
+risks, and APPROVE/HOLD/REQUEST_CHANGES when a ship verdict applies. Use machine-readable
+receipts only when requested. Never claim an unrun check passed.
+
+## Guardrails
+
+- Review only. Never create or modify project files, including reports, caches, snapshots,
+  lockfiles, or generated artifacts; never fix, stage, commit, push, or deploy.
+- Run checks only when known not to write project files. Otherwise report the exact command
+  as recommended verification and keep the result unverified.
+- Treat secret-shaped material as unresolved until proven safe; redact values in findings.

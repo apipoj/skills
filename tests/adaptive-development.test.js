@@ -47,10 +47,11 @@ describe('adaptive development workflow', () => {
       const flat = router.replace(/\s+/gu, ' ');
       expect(router).toMatch(/adaptive[\s\S]*`code`|`code`[\s\S]*adaptive/i);
       expect(router).toMatch(/strict[\s\S]*`tdd`|`tdd`[\s\S]*strict/i);
-      expect(flat).toMatch(/CSS[\s\S]*`code`/i);
-      expect(flat).toMatch(/payment calculation[\s\S]*permission logic[\s\S]*`tdd`/i);
-      expect(flat).toMatch(/reproducible bug|bug ที่ reproduce ได้/i);
-      expect(flat).toMatch(/regression test[\s\S]*`tdd`/i);
+      // Assert the selection boundary rather than prescribing an exhaustive example list.
+      expect(flat).toMatch(/Default development to `code`|ค่าเริ่มต้น development ใช้ `code`/i);
+      expect(flat).toMatch(/explicit test-first|ผู้ใช้ขอ test-first ชัดเจน/i);
+      expect(flat).toMatch(/high-risk[\s\S]*reliable test seam|เสี่ยงสูง[\s\S]*test seam ที่ reliable/i);
+      expect(flat).toMatch(/repo policy|policy ของ repo/i);
     }
   });
 

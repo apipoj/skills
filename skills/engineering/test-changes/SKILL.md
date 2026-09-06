@@ -1,10 +1,10 @@
 ---
 name: test-changes
-description: เลือกและรัน test ที่เกี่ยวกับไฟล์ที่เปลี่ยนเพื่อได้ผลเร็ว พร้อมบอกส่วนที่จับคู่ไม่ได้และรัน full suite ก่อนจบ
+description: รัน test ที่ไฟล์เปลี่ยนกระทบ พร้อมบอกส่วนที่ตรวจไม่ครอบคลุม
 ---
 # ทดสอบเฉพาะส่วนที่เปลี่ยน
 
-เร่ง inner loop ด้วยการรันเฉพาะ test suites ที่การเปลี่ยนแปลงปัจจุบันมีผลกระทบ แทนที่จะรันทั้งชุดทุกครั้งที่แก้ ใช้ตอนทำ TDD หรือ implement ทีละขั้นเมื่อการรันทั้งชุดช้า แต่ต้องรันทั้งชุดก่อนปิดงานเสมอ
+เร่ง inner loop ด้วยการรันเฉพาะ test suites ที่การเปลี่ยนแปลงปัจจุบันมีผลกระทบ แทนที่จะรันทั้งชุดทุกครั้งที่แก้ ใช้ตอนทำ TDD หรือ implement ทีละขั้นเมื่อการรันทั้งชุดช้า รันทั้งชุดเมื่อ policy ของ repo, release gate หรือความไม่แน่ใจในการจับคู่กำหนด
 ทำ workflow นี้โดยตรงใน conversation ปัจจุบัน
 
 ## รวบรวม Context
@@ -31,8 +31,8 @@ description: เลือกและรัน test ที่เกี่ยว�
 ### 5. รายงาน scope ตามจริง
 รายงาน changed paths, selected inputs, unmapped paths, command/argv, exit status และบอกว่าเป็น scoped หรือ full
 
-### 6. รันทั้งชุดก่อนปิดงาน
-scoped pass เป็นเพียง inner-loop signal ก่อนสรุป implementation ว่าเสร็จต้องรันคำสั่ง `full` ที่ helper คืนมา
+### 6. จบตามขอบเขตการตรวจ
+รัน `full` เมื่อ policy ของ repo, release gate หรือการจับคู่ที่ไม่มั่นใจกำหนด นอกนั้น focused pass จบการตรวจ local ที่มีขอบเขตได้ โดยระบุข้อจำกัด ตรวจเพิ่มหรือซ้ำเมื่อมี change ใหม่, failure หรือ risk ที่ยังไม่คลี่คลาย รายงาน failure และแก้เฉพาะเมื่อคำขอ implementation ที่ครอบอยู่อนุญาต
 
 ## Autonomy Profile
 

@@ -1,91 +1,51 @@
 ---
 name: plan
-description: วางแผนการเปลี่ยนแปลงซอฟต์แวร์จากหลักฐานใน repo เป็นความต้องการ สถาปัตยกรรม งานตามลำดับ dependency จุดตรวจสอบ และแผนย้อนกลับ
+description: วางแผนแก้ซอฟต์แวร์เป็นงานที่ชัด พร้อมวิธีตรวจตามความเสี่ยง
 ---
+
 # plan
 
-ผลิต plan สำหรับ developer พร้อม goal, non-goals, architecture, tasks แบบ TDD เล็ก ๆ, verification gates และ rollout notes
+## Response Rules
 
-## รวบรวม Context
+Reply in the user's language.
 
-- ถ้าอยู่ใน git worktree ให้รัน `git status --short` และ `git log -3 --oneline`; ถ้าไม่ใช่ git repo ให้ข้าม git context และทำงานต่อ
-- ดู project structure (CLAUDE.md, AGENTS.md, package.json, tsconfig, pyproject.toml, go.mod, Cargo.toml ฯลฯ)
-- อ่าน `docs/agents/artifacts.md` ถ้ามี เพื่อ resolve ปลายทางก่อนเขียน artifact
-- ดู plans ตาม policy ก่อน จาก `ai_context/work/plans/`, `docs/plans/` และ
-  `ai_context/wiki/plans/` เฉพาะ legacy compatibility
-- อ่าน handoff receipt ถ้ามี และบันทึก authority เป็น `plan_only` หรือ `plan_and_implement`
+- **Simplicity** — one idea per sentence; the plain word over the impressive one.
+- **Brevity** — answer first, then stop; no preamble, no restating the request, no summarizing what you just wrote.
+- **Clarity** — lead with the outcome, then what changed and what it costs; label an unverified claim as unverified.
+- **Humanity** — write as a colleague, not a system; familiar technical English over literal translation; no performative enthusiasm, no apology theater, no location stereotypes.
+- **Terminology** — reach for the precise domain term and keep it in its English form; never respell it phonetically in the reply's script (`ผลเทสท์` for `test`) or translate it literally (`หูจับ` for `handle`). Gloss an unfamiliar term once — `CPA (ต้นทุนต่อการได้ลูกค้าหนึ่งราย)` — then anchor it with one concrete example.
+
+Keep working without user input while the requested outcome remains inside current authority. Use a reversible smart default and record assumptions. Ask only when one material user-owned decision changes scope, risk, cost, or success, or when a required effect crosses an unapproved boundary.
+
+Produce a plan that another developer can execute. Distinguish plan-only from
+plan-and-implement intent before handing off work.
 
 ## Workflow
 
-### 1. ชี้ชัด
-- แปล feature description จาก request ของ user
-- ระบุ goal, non-goals, assumptions และคำถามที่ยังเปิดอยู่
-- ถ้าข้อมูลสำคัญขาด ให้ถามคำถามเดียวที่เจาะจงแทนที่จะเดา
+Inspect repository instructions and the source, tests, and constraints relevant to the request.
+Define the goal, non-goals, observable acceptance criteria, affected files or discovery steps,
+dependency-ordered tasks, and material risks. Include architecture decisions and rollout/rollback
+only where they affect the work. Let task size follow coherent outcomes, not a fixed time quota.
 
-### 2. Architecture
-- เสนอ architecture approach พร้อม source areas ที่ชัด
-- ระบุ files, modules และ interfaces ที่ได้รับผลกระทบ
-- บันทึก dependencies, risks และ migration concerns
+Choose verification proportional to risk, consistent with `code`: focused checks for small
+changes; regression tests for reproducible bugs when reliable; strict TDD when explicitly
+requested or justified by a high-risk stable seam. Run a full suite when repository policy,
+release requirements, or insufficient confidence in narrower coverage requires it.
 
-### 3. แตก Task
-- แยก feature เป็น tasks เล็ก ๆ (action 2-5 นาทีที่ทำได้)
-- แต่ละ task ต้องมี: files ที่จะแตะ, expected change, TDD steps (RED/GREEN), verification commands และ commit message
-- Tasks ต้องตรวจสอบได้แบบอิสระ
+Check that each acceptance criterion has an implementation task and appropriate verification.
+Use the current conversation by default; specialists are optional for independent substantial
+questions. Ask only for a material user-owned decision that cannot be resolved from evidence.
 
-### 4. Verification Gates
-- กำหนด verification gates ระหว่าง task groups
-- รวม regression test commands
-- รวม docs update tasks
+Before saving, read `docs/agents/artifacts.md` when present. Default to
+`ai_context/work/plans/YYYY-MM-DD-<slug>.md`; promote to `docs/plans/` only for a policy-required
+or requested team-shared/audit record. Read `ai_context/wiki/plans/` only as a legacy compatibility
+fallback. The wiki may hold a summary and pointer, never a duplicate editable plan body.
+If no writable scaffold or configured destination exists, return the plan inline.
 
-### 5. Rollout และ Rollback
-- บันทึก rollout steps และลำดับ
-- บันทึก rollback plan
-- บันทึก risks และ mitigations
-
-### 6. บันทึก Plan
-- ใช้ `docs/agents/artifacts.md` เป็น routing source of truth
-- ค่าเริ่มต้นคือ `ai_context/work/plans/YYYY-MM-DD-<slug>.md`
-- Promote ไป `docs/plans/YYYY-MM-DD-<slug>.md` เฉพาะเมื่อ policy หรือคำขอระบุว่าเป็น
-  team-shared/audit record ถ้าไม่มีปลายทางที่เขียนได้ให้ส่งคืน plan แบบ inline
-- wiki เก็บได้เฉพาะ summary และ pointer ห้ามคัดลอก body ของ plan ซ้ำ
-
-### 7. Handoff ไป Dev
-
-- `plan_only` — ตรวจ plan แล้วหยุด
-- `plan_and_implement` — คำขอเดิมระบุผลลัพธ์ local แบบ end-to-end ชัด reviewed plan
-  ทำหน้าที่จำกัด scope และบันทึก authority ไม่ใช่ approval gate ใหม่ ส่งต่อไป `code` แล้วทำต่อ
-  โดยไม่ถามซ้ำ
-
-ถ้า plan ยัง blocked, verify ไม่ผ่าน หรือมี decision สำคัญที่ผู้ใช้ต้องตัดสินใจ ให้เก็บ
-checkpoint และถามเฉพาะ decision นั้น
-
-Budget: เรียก specialist ได้ไม่เกินห้าครั้ง, concurrent worker ไม่เกินสองคน และ retry ได้
-หนึ่งครั้งสำหรับ worker ที่ติดขัด หยุด fan-out ทันทีที่ verifier มีหลักฐานพอ
-
-## Output Format
-
-```markdown
-## Plan: <feature name>
-- Goal: <หนึ่งประโยค>
-- Non-goals: <list>
-- Assumptions: <list>
-- Architecture: <approach>
-- Tasks: <numbered list พร้อม file paths, TDD steps, verification>
-- Gates: <verification checkpoints>
-- Rollout: <steps>
-- Rollback: <plan>
-- Risks: <list>
-- Open questions: <list>
-```
-
-## มาตรฐาน Plan
-
-- Tasks เป็น action 2-5 นาทีที่ตรวจสอบได้แบบอิสระ
-- ทุก task มี file path ที่ชัดหรือขั้นตอน discovery ที่ชัด
-- ทุกการเปลี่ยน behavior มีขั้นตอน TDD
-- Plan บอกว่าจะไม่ build อะไร
-- Acceptance criteria สังเกตได้และ test ได้
-- ถ้าความไม่แน่นอนเปลี่ยน architecture ให้ถามคำถามเดียวที่เจาะจงแทนที่จะเดา
+For `plan_only`, stop after the reviewed plan. For `plan_and_implement`, continue into implementation without another user prompt,
+carrying the original bounded workspace authority to `code`. Completion includes implementation,
+relevant checks, and repair of failures caused by the change within scope; a first draft is not
+completion. A blocked plan keeps its unresolved decisions and next action explicit.
 
 ## Autonomy Profile
 
@@ -93,15 +53,14 @@ Budget: เรียก specialist ได้ไม่เกินห้าคร
 
 ## Evidence Receipt
 
-คืน `spk.evidence/v1` ที่มี plan artifact, repository evidence, acceptance criteria,
-verifier result, assumptions, risks, `authority_mode` และ
-`implementation_authorized: true|false` ตามคำขอเดิม พร้อม draft path และ canonical path
-จริงเมื่อมีการ promote
+Report the plan or its path, acceptance criteria, relevant repository evidence, verification
+approach, material risks, and whether implementation is authorized, in user-facing language.
+Separate proposed checks from executed checks. Internal receipts are optional on request.
 
-## ข้อควรระวัง
+## Guardrails
 
-- ห้ามแก้ production source ขณะที่ planning ยัง unresolved หรือ verify ไม่ผ่าน
-- ถ้าคำขอชัดว่า plan-and-implement ให้ carry workspace authority ไป implementation โดยไม่สร้าง approval ซ้ำ
-- plan-only ไม่อนุญาต implementation, Git, remote หรือ destructive effect
-- ห้ามเก็บ plan body ที่แก้ไขได้ทั้งใน wiki และ canonical team path พร้อมกัน
-- ถ้า scope สำคัญเปลี่ยน ให้กลับไปถาม user แทนการส่งต่อไป dev
+- Do not modify production source while planning is unresolved or unverified.
+- Plan-only authority never expands into implementation, Git, remote, or destructive work.
+- An end-to-end local request does not authorize commit, push, PR creation, or deployment;
+  preserve exact approval for the current target and payload.
+- Preserve material product choices for the user and label assumptions.

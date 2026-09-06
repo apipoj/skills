@@ -16,6 +16,16 @@ Install the plugin, then use one entry point:
 
 Describe the outcome normally. The router chooses the smallest fitting workflow, applies safe smart defaults, and asks one material question only when the answer changes scope or risk.
 
+Local work follows the requested outcome through implementation, relevant checks, and repair
+of failures caused by the change. Plan-only requests still stop at the plan. Verification
+scales to risk: strict TDD is for explicit requests or high-risk reliable seams; full suites
+remain required by repository/release policy or uncertain test mapping. Code reviews return
+one ranked findings list and disclose missing specs and unrun checks.
+
+SkillLab corpus validation checks scenario structure, not model performance. Its outcome
+cases include standalone review, a small plan-only change, bounded local completion, and
+focused-test completion. Live Claude/Codex trials remain opt-in and outside the release gate.
+
 ## Install
 
 ### Claude Code

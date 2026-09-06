@@ -1,5 +1,17 @@
 # Apipoj Skills
 
+## 6.6.3 - 2026-09-06
+
+### Changed
+
+- Simplified `code-review`, `plan`, `start`, and `test-changes`: one ranked review, risk-appropriate verification, and explicit completion of authorized local work. Detailed review and session-transition guidance is loaded only when needed.
+- Aligned the planning specialist, bilingual sources, workflow contracts, and generated Codex payload. Required repository/release checks and Git/remote approval boundaries remain intact.
+- Replaced generic SkillLab outcome prompts with concrete review, small-plan, local-completion, and focused-test scenarios. Corpus validation remains distinct from opt-in live model evaluation.
+
+### Fixed
+
+- Updated the transitive `fast-uri` dependency to a patched version; the dependency audit reports no vulnerabilities.
+
 ## 6.6.2 - 2026-09-02
 
 ### Added

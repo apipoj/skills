@@ -1,6 +1,6 @@
 ---
 name: start
-description: เริ่มงานกับ AI แบบไทยเป็นหลัก โดยเลือก workflow ที่เล็กและตรงที่สุดให้ผู้ใช้ ไม่ต้องจำรายชื่อ skill
+description: เลือก workflow ให้ตรงคำขอแบบไทย เมื่อผู้ใช้ยังไม่ได้เลือก skill
 ---
 
 # เริ่มงานกับ Apipoj Skills
@@ -40,31 +40,19 @@ description: เริ่มงานกับ AI แบบไทยเป็น
    - เตรียมส่งงาน → `check-release`, `pr`, `task-to-pr`, `deploy`; ถอนระบบ → `uninstall`
    - ส่งต่อ context → `handoff`; เรียนรู้เรื่องใหม่ → `teach`; เขียน agent docs หรือ skill → `write-skills`
 
-   ตัวอย่างเลือก development mode — default ใช้ `code`; เลือก `tdd` เมื่อผู้ใช้ขอ
-   test-first ชัดเจน หรือ behavior เสี่ยงสูงมี test seam ที่ reliable และคุ้มต้นทุน:
-   - แก้ copy, CSS, config, simple wiring หรือ internal refactor → `code`
-   - สำรวจ feature ที่ behavior ยังไม่นิ่ง → `code` จน data shape และ contract นิ่ง
-   - payment calculation, permission logic, migration หรือ concurrency ที่มี stable seam → `tdd`
-   - bug ที่ reproduce ได้และเขียน regression test ที่ reliable ได้ → `tdd`; ถ้า seam ยังไม่ดี
-     ให้ `code` เก็บ runtime reproduction เป็นหลักฐานก่อน
+   ค่าเริ่มต้น development ใช้ `code`; เลือก `tdd` เมื่อผู้ใช้ขอ test-first ชัดเจน
+   หรือ behavior เสี่ยงสูงมี test seam ที่ reliable เลือกการตรวจตามความเสี่ยงและ policy ของ repo
 
    ถ้า outcome ตรงกับ skill แบบ manual-only (`disable-model-invocation`) ให้บอกคำสั่ง `/<name>` ให้ผู้ใช้แล้วหยุด ไม่ต้องเรียกใช้เอง
 5. รัน workflow ที่เลือกไปจนถึงผลลัพธ์ที่ตรวจได้ คำขอแบบ end-to-end ที่ชัดให้ bounded
    workspace authority ต่อเนื่องผ่าน plan, implementation, test และ local QA โดยไม่ถาม
-   อนุมัติ local ซ้ำ
+   อนุมัติ local ซ้ำ ทำต่อจน implementation, การตรวจที่เกี่ยวข้อง และการแก้ failure ที่เกิดจาก change
+   ใน scope เสร็จ ร่างแรกยังไม่ถือว่าจบ หยุดเฉพาะเมื่อเสร็จ มี decision สำคัญ หรือ effect ที่ยังไม่อนุมัติ
 6. จบด้วยผลลัพธ์ก่อน ตามด้วยหลักฐาน ความเสี่ยง และ next action ที่เล็กที่สุด
 
 ## รอยต่อระหว่าง phase
 
-เมื่อจบก้อนงานหนึ่งแล้วจะขึ้นก้อนถัดไป มีห้าทางเลือก ไล่จากบนลงล่าง ข้อแรกที่ตอบว่าใช่ชนะ
-
-1. **ทำต่อ** ถ้า phase ถัดไปต้องใช้ phase นี้เป็น primary source หรือยังเหลือ smart zone พอ (~150k token) — ไม่มีต้นทุนและไม่เสียอะไร จึงตัดออกก่อนเสมอ
-2. **`/clear`** ถ้า context นี้ไม่เกี่ยวกับสิ่งที่จะทำต่อเลย
-3. **`handoff`** เฉพาะตอนย้าย harness ย้าย directory ส่งให้เพื่อนร่วมงาน หรือแตกงานข้างเคียงกลาง phase — สิ่งที่ได้คือความพกพาได้
-4. **subagent** ถ้างานแคบพอจะรันโดยไม่ต้องมีคนเฝ้า
-5. **`/compact`** นอกนั้น เป็นค่าเริ่มต้นที่อยู่ล่างสุด ไม่ใช่ท่าแรกที่ควรคว้า
-
-ตัดสินใจที่รอยต่อเท่านั้น กลาง phase ให้ทำต่อหรือแยกงานที่เหลือไปให้ subagent รายละเอียดเต็มอยู่ใน [PHASE-BOUNDARIES.md](PHASE-BOUNDARIES.md)
+ทำต่อใน conversation เดิมเมื่อ phase ถัดไปต้องใช้ context นี้ อ่าน [PHASE-BOUNDARIES.md](PHASE-BOUNDARIES.md) เฉพาะเมื่อ context ไม่พอหรือผู้ใช้ขอย้าย session ใช้ความสามารถของ host แทน threshold token ตายตัว
 
 ## Autonomy Profile
 

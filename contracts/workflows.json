@@ -72,8 +72,8 @@
       "locales": {
         "en": {
           "displayName": "Start",
-          "description": "Route a software-engineering request to the smallest appropriate SPK workflow, state its effect level, and preserve required approval gates.",
-          "shortDescription": "Route a software-engineering request to the smallest appropriate SPK workflow, state its effect ",
+          "description": "Choose the smallest SPK workflow when the user has not selected one.",
+          "shortDescription": "Choose the smallest SPK workflow when the user has not selected one.",
           "defaultPrompt": "Start my current request with the simplest safe workflow.",
           "triggers": [
             "not sure which SPK workflow fits this task",
@@ -87,8 +87,8 @@
         },
         "th": {
           "displayName": "เริ่มงานแบบพร้อมใช้",
-          "description": "เริ่มงานกับ AI แบบไทยเป็นหลัก โดยเลือก workflow ที่เล็กและตรงที่สุดให้ผู้ใช้ ไม่ต้องจำรายชื่อ skill",
-          "shortDescription": "เริ่มงานกับ AI แบบไทยเป็นหลัก โดยเลือก workflow ที่เล็กและตรงที่สุดให้ผู้ใช้ ไม่ต้องจำรายชื่อ skill",
+          "description": "เลือก workflow ให้ตรงคำขอแบบไทย เมื่อผู้ใช้ยังไม่ได้เลือก skill",
+          "shortDescription": "เลือก workflow ให้ตรงคำขอแบบไทย เมื่อผู้ใช้ยังไม่ได้เลือก skill",
           "defaultPrompt": "เริ่มงานนี้แบบพร้อมใช้ด้วย workflow ที่ง่ายและปลอดภัยที่สุด",
           "triggers": [
             "ไม่รู้จะเลือก workflow ไหนดี ช่วยเลือกให้หน่อย",
@@ -1314,8 +1314,8 @@
       "locales": {
         "en": {
           "displayName": "Code Review",
-          "description": "Review a requested diff or branch in independent correctness, security, maintainability, test, documentation, and ship-readiness passes.",
-          "shortDescription": "Review a requested diff or branch in independent correctness, security, maintainability, test, d",
+          "description": "Review code or a diff for actionable defects, with file evidence and verification limits.",
+          "shortDescription": "Review code or a diff for actionable defects, with file evidence and verification limits.",
           "defaultPrompt": "Use code-review for my current request.",
           "triggers": [
             "review this PR before I merge it",
@@ -1328,8 +1328,8 @@
         },
         "th": {
           "displayName": "รีวิว code เทียบมาตรฐานและสเปก",
-          "description": "รีวิว diff แยกด้านมาตรฐาน สเปก ความถูกต้อง security tests และความพร้อมส่งมอบ",
-          "shortDescription": "รีวิว diff แยกด้านมาตรฐาน สเปก ความถูกต้อง security tests และความพร้อมส่งมอบ",
+          "description": "รีวิว code หรือ diff หาปัญหาที่แก้ได้ พร้อมหลักฐานและข้อจำกัดการตรวจ",
+          "shortDescription": "รีวิว code หรือ diff หาปัญหาที่แก้ได้ พร้อมหลักฐานและข้อจำกัดการตรวจ",
           "defaultPrompt": "ใช้ code-review กับคำขอนี้",
           "triggers": [
             "ช่วย review PR นี้ก่อน merge หน่อย",
@@ -1353,7 +1353,7 @@
         },
         {
           "phase": "execute",
-          "instruction": "Apply the code-review discipline in the smallest complete slice; ask one material question only when needed."
+          "instruction": "Review the requested scope using relevant standards and requirements. Verify, deduplicate, and rank actionable findings in one list; missing specs are an evidence gap, not a setup gate."
         },
         {
           "phase": "verify",
@@ -1976,8 +1976,8 @@
       "locales": {
         "en": {
           "displayName": "Engineering Plan",
-          "description": "Plan a software change from repository evidence into scoped requirements, architecture, dependency-ordered tasks, verification gates, and rollback notes.",
-          "shortDescription": "Create an evidence-backed implementation plan",
+          "description": "Plan a software change into scoped tasks and risk-appropriate verification.",
+          "shortDescription": "Plan a software change into scoped tasks and risk-appropriate verification.",
           "defaultPrompt": "Plan this change into small verified implementation slices.",
           "triggers": [
             "plan a feature",
@@ -1991,8 +1991,8 @@
         },
         "th": {
           "displayName": "แผนวิศวกรรม",
-          "description": "วางแผนการเปลี่ยนแปลงซอฟต์แวร์จากหลักฐานใน repo เป็นความต้องการ สถาปัตยกรรม งานตามลำดับ dependency จุดตรวจสอบ และแผนย้อนกลับ",
-          "shortDescription": "สร้างแผนลงมือทำจากหลักฐาน",
+          "description": "วางแผนแก้ซอฟต์แวร์เป็นงานที่ชัด พร้อมวิธีตรวจตามความเสี่ยง",
+          "shortDescription": "วางแผนแก้ซอฟต์แวร์เป็นงานที่ชัด พร้อมวิธีตรวจตามความเสี่ยง",
           "defaultPrompt": "วางแผนการเปลี่ยนแปลงนี้เป็นงานย่อยที่ตรวจสอบได้",
           "triggers": [
             "วางแผน feature",
@@ -2025,7 +2025,7 @@
         },
         {
           "phase": "decompose",
-          "instruction": "Create dependency-ordered vertical slices with exact files and red-green verification."
+          "instruction": "Create dependency-ordered tasks with affected files and verification proportional to risk; use strict TDD when explicitly requested or justified by a high-risk reliable seam."
         },
         {
           "phase": "gate",
@@ -3030,8 +3030,8 @@
       "locales": {
         "en": {
           "displayName": "Test Changes",
-          "description": "Map changed files to the smallest defensible test set, run it for fast feedback, disclose unmapped paths, and require the full suite before sign-off.",
-          "shortDescription": "Run focused tests without hiding coverage gaps",
+          "description": "Run tests affected by changed files and report coverage gaps.",
+          "shortDescription": "Run tests affected by changed files and report coverage gaps.",
           "defaultPrompt": "Map the current changes to focused tests and report every unmapped path.",
           "triggers": [
             "run tests affected by this diff",
@@ -3045,8 +3045,8 @@
         },
         "th": {
           "displayName": "ทดสอบเฉพาะส่วนที่เปลี่ยน",
-          "description": "เลือกและรัน test ที่เกี่ยวกับไฟล์ที่เปลี่ยนเพื่อได้ผลเร็ว พร้อมบอกส่วนที่จับคู่ไม่ได้และรัน full suite ก่อนจบ",
-          "shortDescription": "เลือกและรัน test ที่เกี่ยวกับไฟล์ที่เปลี่ยนเพื่อได้ผลเร็ว พร้อมบอกส่วนที่จับคู่ไม่ได้และรัน full suite ก่อนจบ",
+          "description": "รัน test ที่ไฟล์เปลี่ยนกระทบ พร้อมบอกส่วนที่ตรวจไม่ครอบคลุม",
+          "shortDescription": "รัน test ที่ไฟล์เปลี่ยนกระทบ พร้อมบอกส่วนที่ตรวจไม่ครอบคลุม",
           "defaultPrompt": "จับคู่การเปลี่ยนแปลงปัจจุบันกับ focused tests และรายงาน path ที่จับคู่ไม่ได้",
           "triggers": [
             "รัน test ที่ diff นี้กระทบ",
@@ -3079,7 +3079,7 @@
         },
         {
           "phase": "report",
-          "instruction": "Report selected suites, unmapped paths, results, and the full-suite requirement before sign-off."
+          "instruction": "Report selected suites, unmapped paths, results, and coverage limits. Require the full suite for repository/release policy or uncertain mapping; a bounded focused check may otherwise complete."
         }
       ],
       "artifacts": [

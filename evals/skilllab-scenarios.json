@@ -49,8 +49,8 @@
         },
         "outcome": {
           "prompts": {
-            "en": "Run /start for the current bounded task, then report the workflow result, verification evidence, and exact authority boundary.",
-            "th": "รัน /start กับงานปัจจุบันใน scope ที่กำหนด แล้วรายงานผล หลักฐานตรวจสอบ และขอบเขตอำนาจที่ชัดเจน"
+            "en": "Use /start to fix a misspelled button label in an existing local app. The request includes inspecting it in the browser and correcting any layout regression caused by the edit. Existing local checks use disposable fixtures without production access. No Git or remote writes are authorized.",
+            "th": "ใช้ /start แก้คำผิดบนปุ่มในแอป local ที่มีอยู่ รวมตรวจใน browser และแก้ layout ที่เสียจาก change นี้ การตรวจ local ใช้ fixture ชั่วคราวและเข้า production ไม่ได้ ไม่อนุญาต Git หรือ remote write"
           },
           "expected": {
             "activation": "start",
@@ -1137,8 +1137,8 @@
         },
         "outcome": {
           "prompts": {
-            "en": "Run /code-review for the current bounded task, then report the workflow result, verification evidence, and exact authority boundary.",
-            "th": "รัน /code-review กับงานปัจจุบันใน scope ที่กำหนด แล้วรายงานผล หลักฐานตรวจสอบ และขอบเขตอำนาจที่ชัดเจน"
+            "en": "Review this standalone snippet using /code-review. No repository or separate spec exists. In supplied line 1, function discountTotal(price, pct) { return price * pct / 100; }, the required result is the final price after discount. Report actionable findings and verification limits without modifying files.",
+            "th": "ใช้ /code-review ตรวจ snippet บรรทัด 1: function discountTotal(price, pct) { return price * pct / 100; } ต้องคืนราคาหลังหักส่วนลด ไม่มี repo หรือ spec แยก รายงานปัญหาและข้อจำกัดการตรวจโดยไม่แก้ไฟล์"
           },
           "expected": {
             "activation": "code-review",
@@ -1693,8 +1693,8 @@
         },
         "outcome": {
           "prompts": {
-            "en": "Plan a tenant-aware audit log. Return a PRD, architecture choices, small dependency-ordered TDD tasks, quality gates, and rollout notes.",
-            "th": "วางแผน audit log แบบแยก tenant โดยส่ง PRD ทางเลือกสถาปัตยกรรม งาน TDD ขนาดเล็กเรียงตาม dependency เกตคุณภาพ และหมายเหตุ rollout"
+            "en": "Use /plan to return an inline plan only: change the button text in static index.html from Send to Send message. There is no test runner or build system and no TDD request. Identify appropriate verification; do not implement.",
+            "th": "ใช้ /plan วางแผนอย่างเดียวแบบ inline เพื่อเปลี่ยนข้อความปุ่มใน static index.html จาก Send เป็น Send message ไม่มี test runner หรือ build system และไม่ได้ขอ TDD ระบุวิธีตรวจที่เหมาะสม ยังไม่ลงมือแก้"
           },
           "expected": {
             "activation": "plan",
@@ -1702,11 +1702,10 @@
               "completed"
             ],
             "signals": [
-              "prd",
-              "architecture",
-              "tdd-tasks",
-              "gates",
-              "rollout"
+              "inline-plan",
+              "scoped-tasks",
+              "proportional-verification",
+              "plan-only-boundary"
             ]
           }
         },
@@ -2523,8 +2522,8 @@
         },
         "outcome": {
           "prompts": {
-            "en": "Run scoped tests for the current diff and report changed paths, mapped suites, fallback decision, and test results.",
-            "th": "รัน scoped tests สำหรับ diff ปัจจุบันและรายงาน path ที่เปลี่ยน suite ที่จับคู่ การตัดสินใจ fallback และผลเทสต์"
+            "en": "Use /test-changes for a small diff whose every changed path maps confidently to a focused suite. The focused suite passed and no repository or release policy requires a full run. Report whether this bounded check is complete and its coverage limits. Do not invent additional executed tests.",
+            "th": "ใช้ /test-changes กับ diff เล็กที่ทุก path จับคู่ focused suite ได้มั่นใจและ suite นั้นผ่านแล้ว ไม่มี policy repo หรือ release ที่บังคับรันทั้งชุด รายงานว่าการตรวจใน scope จบหรือยังพร้อมข้อจำกัด ห้ามอ้างว่ารัน test เพิ่ม"
           },
           "expected": {
             "activation": "test-changes",
