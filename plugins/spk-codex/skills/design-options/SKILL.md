@@ -37,7 +37,7 @@ approval record. No production source changes occur in this workflow.
 ## Design Shotgun Loop
 
 1. **Context.** Read `DESIGN.md`, current routes/components, existing screenshots/URLs, and previous approved designs.
-2. **Concepts.** Produce 3 default directions, each with a different stance. Examples: compact operator console, editorial trust layer, playful onboarding, brutalist power tool, calm B2B dashboard.
+2. **Concepts.** When the direction is undecided, produce 3 default directions, each with a different stance. Examples: compact operator console, editorial trust layer, playful onboarding, brutalist power tool, calm B2B dashboard.
 3. **Variants.** Build self-contained mockups. Prefer HTML because it is inspectable and easy to promote later. Images are fine when image tooling exists.
 4. **Board.** Create `board.html` so the user can compare all variants side-by-side.
 5. **Feedback.** Ask for one of: choose A/B/C, remix parts, regenerate, or approve for implementation.
@@ -46,7 +46,7 @@ approval record. No production source changes occur in this workflow.
 
 ## Anti-Convergence Rules
 
-- Each variant must differ in **layout**, **typography**, **palette**, and **density**.
+- Vary layout, density, and product emphasis; vary typography and palette within explicit brand constraints.
 - If two variants look like siblings, regenerate the weaker one.
 - Do not make three generic SaaS cards with different accent colors.
 - Do not copy third-party UI wholesale. Translate references into principles.
@@ -110,6 +110,19 @@ Check every variant before presenting it. Every item below must answer **no** (d
 Recommendation: <one opinionated pick and why>
 Next: pick A/B/C, ask for a remix, or approve for implementation.
 ```
+
+## Product loop handoff
+
+Consume the confirmed vision and reviewed journey/wireframe when supplied. If the screen
+structure is unresolved, build a low-fidelity wireframe before polished mockups. Carry
+realistic content and relevant responsive, loading, empty, error, and success states into
+the selected design. Preserve explicit brand constraints rather than forcing variants to
+change a fixed palette or font. When one direction is already selected, refine it instead
+of manufacturing three alternatives.
+
+Record confirmation against the exact selected artifacts. In a product loop, return their
+links and implementation notes to `start` for specification before coding. Design approval
+settles the direction; it does not grant Git, publication, or deployment authority.
 
 ## Autonomy Profile
 

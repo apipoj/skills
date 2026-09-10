@@ -1,7 +1,6 @@
 ---
 name: to-tickets
 description: แตกสเปกหรือแผนเป็น vertical slices พร้อม blocking edges ที่ทำต่อได้จริง
-disable-model-invocation: true
 ---
 # แตกงานเป็น ticket
 
@@ -17,6 +16,21 @@ disable-model-invocation: true
 ## จุดเน้น
 
 แตกสเปกหรือแผนเป็น vertical slices พร้อม blocking edges ที่ทำต่อได้จริง
+
+## Local product tickets
+
+Consume the canonical spec and reviewed plan when supplied. Draft one local file per
+vertical slice under `ai_context/work/tickets/<slug>/`, unless repository artifact policy
+chooses another local destination. Each ticket links its spec ACs, test cases, selected
+design, plan tasks, real blockers, observable done condition, and verification scope.
+Check AC coverage, missing blockers, and dependency cycles before marking tickets ready.
+Keep a single source of truth; external tracker publication needs separate authorization.
+
+For an explicitly selected product loop, proceed with a consistent local breakdown and
+return the first unblocked ticket to `start` for code. Ask only when granularity or ordering
+changes a material product/scope decision. Ticket-only requests stop at the ticket files.
+These instructions override UPSTREAM.md's blanket quiz/publish step and tracker-setup
+prerequisite; the loop can finish locally without creating remote issues.
 
 ## Autonomy Profile
 

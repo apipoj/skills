@@ -1,12 +1,12 @@
 ---
 name: ask-me
-description: Run a manual Thai-first, read-only decision interview that asks one question at a time, confirm a compact brief, then recommend one context-fit deliverable or a gated plan-to-development handoff.
-disable-model-invocation: true
+description: Run a Thai-first, read-only decision interview that asks one question at a time, confirm a compact brief, then recommend one context-fit deliverable or a gated plan-to-development handoff.
 ---
 
 # Ask Me
 
-`ask-me` asks the user one decision per message with a gated handoff to the next workflow — use `asking` instead when the whole settled frontier should be asked in one batched round, and use `to-questionnaire` when the questions belong in a document for a third party to answer, not to the user.
+`ask-me` interviews one decision per message. Use `asking` for batched decision rounds
+and `to-questionnaire` for a document that a third party will answer.
 
 ## Response Rules
 
@@ -63,43 +63,8 @@ The Thai examples below show the Thai-mode shape; English replies keep it.
 Prefer `จากเรื่องนี้ ทำ PRD ต่อคุ้มที่สุด` over
 `จากบริบทดังกล่าว ควรดำเนินการจัดทำเอกสารข้อกำหนดผลิตภัณฑ์`.
 
-## Response Shapes
-
-The shapes below are the numbered-list fallback for a host without a structured choice prompt.
-
-### Interview Turn
-
-```markdown
-### คำถาม <n>: <decision เดียว>
-
-<เหตุผลหนึ่งประโยคว่า decision นี้เปลี่ยนอะไร>
-
-**ผมแนะนำ:** <คำตอบที่แนะนำ> — <เหตุผลหรือ tradeoff สั้น ๆ>
-
-<ถ้าจำเป็น: 2–3 ตัวเลือกที่ต่างกันจริง>
-ตอบ `ตามนี้` หรือเลือกทางอื่นได้เลย
-```
-
-Never hide multiple questions in one sentence or bullet.
-
-### Confirmation
-
-```markdown
-## สรุป
-- **เป้าหมาย:**
-- **ผู้ใช้ / ปัญหา:**
-- **Audience / decision:**
-- **ตัดสินใจแล้ว:**
-- **ขอบเขต / ไม่ทำ:**
-- **ข้อจำกัด / tradeoffs:**
-- **วัดผล:**
-- **ยังเปิดอยู่:**
-
-ตรงไหม? ถ้าตรงตอบ `ยืนยัน`; ถ้าไม่ตรงบอกจุดเดียวที่ต้องแก้
-```
-
-Accept an unambiguous equivalent such as `ตรงแล้ว` or `ตามนี้`. If the user stops early,
-return only settled decisions and open branches, then stop.
+For interview and confirmation examples, read [RESPONSE-EXAMPLES.md](RESPONSE-EXAMPLES.md)
+when the response shape is unclear.
 
 ## Context-Aware Handoff
 
@@ -149,7 +114,19 @@ local file changes whose format and path must be shown first.
   carry through a reviewed plan into `code` without another prompt.
 - Creation never authorizes Git, deployment, sending, or publishing. Show the exact artifact,
   recipients, and channel, then request separate delivery approval—even after an earlier ask.
-- Never auto-chain outputs; each additional outcome needs a new choice.
+- Continue only outcomes explicitly selected by the user, including a named product loop;
+  unrelated additional outcomes need a new choice.
+
+## Product vision handoff
+
+For an explicitly requested product loop, settle the intended users, problem, value,
+main journey, MVP/non-goals, constraints, success evidence, and material deferrals in the
+compact brief. Include the user's test-case/browser QA/UAT preferences when relevant;
+ask only unsettled choices. Product confirmation validates the brief, not Git or remote
+writes. End this read-only skill and return the brief and decision ledger to `start`.
+The parent can persist them and continue the already requested visual/spec/plan/ticket/code
+stages. The selected product loop replaces the next-deliverable menu; do not ask the user
+to choose the same sequence again. A standalone interview keeps its existing handoff.
 
 ## Autonomy Profile
 

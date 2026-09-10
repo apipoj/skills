@@ -12,7 +12,29 @@ Apipoj Skills คือชุด workflow สำหรับทำงาน soft
 - งานสำคัญต้องมีหลักฐาน เช่น test result, diff scope, risk และ next action
 - การแก้ไฟล์ไม่ได้แปลว่าอนุญาตให้ commit, push, deploy หรือ publish
 
-รุ่นนี้มี **40 skills** และเรียกใช้เป็น command ได้ทุกตัว
+รุ่นนี้มี **41 skills** และเรียกใช้เป็น command ได้ทุกตัว
+
+## Product loop ตั้งแต่ไอเดียถึง UAT
+
+เปิด **[Product loop แบบภาพรวม](docs/product-loop.html)** เพื่อดู diagram และรายละเอียดแต่ละช่วงแบบ offline ได้
+
+สำหรับ product หรือ feature ใหม่ที่ต้องการครบกระบวนการ ใช้:
+
+```text
+$spk:start ทำ product นี้ให้ครบ loop: ask-me กำหนด vision → show-me ให้เห็น flow/wireframe → design-options ทำ mockup → to-spec → plan → to-tickets → code → QA/review → UAT
+```
+
+บน Claude Code เปลี่ยนคำขึ้นต้นเป็น `/spk:start` จากนั้นบอกไอเดีย ผู้ใช้หลัก และข้อจำกัดที่มี
+
+- คุณยืนยัน product vision และเลือก design; ระบบใช้คำตอบเดิมต่อโดยไม่ถามซ้ำทุก skill
+- Spec เชื่อม acceptance criteria กับ test cases แล้ว plan/tickets รับข้อมูลต่อก่อนเริ่ม code
+- สำหรับ UI ระบบถามเรื่อง test cases และ browser QA proof ล่วงหน้า พร้อมเก็บผลที่ตรวจจริง
+- ระบบเตรียม UAT scenarios ให้คุณลอง การตรวจอัตโนมัติผ่านยังไม่ใช่การยอมรับจากคุณ
+- เปิดงานต่อจาก checkpoint ที่ `ai_context/work/product-loops/<slug>/index.md` ได้ ถ้าเปลี่ยน vision/design จะย้อนแก้เฉพาะงานและหลักฐานที่ได้รับผลกระทบ
+- Spec และ tickets สร้างในเครื่องได้โดยไม่ต้องตั้ง tracker ส่วน Git, PR, merge และ deploy ยังต้องมีสิทธิ์สำหรับ action นั้น
+
+ถ้าขอเพียง spec, plan หรือ tickets ระบบหยุดตามที่ขอ งาน bug fix และ small patch ยังใช้เส้นทางสั้นได้
+`show-me` ใช้ดู flow/โครงหน้าจอ ส่วน `design-options` ใช้ทำและเลือก visual design
 
 ## เริ่มใน 2 นาที
 
@@ -86,7 +108,7 @@ npx skills@latest add apipoj/skills
 | เป้าหมาย | Skills ที่เกี่ยวข้อง |
 |---|---|
 | เริ่มงานและทำ decision ให้ชัด | `/spk:start`, `/spk:ask-me`, `/spk:asking`, `/spk:ask-with-docs`, `/spk:wait-what`, `/spk:teach`, `/spk:handoff`, `/spk:to-questionnaire` |
-| วางทิศทางและออกแบบงาน | `/spk:to-spec`, `/spk:plan`, `/spk:to-tickets`, `/spk:wayfinder`, `/spk:domain-modeling`, `/spk:codebase-design`, `/spk:prototype`, `/spk:design-options`, `/spk:bala`, `/spk:sunzi` |
+| วางทิศทางและออกแบบงาน | `/spk:to-spec`, `/spk:plan`, `/spk:to-tickets`, `/spk:wayfinder`, `/spk:domain-modeling`, `/spk:codebase-design`, `/spk:prototype`, `/spk:show-me`, `/spk:design-options`, `/spk:bala`, `/spk:sunzi` |
 | พัฒนา แก้ปัญหา และตรวจงาน | `/spk:code`, `/spk:tdd`, `/spk:debug`, `/spk:triage`, `/spk:improve-codebase`, `/spk:code-review`, `/spk:test-changes`, `/spk:fix-conflicts` |
 | เข้าใจและดูแลความรู้ project | `/spk:setup`, `/spk:load-project`, `/spk:ask-project`, `/spk:research`, `/spk:add-knowledge`, `/spk:check-wiki`, `/spk:write-skills` |
 | ตรวจระบบและเตรียมส่งงาน | `/spk:doctor`, `/spk:check-release`, `/spk:pr`, `/spk:task-to-pr`, `/spk:deploy`, `/spk:wizard`, `/spk:uninstall` |
@@ -97,12 +119,14 @@ npx skills@latest add apipoj/skills
 
 ### จากไอเดียสู่ change ที่ตรวจสอบแล้ว
 
-1. `/spk:ask-me` เมื่อโจทย์ยังอยู่ในความคิด หรือ `/spk:ask-with-docs` เมื่ออยู่ใน repo และต้องเก็บความรู้ประกอบ
-2. `/spk:to-spec` เพื่อทำ scope และ acceptance criteria ให้ชัด
-3. `/spk:plan` หรือ `/spk:to-tickets` เพื่อวางลำดับ implementation
-4. อนุมัติแผนที่เห็นแล้ว จากนั้นจึงใช้ `/spk:code` หรือ `/spk:tdd`
-5. `/spk:test-changes` เพื่อ feedback เร็ว และ `/spk:code-review` เพื่อตรวจ diff
-6. `/spk:check-release` ก่อนเลือกว่าจะ commit, เปิด PR หรือ deploy
+ขอ `/spk:start` ทำครบ product loop ตามตัวอย่างด้านบน ระบบจะใช้:
+
+1. `ask-me` เพื่อยืนยัน vision → `show-me` เพื่อเห็น flow/wireframe → `design-options` เพื่อเลือก mockup
+2. `to-spec` เพื่อระบุ AC/test cases → `plan` เพื่อวางลำดับ → `to-tickets` เพื่อแบ่งงานที่ทำได้จริง
+3. `code` ทำทีละ ticket → tests/browser QA และ `code-review` → UAT scenarios ให้ผู้ใช้ลอง
+4. สรุป delivery readiness และทำ Git/PR/merge/deploy เฉพาะ action ที่ได้รับอนุญาต
+
+ขอแค่ขั้นใดขั้นหนึ่งได้ ระบบจะไม่ขยายเป็นครบ loop เอง
 
 ### แก้บั๊กโดยไม่เดา
 

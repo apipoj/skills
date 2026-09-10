@@ -44,6 +44,7 @@ fallback as canonical.
    and authority. Treat a clear explicit implementation, fix, update, refactor, test, or
    plan-and-implement request as bounded workspace authority. If no plan artifact exists,
    build an internal micro-plan instead of stopping.
+   Apply Verification Choice below before implementation.
 2. Classify the request once and follow the matching playbook:
    - **Quick patch** — inspect the evidence, make the smallest change directly, and run
      the smallest check that can catch a regression. No plan artifact, subagent, or
@@ -74,6 +75,31 @@ fallback as canonical.
    uncertain, and the next action only when one exists. Do not expose YAML, JSON, schemas,
    empty fields, or internal receipts unless the user asks for machine-readable output.
 
+## Verification Choice
+
+At workflow entry, before implementation, ask one compact question when the current
+request or reviewed plan has not already settled test-case coverage and, for UI/frontend
+changes, browser QA proof. Ask only about the undecided parts; reuse explicit choices
+from this session. This is the entry question about success criteria, outside the
+mid-flow prompt budget, not another implementation approval.
+
+For UI/frontend work, recommend both: “Should I add or update test cases and run browser
+QA with screenshots and pass/fail evidence for the affected UI flows?” For other work,
+ask whether to add or update test cases; include browser QA only when a browser surface
+is affected. Offer both, test cases only, browser QA only, or required checks only as
+applicable. Explain which repository checks are mandatory and remain required for every
+choice. Continue independent inspection while waiting; settle the choice before
+implementation rather than treating silence as consent or a decline.
+
+Record the answer in the micro-plan or existing plan. For selected test cases, derive
+normal, error, and relevant edge cases from acceptance criteria and record expected
+results; automate where a reliable test seam exists. For selected browser QA, exercise
+the affected flows on the real local app, including relevant desktop/mobile layouts,
+capture screenshots and expected-versus-actual pass/fail results, and report relevant
+console or network failures. Report unavailable browser access as blocked verification,
+with the missing prerequisite. Distinguish passed, failed, declined, blocked, and
+not-applicable checks in the final evidence; never claim browser QA from a build alone.
+
 ## Workspace Authority
 
 Accept any of these as bounded workspace authority:
@@ -87,6 +113,15 @@ An `ask-me` summary alone remains read-only. A plan-only request remains plan-on
 the implementation outcome is explicit but a plan file is absent, derive a bounded
 micro-plan from repository evidence and acceptance criteria. Record assumptions and keep
 working; ask only when one material decision changes scope, risk, cost, or success.
+
+## Product loop implementation
+
+When a ticket belongs to a selected product loop, read its linked spec, design, plan,
+ACs/test cases, and verification choices. Reuse those choices rather than asking again.
+Implement unblocked tickets in dependency order and attach actual verification evidence
+before marking each done. Continue through all in-scope tickets, then return the result to
+`start` for review and human UAT. A UAT defect returns to its affected ticket; a new product
+requirement returns to spec/planning. Mark dependent evidence stale when its source changes.
 
 ## Autonomy Profile
 

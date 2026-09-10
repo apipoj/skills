@@ -5,4 +5,4 @@ interface:
   default_prompt: "Use $spk:ask-me: Interview me in concise, natural Thai, then recommend the next context-fit deliverable."
 
 policy:
-  allow_implicit_invocation: false
+  allow_implicit_invocation: true

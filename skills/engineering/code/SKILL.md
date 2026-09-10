@@ -29,6 +29,7 @@ legacy compatibility fallback และห้ามถือว่าเป็�
    authority คำขอปัจจุบันที่ระบุให้ implement, fix, update, refactor, test หรือ
    plan-and-implement ถือเป็น bounded workspace authority ถ้าไม่มี plan file ให้สร้าง
    internal micro-plan แล้วทำต่อ
+   Apply Verification Choice below before implementation.
 2. จัดงานเป็นหนึ่งรูปทรงแล้วใช้ playbook ที่ตรง:
    - **Quick patch** — ดูหลักฐาน แก้ smallest change โดยตรง แล้วรัน check ที่เล็กที่สุดซึ่งจับ
      regression ได้ ค่าเริ่มต้นไม่ต้องมี plan artifact, subagent หรือ independent verifier
@@ -53,6 +54,31 @@ legacy compatibility fallback และห้ามถือว่าเป็�
    ห้ามแสดง YAML, JSON, schema, field ว่าง หรือ internal receipt เว้นแต่ผู้ใช้ขอ machine-readable
    output โดยตรง
 
+## Verification Choice
+
+At workflow entry, before implementation, ask one compact question when the current
+request or reviewed plan has not already settled test-case coverage and, for UI/frontend
+changes, browser QA proof. Ask only about the undecided parts; reuse explicit choices
+from this session. This is the entry question about success criteria, outside the
+mid-flow prompt budget, not another implementation approval.
+
+For UI/frontend work, recommend both: “Should I add or update test cases and run browser
+QA with screenshots and pass/fail evidence for the affected UI flows?” For other work,
+ask whether to add or update test cases; include browser QA only when a browser surface
+is affected. Offer both, test cases only, browser QA only, or required checks only as
+applicable. Explain which repository checks are mandatory and remain required for every
+choice. Continue independent inspection while waiting; settle the choice before
+implementation rather than treating silence as consent or a decline.
+
+Record the answer in the micro-plan or existing plan. For selected test cases, derive
+normal, error, and relevant edge cases from acceptance criteria and record expected
+results; automate where a reliable test seam exists. For selected browser QA, exercise
+the affected flows on the real local app, including relevant desktop/mobile layouts,
+capture screenshots and expected-versus-actual pass/fail results, and report relevant
+console or network failures. Report unavailable browser access as blocked verification,
+with the missing prerequisite. Distinguish passed, failed, declined, blocked, and
+not-applicable checks in the final evidence; never claim browser QA from a build alone.
+
 ## Implementation Authorization
 
 ยอมรับ bounded workspace authority ได้สามแบบ:
@@ -63,6 +89,15 @@ legacy compatibility fallback และห้ามถือว่าเป็�
 
 สรุปจาก `ask-me` เพียงอย่างเดียวยังเป็น read-only และคำขอ plan-only ต้องหยุดที่ plan ถ้า outcome
 ชัดแต่ไม่มี plan file ให้ใช้ micro-plan ห้ามสร้าง approval local รอบใหม่
+
+## Product loop implementation
+
+When a ticket belongs to a selected product loop, read its linked spec, design, plan,
+ACs/test cases, and verification choices. Reuse those choices rather than asking again.
+Implement unblocked tickets in dependency order and attach actual verification evidence
+before marking each done. Continue through all in-scope tickets, then return the result to
+`start` for review and human UAT. A UAT defect returns to its affected ticket; a new product
+requirement returns to spec/planning. Mark dependent evidence stale when its source changes.
 
 ## Autonomy Profile
 

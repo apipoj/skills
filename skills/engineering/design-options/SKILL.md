@@ -23,10 +23,10 @@ description: ลอง UI หลายแนวที่ต่างกันจ
 อ่าน DESIGN.md, routes/components ปัจจุบัน, screenshots/URLs ที่มี และ approved designs เดิม เก็บเฉพาะ context ที่สำคัญต่อ design: audience, job-to-be-done, constraints และจำนวน variant (default 3)
 
 ### 2. Concepts
-สร้าง 3 ทิศทางที่แตกต่างกัน แต่ละอันมี stance ไม่เหมือนกัน เช่น compact operator console, editorial trust layer, playful onboarding, brutalist power tool, calm B2B dashboard
+When the direction is undecided, create three distinct directions. แต่ละอันมี stance ไม่เหมือนกัน เช่น compact operator console, editorial trust layer, playful onboarding, brutalist power tool, calm B2B dashboard
 
 ### 3. Variants
-สร้าง mockup แบบ self-contained สำหรับแต่ละ concept ชอบ HTML (inspectable, ง่ายต่อการ promote) แต่ละ variant ต้องต่างกันทั้ง layout, typography, palette และ density
+สร้าง mockup แบบ self-contained สำหรับแต่ละ concept ชอบ HTML (inspectable, ง่ายต่อการ promote) Vary layout and density; vary typography and palette within explicit brand constraints.
 
 ### 4. Board
 สร้าง comparison page ให้ user ประเมิน variants ทั้งหมดข้าง ๆ กัน
@@ -39,7 +39,7 @@ description: ลอง UI หลายแนวที่ต่างกันจ
 
 ## กฎป้องกัน Convergence
 
-- แต่ละ variant ต้องต่างกันทั้ง **layout**, **typography**, **palette** และ **density**
+- Vary layout, density, and product emphasis; vary typography and palette within explicit brand constraints.
 - ถ้า 2 variants ดูเหมือนพี่น้องกัน ให้ regenerate อันที่อ่อนแอกว่า
 - อย่าทำ SaaS cards 3 อันที่ต่างแค่สี accent
 - อย่า copy UI จากบุคคลที่สามโดยตรง แปลง references เป็นหลักการ
@@ -88,6 +88,19 @@ description: ลอง UI หลายแนวที่ต่างกันจ
 
 Recommendation: <เลือกหนึ่งและบอกเหตุผล>
 ```
+
+## Product loop handoff
+
+Consume the confirmed vision and reviewed journey/wireframe when supplied. If the screen
+structure is unresolved, build a low-fidelity wireframe before polished mockups. Carry
+realistic content and relevant responsive, loading, empty, error, and success states into
+the selected design. Preserve explicit brand constraints rather than forcing variants to
+change a fixed palette or font. When one direction is already selected, refine it instead
+of manufacturing three alternatives.
+
+Record confirmation against the exact selected artifacts. In a product loop, return their
+links and implementation notes to `start` for specification before coding. Design approval
+settles the direction; it does not grant Git, publication, or deployment authority.
 
 ## Autonomy Profile
 

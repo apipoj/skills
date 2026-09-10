@@ -1,6 +1,6 @@
 ---
 name: start
-description: เลือก workflow ให้ตรงคำขอแบบไทย เมื่อผู้ใช้ยังไม่ได้เลือก skill
+description: เลือก workflow ให้ตรงงานแบบไทย หรือเชื่อม product loop ที่ผู้ใช้ขอตั้งแต่ vision และ design ไปจน code, QA และ UAT
 ---
 
 # เริ่มงานกับ Apipoj Skills
@@ -53,6 +53,14 @@ description: เลือก workflow ให้ตรงคำขอแบบไ
 ## รอยต่อระหว่าง phase
 
 ทำต่อใน conversation เดิมเมื่อ phase ถัดไปต้องใช้ context นี้ อ่าน [PHASE-BOUNDARIES.md](PHASE-BOUNDARIES.md) เฉพาะเมื่อ context ไม่พอหรือผู้ใช้ขอย้าย session ใช้ความสามารถของ host แทน threshold token ตายตัว
+
+## Product loop
+
+For an explicitly requested idea-to-product loop, read [PRODUCT-LOOP.md](PRODUCT-LOOP.md)
+and coordinate its stages in the current conversation. This includes discovery, visual
+review, spec, plan, local tickets, implementation, verification, and a human UAT handoff.
+Use existing accepted inputs to resume at the first missing prerequisite. A request merely
+to explain the loop uses `show-me`; it does not authorize building a product.
 
 ## Autonomy Profile
 

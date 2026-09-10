@@ -6,6 +6,8 @@ Apipoj Skills builds on the small, composable workflows from `mattpocock/skills`
 
 For step-by-step onboarding, read the **[English user guide](USER_GUIDE-EN.md)** or the canonical [Thai guide](USER_GUIDE.md).
 
+Explore the **[visual product loop guide (Thai)](docs/product-loop.html)**, from vision and design to code and UAT. Clone or download the repository, then open the HTML file in a browser.
+
 ## Instant start
 
 Install the plugin, then use one entry point:
@@ -63,7 +65,7 @@ Use one installation method per project to avoid duplicate skills.
 ## Inventory
 
 <!-- SPK-COUNTS:start -->
-**21 subagents** (4 orchestrators + 17 specialists) · **40 skills**
+**21 subagents** (4 orchestrators + 17 specialists) · **41 skills**
 <!-- SPK-COUNTS:end -->
 
 ### Agents
@@ -108,8 +110,8 @@ Use one installation method per project to avoid duplicate skills.
 | `/spk:improve-codebase` | direct main-thread workflow | typed only |
 | `/spk:setup` | direct main-thread workflow | typed only |
 | `/spk:tdd` | build-orchestrator | model or typed |
-| `/spk:to-spec` | direct main-thread workflow | typed only |
-| `/spk:to-tickets` | direct main-thread workflow | typed only |
+| `/spk:to-spec` | direct main-thread workflow | model or typed |
+| `/spk:to-tickets` | direct main-thread workflow | model or typed |
 | `/spk:to-questionnaire` | direct main-thread workflow | typed only |
 | `/spk:wayfinder` | direct main-thread workflow | typed only |
 | `/spk:code` | direct main-thread workflow | model or typed |
@@ -123,9 +125,10 @@ Use one installation method per project to avoid duplicate skills.
 | `/spk:handoff` | direct main-thread workflow | typed only |
 | `/spk:teach` | direct main-thread workflow | typed only |
 | `/spk:write-skills` | direct main-thread workflow | typed only |
-| `/spk:ask-me` | direct main-thread workflow | typed only |
+| `/spk:ask-me` | direct main-thread workflow | model or typed |
 | `/spk:wait-what` | direct main-thread workflow | typed only |
 | `/spk:plan` | plan-orchestrator | model or typed |
+| `/spk:show-me` | direct main-thread workflow | model or typed |
 | `/spk:design-options` | designer | model or typed |
 | `/spk:deploy` | deploy-orchestrator | typed only |
 | `/spk:wizard` | direct main-thread workflow | model or typed |

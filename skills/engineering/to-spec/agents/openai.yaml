@@ -5,4 +5,4 @@ interface:
   default_prompt: "ใช้ $spk:to-spec: ใช้ to-spec กับคำขอนี้"
 
 policy:
-  allow_implicit_invocation: false
+  allow_implicit_invocation: true

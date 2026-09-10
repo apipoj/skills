@@ -40,6 +40,21 @@ Never maintain the tracker issue and a Markdown file as two editable sources of 
 
 Collapse conversation and codebase evidence into a reviewable specification ready for planning.
 
+## Product loop specification
+
+Synthesize the confirmed vision, reviewed wireframes, selected mockups, and repository
+facts into one spec. Link the source artifacts and preserve their decisions. Include
+problem/value, users and journeys, MVP/non-goals, behavior and relevant data/API constraints,
+numbered acceptance criteria (AC-01), and test cases (TC-01) with preconditions, steps,
+expected results, and linked ACs. Record agreed automation/browser QA/UAT scope and open
+material decisions. A PRD and SRD may be sections rather than separate duplicate files.
+
+Check that every in-scope AC has appropriate verification and no requirement silently
+contradicts the vision or selected design. Reuse agreed test seams; ask only unresolved
+material choices. In a selected product loop, return the spec reference for planning;
+a spec-only request stops here. These local-draft and consent rules take precedence over
+UPSTREAM.md publication, exhaustive-story, and repeated-confirmation suggestions.
+
 ## Autonomy Profile
 
 `afk_local` — prompt budget 0; repair budget 3. A clear request grants bounded work only up to this skill's declared effect level; the profile never upgrades read-only work into a write. Keep working through inspect, act, verify, and bounded repair without asking the user. Before pausing, record phase, assumptions, evidence, attempts, and the smallest resumable next action.

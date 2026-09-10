@@ -8,6 +8,8 @@ Apipoj Skills ใช้ skill ที่เล็กและ composable จา�
 
 ใช้กับ Grok Bot: **[สร้าง Foreman และตั้ง `ask-me` เป็นค่าเริ่มต้น](GROK_BOT.md)** · [English setup payload](GROK_BOT_EN.md)
 
+ดู **[Product loop แบบภาพรวม](docs/product-loop.html)** ตั้งแต่ vision → design → spec → tickets → code → UAT (ดาวน์โหลดหรือ clone แล้วเปิด HTML ด้วย browser)
+
 ## เริ่มแบบมาม่า
 
 ติดตั้งแล้วเรียกคำสั่งเดียว:
@@ -59,7 +61,7 @@ npx skills@latest add apipoj/skills
 ## ภาพรวม
 
 <!-- SPK-COUNTS:start -->
-**21 subagents** (4 orchestrators + 17 specialists) · **40 skills**
+**21 subagents** (4 orchestrators + 17 specialists) · **41 skills**
 <!-- SPK-COUNTS:end -->
 
 ### Agents
@@ -104,8 +106,8 @@ npx skills@latest add apipoj/skills
 | `/spk:improve-codebase` | direct main-thread workflow | พิมพ์เอง |
 | `/spk:setup` | direct main-thread workflow | พิมพ์เอง |
 | `/spk:tdd` | build-orchestrator | agent เรียกเองได้ |
-| `/spk:to-spec` | direct main-thread workflow | พิมพ์เอง |
-| `/spk:to-tickets` | direct main-thread workflow | พิมพ์เอง |
+| `/spk:to-spec` | direct main-thread workflow | agent เรียกเองได้ |
+| `/spk:to-tickets` | direct main-thread workflow | agent เรียกเองได้ |
 | `/spk:to-questionnaire` | direct main-thread workflow | พิมพ์เอง |
 | `/spk:wayfinder` | direct main-thread workflow | พิมพ์เอง |
 | `/spk:code` | direct main-thread workflow | agent เรียกเองได้ |
@@ -119,9 +121,10 @@ npx skills@latest add apipoj/skills
 | `/spk:handoff` | direct main-thread workflow | พิมพ์เอง |
 | `/spk:teach` | direct main-thread workflow | พิมพ์เอง |
 | `/spk:write-skills` | direct main-thread workflow | พิมพ์เอง |
-| `/spk:ask-me` | direct main-thread workflow | พิมพ์เอง |
+| `/spk:ask-me` | direct main-thread workflow | agent เรียกเองได้ |
 | `/spk:wait-what` | direct main-thread workflow | พิมพ์เอง |
 | `/spk:plan` | plan-orchestrator | agent เรียกเองได้ |
+| `/spk:show-me` | direct main-thread workflow | agent เรียกเองได้ |
 | `/spk:design-options` | designer | agent เรียกเองได้ |
 | `/spk:deploy` | deploy-orchestrator | พิมพ์เอง |
 | `/spk:wizard` | direct main-thread workflow | agent เรียกเองได้ |

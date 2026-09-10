@@ -5,4 +5,4 @@ interface:
   default_prompt: "Use $spk:to-tickets: Use to-tickets for my current request."
 
 policy:
-  allow_implicit_invocation: false
+  allow_implicit_invocation: true

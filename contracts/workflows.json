@@ -72,12 +72,13 @@
       "locales": {
         "en": {
           "displayName": "Start",
-          "description": "Choose the smallest SPK workflow when the user has not selected one.",
+          "description": "Choose the smallest SPK workflow, or coordinate an explicitly requested product loop from vision and design through implementation and UAT.",
           "shortDescription": "Choose the smallest SPK workflow when the user has not selected one.",
           "defaultPrompt": "Start my current request with the simplest safe workflow.",
           "triggers": [
             "not sure which SPK workflow fits this task",
-            "just get this done the simplest safe way possible"
+            "just get this done the simplest safe way possible",
+            "take this product from vision through design, spec, plan, tickets, code, and UAT"
           ],
           "negativeTriggers": [
             "the request is outside this workflow",
@@ -87,12 +88,13 @@
         },
         "th": {
           "displayName": "เริ่มงานแบบพร้อมใช้",
-          "description": "เลือก workflow ให้ตรงคำขอแบบไทย เมื่อผู้ใช้ยังไม่ได้เลือก skill",
+          "description": "เลือก workflow ให้ตรงงานแบบไทย หรือเชื่อม product loop ที่ผู้ใช้ขอตั้งแต่ vision และ design ไปจน code, QA และ UAT",
           "shortDescription": "เลือก workflow ให้ตรงคำขอแบบไทย เมื่อผู้ใช้ยังไม่ได้เลือก skill",
           "defaultPrompt": "เริ่มงานนี้แบบพร้อมใช้ด้วย workflow ที่ง่ายและปลอดภัยที่สุด",
           "triggers": [
             "ไม่รู้จะเลือก workflow ไหนดี ช่วยเลือกให้หน่อย",
-            "จัดการงานนี้แบบง่ายและปลอดภัยที่สุดให้หน่อย"
+            "จัดการงานนี้แบบง่ายและปลอดภัยที่สุดให้หน่อย",
+            "ทำ product ให้ครบ loop ตั้งแต่ vision ถึง design spec plan tickets code QA และ UAT"
           ],
           "negativeTriggers": [
             "คำขออยู่นอกขอบเขต workflow นี้",
@@ -110,6 +112,10 @@
         {
           "phase": "orient",
           "instruction": "Read the request, repository evidence, Thai-first defaults, and the exact approval boundary."
+        },
+        {
+          "phase": "product_loop",
+          "instruction": "For an explicit complete product loop, read PRODUCT-LOOP.md and coordinate ask-me, show-me, design-options, to-spec, plan, to-tickets, code, verification/review, human UAT, and delivery readiness. Reuse accepted inputs, respect requested endpoints, preserve local authority, and checkpoint artifact links, decisions, acceptance-to-test-to-ticket evidence, and rework dependencies. Ordinary fixes keep the lightweight path; merely explaining the loop does not execute it."
         },
         {
           "phase": "execute",
@@ -642,7 +648,7 @@
         }
       },
       "activation": {
-        "allowImplicitInvocation": false
+        "allowImplicitInvocation": true
       },
       "effectLevel": "workspace_write",
       "role": "to_spec_workflow",
@@ -650,6 +656,10 @@
         {
           "phase": "orient",
           "instruction": "Read the request, repository evidence, docs/agents/artifacts.md when present, docs/agents/issue-tracker.md, Thai-first defaults, and the exact approval boundary."
+        },
+        {
+          "phase": "loop_spec",
+          "instruction": "Synthesize confirmed vision and selected visual references into one spec with stable AC and test-case IDs, preconditions/steps/expected results, agreed verification/UAT scope, non-goals, and open decisions. Check coverage and consistency; local drafts require no tracker. Hand off to planning only when the requested scope includes it."
         },
         {
           "phase": "execute",
@@ -718,7 +728,7 @@
         }
       },
       "activation": {
-        "allowImplicitInvocation": false
+        "allowImplicitInvocation": true
       },
       "effectLevel": "workspace_write",
       "role": "to_tickets_workflow",
@@ -726,6 +736,10 @@
         {
           "phase": "orient",
           "instruction": "Read the request, repository evidence, Thai-first defaults, and the exact approval boundary."
+        },
+        {
+          "phase": "local_tickets",
+          "instruction": "Write one local vertical-slice file per ticket, linking spec AC/test cases, design, plan, blockers, done condition and verification. Verify coverage and an acyclic dependency graph. A selected product loop proceeds to the first unblocked ticket; ticket-only stops locally and remote publication remains separately authorized."
         },
         {
           "phase": "execute",
@@ -958,6 +972,14 @@
         {
           "phase": "authorize",
           "instruction": "Treat a clear explicit implementation, fix, update, or plan-and-implement request as bounded workspace authority. Resolve plans through docs/agents/artifacts.md, then ai_context/work/plans, docs/plans, and finally ai_context/wiki/plans as a legacy compatibility fallback. If no plan artifact exists, build an internal micro-plan from acceptance criteria instead of stopping."
+        },
+        {
+          "phase": "verification_choice",
+          "instruction": "Before implementation, ask one compact entry question about undecided test-case coverage and, for UI/frontend changes, browser QA proof; recommend both for UI/frontend work. Reuse explicit session or reviewed-plan choices. This success-criteria question sits outside the mid-flow prompt budget. Continue independent inspection while waiting, but settle the choice before implementation; silence is not consent or a decline. Record the choice in the plan. Required repository gates remain mandatory. For selected test cases, cover acceptance criteria with expected results and relevant normal, error, and edge cases. For selected browser QA, exercise affected local flows and relevant desktop/mobile layouts, capture screenshots and expected-versus-actual pass/fail evidence, and report console or network failures. Report passed, failed, declined, blocked, or not-applicable verification honestly; missing browser access is blocked verification, not a pass."
+        },
+        {
+          "phase": "loop_tickets",
+          "instruction": "Consume unblocked tickets and linked spec/design/plan/AC/test cases, reuse verification choices, and attach observed evidence before completing tickets. Continue remaining selected tickets and return for review/UAT; changed requirements invalidate dependent evidence and return to spec/planning."
         },
         {
           "phase": "shape",
@@ -1792,7 +1814,7 @@
       "locales": {
         "en": {
           "displayName": "Ask Me",
-          "description": "Run a manual Thai-first, read-only decision interview that asks one question at a time, confirm a compact brief, then recommend one context-fit deliverable or a gated plan-to-development handoff.",
+          "description": "Run a Thai-first, read-only decision interview that asks one question at a time, confirm a compact brief, then recommend one context-fit deliverable or a gated plan-to-development handoff.",
           "shortDescription": "Clarify naturally in Thai and route the next output",
           "defaultPrompt": "Interview me in concise, natural Thai, then recommend the next context-fit deliverable.",
           "triggers": [
@@ -1824,7 +1846,7 @@
         }
       },
       "activation": {
-        "allowImplicitInvocation": false
+        "allowImplicitInvocation": true
       },
       "effectLevel": "read_only",
       "role": "thai_discovery_interviewer",
@@ -1854,6 +1876,10 @@
           "instruction": "Record the answer, clarify only genuine ambiguity, reopen dependent choices when an earlier answer changes, and raise Thai-local considerations only when relevant and verified."
         },
         {
+          "phase": "product_vision",
+          "instruction": "For an explicitly requested product loop, confirm users, problem, value, journey, MVP/non-goals, constraints, success evidence, and relevant verification preferences. Return the read-only brief to start before any file creation; continue the already selected loop without repeating its deliverable menu."
+        },
+        {
           "phase": "confirm",
           "instruction": "When material branches are resolved or deferred, present a compact brief of at most eight one-line bullets, then obtain explicit confirmation that authorizes only that brief."
         },
@@ -1878,12 +1904,12 @@
         "development and external-write authorization states"
       ],
       "guardrails": [
-        "Use only after explicit invocation, ask one material decision at a time, and wait for each answer.",
+        "Use for an interview request or the discovery stage of an explicitly requested product loop, ask one material decision at a time, and wait for each answer.",
         "Use concise, natural, semi-formal Thai; avoid literal translationese, repeated context, and any emoji other than an optional single 💡 for genuine personal perspective.",
         "Ask-me remains read-only; summary confirmation authorizes no artifact or workflow, and the separate deliverable selection creates a new boundary.",
         "Recommend only context-relevant outputs, exactly one as the default, and never generate every catalog candidate.",
         "Do not invent unavailable workflows, evidence, customer claims, metrics, pricing, testimonials, or case studies.",
-        "Do not auto-chain one selected deliverable into another; each additional outcome requires a new user choice.",
+        "Continue only user-selected outcomes, including a named product loop; unrelated outcomes require a new choice.",
         "Carry an explicit end-to-end workspace intent through a reviewed plan into development without another prompt; a plan-only request remains plan-only.",
         "Handoff authority never includes commit, push, pull-request, deployment, sending, publishing, or another Git or remote write; external delivery requires separate approval after the exact artifact, recipients, and channel are visible.",
         "Recommendations are proposals; the user owns every decision and may stop at any time.",
@@ -2032,6 +2058,10 @@
           "instruction": "Define tests, documentation, rollout, rollback, and completion evidence."
         },
         {
+          "phase": "loop_plan",
+          "instruction": "For a selected product loop, consume spec AC/test cases and design, settle only undecided verification choices, map every AC to a task/check, and hand the reviewed plan back for local ticket creation before code. Ordinary plan-and-implement keeps its shorter path; plan-only stops."
+        },
+        {
           "phase": "handoff",
           "instruction": "Resolve the destination through docs/agents/artifacts.md. Save the reviewed local plan to ai_context/work/plans/YYYY-MM-DD-<slug>.md by default; promote a team-shared plan to docs/plans without duplicating its body in the wiki. Classify authority as plan-only or plan-and-implement. A plan-only request stops after the reviewed plan. A clear plan-and-implement or direct implementation request must continue automatically after verification unless a material user-owned decision remains."
         }
@@ -2052,6 +2082,81 @@
         "Do not modify production source while the planning phase itself is still unresolved or unverified.",
         "Carry a clear plan-and-implement workspace intent into development; do not invent a second confirmation gate.",
         "Do not invent repository facts; label assumptions and unresolved questions."
+      ],
+      "autonomyProfile": "afk_local"
+    },
+    {
+      "id": "show-me",
+      "tier": "core",
+      "origin": {
+        "repository": "apipoj/skills",
+        "skill": "show-me"
+      },
+      "sources": {
+        "th": "skills/engineering/show-me",
+        "en": "locales/en/skills/engineering/show-me"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Show Me",
+          "description": "Explain a product idea or technical flow with a focused diagram, screen map, or wireframe; create local HTML when useful.",
+          "shortDescription": "Visualize an idea, flow, or wireframe",
+          "defaultPrompt": "Show this idea or flow visually with the smallest useful artifact.",
+          "triggers": [
+            "show this product flow visually",
+            "create a wireframe to explain this idea"
+          ],
+          "negativeTriggers": [
+            "implement an already approved UI",
+            "compare polished visual design directions"
+          ]
+        },
+        "th": {
+          "displayName": "เห็นภาพก่อนลงมือ",
+          "description": "อธิบายไอเดียหรือ flow ด้วย diagram, screen map หรือ wireframe และสร้าง HTML ในเครื่องเมื่อช่วยให้เข้าใจ",
+          "shortDescription": "เห็นภาพไอเดีย flow หรือ wireframe",
+          "defaultPrompt": "ช่วยทำไอเดียหรือ flow นี้ให้เห็นภาพด้วย artifact ที่เข้าใจง่าย",
+          "triggers": [
+            "ช่วยทำ flow นี้ให้เห็นภาพ",
+            "ขอ wireframe อธิบายไอเดียนี้"
+          ],
+          "negativeTriggers": [
+            "ลงมือ code UI ที่เลือกแล้ว",
+            "เปรียบเทียบหลายทิศทางของ visual design"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": true
+      },
+      "effectLevel": "workspace_write",
+      "role": "visual_explanation_workflow",
+      "workflow": [
+        {
+          "phase": "frame",
+          "instruction": "Read the supplied topic or confirmed product vision. Choose a focused flow diagram, screen map, or low-fidelity wireframe that resolves the current understanding gap."
+        },
+        {
+          "phase": "render",
+          "instruction": "Use the smallest useful visual. For HTML, match existing product design guidance, keep artifacts local and responsive, and distinguish observed UI from proposed UI. Label assumptions and prototype-only interactions."
+        },
+        {
+          "phase": "verify",
+          "instruction": "Inspect the rendered visual when a renderer or browser is available; report unavailable visual checks honestly. Capture material user corrections and link the reviewed visual into the next selected stage."
+        }
+      ],
+      "artifacts": [
+        "focused diagram or wireframe",
+        "local HTML when useful"
+      ],
+      "evidence": [
+        "source context and assumptions",
+        "render verification status",
+        "user corrections and next-stage reference"
+      ],
+      "guardrails": [
+        "Do not modify production source or publish visuals without authorization.",
+        "A concept visual is not functional browser QA or user design approval."
       ],
       "autonomyProfile": "afk_local"
     },
@@ -2110,7 +2215,7 @@
         },
         {
           "phase": "diverge",
-          "instruction": "Create at least three concepts that differ in layout, typography, palette, density, and product emphasis."
+          "instruction": "For an undecided direction, create three distinct concepts in layout, density, and product emphasis, varying typography/palette only within brand constraints. Refine an already selected direction instead of generating redundant alternatives."
         },
         {
           "phase": "prototype",
@@ -2123,6 +2228,10 @@
         {
           "phase": "approve",
           "instruction": "Compare variants, recommend one, and record approval only after the user selects a direction."
+        },
+        {
+          "phase": "loop_handoff",
+          "instruction": "Consume confirmed vision and reviewed wireframes, cover relevant responsive and interaction states, preserve fixed brand choices, and refine an already selected direction without forcing three alternatives. Return selected artifact references to the loop for specification before code."
         }
       ],
       "artifacts": [

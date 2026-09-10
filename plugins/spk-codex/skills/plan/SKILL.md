@@ -49,6 +49,18 @@ carrying the original bounded workspace authority to `code`. Completion includes
 relevant checks, and repair of failures caused by the change within scope; a first draft is not
 completion. A blocked plan keeps its unresolved decisions and next action explicit.
 
+## Product loop planning
+
+When supplied, consume the canonical spec, AC/test-case IDs, selected design references,
+and existing verification choices. Ask only undecided test-case/browser QA choices before
+implementation, recommending both for UI work; repository gates remain mandatory. Record
+human UAT expectations when business acceptance matters. Reuse the answer in later stages.
+
+For a selected product loop, review task coverage and dependencies, then return the plan
+to `start` for local ticket creation before code. Do not jump directly from this plan into
+implementation and skip the requested ticket stage. A plain plan-and-implement request
+keeps the shorter existing path; plan-only still stops at its reviewed plan.
+
 ## Autonomy Profile
 
 `afk_local` — prompt budget 0; repair budget 3. A clear request grants bounded work only up to this skill's declared effect level; the profile never upgrades read-only work into a write. Keep working through inspect, act, verify, and bounded repair without asking the user. Before pausing, record phase, assumptions, evidence, attempts, and the smallest resumable next action.

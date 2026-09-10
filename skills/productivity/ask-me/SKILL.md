@@ -1,7 +1,6 @@
 ---
 name: ask-me
 description: ถามทีละเรื่องให้ความคิดหรือแผนชัดขึ้น สรุปให้ยืนยัน แล้วแนะนำงานถัดไปโดยยังไม่แก้ไฟล์
-disable-model-invocation: true
 ---
 # ถามให้ชัด
 
@@ -57,43 +56,8 @@ disable-model-invocation: true
 เขียน `จากเรื่องนี้ ทำ PRD ต่อคุ้มที่สุด` แทน
 `จากบริบทดังกล่าว ควรดำเนินการจัดทำเอกสารข้อกำหนดผลิตภัณฑ์`
 
-## รูปแบบคำตอบ
-
-รูปแบบข้างล่างคือ fallback แบบ numbered list สำหรับ host ที่ไม่มี structured choice prompt
-
-### รอบคำถาม
-
-```markdown
-### คำถาม <n>: <decision เดียว>
-
-<เหตุผลหนึ่งประโยคว่า decision นี้เปลี่ยนอะไร>
-
-**ผมแนะนำ:** <คำตอบที่แนะนำ> — <เหตุผลหรือ tradeoff สั้น ๆ>
-
-<ถ้าจำเป็น: 2–3 ตัวเลือกที่ต่างกันจริง>
-ตอบ `ตามนี้` หรือเลือกทางอื่นได้เลย
-```
-
-เปิดให้ตอบอิสระเสมอ ห้ามซ่อนหลายคำถามไว้ในประโยคหรือ bullet เดียว
-
-### ขอคำยืนยัน
-
-```markdown
-## สรุป
-- **เป้าหมาย:**
-- **ผู้ใช้ / ปัญหา:**
-- **Audience / decision:**
-- **ตัดสินใจแล้ว:**
-- **ขอบเขต / ไม่ทำ:**
-- **ข้อจำกัด / tradeoffs:**
-- **วัดผล:**
-- **ยังเปิดอยู่:**
-
-ตรงไหม? ถ้าตรงตอบ `ยืนยัน`; ถ้าไม่ตรงบอกจุดเดียวที่ต้องแก้
-```
-
-รับคำที่ชัดและความหมายเดียวกัน เช่น `ตรงแล้ว` หรือ `ตามนี้` ถ้าผู้ใช้ขอหยุดก่อน ให้คืน
-เฉพาะเรื่องที่ตกลงแล้วกับเรื่องที่ยังเปิด จากนั้นหยุด
+Read [RESPONSE-EXAMPLES.md](RESPONSE-EXAMPLES.md) when the interview or confirmation
+response shape is unclear.
 
 ## Handoff ตาม Context
 
@@ -144,8 +108,8 @@ Sales deck การพูดถึง repo, product หรือ feature อย
 - **การส่งออก:** การสร้างงานไม่อนุญาต commit, push, PR, deploy, ส่ง หรือ publish ต้อง
   แสดง artifact จริง ผู้รับ และ channel ก่อน แล้วขออนุมัติการส่งแยกอีกครั้ง แม้ผู้ใช้เคย
   ขอให้ส่งไว้ล่วงหน้า
-- ห้าม auto-chain PRD → plan, Proposal → Presentation หรือ Sales content → outreach
-  ทุก outcome เพิ่มเติมต้องให้ผู้ใช้เลือกใหม่
+- Continue only outcomes explicitly selected by the user, including a named product loop;
+  unrelated additional outcomes need a new choice.
 
 ## Receipt แบบสั้น
 
@@ -153,13 +117,24 @@ Sales deck การพูดถึง repo, product หรือ feature อย
 changes และ approval ที่ยังขาด ห้ามแสดง YAML, JSON, schema หรือ internal field เว้นแต่
 ผู้ใช้ขอ machine-readable output และห้ามทวน confirmed brief
 
+## Product vision handoff
+
+For an explicitly requested product loop, settle the intended users, problem, value,
+main journey, MVP/non-goals, constraints, success evidence, and material deferrals in the
+compact brief. Include the user's test-case/browser QA/UAT preferences when relevant;
+ask only unsettled choices. Product confirmation validates the brief, not Git or remote
+writes. End this read-only skill and return the brief and decision ledger to `start`.
+The parent can persist them and continue the already requested visual/spec/plan/ticket/code
+stages. The selected product loop replaces the next-deliverable menu; do not ask the user
+to choose the same sequence again. A standalone interview keeps its existing handoff.
+
 ## Autonomy Profile
 
 `decision_aware` — ตรวจ fact และทำ draft ได้ถึง effect level ที่ skill ประกาศ โดย read-only ยังต้อง read-only แล้วถามได้สูงสุดหนึ่ง decision สำคัญ; prompt budget 1, repair budget 3 รอบ ก่อนหยุดต้องบันทึก decision ledger, evidence และ next action ที่ทำต่อได้
 
 ## ข้อควรระวัง
 
-- ใช้เมื่อผู้ใช้เรียกโดยตรงและหยุดทันทีเมื่อผู้ใช้ขอ
+- Use for an interview request or the discovery stage of an explicitly requested product loop; stop when asked.
 - ห้ามแก้ไฟล์ code, Git state, configuration หรือระบบภายนอกระหว่างใช้ `ask-me`
 - Recommendation ไม่ใช่ consent คำยืนยันสรุปไม่อนุญาต artifact หรือ workflow ส่วนการ
   เลือก handoff อนุญาตเฉพาะ output และ effect ที่ระบุ

@@ -1,7 +1,6 @@
 ---
 name: to-spec
 description: สรุปบทสนทนาและหลักฐานจาก codebase เป็นสเปกที่พร้อมตรวจและนำไปวางแผนต่อ
-disable-model-invocation: true
 ---
 # สรุปเป็นสเปก
 
@@ -27,6 +26,21 @@ disable-model-invocation: true
 ## จุดเน้น
 
 สรุปบทสนทนาและหลักฐานจาก codebase เป็นสเปกที่พร้อมตรวจและนำไปวางแผนต่อ
+
+## Product loop specification
+
+Synthesize the confirmed vision, reviewed wireframes, selected mockups, and repository
+facts into one spec. Link the source artifacts and preserve their decisions. Include
+problem/value, users and journeys, MVP/non-goals, behavior and relevant data/API constraints,
+numbered acceptance criteria (AC-01), and test cases (TC-01) with preconditions, steps,
+expected results, and linked ACs. Record agreed automation/browser QA/UAT scope and open
+material decisions. A PRD and SRD may be sections rather than separate duplicate files.
+
+Check that every in-scope AC has appropriate verification and no requirement silently
+contradicts the vision or selected design. Reuse agreed test seams; ask only unresolved
+material choices. In a selected product loop, return the spec reference for planning;
+a spec-only request stops here. These local-draft and consent rules take precedence over
+UPSTREAM.md publication, exhaustive-story, and repeated-confirmation suggestions.
 
 ## Autonomy Profile
 

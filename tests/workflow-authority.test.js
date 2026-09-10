@@ -99,7 +99,6 @@ describe('provider-neutral workflow and authority contracts', () => {
   test('manual-only invocation policy is equivalent across Claude and Codex payloads', () => {
     expect([...MANUAL_ONLY].sort()).toEqual([
       'add-knowledge',
-      'ask-me',
       'ask-with-docs',
       'bala',
       'check-release',
@@ -112,8 +111,6 @@ describe('provider-neutral workflow and authority contracts', () => {
       'task-to-pr',
       'teach',
       'to-questionnaire',
-      'to-spec',
-      'to-tickets',
       'triage',
       'uninstall',
       'wait-what',

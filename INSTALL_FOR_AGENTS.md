@@ -52,8 +52,8 @@ Select skills from the Thai-first `skills/` tree. Do not combine this with a nat
 | `/spk:improve-codebase` | direct main-thread workflow | typed only |
 | `/spk:setup` | direct main-thread workflow | typed only |
 | `/spk:tdd` | build-orchestrator | model or typed |
-| `/spk:to-spec` | direct main-thread workflow | typed only |
-| `/spk:to-tickets` | direct main-thread workflow | typed only |
+| `/spk:to-spec` | direct main-thread workflow | model or typed |
+| `/spk:to-tickets` | direct main-thread workflow | model or typed |
 | `/spk:to-questionnaire` | direct main-thread workflow | typed only |
 | `/spk:wayfinder` | direct main-thread workflow | typed only |
 | `/spk:code` | direct main-thread workflow | model or typed |
@@ -67,9 +67,10 @@ Select skills from the Thai-first `skills/` tree. Do not combine this with a nat
 | `/spk:handoff` | direct main-thread workflow | typed only |
 | `/spk:teach` | direct main-thread workflow | typed only |
 | `/spk:write-skills` | direct main-thread workflow | typed only |
-| `/spk:ask-me` | direct main-thread workflow | typed only |
+| `/spk:ask-me` | direct main-thread workflow | model or typed |
 | `/spk:wait-what` | direct main-thread workflow | typed only |
 | `/spk:plan` | plan-orchestrator | model or typed |
+| `/spk:show-me` | direct main-thread workflow | model or typed |
 | `/spk:design-options` | designer | model or typed |
 | `/spk:deploy` | deploy-orchestrator | typed only |
 | `/spk:wizard` | direct main-thread workflow | model or typed |

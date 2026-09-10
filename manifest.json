@@ -238,6 +238,10 @@
       "orchestrator": "plan-orchestrator"
     },
     {
+      "name": "/show-me",
+      "direct": true
+    },
+    {
       "name": "/design-options",
       "agent": "designer"
     },

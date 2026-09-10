@@ -30,6 +30,21 @@ Keep working without user input while the requested outcome remains inside curre
 
 Turn a spec or plan into vertical slices with real blocking edges that can be implemented and verified independently.
 
+## Local product tickets
+
+Consume the canonical spec and reviewed plan when supplied. Draft one local file per
+vertical slice under `ai_context/work/tickets/<slug>/`, unless repository artifact policy
+chooses another local destination. Each ticket links its spec ACs, test cases, selected
+design, plan tasks, real blockers, observable done condition, and verification scope.
+Check AC coverage, missing blockers, and dependency cycles before marking tickets ready.
+Keep a single source of truth; external tracker publication needs separate authorization.
+
+For an explicitly selected product loop, proceed with a consistent local breakdown and
+return the first unblocked ticket to `start` for code. Ask only when granularity or ordering
+changes a material product/scope decision. Ticket-only requests stop at the ticket files.
+These instructions override UPSTREAM.md's blanket quiz/publish step and tracker-setup
+prerequisite; the loop can finish locally without creating remote issues.
+
 ## Autonomy Profile
 
 `afk_local` — prompt budget 0; repair budget 3. A clear request grants bounded work only up to this skill's declared effect level; the profile never upgrades read-only work into a write. Keep working through inspect, act, verify, and bounded repair without asking the user. Before pausing, record phase, assumptions, evidence, attempts, and the smallest resumable next action.

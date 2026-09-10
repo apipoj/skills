@@ -12,7 +12,29 @@ Apipoj Skills is a Thai-first set of software workflows for working with AI from
 - Important work must return evidence such as test results, diff scope, risks, and a verifiable next action.
 - Editing files never silently authorizes a commit, push, deployment, or publication.
 
-Release v6.6.3 ships **40 skills**, each available as a command.
+This source tree includes **41 skills**, each available as a command.
+
+## Product loop from idea to UAT
+
+Open the **[visual product loop guide (Thai)](docs/product-loop.html)** in your browser for offline diagrams and expandable stage details.
+
+For a new product or feature where you want the full process:
+
+```text
+$spk:start Take this product through the full loop: ask-me vision → show-me flow/wireframe → design-options mockups → to-spec → plan → to-tickets → code → QA/review → UAT.
+```
+
+In Claude Code, use `/spk:start` instead. Include the idea, intended users, and known constraints.
+
+- Confirm the product vision and select the design; later stages reuse those decisions.
+- The spec links acceptance criteria to test cases, then the plan and tickets carry them into code.
+- For UI work, settle test-case and browser QA choices early and retain actual verification evidence.
+- Review the prepared UAT scenarios yourself; automated checks do not imply human acceptance.
+- Resume from `ai_context/work/product-loops/<slug>/index.md`. Changed vision/design reopens affected work and evidence.
+- Specs and tickets can stay local without a tracker. Git, PR, merge, and deployment still need authority for their actual effects.
+
+Spec-only, plan-only, and ticket-only requests stop at their requested endpoint. Bug fixes and small patches keep the shorter path.
+`show-me` explains flow and screen structure; `design-options` develops and records the selected visual direction.
 
 ## Start in two minutes
 
@@ -86,7 +108,7 @@ When uncertain, always begin with `/spk:start`. Use this table when you want to 
 | Goal | Relevant skills |
 |---|---|
 | Start work and clarify decisions | `/spk:start`, `/spk:ask-me`, `/spk:asking`, `/spk:ask-with-docs`, `/spk:wait-what`, `/spk:teach`, `/spk:handoff`, `/spk:to-questionnaire` |
-| Set direction and design the work | `/spk:to-spec`, `/spk:plan`, `/spk:to-tickets`, `/spk:wayfinder`, `/spk:domain-modeling`, `/spk:codebase-design`, `/spk:prototype`, `/spk:design-options`, `/spk:bala`, `/spk:sunzi` |
+| Set direction and design the work | `/spk:to-spec`, `/spk:plan`, `/spk:to-tickets`, `/spk:wayfinder`, `/spk:domain-modeling`, `/spk:codebase-design`, `/spk:prototype`, `/spk:show-me`, `/spk:design-options`, `/spk:bala`, `/spk:sunzi` |
 | Build, diagnose, and review | `/spk:code`, `/spk:tdd`, `/spk:debug`, `/spk:triage`, `/spk:improve-codebase`, `/spk:code-review`, `/spk:test-changes`, `/spk:fix-conflicts` |
 | Understand and maintain project knowledge | `/spk:setup`, `/spk:load-project`, `/spk:ask-project`, `/spk:research`, `/spk:add-knowledge`, `/spk:check-wiki`, `/spk:write-skills` |
 | Check the system and prepare delivery | `/spk:doctor`, `/spk:check-release`, `/spk:pr`, `/spk:task-to-pr`, `/spk:deploy`, `/spk:wizard`, `/spk:uninstall` |
@@ -97,12 +119,14 @@ Each step is an option based on the current state, not permission for the agent 
 
 ### From an idea to a verified change
 
-1. Use `/spk:ask-me` when the idea is not yet in a repository, or `/spk:ask-with-docs` when project knowledge should be captured.
-2. Use `/spk:to-spec` to clarify scope and acceptance criteria.
-3. Use `/spk:plan` or `/spk:to-tickets` to sequence implementation.
-4. Approve the plan you have actually reviewed, then invoke `/spk:code` or `/spk:tdd`.
-5. Use `/spk:test-changes` for fast feedback and `/spk:code-review` for the diff.
-6. Run `/spk:check-release` before deciding whether to commit, open a PR, or deploy.
+Ask `/spk:start` for the complete product loop shown above. It coordinates:
+
+1. `ask-me` to confirm vision → `show-me` for flow/wireframe → `design-options` to select mockups.
+2. `to-spec` for AC/test cases → `plan` for sequencing → `to-tickets` for executable slices.
+3. `code` per ticket → tests/browser QA and `code-review` → UAT scenarios for the user.
+4. Delivery readiness, with Git/PR/merge/deploy limited to authorized actions.
+
+You can request any one stage instead; the agent does not expand it into the complete loop.
 
 ### Diagnose a bug without guessing
 
