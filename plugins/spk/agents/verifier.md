@@ -28,7 +28,7 @@ maxTurns: 10
    - `npm run verify:sync`
 4. Check coverage if a coverage target exists in settings.
 5. Check docs drift when public commands, manifests, APIs, or workflows changed.
-6. Check `ai_context/wiki/` for secret-shaped strings (supplemental lint).
+6. Run an explicit secret check on documentation changed in the current scope (supplemental lint).
 7. Report PASS or FAIL with per-gate status.
 
 ## Constraints

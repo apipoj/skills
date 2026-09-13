@@ -2519,13 +2519,13 @@
       "locales": {
         "en": {
           "displayName": "Add Knowledge",
-          "description": "Ingest an explicitly selected source into the local project wiki with provenance, secret checks, entity links, and an append-only change record.",
-          "shortDescription": "Ingest a source into the project wiki safely",
-          "defaultPrompt": "Ingest the selected source into the local wiki with provenance.",
+          "description": "Add an explicitly selected source to existing project documentation, CONTEXT.md, or ADRs with provenance and secret checks.",
+          "shortDescription": "Update canonical project docs from a selected source",
+          "defaultPrompt": "Add this source to the appropriate project documentation with provenance.",
           "triggers": [
-            "add-knowledge this source into the wiki",
-            "add this file to project memory",
-            "extract durable project knowledge"
+            "add this source to project documentation",
+            "record project knowledge",
+            "update CONTEXT.md or ADRs from this source"
           ],
           "negativeTriggers": [
             "the user only wants a one-time answer",
@@ -2534,13 +2534,13 @@
         },
         "th": {
           "displayName": "เพิ่มความรู้ให้โปรเจกต์",
-          "description": "เพิ่มข้อมูลที่เลือกเข้า wiki ของโปรเจกต์ พร้อมที่มา การตรวจ secret และบันทึกการเปลี่ยนแปลง",
-          "shortDescription": "เพิ่มข้อมูลที่เลือกเข้า wiki ของโปรเจกต์ พร้อมที่มา การตรวจ secret และบันทึกการเปลี่ยนแปลง",
-          "defaultPrompt": "นำเข้าแหล่งข้อมูลที่เลือกสู่ wiki พร้อม provenance",
+          "description": "เพิ่มความรู้จากแหล่งข้อมูลที่เลือกลงเอกสารโปรเจกต์ CONTEXT.md หรือ ADR พร้อมที่มาและตรวจ secret",
+          "shortDescription": "เพิ่มความรู้ลงเอกสารหลักของโปรเจกต์",
+          "defaultPrompt": "เพิ่มข้อมูลนี้ลงเอกสารโปรเจกต์ที่เหมาะสมพร้อมที่มา",
           "triggers": [
-            "นำเข้า source นี้เข้า wiki",
-            "เพิ่มไฟล์นี้ใน project memory",
-            "สกัดความรู้ถาวรของโปรเจกต์"
+            "เพิ่มข้อมูลนี้ลงเอกสารโปรเจกต์",
+            "บันทึกความรู้โปรเจกต์",
+            "อัปเดต CONTEXT.md หรือ ADR จากข้อมูลนี้"
           ],
           "negativeTriggers": [
             "ผู้ใช้ต้องการเพียงคำตอบครั้งเดียว",
@@ -2556,40 +2556,36 @@
       "workflow": [
         {
           "phase": "authorize",
-          "instruction": "Resolve the exact source, confirm it is allowed, and refuse ignored, secret-bearing, or out-of-scope material."
-        },
-        {
-          "phase": "extract",
-          "instruction": "Separate durable facts, decisions, concepts, entities, dates, and unresolved claims."
+          "instruction": "Resolve one approved source, validate containment and ignore status, and refuse credentials or private ignored material."
         },
         {
           "phase": "reconcile",
-          "instruction": "Compare existing wiki pages and docs/agents/artifacts.md when present, follow canonical pointers, preserve newer evidence, and surface contradictions. Treat ai_context/work sources as non-authoritative drafts."
+          "instruction": "Read existing project docs, CONTEXT.md, ADRs, and docs/agents/artifacts.md when present. Preserve canonical ownership and distinguish proposals from accepted decisions."
         },
         {
           "phase": "write",
-          "instruction": "Write source provenance and minimal page updates without overwriting unrelated user content."
+          "instruction": "Scan proposed content for secrets before writing minimal source-cited updates directly to the appropriate canonical document; fail closed on unresolved findings or scanner errors."
         },
         {
           "phase": "verify",
-          "instruction": "Check links, secret safety, index consistency, and append the change record."
+          "instruction": "Verify document diffs, links, provenance, and decision status; report evidence and gaps."
         }
       ],
       "artifacts": [
-        "source provenance record",
-        "wiki page updates",
-        "index and append-only log updates"
+        "canonical project documentation updates",
+        "source citations"
       ],
       "evidence": [
         "authorized source path or URL",
         "secret-scan result",
-        "created and updated pages",
+        "changed document paths",
         "contradictions surfaced"
       ],
       "guardrails": [
-        "Never add-knowledge ignored, credential-bearing, or unapproved private material.",
-        "Never replace user-owned wiki history with a template.",
-        "Never duplicate a canonical artifact body in the wiki; store a cited summary and pointer."
+        "Never persist credentials, ignored private sources, or unapproved material.",
+        "Never overwrite unrelated user content or duplicate canonical documents.",
+        "Never promote a proposed decision without authority.",
+        "Never automatically create a wiki scaffold, source cache, build marker, or background process; preserve legacy wiki data."
       ],
       "autonomyProfile": "afk_local"
     },
@@ -2690,13 +2686,13 @@
       "locales": {
         "en": {
           "displayName": "Ask Project",
-          "description": "Answer a project question from this repository's local wiki first, cite exact evidence, and use external research only when local knowledge is insufficient.",
+          "description": "Answer project questions from existing documentation, CONTEXT.md, ADRs, and source code with exact citations; research externally only when local evidence is insufficient.",
           "shortDescription": "Answer from project knowledge with citations",
-          "defaultPrompt": "Answer this project question from the local wiki and cite the evidence.",
+          "defaultPrompt": "Answer this project question from existing docs, CONTEXT.md, ADRs, and code with citations.",
           "triggers": [
-            "ask the project wiki",
+            "ask about project documentation",
             "find what this repository knows",
-            "answer from project memory"
+            "answer from project evidence"
           ],
           "negativeTriggers": [
             "the question is unrelated to the project",
@@ -2705,13 +2701,13 @@
         },
         "th": {
           "displayName": "ถามข้อมูลโปรเจกต์",
-          "description": "ตอบคำถามเกี่ยวกับโปรเจกต์จาก wiki ภายใน repo นี้ก่อนเสมอ พร้อมอ้างหลักฐาน และค้นภายนอกเฉพาะเมื่อข้อมูลในโปรเจกต์ไม่พอ",
-          "shortDescription": "ตอบคำถามเกี่ยวกับโปรเจกต์จาก wiki ภายในพร้อมอ้างหลักฐาน และค้นภายนอกเมื่อข้อมูลในโปรเจกต์ไม่พอ",
-          "defaultPrompt": "ตอบคำถามนี้จาก wiki ภายในและอ้างหลักฐาน",
+          "description": "ตอบคำถามจากเอกสารโปรเจกต์ CONTEXT.md ADR และ code พร้อมอ้างหลักฐาน ค้นภายนอกเมื่อข้อมูลไม่พอ",
+          "shortDescription": "ตอบจากเอกสารและ code พร้อมอ้างหลักฐาน",
+          "defaultPrompt": "ตอบคำถามนี้จากเอกสารโปรเจกต์ CONTEXT.md ADR และ code พร้อมอ้างหลักฐาน",
           "triggers": [
-            "ถาม project wiki",
+            "ถามข้อมูลจากเอกสารโปรเจกต์",
             "ค้นว่า repo นี้รู้อะไร",
-            "ตอบจาก project memory"
+            "ตอบจากหลักฐานในโปรเจกต์"
           ],
           "negativeTriggers": [
             "คำถามไม่เกี่ยวกับโปรเจกต์",
@@ -2727,7 +2723,7 @@
       "workflow": [
         {
           "phase": "search",
-          "instruction": "Read docs/agents/artifacts.md when present, then the wiki index and the smallest relevant page set. Follow canonical pointers and preserve source boundaries."
+          "instruction": "Read docs/agents/artifacts.md when present, then relevant project docs, CONTEXT.md, ADRs, and code. Verify any legacy wiki pointers against canonical evidence."
         },
         {
           "phase": "assess",
@@ -2735,7 +2731,7 @@
         },
         {
           "phase": "research",
-          "instruction": "Use current authoritative external sources only when the wiki cannot answer the question."
+          "instruction": "Use authoritative external sources only for gaps local evidence cannot answer; external research cannot establish an undocumented project decision."
         },
         {
           "phase": "answer",
@@ -2747,15 +2743,16 @@
         "knowledge-gap note when applicable"
       ],
       "evidence": [
-        "wiki pages consulted",
+        "project documentation and code consulted",
         "external sources when used",
         "freshness and conflict notes"
       ],
       "guardrails": [
-        "Do not treat absent wiki content as evidence.",
+        "Do not treat missing documentation as evidence.",
         "Do not make external calls when local evidence fully answers the question.",
-        "If derived memory conflicts with a canonical artifact, use the canonical artifact and report the wiki as stale.",
-        "Never present a local draft as an approved decision or canonical plan/spec."
+        "Report conflicts among documentation, legacy wiki claims, and implemented behavior.",
+        "Never present a draft as an approved decision.",
+        "Keep queries read-only; no wiki scaffold, cache, or build marker."
       ],
       "autonomyProfile": "afk_local"
     },
@@ -2772,33 +2769,33 @@
       },
       "locales": {
         "en": {
-          "displayName": "Check Wiki",
-          "description": "Audit the local project wiki for broken links, orphan pages, contradictions, stale claims, missing citations, schema drift, and secret exposure.",
-          "shortDescription": "Audit project knowledge quality and safety",
-          "defaultPrompt": "Audit the local project wiki and rank actionable findings.",
+          "displayName": "Check Project Docs",
+          "description": "Audit project documentation, CONTEXT.md, ADRs, and explicitly selected legacy wiki pages for broken links, contradictions, stale claims, missing evidence, and secret exposure.",
+          "shortDescription": "Audit canonical project documentation and legacy wiki content",
+          "defaultPrompt": "Audit project docs, CONTEXT.md, and ADRs and rank actionable findings.",
           "triggers": [
-            "lint the project wiki",
+            "audit project documentation",
             "audit project knowledge quality",
-            "find stale or contradictory wiki content"
+            "find stale or contradictory documentation"
           ],
           "negativeTriggers": [
-            "the user asks to ingest a new source",
-            "the target is product code rather than the project wiki"
+            "the user asks to add a new source",
+            "the target is product code rather than documentation"
           ]
         },
         "th": {
           "displayName": "ตรวจความรู้ในโปรเจกต์",
-          "description": "ตรวจ wiki ของโปรเจกต์เพื่อหาลิงก์เสีย ข้อมูลขัดกัน เนื้อหาล้าสมัย หลักฐานที่หาย และ secret",
-          "shortDescription": "ตรวจ wiki ของโปรเจกต์เพื่อหาลิงก์เสีย ข้อมูลขัดกัน เนื้อหาล้าสมัย หลักฐานที่หาย และ secret",
-          "defaultPrompt": "ตรวจ wiki ภายในและจัดลำดับข้อค้นพบที่แก้ไขได้",
+          "description": "ตรวจเอกสารโปรเจกต์ CONTEXT.md ADR และ wiki เดิมที่เลือก เพื่อหาลิงก์เสีย ข้อมูลขัดกัน เนื้อหาล้าสมัย และ secret",
+          "shortDescription": "ตรวจความถูกต้องและความปลอดภัยของเอกสารโปรเจกต์",
+          "defaultPrompt": "ตรวจเอกสารโปรเจกต์ CONTEXT.md และ ADR พร้อมจัดลำดับข้อค้นพบ",
           "triggers": [
-            "lint project wiki",
-            "ตรวจคุณภาพ project knowledge",
-            "หาข้อมูล wiki ที่ล้าสมัยหรือขัดแย้ง"
+            "ตรวจเอกสารโปรเจกต์",
+            "ตรวจคุณภาพความรู้โปรเจกต์",
+            "หาข้อมูลในเอกสารที่ล้าสมัยหรือขัดแย้ง"
           ],
           "negativeTriggers": [
-            "ผู้ใช้ขอนำเข้า source ใหม่",
-            "เป้าหมายเป็น product code ไม่ใช่ project wiki"
+            "ผู้ใช้ขอเพิ่มข้อมูลใหม่",
+            "เป้าหมายเป็น product code ไม่ใช่เอกสาร"
           ]
         }
       },
@@ -2810,15 +2807,11 @@
       "workflow": [
         {
           "phase": "inventory",
-          "instruction": "Enumerate wiki pages, index entries, links, citations, provenance, schema expectations, docs/agents/artifacts.md when present, canonical pointers, and allowed private-source boundaries."
-        },
-        {
-          "phase": "guard",
-          "instruction": "Run the overlap guard outside the repository or use an in-memory lock so the audit remains read-only without a project marker."
+          "instruction": "Inspect selected project docs, CONTEXT.md, ADRs, and docs/agents/artifacts.md when present; include relevant or explicitly selected legacy wiki content. Exclude private ignored sources."
         },
         {
           "phase": "analyze",
-          "instruction": "Detect orphans, dead links, conflicting claims, stale evidence, missing citations, schema drift, secret-shaped content, broken canonical pointers, and duplicated canonical bodies."
+          "instruction": "Check links, conflicting claims, stale evidence, citations, terminology drift, ADR status, secret-shaped content, and duplicated canonical text. Use temporary or in-memory checks; no project writes."
         },
         {
           "phase": "rank",
@@ -2830,21 +2823,21 @@
         }
       ],
       "artifacts": [
-        "severity-ranked wiki audit",
+        "severity-ranked documentation audit",
         "repair proposals"
       ],
       "evidence": [
-        "affected wiki paths",
+        "affected document paths",
         "broken or conflicting references",
         "secret-scan result",
-        "temporary guard cleanup result",
+        "verification gaps",
         "recommended repair"
       ],
       "guardrails": [
         "Do not read ignored private sources.",
-        "Do not auto-fix historical knowledge without explicit authorization.",
-        "Invoke implicitly only for a current explicit wiki-audit intent, never as an adjacent cleanup step.",
-        "Do not write project state during audit; mechanical repair requires an explicit fix request and semantic repair remains a recommendation."
+        "Do not repair documentation without explicit authorization.",
+        "Invoke implicitly only for a current explicit documentation-audit intent.",
+        "Keep audit mode read-only; no build marker, scaffold, cache, or background process."
       ],
       "autonomyProfile": "afk_local"
     },
@@ -2903,7 +2896,7 @@
         },
         {
           "phase": "inspect",
-          "instruction": "Check skill discovery, plugin metadata, MCP startup, hook trust and compatibility, wiki scaffold state, and required commands without changing state."
+          "instruction": "Check skill discovery, plugin metadata, MCP startup, absence of runtime hooks, optional legacy storage safety, and required commands without changing state."
         },
         {
           "phase": "isolate",
@@ -2921,7 +2914,7 @@
       "evidence": [
         "host and SPK version",
         "skill and MCP discovery",
-        "hook trust and compatibility state",
+        "absence of runtime hook registrations",
         "per-check command and result"
       ],
       "guardrails": [

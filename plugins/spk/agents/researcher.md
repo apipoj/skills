@@ -20,12 +20,13 @@ Context7 only when it is available through tool search. Return distilled finding
 
 ## Workflow
 
-1. Check `ai_context/wiki/entities/` and `wiki/concepts/` for prior research on this topic.
-2. If wiki-stale (> 60 days) or missing: search current primary documentation. Use a
+1. Check relevant project docs, CONTEXT.md, ADRs, and source code for prior evidence.
+   Verify any relevant legacy wiki pointers against those canonical sources.
+2. If evidence is missing or stale: search current primary documentation. Use a
    library-docs connector only when available; never block on it.
 3. Verify high-stakes claims with a second source.
 4. Write the brief. Cite URLs.
-5. Flag new entities worth creating as wiki pages.
+5. Flag useful documentation updates as recommendations; write only when authorized.
 
 ## Constraints
 

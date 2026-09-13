@@ -1,85 +1,58 @@
 ---
 name: check-wiki
-description: ตรวจ wiki ของโปรเจกต์เพื่อหาลิงก์เสีย ข้อมูลขัดกัน เนื้อหาล้าสมัย หลักฐานที่หาย และ secret
+description: Audit project documentation, CONTEXT.md, ADRs, and explicitly selected legacy wiki pages for broken links, contradictions, stale claims, missing evidence, and secret exposure.
 ---
-# ตรวจความรู้ในโปรเจกต์
 
-รัน read-only health check บน project wiki หา orphan pages, contradictions, stale claims, missing citations, dead links และ secrets ที่อาจมี
+# Check Project Documentation
 
-## รวบรวม Context
+## Response Rules
 
-- ลิสต์ไฟล์ทั้งหมดใน `ai_context/wiki/`
-- อ่าน `ai_context/wiki/index.md` สำหรับ catalog
-- อ่าน `ai_context/wiki/log.md` สำหรับ activity ล่าสุด
-- อ่าน `docs/agents/artifacts.md` เป็น read-only comparison policy ถ้ามี และตรวจ pointer
-  ไป canonical targets โดยไม่แก้ไฟล์เหล่านั้น
-- ห้ามตรวจ `ai_context/sources/`, ignored paths, credential หรือ environment file ใด ๆ
-- เช็ค marker file `ai_context/.spk-wiki-build` ก่อนเริ่มเสมอ ถ้ามีอยู่และอายุน้อยกว่า 2
-  ชั่วโมง ให้ปฏิเสธการรัน เพราะอาจมี wiki build หรือ audit อื่นทำงานอยู่พร้อมกัน ถ้า marker
-  เก่ากว่า 2 ชั่วโมงถือว่า stale ให้ลบด้วยคำสั่งตรงตัว `rm -f ai_context/.spk-wiki-build`
-  (หรือคำสั่งเทียบเท่าตาม platform) ก่อนทำต่อ audit เองไม่สร้าง marker นี้ และเก็บ working
-  notes ไว้ใน memory หรือใต้ OS temp directory เท่านั้น ห้ามเก็บใน repo
+Reply in the user's language.
 
-## Audit Checks
+- **Simplicity** — one idea per sentence; the plain word over the impressive one.
+- **Brevity** — answer first, then stop; no preamble, no restating the request, no summarizing what you just wrote.
+- **Clarity** — lead with the outcome, then what changed and what it costs; label an unverified claim as unverified.
+- **Humanity** — write as a colleague, not a system; familiar technical English over literal translation; no performative enthusiasm, no apology theater, no location stereotypes.
+- **Terminology** — reach for the precise domain term and keep it in its English form; never respell it phonetically in the reply's script (`ผลเทสท์` for `test`) or translate it literally (`หูจับ` for `handle`). Gloss an unfamiliar term once — `CPA (ต้นทุนต่อการได้ลูกค้าหนึ่งราย)` — then anchor it with one concrete example.
 
-### 1. Orphan Detection
-- Pages ที่ไม่ได้ link จาก index หรือ page อื่น
-- Index entries ที่ชี้ไป pages ที่ไม่มี
+Keep working without user input while the requested outcome remains inside current authority. Use a reversible smart default and record assumptions. Ask only when one material user-owned decision changes scope, risk, cost, or success, or when a required effect crosses an unapproved boundary.
 
-### 2. Contradiction Check
-- Claims บน page หนึ่งที่ขัดแย้งกับอีก page
-- ข้อมูลเก่าที่ขัดแย้งกับ changes ล่าสุด
+The existing `check-wiki` command audits project documentation. A wiki is optional.
 
-### 3. Stale Claims
-- Pages ที่อ้างถึง APIs เก่า, versions เก่า หรือ features ที่ถูกลบ
-- Temporal references ที่ล้าสมัย (เช่น events ที่ผ่านไปแล้วแต่เขียนว่า "upcoming")
+## Workflow
 
-### 4. Citation Audit
-- Claims ที่ไม่มี source citations
-- External links ที่ dead หรือ redirected
+1. Resolve the requested documentation scope. By default inspect relevant project
+   docs, `CONTEXT.md`, `CONTEXT-MAP.md`, and ADRs using the repository's layout and
+   `docs/agents/artifacts.md` when present. Include legacy `ai_context/wiki/` pages
+   only when relevant or explicitly selected.
+2. Exclude raw private sources, credentials, environment files, and ignored paths.
+   Verify file scope and ignore status before reading; report unverifiable scope
+   without reading it.
+3. Check broken links, contradictions, stale claims, missing citations, duplicated
+   canonical content, domain terminology drift, and ADR status inconsistencies.
+   Compare code where needed to verify behavioral claims.
+4. Run an available trusted secret scanner over the selected documentation without
+   writing project files. Fail closed on scanner errors and redact findings.
+5. Rank findings with exact paths, supporting evidence, consequences, and minimal
+   proposed repairs. Distinguish defects from uncertain or undocumented choices.
+6. Verify the report against the inspected evidence. Keep working notes in memory or
+   an OS temporary directory. Report any missing or unrun checks.
 
-### 5. Link Integrity
-- Internal wiki links ที่ชี้ไป pages ที่ไม่มี
-- Cross-references ที่ขาด
-- Canonical artifact pointers ที่เสียหรือ stale
-- Body ของ canonical artifact ที่ถูกคัดลอกมาไว้ใน wiki จนอาจ drift
-
-### 6. Secret Scan
-- Scan wiki pages ทั้งหมดสำหรับ secrets ที่อาจมี: API keys, tokens, credentials, passwords
-- ทุก match คือ Critical finding
-
-## Output Format
-
-```markdown
-## Wiki Lint Report
-- Pages ที่ scan: <count>
-- Index entries: <count>
-
-### Findings
-
-#### Critical
-- <page> <issue>
-
-#### Important
-- <page> <issue>
-
-#### Minor
-- <page> <issue>
-
-### Auto-fix Proposals
-- <issue> → <proposed fix>
-```
+This audit needs no build marker, wiki scaffold, or runtime hook.
 
 ## Autonomy Profile
 
-`afk_local` — ทำงานต่อเองได้ถึง effect level ที่ skill นี้ประกาศเท่านั้น และห้ามยกระดับ read-only เป็น write; prompt budget 0, repair budget 3 รอบ ก่อนหยุดต้องบันทึก phase, assumption, evidence, attempts และ next action ที่ทำต่อได้
+`afk_local` — prompt budget 0; repair budget 3. A clear request grants bounded work only up to this skill's declared effect level; the profile never upgrades read-only work into a write. Keep working through inspect, act, verify, and bounded repair without asking the user. Before pausing, record phase, assumptions, evidence, attempts, and the smallest resumable next action.
 
-## ข้อควรระวัง
+## Evidence Receipt
 
-- อ่าน wiki pages เท่านั้น ห้ามตรวจ raw private source
-- เช็ค wiki-build marker (`ai_context/.spk-wiki-build`) ก่อนรันเสมอ ห้ามสร้าง marker นี้เอง
-  และลบเฉพาะ marker ที่ stale เกิน 2 ชั่วโมงด้วยคำสั่งตรงตัวเท่านั้น
-- audit mode ห้ามแก้ wiki; mechanical repair ทำได้เมื่อคำขอปัจจุบันระบุ fix ชัด ส่วน semantic repair ให้เสนอแนะก่อน
-- Flag secrets เป็น Critical ไม่ว่า context อะไร
-- รายงาน findings เรียงตาม severity
-- รายงาน stale pointer หรือ body ซ้ำโดยไม่ rewrite canonical artifact หรือ wiki ใน audit mode
+Report audited paths, ranked findings, verification results, proposed fixes, and
+coverage gaps. Identify the run as a read-only audit.
+
+## Guardrails
+
+- Read only the authorized documentation and comparison evidence.
+- Invoke implicitly only for a current explicit documentation-audit intent.
+- Keep audit mode read-only; apply repairs only when explicitly requested.
+- Semantic decisions remain recommendations until authorized.
+- Preserve existing wiki pages and raw sources; an audit does not authorize deletion.

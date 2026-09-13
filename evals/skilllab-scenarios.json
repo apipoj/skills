@@ -2091,8 +2091,8 @@
       "scenarios": {
         "positive": {
           "prompts": {
-            "en": "Ingest docs/architecture.md into the local wiki with provenance and citations.",
-            "th": "นำ docs/architecture.md เข้า local wiki พร้อมแหล่งที่มาและ citation"
+            "en": "Add the selected source to existing project docs or ADRs with provenance and citations; do not create a wiki.",
+            "th": "เพิ่มข้อมูลที่เลือกลงเอกสารโปรเจกต์หรือ ADR ที่เหมาะสม พร้อมที่มาและ citation โดยไม่สร้าง wiki"
           },
           "expected": {
             "activation": "add-knowledge"
@@ -2109,8 +2109,8 @@
         },
         "outcome": {
           "prompts": {
-            "en": "Ingest the supplied architecture note into the wiki, extract entities and concepts, preserve source provenance, and create cited pages.",
-            "th": "นำบันทึกสถาปัตยกรรมที่ให้มาเข้า wiki แยก entity และแนวคิด เก็บ provenance ของแหล่งข้อมูล และสร้างหน้าที่มี citation"
+            "en": "Add the supplied architecture note to the appropriate existing project document or proposed ADR, preserve provenance, and avoid duplicating canonical documents.",
+            "th": "เพิ่มบันทึกสถาปัตยกรรมที่ให้มาลงเอกสารหลักหรือ ADR สถานะ proposed พร้อมที่มา และไม่สร้างเอกสารซ้ำ"
           },
           "expected": {
             "activation": "add-knowledge",
@@ -2120,10 +2120,10 @@
             ],
             "signals": [
               "source-provenance",
-              "entities",
-              "concepts",
+              "canonical-document",
+              "decision-status",
               "citations",
-              "wiki-pages"
+              "project-documents"
             ]
           }
         },
@@ -2226,7 +2226,7 @@
       "scenarios": {
         "positive": {
           "prompts": {
-            "en": "Find where in this repo the auth handling lives, using our own code and wiki as the source.",
+            "en": "Find where in this repo the auth handling lives, using our own code and project documentation as the source.",
             "th": "โค้ดใน repo นี้ตรงไหนจัดการ auth"
           },
           "expected": {
@@ -2244,8 +2244,8 @@
         },
         "outcome": {
           "prompts": {
-            "en": "Use wiki-first research to explain the retry policy, cite the supporting pages, and clearly identify any knowledge gap.",
-            "th": "ค้นแบบ wiki-first เพื่ออธิบาย retry policy อ้างอิงหน้าที่สนับสนุน และระบุช่องว่างความรู้อย่างชัดเจน"
+            "en": "Use existing project docs, CONTEXT.md, ADRs, and code to explain the retry policy with citations and identify gaps; no wiki exists.",
+            "th": "อธิบาย retry policy จากเอกสารโปรเจกต์ CONTEXT.md ADR และ code พร้อม citation และช่องว่างข้อมูล โดยโปรเจกต์นี้ไม่มี wiki"
           },
           "expected": {
             "activation": "ask-project",
@@ -2254,7 +2254,7 @@
               "blocked"
             ],
             "signals": [
-              "wiki-evidence",
+              "project-evidence",
               "answer",
               "citations",
               "knowledge-gap"
@@ -2294,8 +2294,8 @@
       "scenarios": {
         "positive": {
           "prompts": {
-            "en": "Audit the local wiki for orphan pages, contradictions, stale claims, citation gaps, dead links, and secrets.",
-            "th": "ตรวจ local wiki หา orphan page ข้อขัดแย้ง ข้อมูลเก่า citation ที่ขาด ลิงก์เสีย และ secret"
+            "en": "Audit project docs, CONTEXT.md, and ADRs for contradictions, stale claims, citation gaps, dead links, and secrets without creating a wiki or marker.",
+            "th": "ตรวจเอกสารโปรเจกต์ CONTEXT.md และ ADR หาข้อขัดแย้ง ข้อมูลเก่า citation ที่ขาด ลิงก์เสีย และ secret โดยไม่สร้าง wiki หรือ marker"
           },
           "expected": {
             "activation": "check-wiki"
@@ -2312,8 +2312,8 @@
         },
         "outcome": {
           "prompts": {
-            "en": "Lint the wiki and return an evidence-backed report covering orphans, contradictions, stale claims, citations, links, and secrets.",
-            "th": "lint wiki และส่งรายงานพร้อมหลักฐานครอบคลุม orphan ข้อขัดแย้ง ข้อมูลเก่า citation ลิงก์ และ secret"
+            "en": "Audit existing project docs and return an evidence-backed report covering contradictions, stale claims, citations, links, ADR status, and secrets.",
+            "th": "ตรวจเอกสารโปรเจกต์และส่งรายงานพร้อมหลักฐานครอบคลุมข้อขัดแย้ง ข้อมูลเก่า citation ลิงก์ สถานะ ADR และ secret"
           },
           "expected": {
             "activation": "check-wiki",
@@ -2321,7 +2321,7 @@
               "completed"
             ],
             "signals": [
-              "orphans",
+              "adr-status",
               "contradictions",
               "stale-claims",
               "citations",

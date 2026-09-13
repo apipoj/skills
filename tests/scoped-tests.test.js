@@ -106,17 +106,14 @@ describe('scoped-tests change-to-suite mapper', () => {
     expect(suitesForPath('plugins/spk/scripts/brand-new-thing.cjs')).toEqual([]);
   });
 
-  test('existing hook script includes the hook-output contract suite', () => {
+  test('explicit scanner maps to its own security suite', () => {
     expect(mapToSuites(['plugins/spk/scripts/wiki-secret-scan.cjs']))
-      .toEqual(expect.arrayContaining(['tests/hook-output-contract.test.js']));
+      .toEqual(['tests/wiki-secret-scan.test.js']);
   });
 
-  test('quoted command-string hook scripts include the hook-output contract suite', () => {
+  test('legacy utilities map only to their own tests', () => {
     expect(mapToSuites(['plugins/spk/scripts/spk-orient.cjs']))
-      .toEqual(expect.arrayContaining([
-        'tests/spk-orient.test.js',
-        'tests/hook-output-contract.test.js',
-      ]));
+      .toEqual(['tests/spk-orient.test.js']);
   });
 
   test('de-duplicates suites across multiple changed files', () => {

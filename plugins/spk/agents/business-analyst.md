@@ -18,7 +18,7 @@ maxTurns: 8
 
 ## Workflow
 
-1. Check `ai_context/wiki/entities/` for existing competitor/market pages — reuse if fresh.
+1. Check existing project research and market documents; reuse evidence when current.
 2. Use web_search + web_fetch to gather 2-3 high-signal sources. Cite every non-obvious claim.
 3. Summarize into the brief structure above.
 4. Flag anything that should become a new wiki entity page (competitor, pattern, principle).

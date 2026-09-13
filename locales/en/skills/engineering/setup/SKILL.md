@@ -78,12 +78,13 @@ Offer **multi-context** — a root `CONTEXT-MAP.md` pointing to per-context `CON
 
 **Section D — Artifact routing.** Use the split-zone default without another question:
 
-- `ai_context/` is local/private working state and remains excluded from Git by default.
+- `ai_context/` is optional local working state. Verify ignore policy before storing
+  private content; no startup hook creates it or changes Git exclusions.
 - `CONTEXT.md`, `docs/`, or the configured issue/document system hold canonical records.
 - local plans, specs, research, questionnaires, and handoffs start under
   `ai_context/work/` and are promoted only when policy or an explicit request calls for it.
-- `ai_context/wiki/` stores derived memory, summaries, and pointers; it never duplicates
-  a canonical artifact body.
+- Project knowledge goes directly into existing docs, CONTEXT.md, and ADRs.
+  Preserve legacy wiki data without creating or maintaining a parallel copy.
 
 If an existing policy selects different destinations, preserve it and show the material
 differences instead of replacing it. Leave customer delivery unconfigured when the repo

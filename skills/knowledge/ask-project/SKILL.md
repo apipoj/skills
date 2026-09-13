@@ -1,72 +1,52 @@
 ---
 name: ask-project
-description: ตอบคำถามเกี่ยวกับโปรเจกต์จาก wiki ภายใน repo นี้ก่อนเสมอ พร้อมอ้างหลักฐาน และค้นภายนอกเฉพาะเมื่อข้อมูลในโปรเจกต์ไม่พอ
+description: Answer project questions from existing documentation, CONTEXT.md, ADRs, and source code with exact citations; research externally only when local evidence is insufficient.
 ---
-# ถามข้อมูลโปรเจกต์
 
-ตอบคำถามโดยเช็ค project wiki ก่อน ใช้ external sources เฉพาะเมื่อ wiki ไม่มีข้อมูลที่เกี่ยวข้อง
+# Ask Project
 
-## รวบรวม Context
+## Response Rules
 
-- อ่าน `docs/agents/artifacts.md` ถ้ามีเพื่อรู้ canonical backend และสถานะของ artifact
-- เช็ค `ai_context/wiki/index.md` สำหรับ pages ที่มี
-- เช็ค `ai_context/wiki/log.md` สำหรับ activity ล่าสุด
+Reply in the user's language.
+
+- **Simplicity** — one idea per sentence; the plain word over the impressive one.
+- **Brevity** — answer first, then stop; no preamble, no restating the request, no summarizing what you just wrote.
+- **Clarity** — lead with the outcome, then what changed and what it costs; label an unverified claim as unverified.
+- **Humanity** — write as a colleague, not a system; familiar technical English over literal translation; no performative enthusiasm, no apology theater, no location stereotypes.
+- **Terminology** — reach for the precise domain term and keep it in its English form; never respell it phonetically in the reply's script (`ผลเทสท์` for `test`) or translate it literally (`หูจับ` for `handle`). Gloss an unfamiliar term once — `CPA (ต้นทุนต่อการได้ลูกค้าหนึ่งราย)` — then anchor it with one concrete example.
+
+Keep working without user input while the requested outcome remains inside current authority. Use a reversible smart default and record assumptions. Ask only when one material user-owned decision changes scope, risk, cost, or success, or when a required effect crosses an unapproved boundary.
+
+Answer the user's question from existing project evidence.
 
 ## Workflow
 
-### 1. Wiki Lookup
-- ค้น wiki index และ pages ที่เกี่ยวข้องที่เล็กที่สุดพอ
-- เช็ค concept pages, decision pages และ entity pages
-- Cross-reference pages ที่เกี่ยวข้อง
-- ตาม pointer ไป canonical artifact เมื่อคำตอบพึ่ง decision, plan, spec หรือ shared research
-- ถ้า wiki ขัดกับ canonical artifact ให้ canonical ชนะและถือว่า wiki stale
-- ถ้า wiki ครบและยังไม่ stale ให้ตอบพร้อมอ้าง page/path แล้วข้ามไป step 3
-
-### 2. External Fallback
-- ถ้า wiki ไม่มีข้อมูลที่เกี่ยวข้องหรือ stale ให้ค้น current primary source
-- ชอบ official documentation มากกว่า blog posts
-- แยกให้ชัดว่าข้อมูลไหนเป็น fact จาก repository และข้อมูลไหนเป็น external finding
-- อ้างอิง external sources ทุกแหล่ง
-- claim ที่ high-stakes หรือขัดความคาดหมาย ให้ตรวจซ้ำกับ independent primary source
-
-### 3. ตอบ
-- ตอบให้ชัดและกระชับ
-- อ้างอิง wiki pages หรือ external sources
-- ถ้าคำตอบเป็นประโยชน์ต่อ wiki ให้เสนอบันทึกเป็น page ใหม่ ห้ามบันทึกเองโดยไม่ถาม
-
-### 4. อัพเดต Wiki (เมื่อ user ขอเท่านั้น)
-- บันทึกความรู้ใหม่ลง wiki เฉพาะเมื่อ user ขอ หรือ active workflow อนุญาต wiki update ไว้
-  ชัดเจนเท่านั้น
-- เมื่อได้รับอนุญาตแล้วค่อยสร้างหรืออัพเดต page ที่เกี่ยวข้อง พร้อมอัปเดต wiki index และ log
-
-## Output Format
-
-```markdown
-## Answer
-<คำตอบเฉพาะเจาะจงตามคำถาม>
-
-### Sources
-- <wiki page หรือ external URL>
-
-### Wiki updated
-<yes/no ถ้า yes ระบุ pages>
-```
+1. Read `docs/agents/artifacts.md` when present. Locate the smallest relevant set of
+   project docs, the applicable `CONTEXT.md` through `CONTEXT-MAP.md` when present,
+   ADRs, and source code. Follow the repository's actual layout.
+2. Answer directly when the evidence is sufficient and current, citing exact paths
+   and lines. Distinguish implemented behavior, accepted decisions, and proposals.
+   If documents conflict with code or each other, report the conflict.
+3. Existing `ai_context/wiki/` pages may supply legacy pointers when relevant, but
+   verify their claims against canonical documents and code. A wiki is not required.
+4. For unresolved general or external facts, consult current primary sources and
+   distinguish external findings from repository facts. External research cannot
+   establish an undocumented project decision.
+5. Return a concise cited answer and identify remaining uncertainty. Save knowledge
+   only when the user's request authorizes a documentation update.
 
 ## Autonomy Profile
 
-`afk_local` — ทำงานต่อเองได้ถึง effect level ที่ skill นี้ประกาศเท่านั้น และห้ามยกระดับ read-only เป็น write; prompt budget 0, repair budget 3 รอบ ก่อนหยุดต้องบันทึก phase, assumption, evidence, attempts และ next action ที่ทำต่อได้
+`afk_local` — prompt budget 0; repair budget 3. A clear request grants bounded work only up to this skill's declared effect level; the profile never upgrades read-only work into a write. Keep working through inspect, act, verify, and bounded repair without asking the user. Before pausing, record phase, assumptions, evidence, attempts, and the smallest resumable next action.
 
 ## Evidence Receipt
 
-คืน `spk.evidence/v1` ที่มีคำตอบ, evidence path ในเครื่อง, external source ถ้าใช้,
-ความสด/ความไม่แน่นอนของข้อมูล, risks และ next action
+Report the answer, local evidence paths, external sources when used, and material
+freshness or coverage gaps.
 
-## ข้อควรระวัง
+## Guardrails
 
-- เช็ค wiki ก่อนเสมอก่อน external sources
-- อ้างอิง sources สำหรับทุกข้อเท็จจริง
-- อย่าแต่งคำตอบ บอกว่า "ไม่รู้" และแนะนำที่ไปหา
-- อย่าแก้ wiki pages เว้นแต่ user เห็นด้วยหรือ workflow ปัจจุบันอนุญาตไว้ชัดเจน
-- อย่านำเสนอ wiki content ที่ stale เป็นข้อเท็จจริงปัจจุบัน
-- ห้ามเปิดเผย raw private source หรือ credential
-- ห้ามนำเสนอ local draft เป็น approved decision หรือ canonical plan/spec
+- Never expose raw private sources or credentials.
+- Never present a local draft as an approved decision or canonical plan/spec.
+- Prefer primary sources and clearly label inference.
+- Do not create a wiki, marker, cache, or other project file during a read-only query.

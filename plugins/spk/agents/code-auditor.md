@@ -18,7 +18,7 @@ maxTurns: 10
 
 ## Workflow
 
-1. Read `ai_context/wiki/learnings/` for pattern violations relevant to this lens.
+1. Read relevant project conventions, CONTEXT.md, and ADRs for this review lens.
 2. For the given lens, apply the corresponding checks:
    - **correctness** — logic bugs, edge cases, off-by-one, null paths, race conditions, wrong data flow
    - **security** — OWASP Top 10, hardcoded secrets, injection, authz bypass, unsafe deserialization, path traversal, unsafe shell/eval

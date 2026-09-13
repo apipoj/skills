@@ -2,13 +2,13 @@
 
 ## Purpose
 - The canonical Claude Code runtime payload for the `spk` namespace.
-- Contains Claude agent prompts, Claude skill frontmatter, runtime hooks/scripts, the code-search MCP server, and the wiki scaffold. The Codex payload is generated at `../spk-codex/`.
+- Contains Claude agent prompts, Claude skill frontmatter, explicit utility scripts, the code-search MCP server, and the wiki scaffold. The Codex payload is generated at `../spk-codex/`.
 
 ## Entry Points
-- `hooks/hooks.json` — declares host-compatible PreToolUse / PostToolUse / SessionStart hooks; each client applies the events it supports.
+- `hooks/hooks.json` — empty by design. Both platforms must register no runtime hooks.
 - `agents/*.md` — one file per subagent; each file is the system prompt for that agent role.
 - `skills/<name>/SKILL.md` — portable Claude runtime workflow; invoked as `/spk:<name>` in Claude Code.
-- `scripts/` — Node.js runtime scripts executed by hooks (not build-time gates).
+- `scripts/` — Node.js utilities; run only as part of explicitly requested workflows.
 - `.claude-plugin/plugin.json` — Claude metadata; the generated Codex manifest lives under `../spk-codex/`.
 
 ## Commands
@@ -33,8 +33,8 @@
 
 ## Guardrails
 - Do not add executable scripts to `scripts/` without a corresponding Jest test in `tests/`.
-- Do not change `hooks/hooks.json` hook matchers without updating `tests/hook-output-contract.test.js`.
-- `scripts/secret-scanner.cjs` and `scripts/wiki-secret-scan.cjs` run on every supported Write/Edit/apply_patch event via hooks — do not remove or weaken them.
+- Keep `hooks/hooks.json` empty; `tests/hook-output-contract.test.js` prevents automatic runtime registration.
+- Preserve secret-scanning utilities for explicit workflow checks and release gates. They are not automatically enforced on tool calls.
 - `templates/ai_context/sources/` is excluded from scanning — never write private data there.
 
 ## When Editing Here

@@ -32,8 +32,7 @@ end-to-end implementation request remains valid after planning without a second 
 2. **PARSE** — Read `docs/agents/artifacts.md` when present. Resolve the plan from an
    explicit path, then `ai_context/work/plans/<ref>.md`, then `docs/plans/<ref>.md`.
    Use `ai_context/wiki/plans/<ref>.md` only as a legacy compatibility fallback. Read
-   `ai_context/wiki/index.md` for related implementation patterns and recent `log.md`
-   entries for known blockers.
+   relevant project docs, CONTEXT.md, and ADRs for implementation patterns and known blockers.
 
 3. **BUILD THE MINIMUM TASK GRAPH**
    - Order plan steps by dependency and acceptance criterion.
@@ -66,7 +65,7 @@ and 1 retry for a blocked or failed slice. Stop when acceptance evidence is comp
 
 ## Core Orchestration Contract
 
-- Read `ai_context/wiki/index.md`, `ai_context/wiki/log.md`, and relevant `CLAUDE.md` / `AGENTS.md` before dispatch.
+- Read relevant project docs, CONTEXT.md, ADRs, and `CLAUDE.md` / `AGENTS.md` before dispatch.
 - Specialist prompts must be self-contained: include task, scope, relevant paths, acceptance criteria, constraints, and expected output.
 - Dispatch in parallel only when tasks have disjoint file ownership or independent analysis lenses. Use sequential dispatch when tasks touch the same files or depend on prior results.
 - If a specialist returns `BLOCKED`, re-dispatch once with sharper context. If still blocked, stop and report the exact blocker.

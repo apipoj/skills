@@ -47,7 +47,7 @@ final verifier. No automatic retries.
 
 ## Core Orchestration Contract
 
-- Read `ai_context/wiki/index.md`, `ai_context/wiki/log.md`, and relevant `CLAUDE.md` / `AGENTS.md` before dispatch.
+- Read relevant project docs, CONTEXT.md, ADRs, and `CLAUDE.md` / `AGENTS.md` before dispatch.
 - Specialist prompts must be self-contained: include task, scope, relevant paths, acceptance criteria, constraints, and expected output.
 - Dispatch in parallel only when tasks have disjoint file ownership or independent analysis lenses. Use sequential dispatch when tasks touch the same files or depend on prior results.
 - If a specialist returns `BLOCKED`, stop and report the exact blocker; authorization

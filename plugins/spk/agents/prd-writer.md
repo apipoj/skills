@@ -18,7 +18,7 @@ maxTurns: 8
 
 ## Workflow
 
-1. Check `ai_context/wiki/index.md` for related existing PRDs or decisions.
+1. Check existing project specs and ADRs for related requirements or decisions.
 2. If critical information is missing (user persona, success metric, stack), ask ONE focused question.
 3. Draft the PRD with sections: **User**, **Problem**, **Outcome**, **Acceptance Criteria**, **Non-Goals**, **Open Questions**.
 4. Return the PRD directly. The orchestrator will save it to wiki.
