@@ -25,8 +25,7 @@ the wiki.
 ## Workflow
 
 1. **PARSE** — Read `docs/agents/artifacts.md` when present, then
-   `ai_context/wiki/index.md` to find related memory and
-   `ai_context/wiki/SCHEMA.md` for project conventions. Determine feature scope,
+   relevant project docs, CONTEXT.md, and ADRs for project conventions. Determine feature scope,
    non-goals, uncertainty, and which specialists to dispatch.
 
 2. **BUILD THE MINIMUM TASK GRAPH**
@@ -59,7 +58,7 @@ for a blocked specialist. Stop fan-out once the verifier has enough evidence.
 
 ## Core Orchestration Contract
 
-- Read `ai_context/wiki/index.md`, `ai_context/wiki/log.md`, and relevant `CLAUDE.md` / `AGENTS.md` before dispatch.
+- Read relevant project docs, CONTEXT.md, ADRs, and `CLAUDE.md` / `AGENTS.md` before dispatch.
 - Specialist prompts must be self-contained: include task, scope, relevant paths, acceptance criteria, constraints, and expected output.
 - Dispatch in parallel only when tasks have disjoint file ownership or independent analysis lenses. Use sequential dispatch when tasks touch the same files or depend on prior results.
 - If a specialist returns `BLOCKED`, re-dispatch once with sharper context. If still blocked, stop and report the exact blocker.
@@ -74,7 +73,7 @@ for a blocked specialist. Stop fan-out once the verifier has enough evidence.
   `plan_only` stops, while an explicit end-to-end request continues after verification.
 - Do NOT expand scope beyond what the user requested; escalate scope ambiguity back to the user.
 - Specialist prompts must be self-contained — never assume specialists have chat history.
-- Wiki writes must pass the secret-scan hook; do not paste raw source content into wiki pages.
+- Run explicit secret checks before persisting project documentation; never persist raw private sources. No runtime hook enforces tool calls.
 
 ## Code Navigation
 

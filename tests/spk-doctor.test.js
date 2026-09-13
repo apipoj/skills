@@ -42,13 +42,14 @@ function writePluginFixture(plugin, version = '3.5.0') {
   fs.mkdirSync(path.join(plugin, 'hooks'), { recursive: true });
   fs.writeFileSync(
     path.join(plugin, 'hooks', 'hooks.json'),
-    JSON.stringify({ hooks: { PreToolUse: hookEntries } })
+    JSON.stringify({ hooks: {} })
   );
   for (const relative of new Set(doctor.EXPECTED_HOOK_SCRIPTS)) {
     const file = path.join(plugin, relative);
     fs.mkdirSync(path.dirname(file), { recursive: true });
     fs.writeFileSync(file, '');
   }
+  fs.mkdirSync(path.join(plugin, 'scripts'), { recursive: true });
   fs.writeFileSync(path.join(plugin, 'scripts', 'session-reflect-consent.cjs'), '');
 }
 
@@ -74,6 +75,22 @@ function checkOf(report, id) {
 }
 
 describe('SPK doctor', () => {
+  test('a project without legacy wiki storage needs no scaffold and remains unchanged', () => {
+    const { root, plugin } = fixture();
+    try {
+      fs.rmSync(path.join(root, 'ai_context'), { recursive: true });
+      const before = fs.readdirSync(root).sort();
+      const report = doctor.diagnose({ cwd: root, pluginRoot: plugin, env: {} });
+      expect(checkOf(report, 'memory.wiki').status).toBe('pass');
+      expect(checkOf(report, 'privacy.sources-ignore').status).toBe('pass');
+      expect(checkOf(report, 'plugin.hooks').status).toBe('pass');
+      expect(fs.readdirSync(root).sort()).toEqual(before);
+      expect(fs.existsSync(path.join(root, 'ai_context'))).toBe(false);
+    } finally {
+      cleanup(root, plugin);
+    }
+  });
+
   test('reports structured installation, inventory, hook, and privacy checks', () => {
     const { root, plugin } = fixture();
     try {
@@ -267,8 +284,7 @@ describe('SPK doctor', () => {
       fs.rmSync(path.join(plugin, 'skills', 'skill-0'), { recursive: true });
       const hooksFile = path.join(plugin, 'hooks', 'hooks.json');
       const hooks = JSON.parse(fs.readFileSync(hooksFile, 'utf8'));
-      hooks.hooks.PreToolUse[0].hooks[0].args[0] =
-        '${CLAUDE_PLUGIN_ROOT}/scripts/missing-hook.cjs';
+      hooks.hooks.SessionStart = [{ hooks: [{ type: 'command', command: 'node legacy.cjs' }] }];
       fs.writeFileSync(hooksFile, JSON.stringify(hooks));
 
       const report = doctor.diagnose({ cwd: root, pluginRoot: plugin, env: {} });
@@ -282,7 +298,7 @@ describe('SPK doctor', () => {
       }));
       expect(checkOf(report, 'plugin.hooks')).toEqual(expect.objectContaining({
         status: 'fail',
-        message: expect.stringContaining('1 missing script files'),
+        message: expect.stringContaining('Unexpected runtime hook'),
       }));
     } finally {
       cleanup(root, plugin);

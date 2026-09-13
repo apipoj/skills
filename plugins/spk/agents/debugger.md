@@ -19,7 +19,7 @@ maxTurns: 12
 ## Workflow
 
 1. **Root cause investigation**
-   - Read `ai_context/wiki/log.md` and `ai_context/wiki/learnings/` for past incidents.
+   - Read existing incident reports, ADRs, and relevant project documentation for past incidents.
    - Read the full error/stack trace. Do not skim.
    - Reproduce the bug or return `NEEDS_REPRO` with exact missing data.
    - Check recent changes in the affected area.

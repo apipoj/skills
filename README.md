@@ -2,7 +2,7 @@
 
 Thai-first engineering skills แบบพร้อมใช้สำหรับ Claude Code, Codex และ agent ที่รองรับ Agent Skills
 
-Apipoj Skills ใช้ skill ที่เล็กและ composable จาก `mattpocock/skills` เป็นฐาน แล้วเพิ่มสิ่งที่ SPK ทำได้ดีกว่า: approval gates, evidence receipts, project memory, security hooks, Claude/Codex generation และภาษาไทยที่คุยรู้เรื่อง
+Apipoj Skills ใช้ skill ที่เล็กและ composable จาก `mattpocock/skills` เป็นฐาน แล้วเพิ่มสิ่งที่ SPK ทำได้ดีกว่า: approval gates, evidence receipts, canonical project docs, explicit security checks, Claude/Codex generation และภาษาไทยที่คุยรู้เรื่อง
 
 เริ่มใช้งานแบบทีละขั้นได้ที่ **[คู่มือผู้ใช้](USER_GUIDE.md)** · [English user guide](USER_GUIDE-EN.md)
 
@@ -160,3 +160,9 @@ Version และ roster ใช้ `manifest.json` เป็น source of truth 
 ## Upstream และ license
 
 ฐาน upstream คือ `mattpocock/skills@6654f6b60cd9d5be8b54c6fafe44346dabeb3b76` ภายใต้ MIT License การ sync รอบถัดไปต้อง review และ localize ก่อนเสมอ ดู `NOTICE` และ `docs/upstream/`
+
+## Hook-free runtime
+
+SPK ไม่ลงทะเบียน runtime hooks บน Claude Code หรือ Codex จึงไม่สร้าง wiki, แก้ Git exclude, cache เว็บ หรือเรียก reflection อัตโนมัติ
+ใช้ `ask-project` อ่านเอกสารโปรเจกต์, CONTEXT.md, ADR และ code โดยตรง ส่วน `add-knowledge` อัปเดตเอกสารหลักเมื่อผู้ใช้สั่ง และ `check-wiki` ตรวจเอกสารโปรเจกต์โดยคงชื่อเดิมเพื่อความเข้ากันได้
+ข้อมูล wiki เดิมยังอยู่และไม่ถูกลบ การตรวจ secret ทำใน workflow ที่เรียกใช้หรือ release gate ไม่ใช่ทุก tool call

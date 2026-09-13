@@ -1,5 +1,13 @@
 # Apipoj Skills
 
+## 6.7.0 - 2026-09-14
+
+- Remove automatic plugin runtime hooks on Claude Code and Codex.
+- Use existing project docs, CONTEXT.md, and ADRs for knowledge workflows; retain check-wiki as the compatible documentation-audit command.
+- Preserve legacy wiki data and explicit utilities. Secret checks remain available in workflows and release gates without per-tool enforcement.
+- Doctor accepts projects without a wiki and detects unexpected runtime hook registrations.
+- Update transitive js-yaml from 3.15.1 to 3.15.2 to resolve GHSA-2883-xcg3-v3hh.
+
 ## 6.6.3 - 2026-09-06
 
 ### Changed

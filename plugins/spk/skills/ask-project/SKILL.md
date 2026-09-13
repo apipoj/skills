@@ -1,9 +1,9 @@
 ---
 name: ask-project
-description: Answer a project question from this repository's local wiki first, cite exact evidence, and use external research only when local knowledge is insufficient.
+description: Answer project questions from existing documentation, CONTEXT.md, ADRs, and source code with exact citations; research externally only when local evidence is insufficient.
 ---
 
-# Wiki-First Query
+# Ask Project
 
 ## Response Rules
 
@@ -17,20 +17,23 @@ Reply in the user's language.
 
 Keep working without user input while the requested outcome remains inside current authority. Use a reversible smart default and record assumptions. Ask only when one material user-owned decision changes scope, risk, cost, or success, or when a required effect crosses an unapproved boundary.
 
-Answer the user's question from project knowledge before using external sources.
+Answer the user's question from existing project evidence.
 
 ## Workflow
 
-1. Read `docs/agents/artifacts.md` when present, then `ai_context/wiki/index.md` and the
-   smallest relevant linked pages. Follow canonical artifact pointers when the answer
-   depends on a decision, plan, spec, or shared research document.
-2. If the wiki and canonical target are sufficient and current, answer with page/path
-   citations. If they conflict, the canonical artifact wins and the wiki is stale.
-3. If it is silent or stale, research current primary sources and clearly distinguish
-   repository facts from external findings.
-4. Verify high-stakes or surprising claims with an independent primary source.
-5. Return a concise answer with citations. Save new knowledge only when the user asks
-   or the active workflow explicitly authorizes wiki updates.
+1. Read `docs/agents/artifacts.md` when present. Locate the smallest relevant set of
+   project docs, the applicable `CONTEXT.md` through `CONTEXT-MAP.md` when present,
+   ADRs, and source code. Follow the repository's actual layout.
+2. Answer directly when the evidence is sufficient and current, citing exact paths
+   and lines. Distinguish implemented behavior, accepted decisions, and proposals.
+   If documents conflict with code or each other, report the conflict.
+3. Existing `ai_context/wiki/` pages may supply legacy pointers when relevant, but
+   verify their claims against canonical documents and code. A wiki is not required.
+4. For unresolved general or external facts, consult current primary sources and
+   distinguish external findings from repository facts. External research cannot
+   establish an undocumented project decision.
+5. Return a concise cited answer and identify remaining uncertainty. Save knowledge
+   only when the user's request authorizes a documentation update.
 
 ## Autonomy Profile
 
@@ -38,12 +41,12 @@ Answer the user's question from project knowledge before using external sources.
 
 ## Evidence Receipt
 
-Return `spk.evidence/v1` with the answer, local evidence paths, external sources if
-used, freshness/uncertainty, risks, and next action.
+Report the answer, local evidence paths, external sources when used, and material
+freshness or coverage gaps.
 
 ## Guardrails
 
-- Do not present stale wiki content as current fact.
 - Never expose raw private sources or credentials.
 - Never present a local draft as an approved decision or canonical plan/spec.
 - Prefer primary sources and clearly label inference.
+- Do not create a wiki, marker, cache, or other project file during a read-only query.

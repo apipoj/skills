@@ -1,9 +1,9 @@
 ---
 name: check-wiki
-description: Audit the local project wiki for broken links, orphan pages, contradictions, stale claims, missing citations, schema drift, and secret exposure.
+description: Audit project documentation, CONTEXT.md, ADRs, and explicitly selected legacy wiki pages for broken links, contradictions, stale claims, missing evidence, and secret exposure.
 ---
 
-# Wiki Lint
+# Check Project Documentation
 
 ## Response Rules
 
@@ -17,24 +17,28 @@ Reply in the user's language.
 
 Keep working without user input while the requested outcome remains inside current authority. Use a reversible smart default and record assumptions. Ask only when one material user-owned decision changes scope, risk, cost, or success, or when a required effect crosses an unapproved boundary.
 
-Audit project wiki content without reading raw private sources.
+The existing `check-wiki` command audits project documentation. A wiki is optional.
 
 ## Workflow
 
-1. Resolve the requested wiki scope, defaulting to `ai_context/wiki/`.
-2. Refuse to inspect `ai_context/sources/`, ignored paths, credentials, or environment
-   files.
-3. Check for the wiki-build marker `ai_context/.spk-wiki-build` before starting. If it
-   exists and is less than 2 hours old, refuse to run: a wiki build or another audit may
-   be in progress. If it is older than 2 hours, it is stale — remove it with exactly
-   `rm -f ai_context/.spk-wiki-build` (or the platform-equivalent cleanup command) before
-   continuing. The audit itself never creates this marker. Keep audit working notes in
-   memory or under the OS temp directory, never in the repository.
-4. Check orphan pages, contradictions, stale claims, missing citations, dead links,
-   index drift, secret-shaped strings, broken canonical pointers, and copied canonical
-   bodies.
-5. Rank evidence-backed findings and propose fixes; do not apply them unless requested.
-6. Run an explicit verifier pass over the report and marker state.
+1. Resolve the requested documentation scope. By default inspect relevant project
+   docs, `CONTEXT.md`, `CONTEXT-MAP.md`, and ADRs using the repository's layout and
+   `docs/agents/artifacts.md` when present. Include legacy `ai_context/wiki/` pages
+   only when relevant or explicitly selected.
+2. Exclude raw private sources, credentials, environment files, and ignored paths.
+   Verify file scope and ignore status before reading; report unverifiable scope
+   without reading it.
+3. Check broken links, contradictions, stale claims, missing citations, duplicated
+   canonical content, domain terminology drift, and ADR status inconsistencies.
+   Compare code where needed to verify behavioral claims.
+4. Run an available trusted secret scanner over the selected documentation without
+   writing project files. Fail closed on scanner errors and redact findings.
+5. Rank findings with exact paths, supporting evidence, consequences, and minimal
+   proposed repairs. Distinguish defects from uncertain or undocumented choices.
+6. Verify the report against the inspected evidence. Keep working notes in memory or
+   an OS temporary directory. Report any missing or unrun checks.
+
+This audit needs no build marker, wiki scaffold, or runtime hook.
 
 ## Autonomy Profile
 
@@ -42,20 +46,13 @@ Audit project wiki content without reading raw private sources.
 
 ## Evidence Receipt
 
-Return `spk.evidence/v1` with audited pages, ranked findings, verification results,
-marker check outcome, proposed fixes, risks, and next action. Identify the run as a read-only audit.
+Report audited paths, ranked findings, verification results, proposed fixes, and
+coverage gaps. Identify the run as a read-only audit.
 
 ## Guardrails
 
-- Read wiki pages only; never inspect raw private sources.
-- Invoke implicitly only for a current explicit wiki-audit intent, never as an
-  adjacent cleanup step.
-- Do not apply proposed fixes unless the current request explicitly asks to fix the wiki.
-- Keep audit mode read-only. Mechanical repairs may run only in explicit fix mode;
-  semantic changes remain recommendations.
-- Fail closed on secret-scan failure.
-- Treat `docs/agents/artifacts.md` and its canonical targets as read-only comparison
-  evidence; report stale pointers or duplicated bodies without rewriting either side.
-- Never create the wiki-build marker; only check it, refuse to run while a fresh one
-  exists, and remove a stale one (older than 2 hours) with the exact cleanup command
-  before continuing.
+- Read only the authorized documentation and comparison evidence.
+- Invoke implicitly only for a current explicit documentation-audit intent.
+- Keep audit mode read-only; apply repairs only when explicitly requested.
+- Semantic decisions remain recommendations until authorized.
+- Preserve existing wiki pages and raw sources; an audit does not authorize deletion.

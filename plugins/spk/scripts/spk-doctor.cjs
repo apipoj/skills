@@ -24,16 +24,7 @@ const EXPECTED_INVENTORY = Object.freeze({
   sharedSkills: 22,
   claudeAgents: 21,
 });
-const EXPECTED_HOOK_SCRIPTS = Object.freeze([
-  'scripts/wiki-secret-scan.cjs',
-  'scripts/gitignore-guard.cjs',
-  'scripts/webfetch-cache.cjs',
-  'scripts/auto-ingest.cjs',
-  'scripts/webfetch-cache.cjs',
-  'scripts/init-ai-context.cjs',
-  'scripts/spk-orient.cjs',
-  'scripts/session-reflect.cjs',
-]);
+const EXPECTED_HOOK_SCRIPTS = Object.freeze([]);
 
 function check(id, status, message, remediation) {
   const value = { id, status, message };
@@ -344,38 +335,17 @@ function inspectHooks(plugin) {
       'plugin.hooks',
       'fail',
       `Hook configuration is ${parsed.error}.`,
-      'Reinstall SPK to restore hooks/hooks.json.'
+      'Reinstall the hook-free SPK package to restore an empty hooks/hooks.json.'
     );
   }
-  const registrations = commandHooks(parsed.value);
-  if (!registrations) {
-    return check(
-      'plugin.hooks',
-      'fail',
-      'Hook configuration has an invalid registration structure.',
-      'Reinstall SPK to restore hooks/hooks.json.'
-    );
-  }
-  const scripts = registrations.map(hookScriptReference);
-  const expected = [...EXPECTED_HOOK_SCRIPTS].sort();
-  const actual = scripts.filter(Boolean).sort();
-  const rosterMatches =
-    scripts.length === registrations.length &&
-    actual.length === expected.length &&
-    actual.every((value, index) => value === expected[index]);
-  const missingFiles = actual.filter(relative => {
-    const contained = pathWithinRoot(path.join(plugin, relative), plugin);
-    return !contained ||
-      !isRegularNonSymlinkFile(contained.realAbsolute || contained.absolute);
-  });
-  const valid = rosterMatches && missingFiles.length === 0;
+  const hooks = parsed.value && parsed.value.hooks;
+  const valid = hooks && typeof hooks === 'object' && !Array.isArray(hooks) &&
+    Object.keys(hooks).length === 0 && Object.keys(parsed.value).length === 1;
   return check(
     'plugin.hooks',
     valid ? 'pass' : 'fail',
-    valid
-      ? `Hooks parsed: ${registrations.length} command registrations and ${new Set(actual).size} bundled script files verified.`
-      : `Hook registration mismatch: ${registrations.length}/${EXPECTED_HOOK_SCRIPTS.length} commands; ${scripts.filter(Boolean).length} recognized script references; ${missingFiles.length} missing script files.`,
-    valid ? null : 'Reinstall SPK to restore the bundled hook registrations and scripts.'
+    valid ? 'No automatic runtime hooks are registered.' : 'Unexpected runtime hook configuration.',
+    valid ? null : 'Reinstall the hook-free SPK package; do not restore legacy runtime hooks.'
   );
 }
 
@@ -437,8 +407,8 @@ function diagnose(options = {}) {
     'privacy.reflection',
     authorization.enabled ? 'warn' : 'pass',
     authorization.enabled
-      ? 'LLM-backed session reflection has user-local consent and is enabled.'
-      : 'LLM-backed session reflection is disabled; project configuration and environment opt-in cannot grant consent.',
+      ? 'Legacy reflection consent exists for the manual utility; no automatic reflection hook is registered.'
+      : 'No automatic session reflection; the manual utility has no effective consent. Project settings cannot grant consent.',
     authorization.enabled
       ? reflectionDisableCommand(plugin, authorization.realProjectRoot || root)
       : null
@@ -448,13 +418,13 @@ function diagnose(options = {}) {
   const sourceDir = path.join(root, 'ai_context', 'sources');
   checks.push(check(
     'memory.wiki',
-    fs.existsSync(wikiDir) ? 'pass' : 'warn',
-    fs.existsSync(wikiDir) ? 'Project wiki is present.' : 'Project wiki has not been scaffolded yet.',
-    fs.existsSync(wikiDir) ? null : 'Start a new host session or create ai_context/wiki through the SPK bootstrap.'
+    'pass',
+    fs.existsSync(wikiDir) ? 'Legacy project wiki is present; canonical project documentation remains authoritative.' : 'No wiki is required; use project docs, CONTEXT.md, and ADRs.',
+    null
   ));
 
   const sourceIgnore = path.join(sourceDir, '.gitignore');
-  const sourceIgnoreSafe = sourceIgnoreIsSafe(
+  const sourceIgnoreSafe = !fs.existsSync(sourceDir) || sourceIgnoreIsSafe(
     sourceIgnore,
     options.gitBin ? { gitBin: options.gitBin } : {}
   );
@@ -462,7 +432,7 @@ function diagnose(options = {}) {
     'privacy.sources-ignore',
     sourceIgnoreSafe ? 'pass' : 'fail',
     sourceIgnoreSafe
-      ? 'Raw source storage has an effective ignore-all policy.'
+      ? (fs.existsSync(sourceDir) ? 'Raw source storage has an effective ignore-all policy.' : 'No legacy raw source storage exists; none is required.')
       : 'Raw source storage is missing or does not enforce the SPK ignore-all policy.',
     sourceIgnoreSafe
       ? null

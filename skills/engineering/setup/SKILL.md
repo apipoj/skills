@@ -66,12 +66,13 @@ skill นี้เป็นแบบ prompt-driven ไม่ใช่ script ท
 
 **Section D — Artifact routing** ใช้ split-zone default โดยไม่ต้องถามเพิ่ม:
 
-- `ai_context/` เป็น local/private working state และยังถูก exclude จาก Git เป็นค่าเริ่มต้น
+- `ai_context/` เป็น local working state ที่เลือกใช้ได้ ตรวจ ignore policy ก่อนเก็บข้อมูล private
+  ไม่มี startup hook สร้างโฟลเดอร์หรือแก้ Git exclusion
 - `CONTEXT.md`, `docs/` หรือ issue/document system ที่ตั้งค่าไว้เก็บ canonical records
 - plan, spec, research, questionnaire และ handoff เริ่มที่ `ai_context/work/` แล้วค่อย
   promote เมื่อ policy หรือคำขอระบุ
-- `ai_context/wiki/` เก็บ derived memory, summary และ pointer ห้ามคัดลอก body ของ
-  canonical artifact
+- บันทึกความรู้ในเอกสารโปรเจกต์ CONTEXT.md และ ADR โดยตรง
+  รักษาข้อมูล wiki เดิมไว้โดยไม่สร้างหรือดูแลสำเนาคู่ขนาน
 
 ถ้ามี policy เดิมที่เลือกปลายทางต่างออกไป ให้รักษาไว้และแสดงเฉพาะความต่างที่สำคัญ
 ถ้า repo ไม่ได้บอกชัดว่าใช้ repo-backed deliverables หรือ external document system ให้

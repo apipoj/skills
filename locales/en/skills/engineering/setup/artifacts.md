@@ -6,7 +6,7 @@ the artifacts themselves.
 
 ## Default boundary
 
-- `ai_context/` is local working state. It is excluded from Git by default.
+- `ai_context/` is optional local working state. Verify ignore policy before storing private content; no startup hook creates directories or changes Git exclusions.
 - `docs/`, `CONTEXT.md`, and context-local domain files are team-visible canonical
   candidates. Writing them does not authorize `git add`, commit, or push.
 - An issue tracker or document system is canonical only when this policy or
@@ -20,8 +20,8 @@ the artifacts themselves.
 
 | Artifact | Draft/default destination | Canonical destination | Visibility | Promotion authority | Retention and consumer rule |
 |---|---|---|---|---|---|
-| AI/project memory | `ai_context/wiki/` | None; it is derived memory | Local-private | Agent may maintain cited summaries | Keep an index and pointers; never duplicate a canonical body |
-| Raw source | `ai_context/sources/` | Original source or a separately reviewed sanitized document | Local-private | Explicit source selection | Immutable input; never publish automatically |
+| Project knowledge | Existing project docs, `CONTEXT.md`, or ADRs | The same documents | Project-specific | Explicit documentation request | Update the canonical document; preserve legacy wiki content without creating a parallel store |
+| Raw source | Original selected file or URL | Original source or a separately reviewed sanitized document | Source-specific | Explicit source selection | Read in place; no automatic source cache |
 | Glossary | Edit `CONTEXT.md` or the mapped context file directly | The same file | Team | A resolved term in the active workflow | Vocabulary only; never use as a spec or scratch pad |
 | ADR | `docs/adr/NNNN-<slug>.md` with `proposed` status | The same file with reviewed status | Team | Project review convention | Keep history; supersede with a new ADR instead of rewriting accepted rationale |
 | Plan | `ai_context/work/plans/YYYY-MM-DD-<slug>.md` | `docs/plans/YYYY-MM-DD-<slug>.md` only when the plan is team-shared or audit-relevant | Local to team | Explicit request or project policy | Readers prefer policy path, then local work, then canonical docs; legacy wiki plans are fallback only |
@@ -40,9 +40,8 @@ Before promotion:
 1. Resolve the single canonical destination from this file.
 2. Review content, citations, secrets, privacy, and intended audience.
 3. Record the local draft and canonical path or URL.
-4. Add only a short summary and pointer to `ai_context/wiki/`; never copy the body.
+4. Update existing document links where needed; do not create a parallel wiki copy.
 5. Keep external send or publish behind its own exact approval boundary.
 
 If a row is unsuitable for this project, edit this file once. Skills should read the
 policy instead of hardcoding a competing destination.
-

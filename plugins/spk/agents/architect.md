@@ -18,7 +18,7 @@ maxTurns: 8
 
 ## Workflow
 
-1. Check `ai_context/wiki/decisions/` and `wiki/entities/` for prior decisions + adopted tech. Align with them unless you have strong reason to deviate.
+1. Read CONTEXT.md, ADRs, and existing architecture docs for prior decisions and adopted technology. Surface any proposed departure for review.
 2. Design around existing stack first; new tech only when justified.
 3. Draft the architecture doc. For each decision, give 1-line rationale.
 4. Flag assumptions. Call out risks.

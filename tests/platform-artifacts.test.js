@@ -174,10 +174,9 @@ describe('platform artifact compiler', () => {
     expect(byId.debug.effectLevel).toBe('read_only');
 
     expect(byId['check-wiki'].activation.allowImplicitInvocation).toBe(true);
-    expect(byId['check-wiki'].workflow.find((step) => step.phase === 'guard').instruction)
-      .toMatch(/outside the repository|without a project marker/i);
+    expect(byId['check-wiki'].workflow.find((step) => step.phase === 'guard')).toBeUndefined();
     expect(byId['check-wiki'].guardrails.join('\n'))
-      .toMatch(/explicit wiki-audit intent[\s\S]*Do not write project state during audit/i);
+      .toMatch(/explicit documentation-audit intent[\s\S]*Keep audit mode read-only/i);
 
     const wikiLintSkill = fs.readFileSync(
       path.join(REPO_ROOT, 'plugins/spk/skills/check-wiki/SKILL.md'),
@@ -317,7 +316,7 @@ describe('platform artifact compiler', () => {
     const generatedCommandHooks = Object.values(generatedHooks.hooks)
       .flat()
       .flatMap(entry => entry.hooks || []);
-    expect(generatedCommandHooks.length).toBeGreaterThan(0);
+    expect(generatedCommandHooks).toEqual([]);
     expect(generatedCommandHooks.every(hook => hook.command === 'node')).toBe(true);
     expect(plugin.interface.privacyPolicyURL).toBe(
       'https://github.com/apipoj/skills/blob/main/PRIVACY.md',

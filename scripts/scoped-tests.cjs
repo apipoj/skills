@@ -18,40 +18,7 @@ function testExists(rel) {
   return fs.existsSync(path.join(REPO_ROOT, rel));
 }
 
-// Plugin scripts that are wired as runtime hooks. ONLY these are covered by
-// tests/hook-output-contract.test.js, so the contract suite must be appended
-// for these and never for an arbitrary (sibling-less) plugin script — see R7:
-// a non-hook script with no sibling test must map to [] so the caller runs the
-// full suite instead of falsely reporting zero-coverage code as covered.
-// Derived from plugins/spk/hooks/hooks.json when readable; falls back to a
-// hardcoded set (keep in sync with hooks.json) if parsing fails.
-function deriveHookScripts() {
-  try {
-    const hooks = JSON.parse(
-      fs.readFileSync(path.join(REPO_ROOT, 'plugins', 'spk', 'hooks', 'hooks.json'), 'utf-8')
-    );
-    const names = new Set();
-    for (const event of Object.values(hooks.hooks || {})) {
-      for (const group of event) {
-        for (const hook of group.hooks || []) {
-          const serialized = [hook.command, ...(Array.isArray(hook.args) ? hook.args : [])]
-            .join(' ');
-          const m = serialized.match(/scripts\/([\w-]+)\.cjs/);
-          if (m) names.add(m[1]);
-        }
-      }
-    }
-    if (names.size) return names;
-  } catch {
-    /* fall through to hardcoded set */
-  }
-  return new Set([
-    'auto-ingest', 'gitignore-guard', 'init-ai-context',
-    'session-reflect', 'spk-orient', 'webfetch-cache', 'wiki-secret-scan',
-  ]);
-}
-
-const HOOK_SCRIPTS = deriveHookScripts();
+// Runtime hooks are intentionally absent; script tests remain scoped by filename.
 
 // Suites that guard the command/skill/manifest surface.
 const MANIFEST_SUITES = [
@@ -90,12 +57,7 @@ function suitesForPath(file) {
     const sibling = `tests/${name}.test.js`;
     const hits = [];
     if (testExists(sibling)) hits.push(sibling);
-    // The hook-output contract suite only covers REGISTERED hooks; appending it
-    // to a non-hook script would let a sibling-less script masquerade as covered.
-    if (HOOK_SCRIPTS.has(name) && testExists('tests/hook-output-contract.test.js')) {
-      hits.push('tests/hook-output-contract.test.js');
-    }
-    return hits; // [] when a non-hook sibling-less script -> caller runs full suite
+    return hits; // An untested script forces callers to consider the full suite.
   }
 
   // Hook wiring config.
