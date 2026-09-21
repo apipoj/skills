@@ -296,6 +296,29 @@ describe('provider-neutral workflow and authority contracts', () => {
     }
   });
 
+  test('pr body template uses Summary, Evidence, and Merge Danger without dropping safety gates', () => {
+    const english = read(path.join(SHARED_SKILLS, 'pr', 'SKILL.md'));
+    const thai = read(nativeSkillFile('pr'));
+
+    for (const text of [english, thai]) {
+      expect(text).toContain('## Summary');
+      expect(text).toContain('## Evidence');
+      expect(text).toContain('## Merge Danger');
+      expect(text).toMatch(/one-way/);
+      expect(text).toMatch(/two-way/);
+      expect(text).toMatch(/Blast Radius/);
+      expect(flat(text)).toMatch(/prepare-only/i);
+      expect(text).toContain('"schema": "spk.approval/v1"');
+      expect(flat(text)).toMatch(/secret-scan/i);
+      expect(flat(text)).toMatch(/dirty `main`|dirty\/untracked/i);
+      expect(text).toContain('c55ee46073ed923f86ce59a5eb3b6d895095d1b7');
+      expect(text).toMatch(/Dex Horthy/);
+    }
+
+    expect(english).toContain('## Guardrails');
+    expect(thai).toContain('## Safety Rules');
+  });
+
   test('English and Thai implementation workflows never imply automatic commits', () => {
     for (const file of [
       path.join(SHARED_SKILLS, 'code', 'SKILL.md'),

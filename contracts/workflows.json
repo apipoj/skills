@@ -2369,7 +2369,7 @@
         },
         {
           "phase": "prepare",
-          "instruction": "Draft a conventional title, body, test evidence, risks, and reviewer notes."
+          "instruction": "Draft a conventional title and a PR body with Summary, Evidence (Before/After), and Merge Danger (Door, Blast Radius). Keep test evidence, risks, and reviewer notes."
         },
         {
           "phase": "approve",

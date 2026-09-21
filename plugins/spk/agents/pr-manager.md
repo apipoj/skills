@@ -30,7 +30,9 @@ maxTurns: 14
    - Detect whether `gh auth status` works; if not, fall back to local PR body only.
 
 2. **Prepare-only path**
-   - If mode is `PREPARE_ONLY`, generate a PR title/body, checklist, candidate file list, verification status, and risk notes.
+   - If mode is `PREPARE_ONLY`, generate a PR title and the `pr` skill body template
+     (`## Summary`, `## Evidence` Before/After, `## Merge Danger` Door and Blast Radius),
+     plus a candidate file list, verification status, and risk notes.
    - Do not stage, commit, push, or call GitHub write APIs in prepare-only mode.
    - Return prepare-only evidence to the main skill; do not ask the user a question.
 
@@ -60,7 +62,8 @@ maxTurns: 14
 7. **Create or update PR**
    - Use the configured GitHub client to create/update the PR when standalone approval
      or task-bound authority is valid.
-   - PR body must include Summary, Verification/Test Plan, Risk/Rollback, and Related Issues when known.
+   - Write the PR body with `## Summary`, `## Evidence` (Before/After), and
+     `## Merge Danger` (Door, Blast Radius). Keep related issues when known.
    - Prefer draft PR if verification is incomplete.
    - Perform only repository API writes listed in the approved intent.
    - After PR creation, run `gh pr checks` or report that checks are pending/unavailable.
