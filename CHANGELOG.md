@@ -1,5 +1,11 @@
 # Apipoj Skills
 
+## 6.7.1 - 2026-09-21
+
+### Changed
+
+- Selective port of the mattpocock/skills `pr` body template (`## Summary`, `## Evidence`, `## Merge Danger`) into SPK `pr` prepare-only body generation. Provenance: mattpocock/skills@c55ee46073ed923f86ce59a5eb3b6d895095d1b7 (2026-09-18), which credits Dex Horthy / HumanLayer `show-me`. Prepare-only default, approval envelopes, secret-scan, and dirty-main rules are unchanged. Upstream `in-progress` skills remain excluded from the default roster.
+
 ## 6.7.0 - 2026-09-14
 
 - Remove automatic plugin runtime hooks on Claude Code and Codex.

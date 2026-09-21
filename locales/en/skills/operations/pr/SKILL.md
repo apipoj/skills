@@ -23,6 +23,172 @@ Prepare a GitHub pull request for the current branch or reviewed local changes. 
 This skill is manual-only. Use it after review passes, or when the user explicitly asks
 to prepare or open a pull request.
 
+## PR body
+
+Write this body during prepare-only and again when opening a PR after approval.
+Skip preambles. Keep prose brief. Use the user's domain language from `CONTEXT.md`
+when that file exists.
+
+```markdown
+## Summary
+
+<diagram, diff-sketch, or tree>
+
+## Evidence
+
+- **Before:** <screenshot/output/failing test run>
+  **After:** <screenshot/output/passing test run>
+
+## Merge Danger
+
+**Door:** <one-way or two-way>
+
+<optional: description>
+
+**Blast Radius:** <one-word description>
+
+<optional: potential ramifications of merge>
+```
+
+### Summary
+
+Pick the smallest view that makes the key point clear.
+
+- Show logic or an algorithm as pseudocode:
+
+```text
+on(save)
+  if content is unchanged
+    return cached result
+  write new content
+  return fresh result
+```
+
+- Show runtime control flow as a call tree:
+
+```text
+submitForm
+  createSession
+    persistPrompt
+    launchAgent
+  navigateToSession
+```
+
+- Show UI structure as a component tree, including state and module boundaries
+  that matter:
+
+```tsx
+<SessionPage>(apps / example / src / routes / session.tsx);
+useSessionEvents() < SessionToolbar > <RunSkillButton>(packages / ui);
+```
+
+- Show file responsibility or a broad refactor as a shallow file tree:
+
+```text
+src/
+├── commands/       # parses user actions
+├── sessions/       # owns session state
+└── transport/      # sends API requests
+```
+
+- Show component interaction, control flow, or data flow with Mermaid:
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant UI
+    participant Daemon
+    User->>UI: choose command
+    UI->>Daemon: send expanded prompt
+    Daemon-->>UI: stream result
+```
+
+- Use `diff` when the point is what changes and the surrounding shape already
+  exists. Match the diff shape to the topic.
+
+For a component change:
+
+```diff
+ <SessionPage>
+   useSessionEvents()
+   <SessionToolbar>
++    <RunSkillButton />
+   <SessionTimeline>
++    <SkillResultCard />
+```
+
+For a file-layout change:
+
+```diff
+ src/
+ ├── commands/
++│   └── show-me.ts       # expands the slash command
+ ├── sessions/
+-└── transport.ts
++└── transport/
++    ├── client.ts
++    └── stream.ts
+```
+
+For a call-tree or call-stack change:
+
+```diff
+ submitForm
+   createSession
+     persistPrompt
++    expandSkillMention
+     launchAgent
+-  navigateToSession
++  navigateToSession
++    subscribeToEvents
+```
+
+For a state or control-flow change:
+
+```diff
+ on(save)
+-  write content
++  if content is unchanged
++    return cached result
++  write new content
++  invalidate cache
+```
+
+- Show the whole block when most of it is new, when omitted context would hide
+  ownership or order, or when the user needs a copyable target shape:
+
+```ts
+function expandSkill(command: string): string {
+  const skillName = command.slice(1);
+  return `use the ${skillName} skill`;
+}
+```
+
+Place each visual next to the short text it supports. Keep only the calls, files,
+props, states, and boundaries needed to answer the current question. You may use
+one of these, you may use several, it is unlikely you will use all of them.
+
+### Evidence
+
+Concrete evidence that the change works. Show a before and after.
+
+Screenshots are S-tier when the environment is set up for it and the change is
+visual.
+
+Execution-based evidence is A-tier. Test results, console output. Show the exact
+test that now fails and passes, using pseudocode.
+
+### Merge Danger
+
+Describe whether it is a one-way or two-way door. You can walk back through
+two-way doors, but not one-way doors. A PR that is cheap to roll back is lower
+risk. Changes that involve destructive actions or hard-to-reverse decisions are
+one-way doors.
+
+The blast radius is the potential impact or scope of the changes introduced by
+this PR. Consider all possibilities. Examples are layout shift, breakages for
+consumers, mobile responsiveness.
+
 ## Workflow
 
 1. **Prepare-only by default.** Inspect branch, remote, dirty/untracked files, diff,
@@ -30,9 +196,9 @@ to prepare or open a pull request.
    exact GitHub repository from the selected remote URL and repository guidance. In a
    fork, never let a CLI infer the fork parent as the PR target: bind an explicit
    repository selector such as `GH_REPO=<owner/repo>` or `--repo <owner/repo>` to every
-   GitHub read and write, then verify the returned repository. Produce a
-   conventional title/body, exact candidate paths, test plan, risk/rollback notes, and
-   safety findings. Do not stage or write locally/remotely in this mode.
+   GitHub read and write, then verify the returned repository. Produce a conventional
+   title, the PR body template above, exact candidate paths, and safety findings.
+   Do not stage or write locally/remotely in this mode.
 2. **Resolve requested writes.** If the user asked to commit, push, open, or update a
    pull request, enumerate exact paths, commit message, outgoing commits, remote/ref,
    repository API operations, title/body digest, and force mode.
@@ -54,7 +220,8 @@ to prepare or open a pull request.
    never carries to the next gate or to a retry after any change.
 7. **Execute exact intent.** Delegate to an available PR worker or run sequentially.
    Pass the approved intent and token. Stage only listed paths, commit only if listed,
-   push only the approved ref, then perform only listed API writes.
+   push only the approved ref, then perform only listed API writes. After approval, write
+   the same PR body template used in prepare-only.
 8. **Verify outcome.** Report commit SHA, remote ref, pull-request URL, and CI state.
    CI repairs are a new change and require a new approval if they write or push.
 
@@ -95,3 +262,13 @@ commands and gate results, deliberately unstaged files, risks, and next action.
 - Never force-push unless the bound intent says `--force-with-lease`.
 - Never merge, deploy, or modify unrelated files.
 - Never expose credentials or include raw private sources.
+- Never push from dirty `main` without listing every outgoing commit.
+
+## Credits
+
+PR body template is a selective port of mattpocock/skills `skills/in-progress/pr`
+at `c55ee46073ed923f86ce59a5eb3b6d895095d1b7` (2026-09-18). That skill credits
+Dex Horthy and HumanLayer `show-me`
+(https://github.com/humanlayer/skills/blob/main/plugins/show-me/skills/show-me/SKILL.md).
+This is not a wholesale merge of upstream `in-progress`. Prepare-only, approval,
+secret-scan, and dirty-main rules in this file stay in force.
