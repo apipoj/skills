@@ -15,9 +15,10 @@ Invoked skills can read authorized code and documentation and write requested
 workflow artifacts. Knowledge workflows use existing project documentation,
 `CONTEXT.md`, and ADRs. They do not require a separate wiki or raw-source store.
 
-The bundled codebase-search MCP server runs locally over standard input/output.
-Its in-memory index is not sent to an SPK-operated service. Host permissions and
-the user's authorization govern network tools and external services.
+SPK does not register a local MCP server on installation. Its optional codebase-search
+server can be configured separately and runs locally over standard input/output.
+It does not persist an index or send search results to an SPK-operated service.
+Host permissions and the user's authorization govern network tools and external services.
 
 Legacy utility scripts remain available for compatibility and explicit use.
 Manually running a scaffold or cache utility can write local files. Manually

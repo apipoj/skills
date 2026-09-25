@@ -27,9 +27,9 @@ describe('primer hierarchy-upgrade contract', () => {
     expect(primer).toMatch(/\.claudeignore/);
   });
 
-  test('code-navigation block points at spk-codebase-search with grep fallback', () => {
-    expect(primer).toMatch(/spk-codebase-search|codebase-search/i);
-    expect(primer).toMatch(/fall ?back|when (?:absent|unavailable)|Grep/i);
+  test('code-navigation block uses host search tools', () => {
+    expect(primer).toMatch(/file search|Grep\/Glob/i);
+    expect(primer).not.toMatch(/spk-codebase-search/i);
   });
 
   test('load-project SKILL dispatch prompts mention the new sections', () => {

@@ -70,7 +70,9 @@ function listTrackedScanFiles(rootDir = REPO_ROOT, scanRoots = DEFAULT_SCAN_ROOT
       stdio: ['ignore', 'pipe', 'ignore'],
     });
     for (const file of output.split('\n')) {
-      if (file && isTextFile(file) && isUnderScanRoots(file, scanRoots)) files.add(file);
+      // A tracked file can be deleted in the working tree while a change is being reviewed.
+      if (file && isTextFile(file) && isUnderScanRoots(file, scanRoots) &&
+          fs.existsSync(path.join(rootDir, file))) files.add(file);
     }
   } catch {
     // Non-git fixtures still use filesystem walking above.

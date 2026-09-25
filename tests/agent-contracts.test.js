@@ -29,12 +29,12 @@ describe('agent status contract', () => {
     }
   });
 
-  test('search-aware agents reference spk-codebase-search with grep fallback', () => {
+  test('search-aware agents use host search without requiring an MCP', () => {
     const AGENTS_DIR = path.join(__dirname, '..', 'plugins', 'spk', 'agents');
     for (const f of ['researcher', 'implementer', 'plan-orchestrator', 'build-orchestrator']) {
       const t = fs.readFileSync(path.join(AGENTS_DIR, `${f}.md`), 'utf-8');
-      expect(t).toMatch(/spk-codebase-search|codebase-search/i);
-      expect(t).toMatch(/fall ?back|when (?:absent|unavailable)|Grep/i);
+      expect(t).toMatch(/file search|Grep\/Glob/i);
+      expect(t).not.toMatch(/spk-codebase-search/i);
     }
   });
 

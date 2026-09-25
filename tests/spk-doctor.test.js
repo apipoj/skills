@@ -9,7 +9,6 @@ const doctor = require('../plugins/spk/scripts/spk-doctor.cjs');
 function writePluginFixture(plugin, version = '3.5.0') {
   fs.mkdirSync(path.join(plugin, '.claude-plugin'), { recursive: true });
   fs.mkdirSync(path.join(plugin, '.codex-plugin'), { recursive: true });
-  fs.mkdirSync(path.join(plugin, 'mcp'), { recursive: true });
   fs.writeFileSync(
     path.join(plugin, '.claude-plugin', 'plugin.json'),
     JSON.stringify({ name: 'spk', version })
@@ -18,8 +17,6 @@ function writePluginFixture(plugin, version = '3.5.0') {
     path.join(plugin, '.codex-plugin', 'plugin.json'),
     JSON.stringify({ name: 'spk', version })
   );
-  fs.writeFileSync(path.join(plugin, '.mcp.json'), '{}');
-  fs.writeFileSync(path.join(plugin, 'mcp', 'codebase-search.cjs'), '');
 
   for (let index = 0; index < doctor.EXPECTED_INVENTORY.sharedSkills; index += 1) {
     const directory = path.join(plugin, 'skills', `skill-${index}`);
@@ -105,7 +102,6 @@ describe('SPK doctor', () => {
         expect.objectContaining({ id: 'plugin.manifests', status: 'pass' }),
         expect.objectContaining({ id: 'plugin.inventory', status: 'pass' }),
         expect.objectContaining({ id: 'plugin.hooks', status: 'pass' }),
-        expect.objectContaining({ id: 'plugin.mcp', status: 'pass' }),
       ]));
       expect(report.counts.fail).toBe(0);
       expect(doctor.renderHuman(report)).toContain('SPK doctor');

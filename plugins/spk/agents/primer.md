@@ -45,7 +45,7 @@ maxTurns: 14
    - If `AGENT.md` or lowercase variants already exist, preserve them and add a short pointer to `AGENTS.md` rather than deleting user content.
    - Preserve human-authored *narrative and intent* (rationale, design notes, gotchas a person wrote) — but treat every *factual or structural claim* in an existing file as unverified: re-check it against source and correct or drop it if it no longer holds. Preserving a section never means trusting its facts.
    - Fill the `## Scoped Commands` section with the test/build/lint commands that apply to THAT subtree (not just the repo-wide defaults) so downstream agents run only relevant checks.
-   - Fill the `## Code Navigation` section pointing agents at SPK's own `mcp__spk-codebase-search__*` tools for this subtree, with a Grep/Glob fallback when those tools are absent. Note the hot paths and the generated/vendor paths to skip.
+   - Fill the `## Code Navigation` section with the host's file search and Grep/Glob tools for this subtree. Note the hot paths and the generated/vendor paths to skip.
    - Keep each `AGENTS.md` short and operational: aim for 80-150 lines max.
    - **Do not bake volatile facts into prose.** Never hardcode version numbers, release dates, or counts (skills, agents, commands, files, tests) that already live in a source-of-truth file — they go stale the moment anything changes and contradict the very file that owns them. Instead name the source and let agents read it live: write "see `manifest.json` for the authoritative version and command/agent roster", not "v3.2.0, 17 skills, 21 agents". State durable facts (architecture, ownership, conventions, commands); point at the manifest/package file for anything that changes per release.
    - End each generated `AGENTS.md` with a one-line staleness note: re-run `/spk:load-project <scope>` after a structural change (new package, moved dirs, changed test/build commands) so this file does not silently rot.
@@ -84,11 +84,8 @@ timeouts and wasted context.>
 - Lint/typecheck (this subtree): `<exact scoped command if any>`
 
 ## Code Navigation
-For code/symbol lookup in this subtree, prefer the `mcp__spk-codebase-search__*` tools
-when available (discover via ToolSearch): `search_code` for precise text/regex search,
-`find_symbol` for definitions, `file_outline` for a file map. Fall back to Grep/Glob when
-those tools are absent or unavailable. Never block on the MCP — it is an optimization,
-not a dependency.
+For code/symbol lookup in this subtree, use the host's file search and Grep/Glob tools.
+Scope searches to relevant source paths and skip generated and vendor files.
 - Hot paths an agent will hit most: `<key files/dirs to search first>`
 - Generated/vendor paths to ignore when searching: `<paths>`
 
@@ -113,7 +110,7 @@ The companion `CLAUDE.md` in the same folder is always exactly one line:
 
 ### `.claudeignore` (repo root)
 Also create or update a root `.claudeignore` listing generated/vendor/build paths so
-Claude Code and the `spk-codebase-search` tools skip them (`node_modules/`, `dist/`,
+Claude Code search tools skip them (`node_modules/`, `dist/`,
 `build/`, `coverage/`, `.next/`, `.venv/`, `vendor/`, lockfiles, large binary/asset
 dirs). This keeps code-navigation precise and prevents agents from pattern-matching on
 generated code. Do not duplicate every `.gitignore` line — `.claudeignore` is for

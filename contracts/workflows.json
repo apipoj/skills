@@ -1533,6 +1533,91 @@
       "autonomyProfile": "decision_aware"
     },
     {
+      "id": "guide-me",
+      "tier": "core",
+      "origin": {
+        "repository": "apipoj/spk",
+        "skill": "guide-me"
+      },
+      "sources": {
+        "th": "skills/productivity/guide-me",
+        "en": "locales/en/skills/productivity/guide-me"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Guide Me",
+          "description": "Recommend the next best action when the user is unsure what to do next, using current project evidence, relevant web research, and existing SPK skills before implementation.",
+          "shortDescription": "Choose one evidence-backed next action before implementation",
+          "defaultPrompt": "I am unsure what to do next. Inspect my context and recommend one concrete next action.",
+          "triggers": [
+            "I am stuck and do not know what to do next",
+            "What should I do next with this project?",
+            "Help me decide the next best action before we implement"
+          ],
+          "negativeTriggers": [
+            "the user already chose a specific change and asks to implement it",
+            "the user requests a full multi-decision interview",
+            "the user asks only for a factual answer"
+          ]
+        },
+        "th": {
+          "displayName": "ช่วยเลือกก้าวถัดไป",
+          "description": "แนะนำก้าวถัดไปเมื่อผู้ใช้ยังไม่แน่ใจว่าจะทำอะไร โดยดูบริบทงาน ข้อมูลล่าสุดที่เกี่ยวข้อง และ skill ที่มีอยู่ก่อนเริ่มลงมือ",
+          "shortDescription": "เลือก next action หนึ่งอย่างจากหลักฐานก่อนเริ่มลงมือ",
+          "defaultPrompt": "ฉันยังไม่แน่ใจว่าควรทำอะไรต่อ ช่วยดูบริบทแล้วแนะนำก้าวถัดไปที่ลงมือได้หนึ่งอย่าง",
+          "triggers": [
+            "ไม่รู้จะทำอะไรต่อกับโปรเจกต์นี้",
+            "ช่วยแนะนำ next step ที่ควรทำก่อนเริ่ม implement",
+            "ตอนนี้ติดอยู่ ช่วยเลือกก้าวถัดไปให้หน่อย"
+          ],
+          "negativeTriggers": [
+            "ผู้ใช้เลือกงานชัดแล้วและขอให้ implement",
+            "ผู้ใช้ขอ interview ครบทุก decision",
+            "ผู้ใช้ถามข้อเท็จจริงอย่างเดียว"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": true
+      },
+      "effectLevel": "read_only",
+      "role": "next_action_guide",
+      "workflow": [
+        {
+          "phase": "orient",
+          "instruction": "Inspect the stated goal, conversation, project state, constraints, and facts available without user input."
+        },
+        {
+          "phase": "research",
+          "instruction": "Check available SPK skills and use current primary web sources only when changing external facts could alter the recommendation."
+        },
+        {
+          "phase": "resolve",
+          "instruction": "Ask one material user-owned question only when its answer changes the next action; use asking for a genuinely blocking multi-decision interview and present manual ask-me only as an option."
+        },
+        {
+          "phase": "recommend",
+          "instruction": "Give exactly one concrete next action, the first observable step, evidence, and a matching existing skill when applicable. Stop before implementation."
+        }
+      ],
+      "artifacts": [
+        "in-chat next-action recommendation"
+      ],
+      "evidence": [
+        "project or current external facts used",
+        "existing skill roster check",
+        "observable progress signal",
+        "material assumptions or gaps"
+      ],
+      "guardrails": [
+        "Match the user's language and preserve their stated goal and constraints.",
+        "Remain read-only; a recommendation does not authorize implementation, Git, or external writes.",
+        "Cite current web facts used and label inference or unverified assumptions.",
+        "Do not invent skills, commands, or evidence."
+      ],
+      "autonomyProfile": "decision_aware"
+    },
+    {
       "id": "handoff",
       "tier": "core",
       "origin": {
@@ -2896,7 +2981,7 @@
         },
         {
           "phase": "inspect",
-          "instruction": "Check skill discovery, plugin metadata, MCP startup, absence of runtime hooks, optional legacy storage safety, and required commands without changing state."
+          "instruction": "Check skill discovery, plugin metadata, absence of runtime hooks, optional legacy storage safety, and required commands without changing state."
         },
         {
           "phase": "isolate",
@@ -2913,7 +2998,7 @@
       ],
       "evidence": [
         "host and SPK version",
-        "skill and MCP discovery",
+        "skill discovery",
         "absence of runtime hook registrations",
         "per-check command and result"
       ],

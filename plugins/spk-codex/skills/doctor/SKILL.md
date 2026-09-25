@@ -30,7 +30,7 @@ Diagnose the installed plugin without changing project or plugin state.
 2. Locate `scripts/spk-doctor.cjs` under that root. Run it with Node from the target
    project as the current working directory. If structured output is supported,
    request it with the `--json` flag; otherwise parse only documented key/value output.
-3. Inspect its diagnostics for manifest discovery, skill/agent counts, absence of runtime hooks, MCP,
+3. Inspect its diagnostics for manifest discovery, skill/agent counts, absence of runtime hooks,
    runtime prerequisites, legacy storage safety, permissions, host compatibility, and
    version drift.
 4. Independently verify only failed or ambiguous read-only checks. Do not install,

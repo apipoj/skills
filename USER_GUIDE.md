@@ -1,6 +1,6 @@
 # คู่มือผู้ใช้ Apipoj Skills
 
-คู่มือนี้ครอบคลุม Apipoj Skills **v6.7.1** สำหรับ Claude Code, Codex และเครื่องมือที่รองรับ Agent Skills
+คู่มือนี้ครอบคลุม Apipoj Skills **v6.8.0** สำหรับ Claude Code, Codex และเครื่องมือที่รองรับ Agent Skills
 
 อ่านฉบับภาษาอังกฤษได้ที่ [USER_GUIDE-EN.md](USER_GUIDE-EN.md)
 
@@ -12,7 +12,7 @@ Apipoj Skills คือชุด workflow สำหรับทำงาน soft
 - งานสำคัญต้องมีหลักฐาน เช่น test result, diff scope, risk และ next action
 - การแก้ไฟล์ไม่ได้แปลว่าอนุญาตให้ commit, push, deploy หรือ publish
 
-รุ่นนี้มี **40 skills** และเรียกใช้เป็น command ได้ทุกตัว
+source tree นี้มี **41 skills** และเรียกใช้เป็น command ได้ทุกตัว
 
 ## เริ่มใน 2 นาที
 
@@ -74,7 +74,7 @@ npx skills@latest add apipoj/skills
 ตัวอย่าง typed-only:
 
 ```text
-/spk:check-release ตรวจความพร้อม v6.7.1 โดยยังไม่ commit, tag หรือ publish
+/spk:check-release ตรวจความพร้อม v6.8.0 โดยยังไม่ commit, tag หรือ publish
 ```
 
 บน Codex ให้เปลี่ยนรูปแบบเป็น `$spk:check-release`
@@ -217,9 +217,9 @@ approval_required: <true|false>
 
 ถอนวิธีติดตั้งที่ซ้ำ เหลือเพียง native plugin หรือ skills.sh อย่างใดอย่างหนึ่งต่อ project
 
-### Hook หรือ MCP เริ่มไม่ได้
+### Utility script ของ SPK เริ่มไม่ได้
 
-ตรวจว่า `node --version` เป็น 20 ขึ้นไปและ `node` อยู่ใน `PATH` จากนั้นรัน `/spk:doctor`
+ตรวจว่า `node --version` เป็น 20 ขึ้นไปและ `node` อยู่ใน `PATH` จากนั้นรัน `/spk:doctor` การติดตั้ง plugin ตามปกติไม่ลงทะเบียน MCP server
 
 ### Agent ตอบกว้างหรือใช้ context ผิด project
 

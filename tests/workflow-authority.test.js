@@ -44,7 +44,7 @@ describe('provider-neutral workflow and authority contracts', () => {
     .map(entry => entry.name)
     .sort();
 
-  test('shared skills have standard names, portable bodies, and evidence contracts', () => {
+  test('shared skills have standard names, portable bodies, and receipts where applicable', () => {
     expect(skillDirs).toHaveLength(CONTRACT.skills.length);
     for (const name of skillDirs) {
       const text = read(path.join(SHARED_SKILLS, name, 'SKILL.md'));
@@ -56,7 +56,12 @@ describe('provider-neutral workflow and authority contracts', () => {
           : ['description', 'name']
       );
       expect(text).toContain('## Workflow');
-      expect(text).toContain('## Evidence Receipt');
+      if (name === 'wait-what') {
+        expect(text).not.toContain('## Evidence Receipt');
+        expect(text).not.toContain('spk.evidence/v1');
+      } else {
+        expect(text).toContain('## Evidence Receipt');
+      }
       expect(text).toContain('## Guardrails');
       expect(text).not.toMatch(/Task\(|\$ARGUMENTS|^!`|\/spk:|claude-(?:opus|sonnet)/m);
     }
