@@ -100,7 +100,9 @@ describe('platform artifact compiler', () => {
 
       const start = path.join(fixture.root, 'plugins/spk/skills/start/SKILL.md');
       fs.writeFileSync(start, fs.readFileSync(start, 'utf8').replace(receipt, ''));
-      expect(validateSharedSkills(fixture.root, fixture.contract)).toContain(
+      const errors = validateSharedSkills(fixture.root, fixture.contract)
+        .map(error => error.split(path.sep).join('/'));
+      expect(errors).toContain(
         'plugins/spk/skills/start/SKILL.md must include ## Evidence Receipt',
       );
     } finally {
