@@ -63,7 +63,7 @@ Use one installation method per project to avoid duplicate skills.
 ## Inventory
 
 <!-- SPK-COUNTS:start -->
-**21 subagents** (4 orchestrators + 17 specialists) · **40 skills**
+**21 subagents** (4 orchestrators + 17 specialists) · **41 skills**
 <!-- SPK-COUNTS:end -->
 
 ### Agents
@@ -120,6 +120,7 @@ Use one installation method per project to avoid duplicate skills.
 | `/spk:code-review` | audit-orchestrator | model or typed |
 | `/spk:fix-conflicts` | direct main-thread workflow | model or typed |
 | `/spk:asking` | direct main-thread workflow | model or typed |
+| `/spk:guide-me` | direct main-thread workflow | model or typed |
 | `/spk:handoff` | direct main-thread workflow | typed only |
 | `/spk:teach` | direct main-thread workflow | typed only |
 | `/spk:write-skills` | direct main-thread workflow | typed only |

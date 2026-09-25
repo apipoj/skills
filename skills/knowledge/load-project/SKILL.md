@@ -29,7 +29,7 @@ Scan source-code folders และสร้างหรืออัพเดต 
 - ให้ `CLAUDE.md` ใน folder เดียวกันมีเฉพาะ pointer บรรทัดเดียว `@AGENTS.md`
 - ถ้ามี `CLAUDE.md` เดิมที่มีเนื้อหาสำคัญ ให้ migrate เนื้อหาเฉพาะที่ยังไม่มีไปไว้ใน `AGENTS.md` ก่อน แล้วค่อยเปลี่ยน `CLAUDE.md` เป็น pointer
 - แต่ละ `AGENTS.md` ต้องมี section `## Scoped Commands` (คำสั่ง test/build/lint เฉพาะของ subtree นั้น ไม่ใช่ค่า default ของทั้ง repo) เพื่อให้รันเฉพาะที่เกี่ยวข้อง ไม่ติด timeout จากการรันทั้งชุด
-- แต่ละ `AGENTS.md` ต้องมี section `## Code Navigation` ที่ชี้ให้ใช้ tools `mcp__spk-codebase-search__*` เมื่อมี (`search_code`, `find_symbol`, `file_outline`) และให้ fallback ไป Grep/Glob เมื่อไม่มี — อย่า hard-depend
+- แต่ละ `AGENTS.md` ต้องมี section `## Code Navigation` ที่ระบุ source paths ที่ควรค้น, generated/vendor paths ที่ควรข้าม และให้ใช้ file search หรือ Grep/Glob ของ host
 - สร้างหรืออัพเดต `.claudeignore` ที่ root โดยลิสต์ path ที่ generated/vendor/build ปริมาณมาก (`node_modules/`, `dist/`, `build/`, `coverage/` ฯลฯ) เพื่อให้การค้นโค้ดแม่นและไม่เจอ noise
 - เก็บ `AGENTS.md` ให้กระชับและตรงตัวเป็นจริง
 - **อย่า hardcode ข้อเท็จจริงที่เปลี่ยนบ่อยลงใน prose** — ห้ามเขียนเลข version, วันที่ release, หรือจำนวน (skills, agents, commands, ไฟล์, tests) ที่มีอยู่แล้วในไฟล์ source-of-truth เพราะมันจะ stale ทันทีที่มีอะไรเปลี่ยน และขัดกับไฟล์ที่เป็นเจ้าของข้อมูลนั้น ให้ชี้ไปที่ source แทน เช่นเขียนว่า "ดู `manifest.json` สำหรับ version และ roster ของ command/agent ที่เป็นทางการ" ไม่ใช่ "v3.2.0, 17 skills, 21 agents" — ระบุเฉพาะข้อเท็จจริงที่คงทน (สถาปัตยกรรม, ownership, conventions, คำสั่ง) ส่วนอะไรที่เปลี่ยนทุก release ให้ชี้ไป manifest/package

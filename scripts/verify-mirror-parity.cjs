@@ -5,7 +5,7 @@
 // carries the exact same SKILL.md body as the canonical Claude runtime payload
 // (plugins/spk/skills/<name>). The two used to drift silently — a fix landed in
 // one copy but not the other — which is the drift class this gate exists to catch.
-// Byte-identity is the target for every one of the 40 contract skills.
+// Byte-identity is the target for every contract skill.
 
 const fs = require('fs');
 const path = require('path');

@@ -28,8 +28,9 @@ Prime this repository for downstream subagents. Use this before large multi-agen
 2. Re-derive repository facts from source; treat existing context prose as an
    unverified hint.
 3. Create or update concise `AGENTS.md` files only at meaningful ownership boundaries.
-   Include scoped commands, code-navigation guidance, conventions, guardrails, and a
-   staleness note.
+   Include scoped commands, code-navigation guidance using the host's search tools,
+   source paths to search, generated/vendor paths to skip, conventions, guardrails,
+   and a staleness note.
 4. Keep `CLAUDE.md` as a one-line `@AGENTS.md` pointer when both formats are needed.
 5. Create or update a root `.claudeignore` for high-volume generated/vendor paths.
 6. Re-read changes and verify that no product source, secrets, or private inputs were

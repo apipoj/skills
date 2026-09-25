@@ -2,7 +2,7 @@
 
 ## Purpose
 - The canonical Claude Code runtime payload for the `spk` namespace.
-- Contains Claude agent prompts, Claude skill frontmatter, explicit utility scripts, the code-search MCP server, and the wiki scaffold. The Codex payload is generated at `../spk-codex/`.
+- Contains Claude agent prompts, Claude skill frontmatter, explicit utility scripts, an unregistered optional code-search server, and the wiki scaffold. The Codex payload is generated at `../spk-codex/`.
 
 ## Entry Points
 - `hooks/hooks.json` — empty by design. Both platforms must register no runtime hooks.

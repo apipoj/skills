@@ -3,28 +3,20 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
-const MCP_JSON = path.join(ROOT, 'plugins', 'spk', '.mcp.json');
+const CLAUDE_MCP_JSON = path.join(ROOT, 'plugins', 'spk', '.mcp.json');
+const CODEX_MCP_JSON = path.join(ROOT, 'plugins', 'spk-codex', '.mcp.json');
+const CODEX_PLUGIN_JSON = path.join(ROOT, 'plugins', 'spk-codex', '.codex-plugin', 'plugin.json');
 
-describe('plugin .mcp.json', () => {
-  let mcp;
-  beforeAll(() => {
-    mcp = JSON.parse(fs.readFileSync(MCP_JSON, 'utf-8'));
+describe('default plugin installation', () => {
+  test('does not register a local MCP server in either host', () => {
+    expect(fs.existsSync(CLAUDE_MCP_JSON)).toBe(false);
+    expect(fs.existsSync(CODEX_MCP_JSON)).toBe(false);
+    expect(JSON.parse(fs.readFileSync(CODEX_PLUGIN_JSON, 'utf-8'))).not.toHaveProperty('mcpServers');
   });
 
-  test('declares spk-codebase-search over the host Node lookup', () => {
-    const s = mcp.mcpServers['spk-codebase-search'];
-    expect(s).toBeTruthy();
-    expect(s.command).toBe('node');
-    expect(s.args[0]).toMatch(/\$\{CLAUDE_PLUGIN_ROOT\}\/mcp\/codebase-search\.cjs/);
-  });
-
-  test('entry file referenced by manifest exists', () => {
+  test('retains the codebase-search implementation for explicit use', () => {
     expect(
       fs.existsSync(path.join(ROOT, 'plugins', 'spk', 'mcp', 'codebase-search.cjs')),
     ).toBe(true);
-  });
-
-  test('is valid JSON with no extra top-level keys beyond mcpServers', () => {
-    expect(Object.keys(mcp)).toEqual(['mcpServers']);
   });
 });

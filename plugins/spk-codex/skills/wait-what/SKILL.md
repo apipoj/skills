@@ -27,16 +27,12 @@ The last message did not land. Say it again, better.
 2. Say it again with the missing context first, in plain language. When `CONTEXT-MAP.md` exists,
    follow its pointer to the `CONTEXT.md` that matches this scope before using the project's own
    vocabulary. If the confusion came from a wrong assumption rather than from wording, say so plainly
-   and fix the assumption instead of rephrasing.
+   and fix the assumption instead of rephrasing. Give only the clearer explanation; do not append a
+   structured receipt or a separate evidence report.
 
 ## Autonomy Profile
 
 `afk_local` — prompt budget 0; repair budget 3. A clear request grants bounded work only up to this skill's declared effect level; the profile never upgrades read-only work into a write. Keep working through inspect, act, verify, and bounded repair without asking the user. Before pausing, record phase, assumptions, evidence, attempts, and the smallest resumable next action.
-
-## Evidence Receipt
-
-Return `spk.evidence/v1` with the message being re-pitched, the context that was missing, and the
-vocabulary source used, including the `CONTEXT-MAP.md` → `CONTEXT.md` route when applicable.
 
 ## Guardrails
 

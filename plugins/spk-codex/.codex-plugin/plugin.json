@@ -1,6 +1,6 @@
 {
   "name": "spk",
-  "version": "6.7.1",
+  "version": "6.8.0",
   "description": "Thai-first, ready-to-use engineering skills for Claude Code, Codex, and skills.sh.",
   "author": {
     "name": "Apipoj Piasak",
@@ -18,15 +18,6 @@
     "developer-tools"
   ],
   "skills": "./skills/",
-  "mcpServers": {
-    "spk-codebase-search": {
-      "command": "node",
-      "args": [
-        "mcp/codebase-search.cjs"
-      ],
-      "cwd": "."
-    }
-  },
   "interface": {
     "displayName": "Apipoj Skills",
     "shortDescription": "Thai-first engineering skills",

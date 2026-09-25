@@ -9,8 +9,8 @@ Apipoj Skills is Thai-first and uses the short `spk` plugin namespace.
 /plugin install spk@spk
 ```
 
-No plugin configuration is required. Hooks and the MCP server launch `node` from the host lookup, so
-Node.js 20+ on `PATH` is the only prerequisite.
+No plugin configuration or local MCP server is required. Explicit utility scripts use
+Node.js 20+ from `PATH`.
 
 Start with `/spk:start`.
 
@@ -64,6 +64,7 @@ Select skills from the Thai-first `skills/` tree. Do not combine this with a nat
 | `/spk:code-review` | audit-orchestrator | model or typed |
 | `/spk:fix-conflicts` | direct main-thread workflow | model or typed |
 | `/spk:asking` | direct main-thread workflow | model or typed |
+| `/spk:guide-me` | direct main-thread workflow | model or typed |
 | `/spk:handoff` | direct main-thread workflow | typed only |
 | `/spk:teach` | direct main-thread workflow | typed only |
 | `/spk:write-skills` | direct main-thread workflow | typed only |

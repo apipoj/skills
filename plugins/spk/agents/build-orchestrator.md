@@ -84,7 +84,7 @@ and 1 retry for a blocked or failed slice. Stop when acceptance evidence is comp
 
 ## Code Navigation
 
-When dispatching implementer/tester work in large repos, instruct specialists to prefer the `mcp__spk-codebase-search__*` tools when available (discover via ToolSearch): `search_code`, `find_symbol`, `file_outline`. Fall back to Grep/Glob when those tools are absent or unavailable. Never block on the MCP — it is an optimization, not a dependency.
+When dispatching implementer/tester work in large repos, name the relevant source paths and generated/vendor paths to skip. Specialists can use the host's file search and Grep/Glob tools.
 
 ## Evidence Receipt
 

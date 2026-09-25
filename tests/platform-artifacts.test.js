@@ -90,6 +90,24 @@ function createFixture() {
 }
 
 describe('platform artifact compiler', () => {
+  test('wait-what may omit a separate evidence receipt while other skills still require one', () => {
+    const fixture = createFixture();
+    try {
+      const receipt = '## Evidence Receipt\n\nReturn the inspected paths, commands, results, risks, and next gate.\n\n';
+      const waitWhat = path.join(fixture.root, 'plugins/spk/skills/wait-what/SKILL.md');
+      fs.writeFileSync(waitWhat, fs.readFileSync(waitWhat, 'utf8').replace(receipt, ''));
+      expect(validateSharedSkills(fixture.root, fixture.contract)).toEqual([]);
+
+      const start = path.join(fixture.root, 'plugins/spk/skills/start/SKILL.md');
+      fs.writeFileSync(start, fs.readFileSync(start, 'utf8').replace(receipt, ''));
+      expect(validateSharedSkills(fixture.root, fixture.contract)).toContain(
+        'plugins/spk/skills/start/SKILL.md must include ## Evidence Receipt',
+      );
+    } finally {
+      fs.rmSync(fixture.root, { recursive: true, force: true });
+    }
+  });
+
   test('canonical contract covers every manifest command with bilingual activation and evidence fields', () => {
     const { contract, manifest } = loadInputs(REPO_ROOT);
     expect(validateContract(contract, manifest)).toEqual([]);
@@ -119,7 +137,7 @@ describe('platform artifact compiler', () => {
       afk_local: 27,
       afk_to_pr: 1,
       boundary_gated: 3,
-      decision_aware: 9,
+      decision_aware: 10,
     });
   });
 
@@ -293,7 +311,7 @@ describe('platform artifact compiler', () => {
     expect(fs.existsSync(path.join(fixture.root, orphan))).toBe(false);
   });
 
-  test('renders native plugin, MCP, marketplace, and invocation policy metadata', () => {
+  test('renders native plugin, marketplace, and invocation policy metadata without an MCP registration', () => {
     const { contract, manifest } = loadInputs(REPO_ROOT);
     const artifacts = buildArtifactMap(contract, manifest);
     const plugin = JSON.parse(artifacts.get(CODEX_MANIFEST_RELATIVE));
@@ -302,14 +320,8 @@ describe('platform artifact compiler', () => {
     expect(plugin.name).toBe('spk');
     expect(plugin.version).toBe(manifest.version);
     expect(plugin.skills).toBe('./skills/');
-    expect(plugin.mcpServers['spk-codebase-search']).toEqual({
-      command: 'node',
-      args: ['mcp/codebase-search.cjs'],
-      cwd: '.',
-    });
-    expect(JSON.parse(
-      artifacts.get(path.join(CODEX_PLUGIN_ROOT_RELATIVE, '.mcp.json'))
-    ).mcpServers['spk-codebase-search'].command).toBe('node');
+    expect(plugin).not.toHaveProperty('mcpServers');
+    expect(artifacts.has(path.join(CODEX_PLUGIN_ROOT_RELATIVE, '.mcp.json'))).toBe(false);
     const generatedHooks = JSON.parse(
       artifacts.get(path.join(CODEX_PLUGIN_ROOT_RELATIVE, 'hooks', 'hooks.json'))
     );

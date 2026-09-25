@@ -34,6 +34,7 @@ As the router, reveal advanced detail only when it helps the current decision.
    - `external_write` — change a remote only through the selected workflow's declared approval mode.
    - `destructive` — remove data only after showing exact targets and receiving approval.
 4. Route by outcome:
+   - unsure what to do next before implementation → read-only `guide-me`; give one evidence-backed next action
    - sharpen an idea or decision → `ask-me`, `asking`, or `ask-with-docs`; turn a decision only an absent expert can answer into a questionnaire for them → `to-questionnaire`
    - the last reply didn't land, or the user says "wait, what?" (or "งง") → `wait-what`
    - create an engineering plan → `plan`; publish an existing discussion as a spec → `to-spec`

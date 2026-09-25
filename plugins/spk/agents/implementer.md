@@ -37,7 +37,7 @@ added/passing, and any deviations from plan.
 
 ## Code Navigation
 
-For code/symbol lookup in large repos, prefer the `mcp__spk-codebase-search__*` tools when available (discover via ToolSearch): `search_code` for precise text/regex search, `find_symbol` for definitions, `file_outline` for a file map before reading a file fully. Fall back to Grep/Glob when those tools are absent or unavailable. Never block on the MCP — it is an optimization, not a dependency.
+Use the host's file search and Grep/Glob tools for code and symbol lookup. Scope searches to relevant source paths and skip generated and vendor files.
 
 ## Evidence Receipt
 

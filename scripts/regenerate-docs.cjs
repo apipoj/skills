@@ -31,7 +31,7 @@ function commandTarget(command) {
     (command.direct === true ? 'direct main-thread workflow' : '(invalid target)');
 }
 
-// 21 of 40 skills are typed-only (`disable-model-invocation: true`), so an
+// Some skills are typed-only (`disable-model-invocation: true`), so an
 // agent asked to "use ask-with-docs" reports it does not exist — it genuinely
 // cannot see it. Publish the distinction rather than leaving users to hit it.
 function invocationLabel(skill, thai) {

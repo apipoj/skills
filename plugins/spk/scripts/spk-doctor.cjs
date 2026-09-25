@@ -443,19 +443,6 @@ function diagnose(options = {}) {
   checks.push(inspectInventory(plugin));
   checks.push(inspectHooks(plugin));
 
-  const mcpConfig = path.join(plugin, '.mcp.json');
-  const mcpScript = path.join(plugin, 'mcp', 'codebase-search.cjs');
-  checks.push(check(
-    'plugin.mcp',
-    isRegularNonSymlinkFile(mcpConfig) && isRegularNonSymlinkFile(mcpScript) ? 'pass' : 'warn',
-    isRegularNonSymlinkFile(mcpConfig) && isRegularNonSymlinkFile(mcpScript)
-      ? 'Bundled codebase-search MCP files are present.'
-      : 'Bundled codebase-search MCP files are incomplete.',
-    isRegularNonSymlinkFile(mcpConfig) && isRegularNonSymlinkFile(mcpScript)
-      ? null
-      : 'Reinstall SPK and run doctor again.'
-  ));
-
   const counts = checks.reduce((acc, item) => {
     acc[item.status] += 1;
     return acc;

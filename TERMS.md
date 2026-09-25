@@ -2,7 +2,7 @@
 
 Effective: 2026-07-31
 
-These terms apply to Apipoj Skills (plugin namespace `spk`) and its bundled skills, agents, hooks, scripts, templates, and local MCP server.
+These terms apply to Apipoj Skills (plugin namespace `spk`) and its bundled skills, agents, hooks, scripts, templates, and optional local MCP server.
 
 ## License
 

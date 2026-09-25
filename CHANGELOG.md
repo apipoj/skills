@@ -1,5 +1,12 @@
 # Apipoj Skills
 
+## 6.8.0 - 2026-09-25
+
+- Add `guide-me`, a read-only next-action guide that checks project context and available skills, researches current external facts when needed, and asks only decisions that block a recommendation.
+- Stop registering the optional codebase-search MCP server during plugin installation; use host search tools by default.
+- Make `wait-what` return a clearer explanation without a structured evidence receipt.
+- Keep reference checks working when tracked plugin files are removed from the working tree before a commit.
+
 ## 6.7.1 - 2026-09-21
 
 ### Changed

@@ -42,7 +42,7 @@ describe('pipeline smoke', () => {
     const match = readme.match(/<!-- SPK-COUNTS:start -->\n(.+?)\n<!-- SPK-COUNTS:end -->/s);
     expect(match).not.toBeNull();
     expect(match[1]).toMatch(/\*\*\d+ subagents\*\*/);
-    expect(match[1]).toMatch(/\*\*40 skills\*\*/);
+    expect(match[1]).toContain(`**${manifest.commands.length} skills**`);
   });
 
   test('ships linked Thai and English user guides with strategy-lens onboarding', () => {

@@ -1,6 +1,6 @@
 # Apipoj Skills User Guide
 
-This guide covers Apipoj Skills **v6.7.1** for Claude Code, Codex, and Agent Skills-compatible tools.
+This guide covers Apipoj Skills **v6.8.0** for Claude Code, Codex, and Agent Skills-compatible tools.
 
 For the canonical Thai guide, see [USER_GUIDE.md](USER_GUIDE.md).
 
@@ -12,7 +12,7 @@ Apipoj Skills is a Thai-first set of software workflows for working with AI from
 - Important work must return evidence such as test results, diff scope, risks, and a verifiable next action.
 - Editing files never silently authorizes a commit, push, deployment, or publication.
 
-Release v6.7.1 ships **40 skills**, each available as a command.
+This source tree contains **41 skills**, each available as a command.
 
 ## Start in two minutes
 
@@ -74,7 +74,7 @@ The skill table uses two invocation states:
 Typed-only example:
 
 ```text
-/spk:check-release Check v6.7.1 readiness without committing, tagging, or publishing anything.
+/spk:check-release Check v6.8.0 readiness without committing, tagging, or publishing anything.
 ```
 
 On Codex, use `$spk:check-release` instead.
@@ -217,9 +217,9 @@ Check whether it is typed only and enter the full command yourself—for example
 
 Remove the duplicate installation method. Keep either the native plugin or skills.sh for a given project.
 
-### A hook or MCP server does not start
+### An SPK utility script does not start
 
-Confirm that `node --version` is 20 or newer and `node` is on `PATH`, then run `/spk:doctor`.
+Confirm that `node --version` is 20 or newer and `node` is on `PATH`, then run `/spk:doctor`. The default plugin install does not register an MCP server.
 
 ### The agent uses the wrong project context
 
