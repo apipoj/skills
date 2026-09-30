@@ -1,6 +1,6 @@
 # Apipoj Skills User Guide
 
-This guide covers Apipoj Skills **v6.8.0** for Claude Code, Codex, and Agent Skills-compatible tools.
+This guide covers Apipoj Skills **v6.9.0** for Claude Code, Codex, and Agent Skills-compatible tools.
 
 For the canonical Thai guide, see [USER_GUIDE.md](USER_GUIDE.md).
 
@@ -12,7 +12,7 @@ Apipoj Skills is a Thai-first set of software workflows for working with AI from
 - Important work must return evidence such as test results, diff scope, risks, and a verifiable next action.
 - Editing files never silently authorizes a commit, push, deployment, or publication.
 
-This source tree contains **41 skills**, each available as a command.
+This source tree contains **44 skills**, each available as a command.
 
 ## Start in two minutes
 
@@ -74,7 +74,7 @@ The skill table uses two invocation states:
 Typed-only example:
 
 ```text
-/spk:check-release Check v6.8.0 readiness without committing, tagging, or publishing anything.
+/spk:check-release Check v6.9.0 readiness without committing, tagging, or publishing anything.
 ```
 
 On Codex, use `$spk:check-release` instead.
@@ -236,3 +236,16 @@ Use `/spk:uninstall` to preview exact removal targets and preserved project know
 - [RESOLVER.md](RESOLVER.md) — command and dispatch resolution
 - [CHANGELOG.md](CHANGELOG.md) — changes by version
 - [README.md](README.md) — Thai README
+
+## Explain visually
+
+- `/spk:show-me` explains a flow, relationship, or comparison with the smallest useful visual.
+- `/spk:eli5` teaches one difficult idea to a beginner with a visual lesson, example, and model limits.
+- Both use existing design context and create local artifacts while preserving production source.
+- In Codex, use `$spk:show-me` or `$spk:eli5`.
+
+## Create reusable verification
+
+Use `/spk:create-verification-skill` (Codex: `$spk:create-verification-skill`) to create a project verifier for requested tasks, test scripts, specs, or skills. It maps acceptance criteria to evidence, exercises the generated instructions and a failure control, and preserves proof after cleanup. Unexecuted checks remain `NOT_RUN`; proving a subset never means full task coverage.
+
+For the SPK source repository, [.agents/skills/verify-spk/SKILL.md](.agents/skills/verify-spk/SKILL.md) supplies the concrete check map and evidence-capturing helper. Semantic review and skill behavior remain separate from static gates.

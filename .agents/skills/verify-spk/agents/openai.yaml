@@ -1,0 +1,4 @@
+interface:
+  display_name: "ตรวจงาน SPK"
+  short_description: "ตรวจ skills, contracts และแพ็กเกจ SPK จากหลักฐานจริง"
+  default_prompt: "ใช้ $verify-spk ตรวจการเปลี่ยนแปลงนี้พร้อมหลักฐานและ coverage gaps"

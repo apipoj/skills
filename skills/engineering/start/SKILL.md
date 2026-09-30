@@ -29,6 +29,8 @@ description: เลือก workflow ให้ตรงคำขอแบบไ
    - ยังไม่รู้ว่าควรทำอะไรต่อก่อนเริ่มลงมือ → `guide-me` แบบ read-only เพื่อเลือก next action หนึ่งอย่างจากหลักฐาน
    - ทำ idea หรือเรื่องที่ต้องตัดสินใจให้ชัด → `ask-me`, `asking`, `ask-with-docs`; เรื่องที่ตอบเองไม่ได้ต้องส่งให้ผู้เชี่ยวชาญที่ไม่อยู่ตรงหน้าตอบ → `to-questionnaire`
    - คำตอบก่อนหน้ายังไม่โดน หรือผู้ใช้บอกว่า "งง" → `wait-what`
+   - อธิบายความสัมพันธ์ด้วยภาพ → `show-me`; สอนแนวคิดยากให้มือใหม่ด้วยบทเรียนภาพ → `eli5`
+   - สร้างวิธีตรวจ task, tests, spec หรือ skill ที่ใช้ซ้ำได้ → `create-verification-skill`
    - ทำ engineering plan → `plan`; สรุป discussion เป็น spec → `to-spec`
    - แตกงาน → `to-tickets`; งานใหญ่ที่ยังมีหมอก → `wayfinder`
    - implement, fix, refactor หรือ plan-and-implement → adaptive `code`; ต้องการ strict RED-GREEN หรือ orchestration ตามความเสี่ยง → `tdd`

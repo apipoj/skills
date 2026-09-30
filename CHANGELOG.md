@@ -1,5 +1,12 @@
 # Apipoj Skills
 
+## 6.9.0 - 2026-09-30
+
+- Add `show-me` and `eli5`, adapted from Business OS, to the bilingual roster and Claude/Codex payloads. Route visual explanations and beginner lessons through `start` without requiring Business OS setup.
+- Add `create-verification-skill` for reusable task, test-script, spec, and skill verification, with acceptance-to-evidence mapping, executed proof, failure controls, and evidence-preserving cleanup.
+- Add a source-repository `verify-spk` skill with an executable evidence helper and failure control. The shipped `code` workflow reuses project-local verification when present.
+- Update transitive `brace-expansion` to 5.0.12 and `fast-uri` to 3.1.8 to address dependency audit findings.
+
 ## 6.8.0 - 2026-09-25
 
 - Add `guide-me`, a read-only next-action guide that checks project context and available skills, researches current external facts when needed, and asks only decisions that block a recommendation.

@@ -37,9 +37,11 @@ As the router, reveal advanced detail only when it helps the current decision.
    - unsure what to do next before implementation → read-only `guide-me`; give one evidence-backed next action
    - sharpen an idea or decision → `ask-me`, `asking`, or `ask-with-docs`; turn a decision only an absent expert can answer into a questionnaire for them → `to-questionnaire`
    - the last reply didn't land, or the user says "wait, what?" (or "งง") → `wait-what`
+   - explain relationships visually → `show-me`; teach one difficult idea to a beginner with a visual lesson → `eli5`
    - create an engineering plan → `plan`; publish an existing discussion as a spec → `to-spec`
    - split work → `to-tickets`; map a large foggy effort → `wayfinder`
    - implement, fix, refactor, or plan-and-implement → adaptive `code`; use strict red-green or risk-driven orchestration → `tdd`
+   - create reusable proof for tasks, tests, specs, or skills → `create-verification-skill`
    - investigate a failure → `debug`; review a diff → `code-review`; get fast test feedback → `test-changes`
    - answer a code-shape question → `prototype`; compare UI directions → `design-options`
    - improve module shape → `codebase-design` or `improve-codebase`

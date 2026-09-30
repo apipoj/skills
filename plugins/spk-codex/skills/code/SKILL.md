@@ -61,7 +61,8 @@ fallback as canonical.
    - **Refactor** — pin current behavior with a focused test, snapshot, type check, or other
      equivalence evidence. Subtract before adding, preserve behavior, and show that the
      result reduces reader load or structural risk.
-3. Run focused tests during the change. Run broader regression, type, lint, build, browser,
+3. When a project-local verification skill exists in the host's skill layout, read its check map and run the applicable checks within current authority. Use its observed acceptance evidence; report unrun coverage. If reusable verification is requested and missing, use `create-verification-skill`.
+   Run focused tests during the change. Run broader regression, type, lint, build, browser,
    or release gates in proportion to blast radius and repository instructions. A full
    suite is required when the repository or release gate requires it, not as ceremony for
    every local edit.

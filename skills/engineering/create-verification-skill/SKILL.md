@@ -1,0 +1,68 @@
+---
+name: create-verification-skill
+description: สร้างหรือปรับ verification skill ในโปรเจกต์ พร้อม helper ที่พิสูจน์ task, test script, spec หรือพฤติกรรม skill ด้วยหลักฐาน ใช้เมื่อยังไม่มีวิธีตรวจงานที่ใช้ซ้ำได้
+---
+
+# สร้าง skill ตรวจสอบงาน
+
+Create verification that a future agent can execute from a cold start. Cover only the requested work kinds present in the project: task acceptance, executable tests, spec review, or skill validation. A request to run existing checks once belongs to `test-changes`; present the manual `check-release` command for release-readiness checks.
+
+## Response Rules
+
+Reply in the user's language.
+
+- **Simplicity** — one idea per sentence; the plain word over the impressive one.
+- **Brevity** — answer first, then stop; no preamble, no restating the request, no summarizing what you just wrote.
+- **Clarity** — lead with the outcome, then what changed and what it costs; label an unverified claim as unverified.
+- **Humanity** — write as a colleague, not a system; familiar technical English over literal translation; no performative enthusiasm, no apology theater, no location stereotypes.
+- **Terminology** — reach for the precise domain term and keep it in its English form; never respell it phonetically in the reply's script (`ผลเทสท์` for `test`) or translate it literally (`หูจับ` for `handle`). Gloss an unfamiliar term once — `CPA (ต้นทุนต่อการได้ลูกค้าหนึ่งราย)` — then anchor it with one concrete example.
+
+Keep working without user input while the requested outcome remains inside current authority. Use a reversible smart default and record assumptions. Ask only when one material user-owned decision changes scope, risk, cost, or success, or when a required effect crosses an unapproved boundary.
+
+## Workflow
+
+1. **Discover from evidence.** Read repository instructions, the selected task/spec, current artifacts, existing tests, and documented run commands. Identify user-visible entry points and the literal expected outcomes. Read [check-types.md](references/check-types.md) for the applicable work kinds. Resolve facts from the repo before asking one material user-owned question. Record contradictory or missing acceptance criteria instead of silently choosing a new requirement.
+2. **Bound the run.** Identify required tools, readiness checks, fixtures, authentication, data stores, and side effects. Reuse existing harnesses before introducing dependencies. Confirm isolated ports, data directories, and owned process handles; never double-drive a shared user instance. Inspect what dry-run/test modes actually skip. Run local disposable checks inside existing authority; leave production, Git, messaging, deployment, and other unapproved external effects outside the verifier's executable path. A broken baseline becomes a named blocker; this authoring request does not authorize unrelated product fixes.
+3. **Generate the verifier.** Follow an existing project skill layout. Otherwise use `.agents/skills/verify-<project>/` for Codex or a neutral Agent Skills layout, `.claude/skills/verify-<project>/` for Claude Code, or `.cursor/skills/verify-<project>/` for Cursor. Pick the active host's layout and report it; avoid duplicate installations. Write `SKILL.md` with name and description frontmatter, scope/authority, exact prerequisites, doctor, drive/review commands, literal assertions, evidence paths, and cleanup. Use [verifier-template.md](references/verifier-template.md); replace every placeholder with inspected facts. Preserve an existing verifier and update only the requested scope.
+4. **Map acceptance to evidence.** Seed `checks/README.md` and one check page per criterion or feature using [check-template.md](references/check-template.md). Start with the relevant three to five checks or all checks when fewer exist. Link every known acceptance criterion; mark unmapped or unrun criteria explicitly. Use exact routes, selectors, CLI arguments, file assertions, spec citations, or behavioral cases. Add executable helpers only when they make a check repeatable, document each invocation, and keep nonzero failure exits. Test script correctness includes a failing control, not just a successful run.
+5. **Prove the generated instructions.** Follow the generated verifier through doctor, drive/review, evidence capture, and cleanup. Execute one mapped check for each verification kind declared in scope, plus a controlled failure in a disposable fixture to prove detection. For judgment-based reviews, use a known contradictory spec or an out-of-scope/unsafe skill request as the control. Never alter production or the user's source just to make a negative test. Repair failures in generated instructions/helpers and rerun; clean up owned scratch state after failed attempts too. Confirm proof files still exist after cleanup. If required tools or authority are missing, keep a useful draft and label the blocked checks `NOT_RUN`; an unexecuted verifier is not validated.
+6. **Hand over coverage.** Report the generated paths, actual commands, observations, per-criterion statuses, evidence location, and gaps. Separate generated-skill proof from complete task verification: exercising one mapped feature does not prove every feature. Explain which source, route, requirement, tool, or skill change calls for refreshing the verifier. Do not invent a maintenance command that is absent from the available roster.
+
+## Evidence standard
+
+Use `PASS` only when the exact scoped criterion was exercised and supported by observed evidence.
+Use `FAIL` for a reproduced violation, `NOT_RUN` for an unexecuted check with its blocker,
+and `NOT_APPLICABLE` only with a scope-based reason. A review judgment must cite its source
+and explain the reasoning; label a remaining human decision separately. No overall completion
+claim while required criteria fail, remain unmapped, or are unrun. Report syntax, static contract,
+behavioral, and live integration coverage separately. Do not substitute mocks, compilation,
+file existence, or a successful process exit for an assertion about the actual requirement.
+
+Follow `docs/agents/artifacts.md` when present. Otherwise keep retained proof under
+`ai_context/work/verification/<run>/`, separate from disposable fixtures. Record target revision
+or artifact fingerprint, criterion, command/check, expected and observed result, status, and proof
+path. Redact secrets and private payloads. Cleanup removes only processes and scratch state this
+run owns; evidence survives. Use the current app's browser for visual review and follow project
+browser preferences; report unavailable tools instead of silently switching browsers.
+
+## Autonomy Profile
+
+`afk_local` — prompt budget 0; repair budget 3. A clear request grants bounded work only up to this skill's declared effect level; the profile never upgrades read-only work into a write. Keep working through inspect, act, verify, and bounded repair without asking the user. Before pausing, record phase, assumptions, evidence, attempts, and the smallest resumable next action.
+
+## Evidence Receipt
+
+Return the verifier, coverage map, executed proof and failure control, cleanup result, and
+remaining gaps in plain language. Claims about complete verification must cover the selected
+acceptance criteria; generated files and a partial proof establish only their reported scope.
+
+## Guardrails
+
+- Preserve product code, user changes, active instances, credentials, and acceptance criteria.
+- Inspect repository scripts as code; use structured argv or safe quoting, never unsafe interpolation.
+- Creation of a verifier grants no new authority to its future runs. Generated commands must retain approval boundaries.
+- Git writes, external writes, dependency installation with new risk/cost, and destructive actions require their applicable authorization.
+- Spec review does not approve a design. Static skill validation does not prove runtime behavior.
+
+## Source
+
+Adapted from [Cursor pstack create-verification-skill](https://github.com/cursor/plugins/blob/fae2c6ed95821bd85f614a73e4842e13229fa5e5/pstack/skills/create-verification-skill/SKILL.md). SPK adds task/spec/skill coverage and host-neutral output while retaining executed proof, isolation, and evidence-preserving cleanup.

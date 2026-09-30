@@ -39,7 +39,8 @@ legacy compatibility fallback และห้ามถือว่าเป็�
      reproduction เป็น RED evidence และยืนยัน reproduction เดิมหลังแก้
    - **Refactor** — pin behavior เดิมด้วย focused test, snapshot, type check หรือหลักฐาน
      equivalence ที่เหมาะสม ลบก่อนเพิ่ม รักษา behavior และแสดงว่า reader load หรือ structural risk ลดลง
-3. รัน focused tests ระหว่างแก้ และเพิ่ม regression, type, lint, build, browser หรือ release gates
+3. หากมี verification skill ในโปรเจกต์ ให้อ่าน check map และรัน checks ที่เกี่ยวข้องภายใน authority เดิม รายงานหลักฐานและสิ่งที่ยังไม่รัน ถ้าผู้ใช้ขอวิธีตรวจที่ใช้ซ้ำได้และยังไม่มี ให้ใช้ `create-verification-skill`
+   รัน focused tests ระหว่างแก้ และเพิ่ม regression, type, lint, build, browser หรือ release gates
    ตาม blast radius กับ repository instructions รัน full suite เมื่อ repo หรือ release gate กำหนด
    ไม่ใช่พิธีบังคับสำหรับ local edit ทุกครั้ง
 4. อัปเดต docs เมื่อ public behavior, command, API, data หรือ operation เปลี่ยน

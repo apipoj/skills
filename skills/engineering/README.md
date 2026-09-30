@@ -22,3 +22,5 @@
 - [`plan`](./plan/SKILL.md) — วางแผนการเปลี่ยนแปลงซอฟต์แวร์จากหลักฐานใน repo เป็นความต้องการ สถาปัตยกรรม งานตามลำดับ dependency จุดตรวจสอบ และแผนย้อนกลับ
 - [`design-options`](./design-options/SKILL.md) — ลอง UI หลายแนวที่ต่างกันจริง เปรียบเทียบด้วยเนื้อหาสมจริง แล้วให้ผู้ใช้เลือกก่อนเขียน production code
 - [`test-changes`](./test-changes/SKILL.md) — เลือกและรัน test ที่เกี่ยวกับไฟล์ที่เปลี่ยนเพื่อได้ผลเร็ว พร้อมบอกส่วนที่จับคู่ไม่ได้และรัน full suite ก่อนจบ
+
+- [`create-verification-skill`](./create-verification-skill/SKILL.md) — สร้าง verifier สำหรับ task, tests, spec และ skill พร้อมหลักฐานจากการลองใช้จริง
