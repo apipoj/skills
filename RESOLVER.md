@@ -34,6 +34,8 @@ Rules:
 | `/spk:fix-conflicts` | direct main-thread workflow | model or typed |
 | `/spk:asking` | direct main-thread workflow | model or typed |
 | `/spk:guide-me` | direct main-thread workflow | model or typed |
+| `/spk:eli5` | direct main-thread workflow | model or typed |
+| `/spk:show-me` | direct main-thread workflow | model or typed |
 | `/spk:handoff` | direct main-thread workflow | typed only |
 | `/spk:teach` | direct main-thread workflow | typed only |
 | `/spk:write-skills` | direct main-thread workflow | typed only |
@@ -55,4 +57,5 @@ Rules:
 | `/spk:uninstall` | direct main-thread workflow | typed only |
 | `/spk:bala` | direct main-thread workflow | typed only |
 | `/spk:sunzi` | direct main-thread workflow | typed only |
+| `/spk:create-verification-skill` | direct main-thread workflow | model or typed |
 <!-- SPK-COMMANDS:end -->

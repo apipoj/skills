@@ -35,6 +35,9 @@ const upstreamCanonical = [
 const spkCore = [
   'ask-me',
   'guide-me',
+  'create-verification-skill',
+  'show-me',
+  'eli5',
   'plan',
   'design-options',
   'deploy',
@@ -55,7 +58,7 @@ const spkCore = [
 describe('Apipoj Skills v5 migration contract', () => {
   test('uses the approved product identity and version', () => {
     expect(manifest).toMatchObject({
-      version: '6.8.0',
+      version: '6.9.0',
       brand: 'Apipoj Skills',
       slug: 'spk',
     });

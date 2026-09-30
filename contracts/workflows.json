@@ -1618,6 +1618,159 @@
       "autonomyProfile": "decision_aware"
     },
     {
+      "id": "eli5",
+      "tier": "core",
+      "origin": {
+        "repository": "apipoj/business-os",
+        "skill": "eli5"
+      },
+      "sources": {
+        "th": "skills/productivity/eli5",
+        "en": "locales/en/skills/productivity/eli5"
+      },
+      "locales": {
+        "en": {
+          "displayName": "ELI5",
+          "description": "Turn a difficult idea into a simple visual lesson with one learning target, a concrete example, and the limits of the model. Use for ELI5 or beginner explanations.",
+          "shortDescription": "Teach one difficult idea through a simple visual lesson",
+          "defaultPrompt": "Explain this topic to a beginner with one visual lesson, a concrete example, and a reality check.",
+          "triggers": [
+            "Explain caching like I am five",
+            "Teach this difficult concept with a simple visual example"
+          ],
+          "negativeTriggers": [
+            "the user only requests a diagram or exact comparison of known facts",
+            "the user requests a course across multiple sessions"
+          ]
+        },
+        "th": {
+          "displayName": "อธิบายให้ผู้เริ่มต้นเข้าใจ",
+          "description": "เปลี่ยนแนวคิดยากเป็นบทเรียนภาพสำหรับผู้เริ่มต้น มีเป้าหมายเดียว ตัวอย่างที่จับต้องได้ และข้อจำกัดของแบบจำลอง ใช้เมื่อขอ ELI5 หรือคำอธิบายง่าย ๆ",
+          "shortDescription": "สอนแนวคิดยากด้วยภาพและตัวอย่างที่เข้าใจง่าย",
+          "defaultPrompt": "อธิบายเรื่องนี้ให้ผู้เริ่มต้นเข้าใจด้วยบทเรียนภาพ ตัวอย่าง และข้อจำกัดของคำอธิบาย",
+          "triggers": [
+            "อธิบาย caching แบบ ELI5",
+            "สอนแนวคิดยากนี้ให้มือใหม่เข้าใจด้วยภาพและตัวอย่าง"
+          ],
+          "negativeTriggers": [
+            "ผู้ใช้ต้องการ diagram หรือตารางเปรียบเทียบข้อเท็จจริงที่รู้แล้ว",
+            "ผู้ใช้ขอหลักสูตรเรียนต่อเนื่องหลาย session"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": true
+      },
+      "effectLevel": "workspace_write",
+      "role": "eli5_explainer",
+      "workflow": [
+        {
+          "phase": "orient",
+          "instruction": "Choose one learning target and verify the required facts."
+        },
+        {
+          "phase": "teach",
+          "instruction": "Create a simple visual lesson with a concrete example and an explicit reality check."
+        },
+        {
+          "phase": "verify",
+          "instruction": "Inspect the artifact when possible and report evidence, gaps, and an understanding check."
+        }
+      ],
+      "artifacts": [
+        "local HTML lesson or inline fallback"
+      ],
+      "evidence": [
+        "learning-target",
+        "visual-lesson",
+        "concrete-example",
+        "reality-check",
+        "verification-gap"
+      ],
+      "guardrails": [
+        "Create only the requested local explanation; preserve production source.",
+        "Use confirmed facts and visual context; label assumptions and verification gaps.",
+        "Git writes, publication, deployment, and external writes require exact approval."
+      ],
+      "autonomyProfile": "afk_local"
+    },
+    {
+      "id": "show-me",
+      "tier": "core",
+      "origin": {
+        "repository": "apipoj/business-os",
+        "skill": "show-me"
+      },
+      "sources": {
+        "th": "skills/productivity/show-me",
+        "en": "locales/en/skills/productivity/show-me"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Show Me",
+          "description": "Explain a topic visually with a concise diagram, comparison, map, or focused HTML artifact. Use for visual explanations; use eli5 for a beginner lesson.",
+          "shortDescription": "Explain relationships with one focused visual",
+          "defaultPrompt": "Explain this topic visually with the smallest useful diagram or local HTML artifact.",
+          "triggers": [
+            "Show this workflow as a diagram",
+            "Compare these options visually"
+          ],
+          "negativeTriggers": [
+            "the user needs a beginner lesson with a learning target",
+            "the user asks to implement a production UI"
+          ]
+        },
+        "th": {
+          "displayName": "อธิบายด้วยภาพ",
+          "description": "อธิบายด้วย diagram, ตารางเปรียบเทียบ, map หรือ HTML แบบกระชับ ใช้ eli5 เมื่อต้องการบทเรียนสำหรับผู้เริ่มต้น",
+          "shortDescription": "อธิบายความสัมพันธ์ด้วยภาพที่ตรงคำถาม",
+          "defaultPrompt": "อธิบายเรื่องนี้ด้วยภาพ เลือก diagram หรือ HTML ในเครื่องที่ช่วยให้เข้าใจที่สุด",
+          "triggers": [
+            "แสดง flow นี้เป็น diagram",
+            "ช่วยเปรียบเทียบตัวเลือกด้วยภาพ"
+          ],
+          "negativeTriggers": [
+            "ผู้ใช้ขอบทเรียนสำหรับผู้เริ่มต้นพร้อมเป้าหมายการเรียนรู้",
+            "ผู้ใช้ขอ implement UI สำหรับ production"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": true
+      },
+      "effectLevel": "workspace_write",
+      "role": "show_me_explainer",
+      "workflow": [
+        {
+          "phase": "orient",
+          "instruction": "Identify the question, source evidence, project conventions, and visual context."
+        },
+        {
+          "phase": "compose",
+          "instruction": "Choose the smallest visual and create only the requested inline explanation or local artifact."
+        },
+        {
+          "phase": "verify",
+          "instruction": "Inspect the artifact when possible and report sources, assumptions, and rendering gaps."
+        }
+      ],
+      "artifacts": [
+        "inline visual or local HTML explanation"
+      ],
+      "evidence": [
+        "visual",
+        "source-context",
+        "design-context",
+        "verification-gap"
+      ],
+      "guardrails": [
+        "Create only the requested local explanation; preserve production source.",
+        "Use confirmed facts and visual context; label assumptions and verification gaps.",
+        "Git writes, publication, deployment, and external writes require exact approval."
+      ],
+      "autonomyProfile": "afk_local"
+    },
+    {
       "id": "handoff",
       "tier": "core",
       "origin": {
@@ -3425,6 +3578,91 @@
         "Keep the lens practical, engineering or product focused, and testable.",
         "Reinterpret conflict as constraints or uncertainty and never recommend harmful deception or manipulation.",
         "Do not modify files unless the user separately requests implementation."
+      ],
+      "autonomyProfile": "afk_local"
+    },
+    {
+      "id": "create-verification-skill",
+      "tier": "core",
+      "origin": {
+        "repository": "cursor/plugins",
+        "skill": "create-verification-skill"
+      },
+      "sources": {
+        "th": "skills/engineering/create-verification-skill",
+        "en": "locales/en/skills/engineering/create-verification-skill"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Create Verification Skill",
+          "description": "Create or update a project-local verification skill and helpers that prove task acceptance, test behavior, spec consistency, or skill behavior with observable evidence. Use when reusable verification is missing.",
+          "shortDescription": "Build reusable checks for tasks, specs, tests, and skills",
+          "defaultPrompt": "Create a reusable verification skill for this project with evidence, safe cleanup, and an executed proof.",
+          "triggers": [
+            "Create a verification skill for this repository",
+            "Build reusable verification for task acceptance, specs, tests, or skills"
+          ],
+          "negativeTriggers": [
+            "the user only asks to run existing tests once",
+            "the user requests only a code review or release check"
+          ]
+        },
+        "th": {
+          "displayName": "สร้าง skill ตรวจสอบงาน",
+          "description": "สร้างหรือปรับ verification skill ในโปรเจกต์ พร้อม helper ที่พิสูจน์ task, test script, spec หรือพฤติกรรม skill ด้วยหลักฐาน ใช้เมื่อยังไม่มีวิธีตรวจงานที่ใช้ซ้ำได้",
+          "shortDescription": "สร้างวิธีตรวจ task, spec, tests และ skill ที่ใช้ซ้ำได้",
+          "defaultPrompt": "สร้าง verification skill สำหรับโปรเจกต์นี้ พร้อมหลักฐาน cleanup ที่ปลอดภัย และผลจากการลองใช้จริง",
+          "triggers": [
+            "สร้าง verification skill ให้ repo นี้",
+            "ทำวิธีตรวจ task, spec, test script หรือ skill ที่ใช้ซ้ำได้"
+          ],
+          "negativeTriggers": [
+            "ผู้ใช้ขอรัน tests ที่มีอยู่ครั้งเดียว",
+            "ผู้ใช้ขอ code review หรือ release check อย่างเดียว"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": true
+      },
+      "effectLevel": "workspace_write",
+      "role": "verification_skill_author",
+      "workflow": [
+        {
+          "phase": "discover",
+          "instruction": "Inspect acceptance criteria, artifacts, existing checks, real user surfaces, isolation, and permitted effects."
+        },
+        {
+          "phase": "generate",
+          "instruction": "Create a project-local verifier with criterion-to-evidence mapping, runnable commands, applicable review protocols, and owned cleanup."
+        },
+        {
+          "phase": "prove",
+          "instruction": "Execute one mapped check per declared verification kind and a safe failure control; retain evidence after cleanup and label unrun coverage."
+        },
+        {
+          "phase": "handoff",
+          "instruction": "Report generated paths, commands, observed results, coverage gaps, and maintenance triggers without claiming unverified completion."
+        }
+      ],
+      "artifacts": [
+        "project-local verify-<project> skill",
+        "criterion or feature verification map",
+        "needed helper scripts",
+        "retained verification evidence"
+      ],
+      "evidence": [
+        "acceptance-to-check mapping",
+        "actual command exit results and observations",
+        "failure-control result",
+        "evidence survives cleanup",
+        "unrun coverage and review judgments"
+      ],
+      "guardrails": [
+        "Create verification files only; do not silently repair product behavior or redefine acceptance criteria.",
+        "Reuse existing checks and stable user entry points; never infer behavior from syntax alone.",
+        "Run only within current authority and isolated local or approved test boundaries.",
+        "Preserve user processes, data, secrets, and evidence; external effects require exact approval."
       ],
       "autonomyProfile": "afk_local"
     }

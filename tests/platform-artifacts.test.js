@@ -136,7 +136,7 @@ describe('platform artifact compiler', () => {
         contract.skills.filter((skill) => skill.autonomyProfile === profile).length,
       ]),
     )).toEqual({
-      afk_local: 27,
+      afk_local: 30,
       afk_to_pr: 1,
       boundary_gated: 3,
       decision_aware: 10,

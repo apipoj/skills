@@ -1,6 +1,6 @@
 {
-  "version": "6.8.0",
-  "released": "2026-09-25",
+  "version": "6.9.0",
+  "released": "2026-09-30",
   "brand": "Apipoj Skills",
   "slug": "spk",
   "tagline": "Thai-first, ready-to-use engineering skills with evidence and safe defaults",
@@ -218,6 +218,14 @@
       "direct": true
     },
     {
+      "name": "/eli5",
+      "direct": true
+    },
+    {
+      "name": "/show-me",
+      "direct": true
+    },
+    {
       "name": "/handoff",
       "direct": true
     },
@@ -299,6 +307,10 @@
     },
     {
       "name": "/sunzi",
+      "direct": true
+    },
+    {
+      "name": "/create-verification-skill",
       "direct": true
     }
   ]

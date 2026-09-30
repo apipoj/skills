@@ -1,6 +1,6 @@
 # คู่มือผู้ใช้ Apipoj Skills
 
-คู่มือนี้ครอบคลุม Apipoj Skills **v6.8.0** สำหรับ Claude Code, Codex และเครื่องมือที่รองรับ Agent Skills
+คู่มือนี้ครอบคลุม Apipoj Skills **v6.9.0** สำหรับ Claude Code, Codex และเครื่องมือที่รองรับ Agent Skills
 
 อ่านฉบับภาษาอังกฤษได้ที่ [USER_GUIDE-EN.md](USER_GUIDE-EN.md)
 
@@ -12,7 +12,7 @@ Apipoj Skills คือชุด workflow สำหรับทำงาน soft
 - งานสำคัญต้องมีหลักฐาน เช่น test result, diff scope, risk และ next action
 - การแก้ไฟล์ไม่ได้แปลว่าอนุญาตให้ commit, push, deploy หรือ publish
 
-source tree นี้มี **41 skills** และเรียกใช้เป็น command ได้ทุกตัว
+source tree นี้มี **44 skills** และเรียกใช้เป็น command ได้ทุกตัว
 
 ## เริ่มใน 2 นาที
 
@@ -74,7 +74,7 @@ npx skills@latest add apipoj/skills
 ตัวอย่าง typed-only:
 
 ```text
-/spk:check-release ตรวจความพร้อม v6.8.0 โดยยังไม่ commit, tag หรือ publish
+/spk:check-release ตรวจความพร้อม v6.9.0 โดยยังไม่ commit, tag หรือ publish
 ```
 
 บน Codex ให้เปลี่ยนรูปแบบเป็น `$spk:check-release`
@@ -236,3 +236,16 @@ approval_required: <true|false>
 - [RESOLVER.md](RESOLVER.md) — ตาราง resolve command และ dispatch
 - [CHANGELOG.md](CHANGELOG.md) — สิ่งที่เปลี่ยนในแต่ละเวอร์ชัน
 - [README-EN.md](README-EN.md) — README ภาษาอังกฤษ
+
+## อธิบายด้วยภาพ
+
+- `/spk:show-me` แสดง flow, ความสัมพันธ์ หรือการเปรียบเทียบด้วยภาพที่ตรงคำถาม
+- `/spk:eli5` สอนแนวคิดยากให้มือใหม่ด้วยบทเรียนภาพ ตัวอย่าง และข้อจำกัดของแบบจำลอง
+- ทั้งสองใช้ design system หรือ moodboard ที่มีอยู่ และสร้างผลลัพธ์ในเครื่องโดยไม่แก้ production
+- ใน Codex ใช้ `$spk:show-me` หรือ `$spk:eli5`
+
+## สร้างวิธีตรวจงานที่ใช้ซ้ำได้
+
+ใช้ `/spk:create-verification-skill` หรือ `$spk:create-verification-skill` ใน Codex เพื่อสร้าง verifier ในโปรเจกต์สำหรับ task, test script, spec และ skill ตาม scope ที่ต้องการ ผูก acceptance criteria กับ checks และหลักฐาน ลองใช้ verifier พร้อม failing control และเก็บหลักฐานหลัง cleanup สิ่งที่ยังไม่ได้รันต้องรายงานเป็น `NOT_RUN` การลองบาง checks ไม่ได้แปลว่าตรวจงานครบทุกข้อ
+
+สำหรับ source repo ของ SPK มี verifier ใน [.agents/skills/verify-spk/SKILL.md](.agents/skills/verify-spk/SKILL.md) พร้อม check map และ helper ที่เก็บหลักฐาน โดยแยก spec review และ behavioral skill checks ออกจาก static gates
