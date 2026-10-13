@@ -17,6 +17,13 @@ disable-model-invocation: true
 - `RESOURCES.md` — แหล่งความรู้และชุมชนที่เชื่อถือได้ ใช้ฟอร์แมตใน [RESOURCES-FORMAT.md](./RESOURCES-FORMAT.md) เมื่อยังไม่มีให้เริ่มสร้างก่อนอ้างอิงเนื้อหาในบทเรียน
 - `GLOSSARY.md` — ศัพท์เฉพาะที่ผู้เรียน**เข้าใจแล้วจริง** ใช้ฟอร์แมตใน [GLOSSARY-FORMAT.md](./GLOSSARY-FORMAT.md) เพิ่มคำเมื่อผ่านเกณฑ์เท่านั้น อย่าเพิ่มคำที่เพิ่งแนะนำ
 
+## Workspace paths and quizzes
+
+Resolve lesson, mission, reference, and learning-record paths from the directory
+where teaching was requested. Resolve `*-FORMAT.md` links from this skill's folder.
+For multiple-choice quizzes, vary the correct answer's position across questions
+and keep option lengths comparable so formatting and order do not reveal it.
+
 ## Workflow
 
 1. อ่าน `MISSION.md`, `./learning-records/`, และไฟล์ format ข้างต้นที่มีอยู่แล้วในโฟลเดอร์ ถ้ายังไม่มี `MISSION.md` หรือยังไม่รู้ระดับผู้เรียน ให้**ถามคำถามประเมินระดับก่อน** — รู้อะไรมาแล้ว เป้าหมายจริงคืออะไร มีเวลาและข้อจำกัดแค่ไหน — ห้ามเดาระดับผู้เรียนเอง

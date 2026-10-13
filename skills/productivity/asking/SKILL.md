@@ -46,6 +46,9 @@ description: สัมภาษณ์ผู้ใช้เป็นรอบ ๆ
 
 จบเมื่อ frontier ว่าง คือทุกกิ่งของ decision tree ถูกไปเยือนแล้ว ไม่มีอะไรถูกสมมติเงียบ ๆ ไว้ อย่าลงมือทำจนกว่าผู้ใช้จะยืนยันว่าเข้าใจตรงกันแล้ว
 
+Word each question so a bare "yes" accepts the recommended answer. For a batch,
+an unqualified "yes" accepts the recommendations only when that meaning is explicit.
+
 ## Autonomy Profile
 
 `decision_aware` — ตรวจ fact และทำ draft ได้ถึง effect level ที่ skill ประกาศ โดย read-only ยังต้อง read-only แล้วถามได้สูงสุดหนึ่ง decision สำคัญ; prompt budget 1, repair budget 3 รอบ ก่อนหยุดต้องบันทึก decision ledger, evidence และ next action ที่ทำต่อได้

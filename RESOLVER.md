@@ -58,4 +58,6 @@ Rules:
 | `/spk:bala` | direct main-thread workflow | typed only |
 | `/spk:sunzi` | direct main-thread workflow | typed only |
 | `/spk:create-verification-skill` | direct main-thread workflow | model or typed |
+| `/spk:implement-spec` | direct main-thread workflow | typed only |
+| `/spk:retro` | direct main-thread workflow | typed only |
 <!-- SPK-COMMANDS:end -->

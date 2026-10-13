@@ -27,6 +27,12 @@ Read `docs/agents/artifacts.md` when present. By default, write the handoff as
 state, not a team-canonical record. Use another destination only when the artifact policy
 or user explicitly selects one.
 
+## Temporary destination
+
+When the user or artifact policy chooses an OS temporary destination, resolve it
+from `$TMPDIR`, then `/tmp`, or `%TEMP%` on Windows. The default remains
+`ai_context/work/handoffs/` under SPK's artifact policy.
+
 ## Workflow
 
 1. Read the current conversation and the full practice in [UPSTREAM.md](UPSTREAM.md). If the user passed an argument, treat it as what the next session will focus on and tailor the document to it.

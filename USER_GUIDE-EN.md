@@ -12,7 +12,7 @@ Apipoj Skills is a Thai-first set of software workflows for working with AI from
 - Important work must return evidence such as test results, diff scope, risks, and a verifiable next action.
 - Editing files never silently authorizes a commit, push, deployment, or publication.
 
-This source tree contains **44 skills**, each available as a command.
+This source tree contains **46 skills**, each available as a command.
 
 ## Start in two minutes
 
@@ -87,9 +87,15 @@ When uncertain, always begin with `/spk:start`. Use this table when you want to 
 |---|---|
 | Start work and clarify decisions | `/spk:start`, `/spk:ask-me`, `/spk:asking`, `/spk:ask-with-docs`, `/spk:wait-what`, `/spk:teach`, `/spk:handoff`, `/spk:to-questionnaire` |
 | Set direction and design the work | `/spk:to-spec`, `/spk:plan`, `/spk:to-tickets`, `/spk:wayfinder`, `/spk:domain-modeling`, `/spk:codebase-design`, `/spk:prototype`, `/spk:design-options`, `/spk:bala`, `/spk:sunzi` |
-| Build, diagnose, and review | `/spk:code`, `/spk:tdd`, `/spk:debug`, `/spk:triage`, `/spk:improve-codebase`, `/spk:code-review`, `/spk:test-changes`, `/spk:fix-conflicts` |
+| Build, diagnose, and review | `/spk:code`, `/spk:tdd`, `/spk:debug`, `/spk:triage`, `/spk:improve-codebase`, `/spk:code-review`, `/spk:test-changes`, `/spk:fix-conflicts`, `/spk:implement-spec`, `/spk:retro` |
 | Understand and maintain project knowledge | `/spk:setup`, `/spk:load-project`, `/spk:ask-project`, `/spk:research`, `/spk:add-knowledge`, `/spk:check-wiki`, `/spk:write-skills` |
 | Check the system and prepare delivery | `/spk:doctor`, `/spk:check-release`, `/spk:pr`, `/spk:task-to-pr`, `/spk:deploy`, `/spk:wizard`, `/spk:uninstall` |
+
+`implement-spec` and `retro` are typed only. Use `implement-spec` for a supplied spec
+and dependency-linked tickets across isolated worktrees; it requires exact approval
+for Git and remote writes. Use `retro` to review a coding session and recommend
+environment improvements without editing files. On Codex, type `$spk:implement-spec`
+or `$spk:retro`.
 
 ## Common recipes
 

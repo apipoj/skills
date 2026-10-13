@@ -176,6 +176,13 @@ function canonicalizeUpstreamSkillBody(body, contract) {
       (_, quote) => `${quote}${localId}${quote}`,
     );
   }
+  for (const skill of contract.skills.filter(skill => skill.activation?.allowImplicitInvocation === false)) {
+    const id = escapeRegExp(skill.id);
+    canonical = canonical.replace(
+      new RegExp(`Call the Skill tool with [\"'\x60]${id}[\"'\x60]`, 'gi'),
+      `Read the ${skill.id} guidance as a reference without executing its workflow`,
+    );
+  }
   return canonical;
 }
 
@@ -187,14 +194,17 @@ function buildUpstreamSkillArtifactMap(upstreamDir, pin, contract, repoRoot = RE
   );
 
   for (const skill of promoted) {
-    const upstream = upstreamIndex.get(skill.origin.skill);
+    const skillPin = skill.origin.commit || pin;
+    const skillIndex = skillPin === pin ? upstreamIndex
+      : indexUpstreamSkillFiles(listUpstreamSkillFiles(upstreamDir, skillPin));
+    const upstream = skillIndex.get(skill.origin.skill);
     if (!upstream?.skillPath) {
       throw new Error(
         `${skill.id}: pinned upstream skill ${skill.origin.skill} has no SKILL.md`,
       );
     }
     const skillBody = canonicalizeUpstreamSkillBody(
-      readUpstreamPage(upstreamDir, pin, upstream.skillPath),
+      readUpstreamPage(upstreamDir, skillPin, upstream.skillPath),
       contract,
     );
     const upstreamRoot = path.posix.dirname(upstream.skillPath);
@@ -209,7 +219,7 @@ function buildUpstreamSkillArtifactMap(upstreamDir, pin, contract, repoRoot = RE
         const localTarget = path.posix.join(localRoot, relative);
         if (fs.existsSync(path.join(repoRoot, localTarget))) continue;
         artifacts.set(localTarget, canonicalizeUpstreamSkillBody(
-          readUpstreamPage(upstreamDir, pin, upstreamAuxiliary),
+          readUpstreamPage(upstreamDir, skillPin, upstreamAuxiliary),
           contract,
         ));
       }

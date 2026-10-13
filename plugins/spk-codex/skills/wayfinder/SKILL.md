@@ -19,6 +19,15 @@ Reply in the user's language.
 
 Keep working without user input while the requested outcome remains inside current authority. Use a reversible smart default and record assumptions. Ask only when one material user-owned decision changes scope, risk, cost, or success, or when a required effect crosses an unapproved boundary.
 
+## Decision tickets
+
+Maps and their child tickets carry only `wayfinder:` labels, never implementation
+triage labels such as `ready-for-agent`. Read the ticket's type label before choosing
+its workflow. Create tickets first; wire cross-references and blocking edges in a
+second pass using real identifiers, because placeholders such as `#<n>` can link to
+unrelated issues. Research branches remain references and are never merged; push only
+with exact approval, and open no research PR unless the user explicitly requests one.
+
 ## Workflow
 
 1. Read the request, repository instructions, and full practice in [UPSTREAM.md](UPSTREAM.md).

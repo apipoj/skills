@@ -312,6 +312,14 @@
     {
       "name": "/create-verification-skill",
       "direct": true
+    },
+    {
+      "name": "/implement-spec",
+      "direct": true
+    },
+    {
+      "name": "/retro",
+      "direct": true
     }
   ]
 }

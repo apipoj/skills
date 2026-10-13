@@ -18,6 +18,15 @@ Reply in the user's language.
 
 Keep working without user input while the requested outcome remains inside current authority. Use a reversible smart default and record assumptions. Ask only when one material user-owned decision changes scope, risk, cost, or success, or when a required effect crosses an unapproved boundary.
 
+## Domain documents
+
+Follow repository-scoped domain-reading instructions and `docs/agents/domain.md` first.
+When no location is configured, follow `GLOSSARY-MAP.md` or `CONTEXT-MAP.md` to the
+relevant glossary; otherwise read the existing root `GLOSSARY.md` or `CONTEXT.md`
+and relevant ADRs. Keep the project's existing filenames and one canonical glossary.
+If both conventions exist without guidance, ask which is authoritative before writing.
+The existing SPK `CONTEXT.md` default applies only when no glossary exists.
+
 ## Workflow
 
 1. Read the request, repository instructions, and full practice in [UPSTREAM.md](UPSTREAM.md).

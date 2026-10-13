@@ -63,7 +63,7 @@ Use one installation method per project to avoid duplicate skills.
 ## Inventory
 
 <!-- SPK-COUNTS:start -->
-**21 subagents** (4 orchestrators + 17 specialists) · **44 skills**
+**21 subagents** (4 orchestrators + 17 specialists) · **46 skills**
 <!-- SPK-COUNTS:end -->
 
 ### Agents
@@ -145,6 +145,8 @@ Use one installation method per project to avoid duplicate skills.
 | `/spk:bala` | direct main-thread workflow | typed only |
 | `/spk:sunzi` | direct main-thread workflow | typed only |
 | `/spk:create-verification-skill` | direct main-thread workflow | model or typed |
+| `/spk:implement-spec` | direct main-thread workflow | typed only |
+| `/spk:retro` | direct main-thread workflow | typed only |
 <!-- SPK-COMMANDS:end -->
 
 ## Source layout

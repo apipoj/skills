@@ -29,6 +29,13 @@ Treat the current directory as the teaching workspace. Read the full practice in
 - `RESOURCES.md` — trusted knowledge sources and communities. Use the format in [RESOURCES-FORMAT.md](./RESOURCES-FORMAT.md); start it before citing anything in a lesson if it doesn't exist yet.
 - `GLOSSARY.md` — terms the learner **genuinely understands**. Use the format in [GLOSSARY-FORMAT.md](./GLOSSARY-FORMAT.md). Add a term only once it clears that bar, never right after it is introduced.
 
+## Workspace paths and quizzes
+
+Resolve lesson, mission, reference, and learning-record paths from the directory
+where teaching was requested. Resolve `*-FORMAT.md` links from this skill's folder.
+For multiple-choice quizzes, vary the correct answer's position across questions
+and keep option lengths comparable so formatting and order do not reveal it.
+
 ## Workflow
 
 1. Read `MISSION.md`, `./learning-records/`, and the format files above where they already exist. If `MISSION.md` is missing or the learner's level is unknown, **assess it with questions first** — what they already know, the real goal, the time and constraints — never guess the level.

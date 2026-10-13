@@ -15,6 +15,12 @@ disable-model-invocation: true
 state ไม่ใช่ canonical record ของทีม ใช้ปลายทางอื่นเฉพาะเมื่อ artifact policy หรือผู้ใช้
 ระบุชัด
 
+## Temporary destination
+
+When the user or artifact policy chooses an OS temporary destination, resolve it
+from `$TMPDIR`, then `/tmp`, or `%TEMP%` on Windows. The default remains
+`ai_context/work/handoffs/` under SPK's artifact policy.
+
 ## Workflow
 
 1. อ่านบทสนทนาปัจจุบันและหลักปฏิบัติฉบับเต็มใน [UPSTREAM.md](UPSTREAM.md) ถ้าผู้ใช้ส่ง argument มา ให้ตีความว่าเป็นสิ่งที่ session ถัดไปจะโฟกัส และปรับเนื้อหาเอกสารให้ตรงกับนั้น

@@ -15,6 +15,16 @@ description: เลือก workflow ให้ตรงคำขอแบบไ
 
 ใช้ smart default ได้เมื่อย้อนกลับง่ายและไม่เปลี่ยน scope ถ้ามี decision ที่เปลี่ยน scope, risk, cost หรือความสำเร็จ ให้ถามเพียงหนึ่งคำถามพร้อมคำตอบที่แนะนำแล้วรอ
 
+## Additional manual workflows
+
+- Implement one supplied spec across dependency-linked tickets on an integration branch: present `/implement-spec`.
+- Review a completed coding session for environment improvements without editing files: present `/retro`.
+
+## Routing evidence
+
+Before describing a workflow's behavior or recommending that a step be skipped,
+read its actual `SKILL.md`. Router summaries are orientation, not execution contracts.
+
 ## Workflow
 
 1. อ่านคำขอและ repository instructions แยก fact ที่ตรวจเองได้ออกจาก decision ที่ผู้ใช้ต้องเลือก

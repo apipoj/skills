@@ -122,6 +122,7 @@ function collectReferencesFromFile(rootDir, relFile) {
   const refs = [];
 
   content.split('\n').forEach((line, idx) => {
+    const localLinkRanges = [];
     COMMAND_REF_RE.lastIndex = 0;
     let commandMatch;
     while ((commandMatch = COMMAND_REF_RE.exec(line)) !== null) {
@@ -141,6 +142,7 @@ function collectReferencesFromFile(rootDir, relFile) {
         const target = localMarkdownTarget(linkMatch[1] || linkMatch[2]);
         if (target) {
           refs.push({ type: 'local', target, file: relFile, line: idx + 1 });
+          localLinkRanges.push([linkMatch.index, MARKDOWN_LINK_RE.lastIndex]);
         }
       }
     }
@@ -149,6 +151,9 @@ function collectReferencesFromFile(rootDir, relFile) {
       SCRIPT_REF_RE.lastIndex = 0;
       let scriptMatch;
       while ((scriptMatch = SCRIPT_REF_RE.exec(line)) !== null) {
+        // Explicit local links already resolve relative to this skill, including
+        // packaged helpers. Plain runtime script mentions still use the plugin root.
+        if (localLinkRanges.some(([start, end]) => scriptMatch.index >= start && scriptMatch.index < end)) continue;
         refs.push({ type: 'script', name: scriptMatch[1], file: relFile, line: idx + 1 });
       }
     }

@@ -136,9 +136,9 @@ describe('platform artifact compiler', () => {
         contract.skills.filter((skill) => skill.autonomyProfile === profile).length,
       ]),
     )).toEqual({
-      afk_local: 30,
+      afk_local: 31,
       afk_to_pr: 1,
-      boundary_gated: 3,
+      boundary_gated: 4,
       decision_aware: 10,
     });
   });
@@ -192,6 +192,18 @@ describe('platform artifact compiler', () => {
 
     expect(byId['code-review'].effectLevel).toBe('read_only');
     expect(byId.debug.effectLevel).toBe('read_only');
+
+    expect(byId['implement-spec'].activation.allowImplicitInvocation).toBe(false);
+    expect(byId['implement-spec'].effectLevel).toBe('external_write');
+    expect(byId['implement-spec'].approvalMode).toBe('confirm');
+    expect(byId['implement-spec'].autonomyProfile).toBe('boundary_gated');
+    expect(byId['implement-spec'].workflow.find(step => step.phase === 'inspect').instruction)
+      .toContain('manual prerequisites before dispatch');
+    expect(byId['implement-spec'].workflow.find(step => step.phase === 'integrate').instruction)
+      .toContain('only after verified integration');
+    expect(byId.retro.activation.allowImplicitInvocation).toBe(false);
+    expect(byId.retro.effectLevel).toBe('read_only');
+    expect(byId.retro.guardrails.join('\n')).toContain('do not modify reports');
 
     expect(byId['check-wiki'].activation.allowImplicitInvocation).toBe(true);
     expect(byId['check-wiki'].workflow.find((step) => step.phase === 'guard')).toBeUndefined();

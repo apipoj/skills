@@ -76,6 +76,10 @@
     "skills/productivity/teach/UPSTREAM.md": "a32df9dcdfc0c4fdc1c98e1ed3940c5f56b84c1aa90ff60346f32b8b53915b43",
     "skills/productivity/to-questionnaire/UPSTREAM.md": "b5eb929842ee0e93d867c5e906d183d350f2f2d149eaeaa86967d94d8eda1d3b",
     "skills/productivity/wait-what/UPSTREAM.md": "e3f44e3ccbc0e7b62f20ba70b295fc9c9f4aa3f96c77168faee1c71bacbf4215",
-    "skills/productivity/write-skills/UPSTREAM.md": "551adca942227b44192edba88acd4e8db911f0121ce58ad16944ccf6a896a74a"
+    "skills/productivity/write-skills/UPSTREAM.md": "551adca942227b44192edba88acd4e8db911f0121ce58ad16944ccf6a896a74a",
+    "skills/engineering/implement-spec/UPSTREAM.md": "38ea5e4d28a8f5be881262fdbbeb3c68a5cf2daf34c1cc140beafd7c586ef8c9",
+    "locales/en/skills/engineering/implement-spec/UPSTREAM.md": "38ea5e4d28a8f5be881262fdbbeb3c68a5cf2daf34c1cc140beafd7c586ef8c9",
+    "skills/engineering/retro/UPSTREAM.md": "5b7a460f0427cf5bba0bcae7e76dce46e0bdc55220003dff74248ff698c0b197",
+    "locales/en/skills/engineering/retro/UPSTREAM.md": "5b7a460f0427cf5bba0bcae7e76dce46e0bdc55220003dff74248ff698c0b197"
   }
 }

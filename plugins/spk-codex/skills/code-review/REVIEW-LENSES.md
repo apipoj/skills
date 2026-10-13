@@ -5,7 +5,8 @@ These are lenses within one review, not additional mandatory workflows.
 
 ## Standards
 
-Use repository conventions. For maintainability findings, explain the concrete change cost:
+Search for all relevant repository coding guidance, including `CODING_STANDARDS.md`
+and `CONTRIBUTING.md` whenever present. Use repository conventions. For maintainability findings, explain the concrete change cost:
 unclear naming, duplicated logic, data that belongs together, repeated branching, changes
 scattered across modules, or abstraction without a current use. Treat these as heuristics;
 repository conventions and demonstrated risk take precedence over preferences.

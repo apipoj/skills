@@ -209,6 +209,35 @@ describe('SPK reference integrity', () => {
     }
   });
 
+  test('checks a linked skill helper at its actual relative destination', () => {
+    const root = makeFixtureRoot();
+    try {
+      const skill = 'plugins/spk/skills/plan/SKILL.md';
+      writeText(path.join(root, skill), '[Graph helper](scripts/task-graph.cjs)\n');
+      expect(collectReferenceIntegrityErrors(root, [skill])).toEqual([
+        `${skill}:1: missing local reference scripts/task-graph.cjs`,
+      ]);
+      writeText(path.join(root, 'plugins/spk/skills/plan/scripts/task-graph.cjs'), 'module.exports = {};\n');
+      expect(collectReferenceIntegrityErrors(root, [skill])).toEqual([]);
+    } finally {
+      fs.rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  test('a valid local helper does not mask a missing runtime script on the same line', () => {
+    const root = makeFixtureRoot();
+    try {
+      const skill = 'plugins/spk/skills/plan/SKILL.md';
+      writeText(path.join(root, skill), '[Graph helper](scripts/task-graph.cjs); run `node <plugin-root>/scripts/task-graph.cjs`.\n');
+      writeText(path.join(root, 'plugins/spk/skills/plan/scripts/task-graph.cjs'), 'module.exports = {};\n');
+      expect(collectReferenceIntegrityErrors(root, [skill])).toEqual([
+        `${skill}:1: missing script reference scripts/task-graph.cjs (expected plugins/spk/scripts/task-graph.cjs)`,
+      ]);
+    } finally {
+      fs.rmSync(root, { recursive: true, force: true });
+    }
+  });
+
   test('scan root matcher excludes transient state files', () => {
     expect(isUnderScanRoots('plugins/spk/skills/plan/SKILL.md')).toBe(true);
     expect(isUnderScanRoots('plugins/spk-codex/skills/plan/SKILL.md')).toBe(true);
