@@ -573,7 +573,7 @@
       "workflow": [
         {
           "phase": "orient",
-          "instruction": "Read the request, repository evidence, Thai-first defaults, and the exact approval boundary."
+          "instruction": "Read the request, repository evidence, Thai-first defaults, and the exact approval boundary. Follow scoped domain guidance and existing GLOSSARY.md/CONTEXT.md maps; state what each agreed test seam catches and misses."
         },
         {
           "phase": "execute",
@@ -729,7 +729,7 @@
         },
         {
           "phase": "execute",
-          "instruction": "Apply the to-tickets discipline in the smallest complete slice; ask one material question only when needed."
+          "instruction": "Apply the to-tickets discipline in the smallest complete slice; ask one material question only when needed. Keep parent/sub-issue links separate from blocking edges; omit duplicate body blockers only after native edges are verified."
         },
         {
           "phase": "verify",
@@ -883,7 +883,7 @@
         },
         {
           "phase": "execute",
-          "instruction": "Apply the wayfinder discipline in the smallest complete slice; ask one material question only when needed."
+          "instruction": "Apply the wayfinder discipline in the smallest complete slice; ask one material question only when needed. Use only wayfinder labels, read the ticket type label, and wire real identifiers in a second pass; research pushes require exact approval."
         },
         {
           "phase": "verify",
@@ -957,7 +957,7 @@
       "workflow": [
         {
           "phase": "authorize",
-          "instruction": "Treat a clear explicit implementation, fix, update, or plan-and-implement request as bounded workspace authority. Resolve plans through docs/agents/artifacts.md, then ai_context/work/plans, docs/plans, and finally ai_context/wiki/plans as a legacy compatibility fallback. If no plan artifact exists, build an internal micro-plan from acceptance criteria instead of stopping."
+          "instruction": "Treat a clear explicit implementation, fix, update, or plan-and-implement request as bounded workspace authority. Resolve plans through docs/agents/artifacts.md, then ai_context/work/plans, docs/plans, and finally ai_context/wiki/plans as a legacy compatibility fallback. If no plan artifact exists, build an internal micro-plan from acceptance criteria instead of stopping. Resolve supplied ticket references through the configured tracker and state the title and acceptance criteria; clarify ambiguous references."
         },
         {
           "phase": "shape",
@@ -1353,7 +1353,7 @@
         },
         {
           "phase": "execute",
-          "instruction": "Review the requested scope using relevant standards and requirements. Verify, deduplicate, and rank actionable findings in one list; missing specs are an evidence gap, not a setup gate."
+          "instruction": "Review the requested scope using relevant standards and requirements. Verify, deduplicate, and rank actionable findings in one list; missing specs are an evidence gap, not a setup gate. Include all relevant coding guidance, including existing CODING_STANDARDS.md and CONTRIBUTING.md; aggregate any delegated reviews only after their reports return."
         },
         {
           "phase": "verify",
@@ -1509,7 +1509,7 @@
         },
         {
           "phase": "execute",
-          "instruction": "Apply the asking discipline in the smallest complete slice; separate adjacent questions in the same round with a horizontal rule, and ask one material question only when needed."
+          "instruction": "Apply the asking discipline in the smallest complete slice; separate adjacent questions in the same round with a horizontal rule, and ask one material question only when needed. Word questions so yes accepts the recommendation, with explicit batch semantics."
         },
         {
           "phase": "verify",
@@ -1910,7 +1910,7 @@
         },
         {
           "phase": "lesson",
-          "instruction": "Produce exactly one lesson per session as ./lessons/NNNN-<slug>.html, sized to the learner's zone of proximal development."
+          "instruction": "Produce exactly one lesson per session as ./lessons/NNNN-<slug>.html, sized to the learner's zone of proximal development. Resolve output paths from the requested workspace and format links from the skill folder; vary correct quiz answer positions."
         },
         {
           "phase": "record",
@@ -2520,7 +2520,7 @@
         },
         {
           "phase": "author",
-          "instruction": "Copy the shipped template, write one stage per step in dependency order using only the library helpers, and set TOTAL_STAGES."
+          "instruction": "Copy the shipped template, write one stage per step in dependency order using only the library helpers, and set TOTAL_STAGES. Keep every stage inside run_wizard and preserve the final run_wizard invocation so the whole procedure parses before prompting."
         },
         {
           "phase": "verify",
@@ -3663,6 +3663,186 @@
         "Reuse existing checks and stable user entry points; never infer behavior from syntax alone.",
         "Run only within current authority and isolated local or approved test boundaries.",
         "Preserve user processes, data, secrets, and evidence; external effects require exact approval."
+      ],
+      "autonomyProfile": "afk_local"
+    },
+    {
+      "id": "implement-spec",
+      "tier": "core",
+      "origin": {
+        "repository": "mattpocock/skills",
+        "skill": "implement-spec",
+        "commit": "49dd158d1076134a641b33efb035946536778336"
+      },
+      "sources": {
+        "th": "skills/engineering/implement-spec",
+        "en": "locales/en/skills/engineering/implement-spec"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Implement a spec",
+          "description": "Implement a supplied spec across dependency-linked tickets in isolated worktrees, verify the integration branch, and require exact approval for Git and tracker writes.",
+          "shortDescription": "Implement a spec",
+          "defaultPrompt": "Use implement-spec for the supplied spec and tickets.",
+          "triggers": [
+            "use implement-spec",
+            "implement-spec workflow"
+          ],
+          "negativeTriggers": [
+            "the user wants a single ticket implemented",
+            "the user asks only for a code review"
+          ]
+        },
+        "th": {
+          "displayName": "พัฒนาตามสเปกหลาย ticket",
+          "description": "พัฒนาสเปกที่มีหลาย ticket ตาม dependency ด้วย worktree แยก ตรวจ integration branch และขอ approval สำหรับ Git หรือ tracker write",
+          "shortDescription": "พัฒนาตามสเปกหลาย ticket",
+          "defaultPrompt": "ใช้ implement-spec กับคำขอนี้",
+          "triggers": [
+            "ใช้ implement-spec",
+            "ทำงานแบบ implement-spec"
+          ],
+          "negativeTriggers": [
+            "the user wants a single ticket implemented",
+            "the user asks only for a code review"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": false
+      },
+      "effectLevel": "external_write",
+      "role": "spec_implementation_orchestrator",
+      "workflow": [
+        {
+          "phase": "inspect",
+          "instruction": "Read the supplied spec, tickets, scoped domain instructions, tracker configuration and acceptance criteria. Identify manual prerequisites before dispatch; validate ticket identifiers, dependencies, cycles and current states."
+        },
+        {
+          "phase": "prepare",
+          "instruction": "Prepare the task graph, ready frontier, integration base, isolated worktree targets and authority envelopes. Do not dispatch work with missing acceptance access or unapproved Git setup."
+        },
+        {
+          "phase": "approve",
+          "instruction": "Show exact targets, bases, operations and payloads for required Git writes. Obtain confirm approval and revalidate before writing; remote/tracker operations require their own displayed intent."
+        },
+        {
+          "phase": "implement",
+          "instruction": "Dispatch only ready independent tickets in separate worktrees based on the integration branch. Workers implement and verify with strict RED/GREEN evidence, preserve unrelated work and return path/commit/check receipts."
+        },
+        {
+          "phase": "integrate",
+          "instruction": "Verify worker results against the current integration tip, approve the concrete commit/merge payload, integrate one result at a time and recompute the frontier only after verified integration."
+        },
+        {
+          "phase": "verify",
+          "instruction": "Review the complete spec and integration diff, run required aggregate checks, repair valid findings within budget and report partial or unverified manual acceptance honestly."
+        },
+        {
+          "phase": "resolve",
+          "instruction": "Prepare optional draft/ready PR and ticket resolution payloads only when requested or required by tracker policy; execute only exact approved writes. Offer owned-worktree cleanup separately and preserve dirty work and evidence."
+        }
+      ],
+      "artifacts": [
+        "validated task graph and prerequisite ledger",
+        "verified integration branch",
+        "per-ticket receipts",
+        "optional approved pull request and tracker resolution"
+      ],
+      "evidence": [
+        "spec and ticket identities",
+        "base and integration SHAs",
+        "per-ticket RED/GREEN and integration checks",
+        "manual acceptance status",
+        "Git and remote approval envelopes"
+      ],
+      "guardrails": [
+        "A spec implementation request does not grant automatic Git or tracker write authority.",
+        "Never reset a wrong-base or dirty worktree; preserve user work and repair isolation.",
+        "Never merge into a protected/default branch, deploy, force-push or delete worktrees implicitly.",
+        "Do not unlock dependents before their blockers are integrated and verified."
+      ],
+      "autonomyProfile": "boundary_gated",
+      "approvalMode": "confirm"
+    },
+    {
+      "id": "retro",
+      "tier": "core",
+      "origin": {
+        "repository": "mattpocock/skills",
+        "skill": "retro",
+        "commit": "49dd158d1076134a641b33efb035946536778336"
+      },
+      "sources": {
+        "th": "skills/engineering/retro",
+        "en": "locales/en/skills/engineering/retro"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Session retrospective",
+          "description": "Review a coding session and recommend evidence-backed improvements to navigation, checks, standards and tooling without modifying files.",
+          "shortDescription": "Session retrospective",
+          "defaultPrompt": "Review this coding session and recommend environment improvements without editing files.",
+          "triggers": [
+            "use retro",
+            "retro workflow"
+          ],
+          "negativeTriggers": [
+            "the user asks to review code correctness",
+            "the user asks to apply environment changes"
+          ]
+        },
+        "th": {
+          "displayName": "ทบทวนการทำงานของ agent",
+          "description": "ทบทวน session พัฒนา software แล้วเสนอวิธีปรับ navigation checks มาตรฐานและเครื่องมือจากหลักฐาน โดยไม่แก้ไฟล์",
+          "shortDescription": "ทบทวนการทำงานของ agent",
+          "defaultPrompt": "ใช้ retro กับคำขอนี้",
+          "triggers": [
+            "ใช้ retro",
+            "ทำงานแบบ retro"
+          ],
+          "negativeTriggers": [
+            "the user asks to review code correctness",
+            "the user asks to apply environment changes"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": false
+      },
+      "effectLevel": "read_only",
+      "role": "session_retrospective",
+      "workflow": [
+        {
+          "phase": "inspect",
+          "instruction": "Read the selected session primary sources, or the current session by default. Inspect relevant steering files, existing check commands and CI wiring without changing files."
+        },
+        {
+          "phase": "classify",
+          "instruction": "Find environment causes behind observed failures. Classify mechanical mistakes as deterministic check opportunities and judgment calls as coding-standard improvements; reuse existing checks before proposing new ones."
+        },
+        {
+          "phase": "recommend",
+          "instruction": "Rank a short set of improvements by consequence and repetition; cite source locations, distinguish observations from inferences and disclose missing session evidence."
+        },
+        {
+          "phase": "verify",
+          "instruction": "Return read-only recommendations and the smallest next action. Applying changes, accessing unrelated private logs or writing global instructions requires separate scope and authority."
+        }
+      ],
+      "artifacts": [
+        "ranked session improvement recommendations"
+      ],
+      "evidence": [
+        "session identity and primary sources",
+        "observed failure and environment cause",
+        "existing guardrails and wiring",
+        "verification gaps"
+      ],
+      "guardrails": [
+        "Read only; do not modify reports, instructions, checks, hooks, tools or global settings.",
+        "Inspect only the selected session and relevant repository evidence; redact secrets and personal data.",
+        "Prefer existing navigation and checks over duplicated guidance; do not infer unseen session history."
       ],
       "autonomyProfile": "afk_local"
     }

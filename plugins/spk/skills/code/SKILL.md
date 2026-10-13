@@ -38,6 +38,12 @@ fallback as canonical.
   designs, or bulky context that would obscure the main thread; keep a coherent small
   change in the main thread.
 
+## Ticket input
+
+If the user supplies a ticket reference, resolve it through the configured tracker
+and state its title and acceptance criteria before implementation. Ask when the
+reference is ambiguous. Fetching a ticket grants no tracker or Git write authority.
+
 ## Workflow
 
 1. Read repository instructions, the current diff, relevant code, acceptance criteria,

@@ -1,5 +1,14 @@
 # Apipoj Skills
 
+## Unreleased
+
+- Selectively backport reviewed `mattpocock/skills` updates through `49dd158d1076134a641b33efb035946536778336` into the SPK roster. Follow scoped domain-reading guidance and recognize both GLOSSARY and CONTEXT conventions without creating competing glossaries.
+- Include repository coding standards in reviews, resolve supplied implementation tickets, explain test seam coverage, verify forced RED mutations, clarify yes-to-recommendation questions, and improve teaching workspace and quiz guidance.
+- Keep decision labels, sub-issue hierarchy, and blocking dependencies distinct; use explicit GitHub repository selection and preserve exact write approval.
+- Update wizard input and dotenv helpers, preserve permissions and symlink targets, and parse every stage before prompting. Include the independently reproduced Bash 3.2 apostrophe correction from upstream PR #1265.
+- Add manual-only `implement-spec` and read-only `retro` to both locales and platform payloads, with per-skill provenance pins. Spec orchestration validates dependency states and manual acceptance prerequisites before dispatch, then requires exact Git/remote approvals.
+- Keep the base reference snapshot pin. Record adopted, adapted, and deferred changes in `docs/upstream/reviews/2026-10-14.md`; no release or upstream merge is implied.
+
 ## 6.9.0 - 2026-09-30
 
 - Add `show-me` and `eli5`, adapted from Business OS, to the bilingual roster and Claude/Codex payloads. Route visual explanations and beginner lessons through `start` without requiring Business OS setup.

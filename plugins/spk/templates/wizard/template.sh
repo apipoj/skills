@@ -91,36 +91,42 @@ confirm() {
 # _existing KEY — ค่าปัจจุบันของ KEY ใน ENV_FILE ถ้ามี
 _existing() {
   [[ -f "$ENV_FILE" ]] || return 1
-  local line; line=$(grep -E "^${1}=" "$ENV_FILE" | tail -n1) || return 1
-  printf '%s' "${line#*=}"
+  local line value sq="'\\''" q="'"; line=$(grep -E "^${1}=" "$ENV_FILE" | tail -n1) || return 1
+  value="${line#*=}"
+  if [[ "$value" == \'*\' ]]; then value="${value:1:${#value}-2}"; value="${value//"$sq"/$q}"
+  elif [[ "$value" == \"*\" ]]; then
+    value="${value:1:${#value}-2}"
+    [[ "$value" == *[\\\$\"]* ]] && return 1   # escapes, $ or ": can't decode safely; ask again
+  fi
+  printf '%s' "$value"
 }
 
 # ask KEY "คำถาม" — อ่านค่าเข้า $KEY ถ้ารันซ้ำจะเสนอค่าเดิมใน .env เป็น default
 # (กด Enter เพื่อใช้ค่าเดิม) พิมพ์แล้วเห็นตัวอักษร ใช้กับค่าที่ไม่ใช่ความลับ
 ask() {
-  local key="$1" prompt="$2" current input
+  local key="$1" prompt="$2" current input s=$'\001' e=$'\002' p rc=0
   current=$(_existing "$key" || true)
-  if [[ -n "$current" ]]; then
-    printf '  %s%s%s %s[กด Enter เพื่อใช้ค่าเดิม]%s ' "$BOLD" "$prompt" "$RESET" "$DIM" "$RESET"
-  else
-    printf '  %s%s%s ' "$BOLD" "$prompt" "$RESET"
-  fi
-  read -r input || true
+  # Readline needs the colour codes wrapped in \001..\002 to place the cursor.
+  p="  $s$BOLD$e$prompt$s$RESET$e "
+  [[ -n "$current" ]] && p+="$s$DIM$e[Enter keeps current]$s$RESET$e "
+  read -e -r -p "$p" input || rc=1
+  if (( rc )) && [[ -z "$input" ]]; then return 1; fi
   [[ -z "$input" && -n "$current" ]] && input="$current"
   printf -v "$key" '%s' "$input"
 }
 
 # ask_secret KEY "คำถาม" — เหมือน ask แต่ซ่อนสิ่งที่พิมพ์ ใช้กับความลับเสมอ
 ask_secret() {
-  local key="$1" prompt="$2" current input
+  local key="$1" prompt="$2" current input rc=0
   current=$(_existing "$key" || true)
   if [[ -n "$current" ]]; then
-    printf '  %s%s%s %s[กด Enter เพื่อใช้ค่าเดิม]%s ' "$BOLD" "$prompt" "$RESET" "$DIM" "$RESET"
+    printf '  %s%s%s %s[Enter keeps current]%s ' "$BOLD" "$prompt" "$RESET" "$DIM" "$RESET"
   else
     printf '  %s%s%s ' "$BOLD" "$prompt" "$RESET"
   fi
-  read -rs input || true
+  read -rs input || rc=1
   printf '\n'
+  if (( rc )) && [[ -z "$input" ]]; then return 1; fi
   [[ -z "$input" && -n "$current" ]] && input="$current"
   printf -v "$key" '%s' "$input"
 }
@@ -128,14 +134,16 @@ ask_secret() {
 # write_env KEY VALUE — upsert KEY=VALUE ลง ENV_FILE (สร้างไฟล์ให้ถ้ายังไม่มี
 # และแทนที่บรรทัดเดิม) รันซ้ำได้ผลเหมือนเดิม
 write_env() {
-  local key="$1" value="$2" tmp
-  touch "$ENV_FILE"
+  local key="$1" value="$2" tmp sq="'\\''"
+  [[ -e "$ENV_FILE" ]] || (umask 077 && : > "$ENV_FILE")
   tmp=$(mktemp)
   grep -vE "^${key}=" "$ENV_FILE" > "$tmp" || true
-  printf '%s=%s\n' "$key" "$value" >> "$tmp"
-  mv "$tmp" "$ENV_FILE"
+  printf "%s='%s'\n" "$key" "${value//\'/$sq}" >> "$tmp"
+  cat "$tmp" > "$ENV_FILE"
+  rm -f "$tmp"
+  printf -v "$key" '%s' "$value"
   WRITTEN_ENV+=("$key")
-  printf '  %s✓ บันทึก%s %s → %s\n' "$GREEN" "$RESET" "$key" "$ENV_FILE"
+  printf '  %s✓ wrote%s %s → %s\n' "$GREEN" "$RESET" "$key" "$ENV_FILE"
 }
 
 # set_secret NAME VALUE — ตั้ง GitHub Actions repo secret ผ่าน gh
@@ -185,6 +193,8 @@ finish() {
 # แทนที่ตัวอย่างด้านล่าง และตั้ง TOTAL_STAGES ให้ตรงกับจำนวน stage ที่เขียน
 # ──────────────────────────────────────────────────────────────────────────
 
+run_wizard() {
+
 TOTAL_STAGES=1
 
 banner "ตั้งค่า Stripe"
@@ -203,3 +213,6 @@ set_secret STRIPE_SECRET_KEY "$STRIPE_SECRET_KEY"   # CI ต้องใช้�
 # ──────────────────────────────────────────────────────────────────────────
 
 finish
+}
+
+run_wizard "$@"; exit

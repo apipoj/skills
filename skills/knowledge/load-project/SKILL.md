@@ -11,6 +11,15 @@ Scan source-code folders และสร้างหรืออัพเดต 
 - ถ้าอยู่ใน git worktree ให้รัน `git status --short` และ `git log -3 --oneline`; ถ้าไม่ใช่ git repo ให้ข้าม git context และทำงานต่อ
 - ระบุ source subtrees ที่สำคัญ (package.json, pyproject.toml, go.mod, Cargo.toml, tsconfig, requirements.txt)
 
+## Domain documents
+
+Follow repository-scoped domain-reading instructions and `docs/agents/domain.md` first.
+When no location is configured, follow `GLOSSARY-MAP.md` or `CONTEXT-MAP.md` to the
+relevant glossary; otherwise read the existing root `GLOSSARY.md` or `CONTEXT.md`
+and relevant ADRs. Keep the project's existing filenames and one canonical glossary.
+If both conventions exist without guidance, ask which is authoritative before writing.
+The existing SPK `CONTEXT.md` default applies only when no glossary exists.
+
 ## Workflow
 
 ### 1. Scan Source Roots

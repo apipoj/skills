@@ -30,6 +30,25 @@ describe('reviewed upstream provenance', () => {
     }
   });
 
+  test('rejects drift in a promoted skill pin independently of the base snapshot', () => {
+    const fixture = fs.mkdtempSync(path.join(os.tmpdir(), 'spk-selective-lock-'));
+    try {
+      fs.mkdirSync(path.join(fixture, 'docs', 'upstream'), { recursive: true });
+      fs.mkdirSync(path.join(fixture, 'contracts'), { recursive: true });
+      const lock = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/upstream/upstream-lock.json'), 'utf8'));
+      const changed = JSON.parse(JSON.stringify(contract));
+      changed.skills.find(skill => skill.id === 'retro').origin.commit = 'wrong';
+      fs.writeFileSync(path.join(fixture, 'docs', 'upstream', 'upstream-lock.json'), JSON.stringify(lock));
+      fs.writeFileSync(path.join(fixture, 'contracts', 'workflows.json'), JSON.stringify(changed));
+      expect(collectUpstreamProvenanceErrors(fixture)).toContain('retro: origin commit must match its reviewed skill pin');
+      lock.skillPins.retro = 'wrong';
+      fs.writeFileSync(path.join(fixture, 'docs', 'upstream', 'upstream-lock.json'), JSON.stringify(lock));
+      expect(collectUpstreamProvenanceErrors(fixture)).toContain('upstream skillPins must match the reviewed implement-spec and retro commits');
+    } finally {
+      fs.rmSync(fixture, { recursive: true, force: true });
+    }
+  });
+
   test('retained UPSTREAM mirrors never point back to themselves', () => {
     const recursive = [];
     for (const skill of contract.skills) {

@@ -1,5 +1,7 @@
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
+const childProcess = require('child_process');
 
 const {
   BANNER_NOTICE,
@@ -7,6 +9,7 @@ const {
   NO_COUNTERPART,
   bodyOf,
   buildHashIndex,
+  buildUpstreamSkillArtifactMap,
   canonicalizeUpstreamSkillBody,
   indexUpstreamSkillFiles,
   normalizeEol,
@@ -130,6 +133,47 @@ describe('upstream reference doc generator', () => {
       'Use `/ask-me` outside a working directory.',
       'Keep ordinary prose unchanged.',
     ].join('\n'));
+  });
+
+  test('manual writing guidance is a reference rather than an unauthorized invocation', () => {
+    const contract = { skills: [{
+      id: 'write-skills', origin: { repository: 'mattpocock/skills', skill: 'writing-for-agents' },
+      activation: { allowImplicitInvocation: false },
+    }] };
+    expect(canonicalizeUpstreamSkillBody('Call the Skill tool with "writing-for-agents".', contract))
+      .toBe('Read the write-skills guidance as a reference without executing its workflow.');
+  });
+
+  test('selective skill pins control both instruction and auxiliary reads', () => {
+    const fixture = fs.mkdtempSync(path.join(os.tmpdir(), 'spk-selective-upstream-'));
+    const spy = jest.spyOn(childProcess, 'execFileSync').mockImplementation((command, args) => {
+      if (command !== 'git') throw new Error('unexpected command');
+      if (args[0] === 'ls-tree') {
+        return args[3] === 'base-pin' ? 'skills/engineering/tdd/SKILL.md\n'
+          : 'skills/engineering/retro/SKILL.md\nskills/engineering/retro/reference.md\n';
+      }
+      const bodies = {
+        'base-pin:skills/engineering/tdd/SKILL.md': 'Base instruction.\n',
+        'new-pin:skills/engineering/retro/SKILL.md': 'Reviewed instruction.\n',
+        'new-pin:skills/engineering/retro/reference.md': 'Reviewed reference.\n',
+      };
+      if (!(args[1] in bodies)) throw new Error(`wrong pin: ${args[1]}`);
+      return bodies[args[1]];
+    });
+    try {
+      const artifacts = buildUpstreamSkillArtifactMap(fixture, 'base-pin', { skills: [
+        { id: 'tdd', tier: 'core', origin: { repository: 'mattpocock/skills', skill: 'tdd' },
+          sources: { th: 'skills/engineering/tdd', en: 'locales/en/skills/engineering/tdd' } },
+        { id: 'retro', tier: 'core', origin: { repository: 'mattpocock/skills', skill: 'retro', commit: 'new-pin' },
+          sources: { th: 'skills/engineering/retro', en: 'locales/en/skills/engineering/retro' } },
+      ] }, fixture);
+      expect(artifacts.get('skills/engineering/tdd/UPSTREAM.md')).toBe('Base instruction.\n');
+      expect(artifacts.get('locales/en/skills/engineering/retro/UPSTREAM.md')).toBe('Reviewed instruction.\n');
+      expect(artifacts.get('skills/engineering/retro/reference.md')).toBe('Reviewed reference.\n');
+    } finally {
+      spy.mockRestore();
+      fs.rmSync(fixture, { recursive: true, force: true });
+    }
   });
 
   test('hash index can pin retained upstream skill mirrors alongside docs', () => {

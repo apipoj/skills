@@ -28,6 +28,13 @@ The delightful UX is already solved by `templates/wizard/template.sh` — stage-
 
 A wizard is ephemeral by default — built for one run, saved to a scratch or `scripts/` path, deleted when the job is done. Commit it only when the user wants a repeatable setup path that should live in the repo.
 
+## Complete script parsing
+
+Keep every authored stage and `finish` inside `run_wizard`. Preserve the final
+`run_wizard "$@"; exit` line so Bash parses the entire procedure before its first prompt.
+The library fails on empty EOF, preserves literal saved values, and creates new
+`.env` files with mode 0600 while preserving existing modes and symlink targets.
+
 ## Workflow
 
 ### Step 1: Scope the procedure

@@ -12,7 +12,7 @@ Apipoj Skills คือชุด workflow สำหรับทำงาน soft
 - งานสำคัญต้องมีหลักฐาน เช่น test result, diff scope, risk และ next action
 - การแก้ไฟล์ไม่ได้แปลว่าอนุญาตให้ commit, push, deploy หรือ publish
 
-source tree นี้มี **44 skills** และเรียกใช้เป็น command ได้ทุกตัว
+source tree นี้มี **46 skills** และเรียกใช้เป็น command ได้ทุกตัว
 
 ## เริ่มใน 2 นาที
 
@@ -87,9 +87,15 @@ npx skills@latest add apipoj/skills
 |---|---|
 | เริ่มงานและทำ decision ให้ชัด | `/spk:start`, `/spk:ask-me`, `/spk:asking`, `/spk:ask-with-docs`, `/spk:wait-what`, `/spk:teach`, `/spk:handoff`, `/spk:to-questionnaire` |
 | วางทิศทางและออกแบบงาน | `/spk:to-spec`, `/spk:plan`, `/spk:to-tickets`, `/spk:wayfinder`, `/spk:domain-modeling`, `/spk:codebase-design`, `/spk:prototype`, `/spk:design-options`, `/spk:bala`, `/spk:sunzi` |
-| พัฒนา แก้ปัญหา และตรวจงาน | `/spk:code`, `/spk:tdd`, `/spk:debug`, `/spk:triage`, `/spk:improve-codebase`, `/spk:code-review`, `/spk:test-changes`, `/spk:fix-conflicts` |
+| พัฒนา แก้ปัญหา และตรวจงาน | `/spk:code`, `/spk:tdd`, `/spk:debug`, `/spk:triage`, `/spk:improve-codebase`, `/spk:code-review`, `/spk:test-changes`, `/spk:fix-conflicts`, `/spk:implement-spec`, `/spk:retro` |
 | เข้าใจและดูแลความรู้ project | `/spk:setup`, `/spk:load-project`, `/spk:ask-project`, `/spk:research`, `/spk:add-knowledge`, `/spk:check-wiki`, `/spk:write-skills` |
 | ตรวจระบบและเตรียมส่งงาน | `/spk:doctor`, `/spk:check-release`, `/spk:pr`, `/spk:task-to-pr`, `/spk:deploy`, `/spk:wizard`, `/spk:uninstall` |
+
+`implement-spec` และ `retro` ต้องพิมพ์เรียกเอง ใช้ `implement-spec` เมื่อมีสเปกและ
+ticket ที่เชื่อม dependency แล้ว ต้องการแบ่งงานใน worktree แยกและรวมใน integration
+branch โดยขอ approval สำหรับ Git และ remote write ใช้ `retro` เพื่อทบทวน session
+และเสนอวิธีปรับ environment โดยไม่แก้ไฟล์ บน Codex ใช้ `$spk:implement-spec` หรือ
+`$spk:retro`
 
 ## สูตรใช้งานที่พบบ่อย
 

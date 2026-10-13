@@ -20,7 +20,11 @@ const PINNED_UPSTREAM_COMMIT = '6654f6b60cd9d5be8b54c6fafe44346dabeb3b76';
 const EXPECTED_BUCKETS = ['engineering', 'productivity'];
 // Canonical upstream skills we ship. Raise this deliberately when a review
 // promotes a new skill.
-const EXPECTED_PROMOTED_SKILLS = 24;
+const EXPECTED_PROMOTED_SKILLS = 26;
+const REVIEWED_SKILL_COMMITS = {
+  'implement-spec': '49dd158d1076134a641b33efb035946536778336',
+  retro: '49dd158d1076134a641b33efb035946536778336',
+};
 const EXCLUDED_BUCKETS = ['misc', 'personal', 'in-progress', 'deprecated'];
 
 function readJson(file) {
@@ -49,6 +53,12 @@ function collectUpstreamProvenanceErrors(rootDir = REPO_ROOT) {
   if (lock.commit !== PINNED_UPSTREAM_COMMIT) {
     errors.push(`upstream commit must be ${PINNED_UPSTREAM_COMMIT}`);
   }
+  const skillPins = lock.skillPins;
+  if (!skillPins || typeof skillPins !== 'object' || Array.isArray(skillPins)
+    || Object.keys(skillPins).length !== Object.keys(REVIEWED_SKILL_COMMITS).length
+    || Object.entries(REVIEWED_SKILL_COMMITS).some(([id, commit]) => skillPins[id] !== commit)) {
+    errors.push('upstream skillPins must match the reviewed implement-spec and retro commits');
+  }
   if (JSON.stringify(lock.promotedBuckets) !== JSON.stringify(EXPECTED_BUCKETS)) {
     errors.push(`promoted buckets must be ${EXPECTED_BUCKETS.join(', ')}`);
   }
@@ -67,6 +77,10 @@ function collectUpstreamProvenanceErrors(rootDir = REPO_ROOT) {
     errors.push(`expected ${EXPECTED_PROMOTED_SKILLS} promoted upstream skills, found ${promoted.length}`);
   }
   for (const skill of promoted) {
+    const expectedCommit = REVIEWED_SKILL_COMMITS[skill.id];
+    if (skill.origin.commit !== expectedCommit) {
+      errors.push(`${skill.id}: origin commit must match its reviewed skill pin`);
+    }
     const english = path.join(rootDir, skill.sources?.en || '', 'SKILL.md');
     const thai = path.join(rootDir, skill.sources?.th || '', 'SKILL.md');
     if (!fs.existsSync(english)) errors.push(`${skill.id}: missing English upstream mirror`);
@@ -250,7 +264,7 @@ function main() {
     }
   }
   console.log(
-    `Upstream provenance OK (${EXPECTED_PROMOTED_SKILLS} skills pinned at ${PINNED_UPSTREAM_COMMIT.slice(0, 7)})`,
+    `Upstream provenance OK (${EXPECTED_PROMOTED_SKILLS} reviewed skills; base ${PINNED_UPSTREAM_COMMIT.slice(0, 7)}, selective pins recorded in the lock)`,
   );
 }
 

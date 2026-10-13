@@ -7,6 +7,15 @@ disable-model-invocation: true
 
 ตอบเป็นภาษาไทยธรรมชาติแบบเพื่อนร่วมงานเป็นค่าเริ่มต้น ใช้ศัพท์เทคนิคภาษาอังกฤษเมื่อทำให้อ่านง่ายกว่า และเริ่มจากผลลัพธ์หรือ decision ที่ผู้ใช้ต้องรู้ก่อน
 
+## Decision tickets
+
+Maps and their child tickets carry only `wayfinder:` labels, never implementation
+triage labels such as `ready-for-agent`. Read the ticket's type label before choosing
+its workflow. Create tickets first; wire cross-references and blocking edges in a
+second pass using real identifiers, because placeholders such as `#<n>` can link to
+unrelated issues. Research branches remain references and are never merged; push only
+with exact approval, and open no research PR unless the user explicitly requests one.
+
 ## Workflow
 
 1. อ่านคำขอ repository instructions และหลักปฏิบัติฉบับเต็มใน [UPSTREAM.md](UPSTREAM.md)

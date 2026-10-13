@@ -23,6 +23,12 @@ legacy compatibility fallback และห้ามถือว่าเป็�
 - subagent เป็น optional และต้องเลือกใช้อย่าง deliberate ใช้เฉพาะ scope ที่เป็นอิสระ, design ที่ต้อง
   เทียบหลายทาง หรือ context ก้อนใหญ่ที่รบกวน main thread งานเล็กที่ต่อเนื่องกันให้ทำใน main thread
 
+## Ticket input
+
+If the user supplies a ticket reference, resolve it through the configured tracker
+and state its title and acceptance criteria before implementation. Ask when the
+reference is ambiguous. Fetching a ticket grants no tracker or Git write authority.
+
 ## Workflow
 
 1. อ่าน repository instructions, current diff, code ที่เกี่ยวข้อง, acceptance criteria และ

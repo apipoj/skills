@@ -16,3 +16,11 @@ The 2026-09-21 review selectively ported the PR body template from upstream
 That upstream skill credits Dex Horthy / HumanLayer `show-me`. The lock pin stays
 `6654f6b60cd9d5be8b54c6fafe44346dabeb3b76`. This is not a promotion of `in-progress`
 into the default roster.
+
+The [2026-10-14 review](reviews/2026-10-14.md) selectively backports promoted-skill
+fixes through `49dd158d1076134a641b33efb035946536778336`, plus the independently
+reproduced Bash 3.2 correction from upstream PR #1265. The base reference snapshot remains unchanged. Add `implement-spec` and `retro`
+from promoted engineering sources using explicit per-skill pins in the lock and
+workflow contract. Existing retained mirrors and reference pages describe the base
+pin; the two new retained mirrors describe their declared newer pins. Native and
+English wrappers define SPK behavior and approval boundaries.

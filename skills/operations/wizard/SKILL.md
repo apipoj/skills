@@ -2,6 +2,14 @@
 name: wizard
 description: เขียน bash wizard แบบโต้ตอบสำหรับขั้นตอนที่มีแต่คนทำได้ เช่น ตั้งค่า infrastructure, credential, CI secret หรือ migration ครั้งเดียว แล้วตรวจสอบให้เรียบร้อยและส่งให้ผู้ใช้รันเอง
 ---
+
+## Complete script parsing
+
+Keep every authored stage and `finish` inside `run_wizard`. Preserve the final
+`run_wizard "$@"; exit` line so Bash parses the entire procedure before its first prompt.
+The library fails on empty EOF, preserves literal saved values, and creates new
+`.env` files with mode 0600 while preserving existing modes and symlink targets.
+
 # สร้างตัวช่วยตั้งค่า
 
 เมื่อต้องให้ตัดสินใจหรือยืนยัน ให้ใช้ structured choice prompt ของ host ถ้ามี ถ้าไม่มีให้ใช้ numbered list ตัวเลือกต้องต่างกันจริงและมีข้อแนะนำหนึ่งข้อ ทุก label ต้องบอกผลลัพธ์จริง และตอบแบบ free-form ได้เสมอ

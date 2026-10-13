@@ -3,6 +3,16 @@ name: setup
 description: ตั้งค่า issue tracker, domain docs และ artifact routing แบบ split-zone ที่ skill อื่นใช้ร่วมกันใน repository นี้
 disable-model-invocation: true
 ---
+
+## Domain documents
+
+Follow repository-scoped domain-reading instructions and `docs/agents/domain.md` first.
+When no location is configured, follow `GLOSSARY-MAP.md` or `CONTEXT-MAP.md` to the
+relevant glossary; otherwise read the existing root `GLOSSARY.md` or `CONTEXT.md`
+and relevant ADRs. Keep the project's existing filenames and one canonical glossary.
+If both conventions exist without guidance, ask which is authoritative before writing.
+The existing SPK `CONTEXT.md` default applies only when no glossary exists.
+
 # ตั้งค่า Apipoj Skills
 
 เมื่อต้องให้ตัดสินใจหรือยืนยัน ให้ใช้ structured choice prompt ของ host ถ้ามี ถ้าไม่มีให้ใช้ numbered list ตัวเลือกต้องต่างกันจริงและมีข้อแนะนำหนึ่งข้อ ทุก label ต้องบอกผลลัพธ์จริง และตอบแบบ free-form ได้เสมอ

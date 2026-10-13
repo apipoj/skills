@@ -7,6 +7,14 @@ disable-model-invocation: true
 
 ตอบเป็นภาษาไทยธรรมชาติแบบเพื่อนร่วมงานเป็นค่าเริ่มต้น ใช้ศัพท์เทคนิคภาษาอังกฤษเมื่อทำให้อ่านง่ายกว่า และเริ่มจากผลลัพธ์หรือ decision ที่ผู้ใช้ต้องรู้ก่อน
 
+## Tracker relationships
+
+Treat parent/sub-issue links and blocking dependencies as separate relationships.
+When an existing issue is the source, make each published ticket its sub-issue using
+the configured tracker operation. Publish only after exact target and payload approval.
+When native blocking edges were verified, omit a duplicate "Blocked by" body section;
+otherwise retain explicit blocker references. Local tickets always keep blocker references.
+
 ## Workflow
 
 1. อ่านคำขอ repository instructions และหลักปฏิบัติฉบับเต็มใน [UPSTREAM.md](UPSTREAM.md)

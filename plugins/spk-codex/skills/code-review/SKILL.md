@@ -23,6 +23,13 @@ Review the user's stated scope. For an unspecified diff review, use current trac
 untracked changes. A repository review does not require a comparison branch. If a supplied
 ref is invalid or a diff is empty, report that fact and the resulting scope limitation.
 
+## Standards sources
+
+Search the relevant repository scope for coding guidance. Include `CODING_STANDARDS.md`
+and `CONTRIBUTING.md` whenever they exist, alongside applicable repository instructions.
+If independent substantial scopes are delegated, start those reviews together and wait
+for their reports before aggregating findings. A single review remains the default.
+
 ## Workflow
 
 Inspect relevant source, repository standards, and available requirements. Assess correctness,

@@ -23,6 +23,16 @@ When a decision or confirmation is needed, use the host's structured choice prom
 
 As the router, reveal advanced detail only when it helps the current decision.
 
+## Additional manual workflows
+
+- Implement one supplied spec across dependency-linked tickets on an integration branch: present `/implement-spec`.
+- Review a completed coding session for environment improvements without editing files: present `/retro`.
+
+## Routing evidence
+
+Before describing a workflow's behavior or recommending that a step be skipped,
+read its actual `SKILL.md`. Router summaries are orientation, not execution contracts.
+
 ## Workflow
 
 1. Read the request and repository instructions. Separate facts you can inspect from decisions only the user can make.

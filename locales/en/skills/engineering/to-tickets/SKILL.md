@@ -18,6 +18,14 @@ Reply in the user's language.
 
 Keep working without user input while the requested outcome remains inside current authority. Use a reversible smart default and record assumptions. Ask only when one material user-owned decision changes scope, risk, cost, or success, or when a required effect crosses an unapproved boundary.
 
+## Tracker relationships
+
+Treat parent/sub-issue links and blocking dependencies as separate relationships.
+When an existing issue is the source, make each published ticket its sub-issue using
+the configured tracker operation. Publish only after exact target and payload approval.
+When native blocking edges were verified, omit a duplicate "Blocked by" body section;
+otherwise retain explicit blocker references. Local tickets always keep blocker references.
+
 ## Workflow
 
 1. Read the request, repository instructions, and full practice in [UPSTREAM.md](UPSTREAM.md).

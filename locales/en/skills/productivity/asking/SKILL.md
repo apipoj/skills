@@ -52,6 +52,9 @@ tree**: every decision branches into the decisions that hang off it.
 5. Done when the frontier is empty — every branch visited, nothing silently assumed. Do not act until
    the user confirms shared understanding.
 
+Word each question so a bare "yes" accepts the recommended answer. For a batch,
+an unqualified "yes" accepts the recommendations only when that meaning is explicit.
+
 ## Autonomy Profile
 
 `decision_aware` — prompt budget 1; repair budget 3. Inspect facts and prepare the smallest useful draft within this skill's declared effect level; read-only skills stay read-only. Use recommended reversible assumptions and bundle only the one material decision that changes outcome, scope, risk, cost, or success. Before pausing, return the decision ledger, recommended default, evidence, and a resumable next action.

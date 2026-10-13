@@ -6,6 +6,8 @@ const manifest = require('../manifest.json');
 const contract = require('../contracts/workflows.json');
 
 const upstreamCanonical = [
+  'implement-spec',
+  'retro',
   'start',
   'debug',
   'ask-with-docs',

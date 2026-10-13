@@ -1,0 +1,116 @@
+---
+name: implement-spec
+description: "Implement a supplied spec across dependency-linked tickets in isolated worktrees, verify the integration branch, and require exact approval for Git and tracker writes."
+disable-model-invocation: true
+---
+
+# Implement a spec
+
+## Response Rules
+
+Reply in the user's language.
+
+- **Simplicity** — one idea per sentence; the plain word over the impressive one.
+- **Brevity** — answer first, then stop; no preamble, no restating the request, no summarizing what you just wrote.
+- **Clarity** — lead with the outcome, then what changed and what it costs; label an unverified claim as unverified.
+- **Humanity** — write as a colleague, not a system; familiar technical English over literal translation; no performative enthusiasm, no apology theater, no location stereotypes.
+- **Terminology** — reach for the precise domain term and keep it in its English form; never respell it phonetically in the reply's script (`ผลเทสท์` for `test`) or translate it literally (`หูจับ` for `handle`). Gloss an unfamiliar term once — `CPA (ต้นทุนต่อการได้ลูกค้าหนึ่งราย)` — then anchor it with one concrete example.
+
+Keep working without user input while the requested outcome remains inside current authority. Use a reversible smart default and record assumptions. Ask only when one material user-owned decision changes scope, risk, cost, or success, or when a required effect crosses an unapproved boundary.
+
+Implement one supplied spec through its dependency-linked tickets. The result is a
+verified integration branch with per-ticket evidence. A ticket is integrated only
+after its code reaches that branch and the required checks pass.
+
+## Workflow
+
+1. Resolve the spec and every ticket through the configured tracker or supplied local
+   files. State their titles and acceptance criteria. Read repository instructions,
+   scoped domain guidance and relevant ADRs. Ask when identifiers or the spec are
+   ambiguous. If the spec has no tickets, report the missing graph before dispatch;
+   missing tracker setup is not a blocker when local inputs are complete.
+2. Before dispatch, list acceptance prerequisites: credentials, manual provisioning,
+   test accounts, fixtures, environments and human-only checks. Inspect what is available.
+   Mark each prerequisite available, missing or manual. A missing prerequisite blocks
+   the affected ticket; independent tickets can continue. Never invent acceptance proof.
+3. Model ticket IDs, dependencies and states as a task graph. Reject duplicate or unknown
+   IDs and cycles. Keep the ready frontier to pending tickets whose blockers are
+   integrated and whose acceptance prerequisites are ready. Use the read-only
+   [task-graph helper](scripts/task-graph.cjs) with a JSON array of
+   `{id, dependencies, status, acceptanceReady}` records; integrated records also require
+   `integrationSha` and `checksPassed: true`. Its output is scheduling
+   evidence, not proof that acceptance passed. `integrated` status requires a recorded
+   integration SHA and successful checks, not merely a worker's completion message.
+4. Resolve the integration base and propose named branches and isolated worktrees.
+   Show exact repository, paths, refs, base SHAs and operations; obtain approval before
+   Git setup writes unless this exact setup is already authorized. Reuse a matching
+   owned worktree. If its base is wrong, preserve its state and fix isolation with
+   approval; never reset it or absorb unrelated changes.
+5. Dispatch independent ready tickets concurrently using host subagents when available.
+   Each worker receives pointers to the spec, ticket, scoped docs, worktree and current
+   integration SHA, plus explicit file ownership and allowed operations. Keep concurrent
+   writers in separate worktrees. If delegation or worktrees are unavailable, report
+   the limitation and process tickets serially in an approved isolated checkout.
+   Keep read-only exploration notes under the artifact policy and point workers at them.
+6. Each worker follows strict test-first development: agree public seams, show expected
+   RED, implement minimum GREEN, run focused and required regression checks. Consult the
+   `tdd` discipline and `codebase-design` vocabulary without inventing host-specific
+   invocation syntax. Return exact paths, base SHA, check commands/results, remaining
+   acceptance gaps and the proposed commit payload. Workers may commit only inside an
+   already approved envelope; otherwise finish workspace changes and return the diff.
+7. Integrate one verified result at a time. Recheck the integration tip and worker base;
+   test the worker against the current tip before integration. Show the concrete commit
+   and merge payload and obtain approval for writes not already covered. If the tip or
+   semantic payload drifts, rebuild verification and approval. Confirm the merge and
+   integration checks, then mark the ticket integrated and recompute the frontier.
+   A worker being done, a branch existing or an open PR never unlocks dependents.
+8. Review the whole integration diff against the spec with the `code-review` discipline.
+   Run aggregate repository checks and confirm every acceptance criterion. Repair valid
+   findings in an isolated worker and repeat affected checks within the repair budget.
+   Report manual checks as NOT_RUN until someone actually performs them. Do not call
+   the spec complete while required acceptance remains missing or unverified.
+9. If tracker policy closes work through a PR, or the user requests one, prepare a draft
+   PR after the first approved integration adds a commit ahead of the base. Before any
+   push, PR creation/update, ready transition or ticket closure, show the exact remote
+   repository, ref, diff, title/body, ticket IDs and operations and obtain approval.
+   Bind explicit repository selectors. Mark a PR ready only after required acceptance
+   and CI are verified. Otherwise report the integration branch and unresolved tracker
+   actions; do not infer publication consent from implementation approval.
+10. Offer cleanup only for worktrees this run owns. Show exact targets and obtain cleanup
+    approval. Preserve failed or dirty worktrees, unrelated user files and evidence.
+
+## Approval boundary
+
+A request to implement a spec authorizes in-scope workspace implementation, not automatic
+Git or tracker writes. Prepare concrete reviewable results before requesting each required
+boundary approval. Use plain affirmatives only for the immediately preceding displayed
+intent; questions, quoted approvals and earlier replies do not authorize it. Record the
+approved envelope and revalidate it immediately before mutation. Stable approval covers
+its declared operation and retry budget; material drift invalidates it. Respect stricter
+repository instructions. Merge, deploy, protected-ref writes, force-push and destructive
+cleanup are outside implementation authority.
+
+## Autonomy Profile
+
+`boundary_gated` — prompt budget 1; repair budget 2. Prepare and verify the exact boundary intent without mutation, then request one approval for the declared operation. After approval, complete every stage and allowed retry inside the stable envelope without another prompt. Before pausing, persist the approved envelope digest, current phase, evidence, attempts, and rollback or recovery path.
+
+## Evidence Receipt
+
+Report the integration branch and SHA, tickets integrated or blocked, actual check results,
+manual acceptance gaps, approval-dependent actions and any approved PR URL. Include the
+smallest next action. Use machine-readable scheduling records only when helpful internally
+or requested; the user-facing result stays concise.
+
+## Guardrails
+
+- Never dispatch an acceptance-blocked ticket or claim a worker's self-report as proof.
+- Never reset a worktree, write shared files concurrently, stage unrelated paths or
+  silently broaden the spec to remove a blocker.
+- Apply exact Git, remote and cleanup approval boundaries; implementation approval is
+  never merge, deployment or protected-branch authority.
+- Missing tools and unrun acceptance remain explicit gaps.
+
+## Provenance
+
+See [PROVENANCE.md](PROVENANCE.md) for the reviewed upstream source and SPK adaptations.
+The retained UPSTREAM.md is comparative material; this workflow defines execution.

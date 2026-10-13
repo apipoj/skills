@@ -24,3 +24,6 @@
 - [`test-changes`](./test-changes/SKILL.md) — เลือกและรัน test ที่เกี่ยวกับไฟล์ที่เปลี่ยนเพื่อได้ผลเร็ว พร้อมบอกส่วนที่จับคู่ไม่ได้และรัน full suite ก่อนจบ
 
 - [`create-verification-skill`](./create-verification-skill/SKILL.md) — สร้าง verifier สำหรับ task, tests, spec และ skill พร้อมหลักฐานจากการลองใช้จริง
+
+- [`implement-spec`](./implement-spec/SKILL.md) — พัฒนาสเปกหลาย ticket ตาม dependency ด้วย worktree แยกและ integration branch พร้อมหลักฐานและ approval ของ Git/remote _(manual-only)_
+- [`retro`](./retro/SKILL.md) — ทบทวน session และเสนอวิธีปรับ environment จากหลักฐาน โดยไม่แก้ไฟล์ _(manual-only)_

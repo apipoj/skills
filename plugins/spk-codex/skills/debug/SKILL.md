@@ -34,6 +34,22 @@ If the redacted output is not enough to diagnose the bug, say so and ask the use
 - In a git worktree, run `git status --short`, `git log -5 --oneline`, and `git diff --stat`; outside a git repo, skip git context and work from what's available.
 - Capture the complete error output, test failure, or unexpected behavior.
 
+## Domain documents
+
+Follow repository-scoped domain-reading instructions and `docs/agents/domain.md` first.
+When no location is configured, follow `GLOSSARY-MAP.md` or `CONTEXT-MAP.md` to the
+relevant glossary; otherwise read the existing root `GLOSSARY.md` or `CONTEXT.md`
+and relevant ADRs. Keep the project's existing filenames and one canonical glossary.
+If both conventions exist without guidance, ask which is authoritative before writing.
+The existing SPK `CONTEXT.md` default applies only when no glossary exists.
+
+## Mutation evidence
+
+When an authorized reproduction changes code or a fixture to force a failure, compare
+it with a pristine copy to prove the mutation landed before trusting the RED result.
+This diagnosis workflow remains read-only; recommend the mutation check to the
+implementer when reproducing it would require project writes.
+
 ## Workflow
 
 Run this systematic 4-step root-cause process before recommending any fix.

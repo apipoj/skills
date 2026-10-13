@@ -22,6 +22,21 @@ Keep working without user input while the requested outcome remains inside curre
 Run a strict RED-GREEN-REFACTOR loop for the requested behavior. This is the strict
 red-green-refactor loop; use the `code` skill otherwise.
 
+## Domain documents
+
+Follow repository-scoped domain-reading instructions and `docs/agents/domain.md` first.
+When no location is configured, follow `GLOSSARY-MAP.md` or `CONTEXT-MAP.md` to the
+relevant glossary; otherwise read the existing root `GLOSSARY.md` or `CONTEXT.md`
+and relevant ADRs. Keep the project's existing filenames and one canonical glossary.
+If both conventions exist without guidance, ask which is authoritative before writing.
+The existing SPK `CONTEXT.md` default applies only when no glossary exists.
+
+## Test scope
+
+Before writing tests, list the public seams under test. For each seam, state what
+it catches and what it misses. Reuse seams already agreed in the request or reviewed
+plan; ask only when a material test boundary remains unsettled.
+
 ## Workflow
 
 Use a build worker only when delegation is available; the main conversation remains
