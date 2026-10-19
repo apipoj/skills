@@ -99,7 +99,7 @@ Place each visual next to the short text it supports. Keep only the calls, files
 
 ## When to use diagram-design instead
 
-`show-me` is for compact visuals inside the coding conversation: quick, inline, disposable. Use the `diagram-design` workflow when the user needs a polished, presentation-grade diagram delivered as a self-contained HTML+SVG file rendered to PNG, for example for a deck, doc, or post.
+`show-me` is for compact visuals inside the coding conversation: quick, inline, disposable. When the host has the optional `diagram-design` workflow (not part of this distribution), use it when the user needs a polished, presentation-grade diagram delivered as a self-contained HTML+SVG file rendered to PNG, for example for a deck, doc, or post. If it is unavailable, use one focused HTML file here and report that it is not presentation-grade.
 
 ## Project visual context
 
