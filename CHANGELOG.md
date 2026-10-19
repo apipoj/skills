@@ -1,5 +1,9 @@
 # Apipoj Skills
 
+## Unreleased
+
+- Merge HumanLayer `show-me` shapes (pseudocode, call tree, component tree, file tree, types, Mermaid, diff, whole block, focused HTML) and compactness guidance into `show-me`, with a note on when to use `diagram-design` instead. Provenance: humanlayer/skills@653b6411c1f70c275a18e37673b042ff99f67ceb by Dex Horthy, MIT License, Copyright (c) 2026 HumanLayer.
+
 ## 6.10.0 - 2026-10-14
 
 - Selectively backport reviewed `mattpocock/skills` updates through `49dd158d1076134a641b33efb035946536778336` into the SPK roster. Follow scoped domain-reading guidance and recognize both GLOSSARY and CONTEXT conventions without creating competing glossaries.

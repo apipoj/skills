@@ -6,3 +6,8 @@ Legacy SPK source: apipoj/spk@819fe90
 
 Copyright (c) 2026 Matt Pocock
 Copyright (c) 2026 Apipoj Piasak
+
+skills/productivity/show-me includes shapes and guidance adapted from
+humanlayer/skills@653b6411c1f70c275a18e37673b042ff99f67ceb (MIT License).
+https://github.com/humanlayer/skills
+Copyright (c) 2026 HumanLayer
