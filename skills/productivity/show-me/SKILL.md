@@ -27,6 +27,80 @@ Keep working without user input while the requested outcome remains inside curre
 4. Place an inline visual beside its short explanation. For HTML, follow the local artifact policy below and create one self-contained page with realistic labels, accessible contrast, responsive layout, and text alternatives for meaningful diagrams.
 5. Preview the HTML with the host tools and inspect rendering when available. Correct observable issues within scope. Return the visual, source context, assumptions, verification gaps, and any material open decision. Standalone explanation requests finish here; viewing a visual does not approve implementation.
 
+## Shapes
+
+Adapted from HumanLayer `show-me`. Skip the preamble. You may use one shape, or several; rarely all. Do not overwhelm the user.
+
+- **Pseudocode** for logic or an algorithm:
+
+```text
+on(save)
+  if content is unchanged
+    return cached result
+  write new content
+  return fresh result
+```
+
+- **Call tree** for runtime control flow:
+
+```text
+submitForm
+  createSession
+    persistPrompt
+    launchAgent
+  navigateToSession
+```
+
+- **Component tree** for UI structure, keeping the state and module boundaries that matter:
+
+```tsx
+<SessionPage> (apps/example/src/routes/session.tsx)
+  useSessionEvents()
+  <SessionToolbar>
+    <RunSkillButton> (packages/ui)
+```
+
+- **Shallow file tree** for file responsibility or a broad refactor, one line of responsibility per entry:
+
+```text
+src/
+├── commands/       # parses user actions
+├── sessions/       # owns session state
+└── transport/      # sends API requests
+```
+
+- **Types and signatures** for the shape of code before it exists.
+- **Mermaid** for component interaction, control flow, or data flow; prefer sequence and state diagrams:
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant UI
+    participant Daemon
+    User->>UI: choose command
+    UI->>Daemon: send expanded prompt
+    Daemon-->>UI: stream result
+```
+
+- **Diff** when the point is what changes and the surrounding shape already exists. Match the diff shape to the topic (component, file layout, call tree, or state/control flow):
+
+```diff
+ submitForm
+   createSession
+     persistPrompt
++    expandSkillMention
+     launchAgent
+```
+
+- **Whole block** when most of it is new, when omitted context would hide ownership or order, or when the user needs a copyable target shape.
+- **One focused HTML file** (diagram, infographic, or short slide deck) for a visual UI, layout, state comparison, or concept too dense for Mermaid. Match the product's colors, type, spacing, and components; use real labels and data; support desktop and mobile.
+
+Place each visual next to the short text it supports. Keep only the calls, files, props, states, and boundaries needed for the current question or the options for the current discussion point.
+
+## When to use diagram-design instead
+
+`show-me` is for compact visuals inside the coding conversation: quick, inline, disposable. Use the `diagram-design` workflow when the user needs a polished, presentation-grade diagram delivered as a self-contained HTML+SVG file rendered to PNG, for example for a deck, doc, or post.
+
 ## Project visual context
 
 Read existing design tokens, styled pages, and relevant brand context before choosing styling.
@@ -66,3 +140,5 @@ rendering or user understanding.
 ## Source
 
 Adapted from [Business OS Show Me](https://github.com/apipoj/business-os/blob/3fcb0d4458ef80680e64d0af3433d113fc318554/skills/show-me/SKILL.md). Project context and output paths are optional conventions here; SPK approval and evidence rules apply.
+
+Shapes and compactness guidance adapted from [HumanLayer show-me](https://github.com/humanlayer/skills/blob/653b6411c1f70c275a18e37673b042ff99f67ceb/plugins/show-me/skills/show-me/SKILL.md) by Dex Horthy, MIT License, Copyright (c) 2026 HumanLayer.
