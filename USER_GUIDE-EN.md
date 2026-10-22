@@ -68,7 +68,7 @@ Then describe the outcome normally:
 
 The skill table uses two invocation states:
 
-- **model or typed:** invoke the skill directly, or let `start` select it when the context is clear.
+- **model or typed:** invoke the skill directly, or let `start` select it when the context is clear. For example, when `start` routes to a one-decision-at-a-time interview, it enters `ask-me` and asks the first question right away.
 - **typed only:** type the exact skill name because the model will not invoke this workflow automatically.
 
 Typed-only example:

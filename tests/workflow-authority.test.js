@@ -1,5 +1,7 @@
 const fs = require('fs');
 const path = require('path');
+const { safeLoad } = require('js-yaml');
+const { parseFrontmatter } = require('../scripts/generate-platform-artifacts.cjs');
 
 const ROOT = path.join(__dirname, '..');
 const SHARED_SKILLS = path.join(ROOT, 'plugins', 'spk', 'skills');
@@ -104,7 +106,6 @@ describe('provider-neutral workflow and authority contracts', () => {
   test('manual-only invocation policy is equivalent across Claude and Codex payloads', () => {
     expect([...MANUAL_ONLY].sort()).toEqual([
       'add-knowledge',
-      'ask-me',
       'ask-with-docs',
       'bala',
       'check-release',
@@ -136,6 +137,29 @@ describe('provider-neutral workflow and authority contracts', () => {
       expect(frontmatter(codexText)['disable-model-invocation']).toBeUndefined();
       expect(read(path.join(CODEX_SKILLS, name, 'agents', 'openai.yaml')))
         .toContain('allow_implicit_invocation: false');
+    }
+  });
+
+  test('ask-me permits model invocation across hosts while bala and sunzi remain manual-only', () => {
+    for (const [name, allowImplicitInvocation] of [['ask-me', true], ['bala', false], ['sunzi', false]]) {
+      const skill = CONTRACT_BY_ID.get(name);
+      expect(skill.activation.allowImplicitInvocation).toBe(allowImplicitInvocation);
+
+      for (const file of [
+        nativeSkillFile(name),
+        path.join(ROOT, skill.sources.en, 'SKILL.md'),
+        path.join(SHARED_SKILLS, name, 'SKILL.md'),
+      ]) {
+        expect(parseFrontmatter(read(file)).fields['disable-model-invocation'])
+          .toBe(allowImplicitInvocation ? undefined : true);
+      }
+
+      expect(parseFrontmatter(read(path.join(CODEX_SKILLS, name, 'SKILL.md')))
+        .fields['disable-model-invocation']).toBeUndefined();
+      for (const directory of [path.join(ROOT, skill.sources.th), path.join(CODEX_SKILLS, name)]) {
+        const metadata = safeLoad(read(path.join(directory, 'agents', 'openai.yaml')));
+        expect(metadata.policy.allow_implicit_invocation).toBe(allowImplicitInvocation);
+      }
     }
   });
 

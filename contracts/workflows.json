@@ -1593,7 +1593,7 @@
         },
         {
           "phase": "resolve",
-          "instruction": "Ask one material user-owned question only when its answer changes the next action; use asking for a genuinely blocking multi-decision interview and present manual ask-me only as an option."
+          "instruction": "Ask one material user-owned question only when its answer changes the next action; use asking for a genuinely blocking multi-decision interview and offer ask-me only as an option."
         },
         {
           "phase": "recommend",
@@ -2030,7 +2030,7 @@
       "locales": {
         "en": {
           "displayName": "Ask Me",
-          "description": "Run a manual Thai-first, read-only decision interview that asks one question at a time, confirm a compact brief, then recommend one context-fit deliverable or a gated plan-to-development handoff.",
+          "description": "Read-only Thai-first interview on direct invocation, explicit one-decision-at-a-time interview requests, or start handoffs; confirm a brief and recommend a deliverable.",
           "shortDescription": "Clarify naturally in Thai and route the next output",
           "defaultPrompt": "Interview me in concise, natural Thai, then recommend the next context-fit deliverable.",
           "triggers": [
@@ -2046,7 +2046,7 @@
         },
         "th": {
           "displayName": "ถามให้ชัด",
-          "description": "ถามทีละเรื่องให้ความคิดหรือแผนชัดขึ้น สรุปให้ยืนยัน แล้วแนะนำงานถัดไปโดยยังไม่แก้ไฟล์",
+          "description": "ถามทีละ decision เมื่อผู้ใช้เรียกโดยตรง ขอให้ช่วยสัมภาษณ์ทีละเรื่อง หรือ start ส่งต่อมา สรุปให้ยืนยัน แล้วแนะนำงานถัดไปโดยยังไม่แก้ไฟล์",
           "shortDescription": "ถามทีละเรื่องให้ความคิดหรือแผนชัดขึ้น สรุปให้ยืนยัน แล้วแนะนำงานถัดไปโดยยังไม่แก้ไฟล์",
           "defaultPrompt": "ช่วยถามฉันทีละ decision ด้วยภาษาไทยกระชับเป็นธรรมชาติ แล้วแนะนำงานถัดไปตาม context",
           "triggers": [
@@ -2062,7 +2062,7 @@
         }
       },
       "activation": {
-        "allowImplicitInvocation": false
+        "allowImplicitInvocation": true
       },
       "effectLevel": "read_only",
       "role": "thai_discovery_interviewer",
@@ -2116,7 +2116,7 @@
         "development and external-write authorization states"
       ],
       "guardrails": [
-        "Use only after explicit invocation, ask one material decision at a time, and wait for each answer.",
+        "Enter only on direct invocation, an explicit one-decision-at-a-time interview request, or a handoff from start; never auto-trigger on unrelated prompts. Ask one material decision at a time and wait for each answer.",
         "Use concise, natural, semi-formal Thai; avoid literal translationese, repeated context, and any emoji other than an optional single 💡 for genuine personal perspective.",
         "Ask-me remains read-only; summary confirmation authorizes no artifact or workflow, and the separate deliverable selection creates a new boundary.",
         "Recommend only context-relevant outputs, exactly one as the default, and never generate every catalog candidate.",
