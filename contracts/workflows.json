@@ -1593,7 +1593,7 @@
         },
         {
           "phase": "resolve",
-          "instruction": "Ask one material user-owned question only when its answer changes the next action; use asking for a genuinely blocking multi-decision interview and present manual ask-me only as an option."
+          "instruction": "Ask one material user-owned question only when its answer changes the next action; use asking for a genuinely blocking multi-decision interview and offer ask-me only as an option."
         },
         {
           "phase": "recommend",
@@ -2030,7 +2030,7 @@
       "locales": {
         "en": {
           "displayName": "Ask Me",
-          "description": "Run a manual Thai-first, read-only decision interview that asks one question at a time, confirm a compact brief, then recommend one context-fit deliverable or a gated plan-to-development handoff.",
+          "description": "Run a Thai-first, read-only decision interview only when the user asks to be questioned one decision at a time; confirm a compact brief, then recommend one context-fit deliverable or a gated plan-to-development handoff.",
           "shortDescription": "Clarify naturally in Thai and route the next output",
           "defaultPrompt": "Interview me in concise, natural Thai, then recommend the next context-fit deliverable.",
           "triggers": [
@@ -2046,7 +2046,7 @@
         },
         "th": {
           "displayName": "ถามให้ชัด",
-          "description": "ถามทีละเรื่องให้ความคิดหรือแผนชัดขึ้น สรุปให้ยืนยัน แล้วแนะนำงานถัดไปโดยยังไม่แก้ไฟล์",
+          "description": "ถามทีละ decision เฉพาะเมื่อผู้ใช้ขอให้ช่วยถามหรือสัมภาษณ์ให้ความคิดหรือแผนชัดขึ้น สรุปให้ยืนยัน แล้วแนะนำงานถัดไปโดยยังไม่แก้ไฟล์",
           "shortDescription": "ถามทีละเรื่องให้ความคิดหรือแผนชัดขึ้น สรุปให้ยืนยัน แล้วแนะนำงานถัดไปโดยยังไม่แก้ไฟล์",
           "defaultPrompt": "ช่วยถามฉันทีละ decision ด้วยภาษาไทยกระชับเป็นธรรมชาติ แล้วแนะนำงานถัดไปตาม context",
           "triggers": [
@@ -2062,7 +2062,7 @@
         }
       },
       "activation": {
-        "allowImplicitInvocation": false
+        "allowImplicitInvocation": true
       },
       "effectLevel": "read_only",
       "role": "thai_discovery_interviewer",

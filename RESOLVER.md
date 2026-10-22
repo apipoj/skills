@@ -39,7 +39,7 @@ Rules:
 | `/spk:handoff` | direct main-thread workflow | typed only |
 | `/spk:teach` | direct main-thread workflow | typed only |
 | `/spk:write-skills` | direct main-thread workflow | typed only |
-| `/spk:ask-me` | direct main-thread workflow | typed only |
+| `/spk:ask-me` | direct main-thread workflow | model or typed |
 | `/spk:wait-what` | direct main-thread workflow | typed only |
 | `/spk:plan` | plan-orchestrator | model or typed |
 | `/spk:design-options` | designer | model or typed |

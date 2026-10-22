@@ -122,7 +122,7 @@ npx skills@latest add apipoj/skills
 | `/spk:handoff` | direct main-thread workflow | พิมพ์เอง |
 | `/spk:teach` | direct main-thread workflow | พิมพ์เอง |
 | `/spk:write-skills` | direct main-thread workflow | พิมพ์เอง |
-| `/spk:ask-me` | direct main-thread workflow | พิมพ์เอง |
+| `/spk:ask-me` | direct main-thread workflow | agent เรียกเองได้ |
 | `/spk:wait-what` | direct main-thread workflow | พิมพ์เอง |
 | `/spk:plan` | plan-orchestrator | agent เรียกเองได้ |
 | `/spk:design-options` | designer | agent เรียกเองได้ |

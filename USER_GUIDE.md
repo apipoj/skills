@@ -68,7 +68,7 @@ npx skills@latest add apipoj/skills
 
 ในตาราง skill จะมีสถานะการเรียกสองแบบ:
 
-- **agent เรียกเองได้ / model or typed:** พิมพ์ชื่อ skill โดยตรงก็ได้ หรือปล่อยให้ `start` เลือกเมื่อ context ชัด
+- **agent เรียกเองได้ / model or typed:** พิมพ์ชื่อ skill โดยตรงก็ได้ หรือปล่อยให้ `start` เลือกเมื่อ context ชัด เช่น ถ้า `start` เห็นว่าต้องถามทีละ decision จะเข้า `ask-me` และถามคำถามแรกต่อทันที
 - **พิมพ์เอง / typed only:** ต้องพิมพ์ชื่อ skill ชัดเจน เพราะ agent จะไม่เรียก workflow นี้เอง
 
 ตัวอย่าง typed-only:

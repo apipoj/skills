@@ -65,6 +65,7 @@ read its actual `SKILL.md`. Router summaries are orientation, not execution cont
    behavior with a reliable test seam. Let verification follow the change's risk and repo policy.
 
    When the outcome maps to a manual-only skill (`disable-model-invocation`), present the `/<name>` command to the user and stop instead of invoking it.
+   `ask-me` is model-invocable: when the outcome is `ask-me`, hand off to it in this turn and ask its first decision question instead of presenting `/ask-me` and stopping.
 5. Run the selected workflow through its verified outcome. An explicit end-to-end request
    carries bounded workspace authority through planning and implementation; continue
    through planning and implementation, relevant checks, and repair of failures caused by the change

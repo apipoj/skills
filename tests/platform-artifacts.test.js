@@ -155,7 +155,7 @@ describe('platform artifact compiler', () => {
     )).toMatch(/explicit end-to-end request[\s\S]*continue[\s\S]*planning and implementation/i);
 
     expect(byId['ask-me'].effectLevel).toBe('read_only');
-    expect(byId['ask-me'].activation.allowImplicitInvocation).toBe(false);
+    expect(byId['ask-me'].activation.allowImplicitInvocation).toBe(true);
     expect(byId['ask-me'].workflow.find((step) => step.phase === 'voice').instruction)
       .toMatch(/dense, native, semi-formal Thai[\s\S]*no literal translationese[\s\S]*no other emoji/i);
     expect(byId['ask-me'].workflow.find((step) => step.phase === 'ask').instruction)
@@ -429,7 +429,7 @@ describe('platform artifact compiler', () => {
 
     const askMe = contract.skills.find((skill) => skill.id === 'ask-me');
     const askMeMetadata = renderOpenAiYaml(askMe);
-    expect(askMeMetadata).toContain('allow_implicit_invocation: false');
+    expect(askMeMetadata).toContain('allow_implicit_invocation: true');
     expect(askMeMetadata).toContain('default_prompt: "Use $spk:ask-me:');
   });
 

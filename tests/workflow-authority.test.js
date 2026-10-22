@@ -104,7 +104,6 @@ describe('provider-neutral workflow and authority contracts', () => {
   test('manual-only invocation policy is equivalent across Claude and Codex payloads', () => {
     expect([...MANUAL_ONLY].sort()).toEqual([
       'add-knowledge',
-      'ask-me',
       'ask-with-docs',
       'bala',
       'check-release',
@@ -137,6 +136,23 @@ describe('provider-neutral workflow and authority contracts', () => {
       expect(read(path.join(CODEX_SKILLS, name, 'agents', 'openai.yaml')))
         .toContain('allow_implicit_invocation: false');
     }
+  });
+
+  test('start hands off to ask-me in the same turn while other manual-only skills still stop', () => {
+    expect(MANUAL_ONLY.has('ask-me')).toBe(false);
+    for (const name of ['bala', 'sunzi']) expect(MANUAL_ONLY.has(name)).toBe(true);
+
+    const askMe = read(path.join(SHARED_SKILLS, 'ask-me', 'SKILL.md'));
+    expect(frontmatter(askMe)['disable-model-invocation']).toBeUndefined();
+    expect(frontmatter(askMe).description).toMatch(/only when the user asks to be questioned/i);
+    expect(read(path.join(CODEX_SKILLS, 'ask-me', 'agents', 'openai.yaml')))
+      .toContain('allow_implicit_invocation: true');
+
+    const english = flat(read(path.join(SHARED_SKILLS, 'start', 'SKILL.md')));
+    expect(english).toMatch(/manual-only skill[\s\S]*present the `\/<name>` command to the user and stop/i);
+    expect(english).toMatch(/outcome is `ask-me`, hand off to it in this turn and ask its first decision question/i);
+    const thai = flat(read(nativeSkillFile('start')));
+    expect(thai).toMatch(/outcome คือ `ask-me` ให้ส่งต่อเข้า `ask-me` ใน turn นี้/);
   });
 
   test('ask-me is Thai-first and recommends one context-fit deliverable before a gated handoff', () => {

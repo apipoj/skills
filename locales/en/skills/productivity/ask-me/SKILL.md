@@ -1,7 +1,6 @@
 ---
 name: ask-me
-description: Run a manual Thai-first, read-only decision interview that asks one question at a time, confirm a compact brief, then recommend one context-fit deliverable or a gated plan-to-development handoff.
-disable-model-invocation: true
+description: Run a Thai-first, read-only decision interview only when the user asks to be questioned one decision at a time; confirm a compact brief, then recommend one context-fit deliverable or a gated plan-to-development handoff.
 ---
 
 # Ask Me
