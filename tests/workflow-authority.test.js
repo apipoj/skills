@@ -1,5 +1,7 @@
 const fs = require('fs');
 const path = require('path');
+const { safeLoad } = require('js-yaml');
+const { parseFrontmatter } = require('../scripts/generate-platform-artifacts.cjs');
 
 const ROOT = path.join(__dirname, '..');
 const SHARED_SKILLS = path.join(ROOT, 'plugins', 'spk', 'skills');
@@ -138,21 +140,27 @@ describe('provider-neutral workflow and authority contracts', () => {
     }
   });
 
-  test('start hands off to ask-me in the same turn while other manual-only skills still stop', () => {
-    expect(MANUAL_ONLY.has('ask-me')).toBe(false);
-    for (const name of ['bala', 'sunzi']) expect(MANUAL_ONLY.has(name)).toBe(true);
+  test('ask-me permits model invocation across hosts while bala and sunzi remain manual-only', () => {
+    for (const [name, allowImplicitInvocation] of [['ask-me', true], ['bala', false], ['sunzi', false]]) {
+      const skill = CONTRACT_BY_ID.get(name);
+      expect(skill.activation.allowImplicitInvocation).toBe(allowImplicitInvocation);
 
-    const askMe = read(path.join(SHARED_SKILLS, 'ask-me', 'SKILL.md'));
-    expect(frontmatter(askMe)['disable-model-invocation']).toBeUndefined();
-    expect(frontmatter(askMe).description).toMatch(/only when the user asks to be questioned/i);
-    expect(read(path.join(CODEX_SKILLS, 'ask-me', 'agents', 'openai.yaml')))
-      .toContain('allow_implicit_invocation: true');
+      for (const file of [
+        nativeSkillFile(name),
+        path.join(ROOT, skill.sources.en, 'SKILL.md'),
+        path.join(SHARED_SKILLS, name, 'SKILL.md'),
+      ]) {
+        expect(parseFrontmatter(read(file)).fields['disable-model-invocation'])
+          .toBe(allowImplicitInvocation ? undefined : true);
+      }
 
-    const english = flat(read(path.join(SHARED_SKILLS, 'start', 'SKILL.md')));
-    expect(english).toMatch(/manual-only skill[\s\S]*present the `\/<name>` command to the user and stop/i);
-    expect(english).toMatch(/outcome is `ask-me`, hand off to it in this turn and ask its first decision question/i);
-    const thai = flat(read(nativeSkillFile('start')));
-    expect(thai).toMatch(/outcome คือ `ask-me` ให้ส่งต่อเข้า `ask-me` ใน turn นี้/);
+      expect(parseFrontmatter(read(path.join(CODEX_SKILLS, name, 'SKILL.md')))
+        .fields['disable-model-invocation']).toBeUndefined();
+      for (const directory of [path.join(ROOT, skill.sources.th), path.join(CODEX_SKILLS, name)]) {
+        const metadata = safeLoad(read(path.join(directory, 'agents', 'openai.yaml')));
+        expect(metadata.policy.allow_implicit_invocation).toBe(allowImplicitInvocation);
+      }
+    }
   });
 
   test('ask-me is Thai-first and recommends one context-fit deliverable before a gated handoff', () => {

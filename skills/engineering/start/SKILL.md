@@ -57,7 +57,7 @@ read its actual `SKILL.md`. Router summaries are orientation, not execution cont
    หรือ behavior เสี่ยงสูงมี test seam ที่ reliable เลือกการตรวจตามความเสี่ยงและ policy ของ repo
 
    ถ้า outcome ตรงกับ skill แบบ manual-only (`disable-model-invocation`) ให้บอกคำสั่ง `/<name>` ให้ผู้ใช้แล้วหยุด ไม่ต้องเรียกใช้เอง
-   `ask-me` ให้ agent เรียกเองได้: ถ้า outcome คือ `ask-me` ให้ส่งต่อเข้า `ask-me` ใน turn นี้และถามคำถาม decision ข้อแรกเลย ไม่ต้องบอกให้ผู้ใช้พิมพ์ `/ask-me` แล้วหยุด
+   `ask-me` รับการส่งต่อจาก `start` ได้โดยไม่ต้องให้ผู้ใช้เรียกซ้ำ: ถ้า outcome คือ `ask-me` ให้อ่าน `SKILL.md` ของมัน ส่งต่อใน turn นี้ และถามคำถาม decision ข้อแรกเลย
 5. รัน workflow ที่เลือกไปจนถึงผลลัพธ์ที่ตรวจได้ คำขอแบบ end-to-end ที่ชัดให้ bounded
    workspace authority ต่อเนื่องผ่าน plan, implementation, test และ local QA โดยไม่ถาม
    อนุมัติ local ซ้ำ ทำต่อจน implementation, การตรวจที่เกี่ยวข้อง และการแก้ failure ที่เกิดจาก change

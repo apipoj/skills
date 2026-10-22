@@ -1,6 +1,6 @@
 ---
 name: ask-me
-description: Run a Thai-first, read-only decision interview only when the user asks to be questioned one decision at a time; confirm a compact brief, then recommend one context-fit deliverable or a gated plan-to-development handoff.
+description: Read-only Thai-first interview on direct invocation, explicit one-decision-at-a-time interview requests, or start handoffs; confirm a brief and recommend a deliverable.
 ---
 
 # Ask Me
@@ -163,7 +163,7 @@ repeat the confirmed brief.
 
 ## Guardrails
 
-- Stop when asked.
+- Start only on direct invocation, explicit one-decision-at-a-time interview requests, or `start` handoffs. Stop when asked.
 - Do not modify files, code, Git state, configuration, or external systems while active.
 - Recommendation is not consent; selection authorizes only the named output and its effect.
 - Request no secrets or unnecessary personal data. Fabricate no quotes, metrics, pricing,

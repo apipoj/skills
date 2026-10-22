@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-- Let `start` hand off to `ask-me` in the same turn: `ask-me` is now model-invocable with a description narrowed to explicit interview requests, so routing asks the first decision question instead of telling the user to type `/spk:ask-me`. Every other manual-only skill, including `bala` and `sunzi`, stays typed only.
+- Let `start` hand off to `ask-me` in the same turn: `ask-me` now accepts direct invocation, an explicit one-decision-at-a-time interview request, or a `start` handoff, so routing asks the first decision question immediately. Unrelated prompts do not trigger it. Every other manual-only skill, including `bala` and `sunzi`, stays typed only.
 - Merge HumanLayer `show-me` shapes (pseudocode, call tree, component tree, file tree, types, Mermaid, diff, whole block, focused HTML) and compactness guidance into `show-me`, with a note on when to use `diagram-design` instead. Provenance: humanlayer/skills@653b6411c1f70c275a18e37673b042ff99f67ceb by Dex Horthy, MIT License, Copyright (c) 2026 HumanLayer.
 
 ## 6.10.0 - 2026-10-14
