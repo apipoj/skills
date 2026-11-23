@@ -1,6 +1,6 @@
 {
   "name": "apipoj-skills",
-  "version": "6.10.0",
+  "version": "7.0.0",
   "description": "Thai-first, ready-to-use engineering skills for Claude Code, Codex, and skills.sh",
   "repository": {
     "type": "git",
@@ -45,7 +45,8 @@
     "ajv-formats": "^3.0.1",
     "husky": "^9.1.0",
     "jest": "^30.4.2",
-    "js-yaml": "^3.15.2"
+    "js-yaml": "^3.15.2",
+    "yaml": "^2.9.1"
   },
   "overrides": {
     "brace-expansion": "^5.0.9"

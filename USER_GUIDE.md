@@ -1,6 +1,6 @@
 # คู่มือผู้ใช้ Apipoj Skills
 
-คู่มือนี้ครอบคลุม Apipoj Skills **v6.10.0** สำหรับ Claude Code, Codex และเครื่องมือที่รองรับ Agent Skills
+คู่มือนี้ครอบคลุม Apipoj Skills **v7.0.0** สำหรับ Claude Code, Codex และเครื่องมือที่รองรับ Agent Skills
 
 อ่านฉบับภาษาอังกฤษได้ที่ [USER_GUIDE-EN.md](USER_GUIDE-EN.md)
 
@@ -74,7 +74,7 @@ npx skills@latest add apipoj/skills
 ตัวอย่าง typed-only:
 
 ```text
-/spk:check-release ตรวจความพร้อม v6.10.0 โดยยังไม่ commit, tag หรือ publish
+/spk:check-release ตรวจความพร้อม v7.0.0 โดยยังไม่ commit, tag หรือ publish
 ```
 
 บน Codex ให้เปลี่ยนรูปแบบเป็น `$spk:check-release`
@@ -87,7 +87,7 @@ npx skills@latest add apipoj/skills
 |---|---|
 | เริ่มงานและทำ decision ให้ชัด | `/spk:start`, `/spk:ask-me`, `/spk:asking`, `/spk:ask-with-docs`, `/spk:wait-what`, `/spk:teach`, `/spk:handoff`, `/spk:to-questionnaire` |
 | วางทิศทางและออกแบบงาน | `/spk:to-spec`, `/spk:plan`, `/spk:to-tickets`, `/spk:wayfinder`, `/spk:domain-modeling`, `/spk:codebase-design`, `/spk:prototype`, `/spk:design-options`, `/spk:bala`, `/spk:sunzi` |
-| พัฒนา แก้ปัญหา และตรวจงาน | `/spk:code`, `/spk:tdd`, `/spk:debug`, `/spk:triage`, `/spk:improve-codebase`, `/spk:code-review`, `/spk:test-changes`, `/spk:fix-conflicts`, `/spk:implement-spec`, `/spk:retro` |
+| พัฒนา แก้ปัญหา และตรวจงาน | `/spk:poteto-mode`, `/spk:tdd`, `/spk:debug`, `/spk:triage`, `/spk:improve-codebase`, `/spk:code-review`, `/spk:test-changes`, `/spk:fix-conflicts`, `/spk:implement-spec`, `/spk:retro` |
 | เข้าใจและดูแลความรู้ project | `/spk:setup`, `/spk:load-project`, `/spk:ask-project`, `/spk:research`, `/spk:add-knowledge`, `/spk:check-wiki`, `/spk:write-skills` |
 | ตรวจระบบและเตรียมส่งงาน | `/spk:doctor`, `/spk:check-release`, `/spk:pr`, `/spk:task-to-pr`, `/spk:deploy`, `/spk:wizard`, `/spk:uninstall` |
 
@@ -106,7 +106,7 @@ branch โดยขอ approval สำหรับ Git และ remote write �
 1. `/spk:ask-me` เมื่อโจทย์ยังอยู่ในความคิด หรือ `/spk:ask-with-docs` เมื่ออยู่ใน repo และต้องเก็บความรู้ประกอบ
 2. `/spk:to-spec` เพื่อทำ scope และ acceptance criteria ให้ชัด
 3. `/spk:plan` หรือ `/spk:to-tickets` เพื่อวางลำดับ implementation
-4. อนุมัติแผนที่เห็นแล้ว จากนั้นจึงใช้ `/spk:code` หรือ `/spk:tdd`
+4. อนุมัติแผนที่เห็นแล้ว จากนั้นจึงใช้ `/spk:poteto-mode` หรือ `/spk:tdd`
 5. `/spk:test-changes` เพื่อ feedback เร็ว และ `/spk:code-review` เพื่อตรวจ diff
 6. `/spk:check-release` ก่อนเลือกว่าจะ commit, เปิด PR หรือ deploy
 
@@ -114,7 +114,7 @@ branch โดยขอ approval สำหรับ Git และ remote write �
 
 1. `/spk:debug` เพื่อทำ failure ให้ reproducible และพิสูจน์ root cause
 2. ตรวจ diagnosis และ scope ของวิธีแก้
-3. ขอ implementation แยก แล้วใช้ `/spk:code` หรือ `/spk:tdd`
+3. ขอ implementation แยก แล้วใช้ `/spk:poteto-mode` หรือ `/spk:tdd`
 4. รัน `/spk:test-changes` และ regression tests ที่เกี่ยวข้อง
 
 ### ทำความรู้จัก project เดิม
@@ -253,5 +253,11 @@ approval_required: <true|false>
 ## สร้างวิธีตรวจงานที่ใช้ซ้ำได้
 
 ใช้ `/spk:create-verification-skill` หรือ `$spk:create-verification-skill` ใน Codex เพื่อสร้าง verifier ในโปรเจกต์สำหรับ task, test script, spec และ skill ตาม scope ที่ต้องการ ผูก acceptance criteria กับ checks และหลักฐาน ลองใช้ verifier พร้อม failing control และเก็บหลักฐานหลัง cleanup สิ่งที่ยังไม่ได้รันต้องรายงานเป็น `NOT_RUN` การลองบาง checks ไม่ได้แปลว่าตรวจงานครบทุกข้อ
+
+ลองกับงานจริงด้วยคำขอเหล่านี้
+
+- `/spk:poteto-mode แก้ CLI แสดงยอดเงิน ลองแก้ padding สองครั้งแล้วยังพัง ช่วยตรวจว่า renderer ได้ค่าอะไรจริง`
+- `/spk:code-review ตรวจ comment ที่บอกว่าห้ามเปลี่ยนลำดับนี้ ไล่ดูว่า caller ไหนพึ่งมัน และเสนอ test ที่จับกรณีสลับลำดับได้`
+- `/spk:create-verification-skill สร้างตัวตรวจว่า retry งานเดียวกันแล้วออกใบเสร็จได้อย่างมากหนึ่งใบ ลองทุกลำดับภายใต้ขอบเขต worker สองตัว พร้อมแสดงลำดับที่ทำให้พังเมื่อเอา guard ออก`
 
 สำหรับ source repo ของ SPK มี verifier ใน [.agents/skills/verify-spk/SKILL.md](.agents/skills/verify-spk/SKILL.md) พร้อม check map และ helper ที่เก็บหลักฐาน โดยแยก spec review และ behavioral skill checks ออกจาก static gates

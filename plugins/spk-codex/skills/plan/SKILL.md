@@ -29,7 +29,7 @@ Define the goal, non-goals, observable acceptance criteria, affected files or di
 dependency-ordered tasks, and material risks. Include architecture decisions and rollout/rollback
 only where they affect the work. Let task size follow coherent outcomes, not a fixed time quota.
 
-Choose verification proportional to risk, consistent with `code`: focused checks for small
+Choose verification proportional to risk, consistent with `poteto-mode`: focused checks for small
 changes; regression tests for reproducible bugs when reliable; strict TDD when explicitly
 requested or justified by a high-risk stable seam. Run a full suite when repository policy,
 release requirements, or insufficient confidence in narrower coverage requires it.
@@ -45,7 +45,7 @@ fallback. The wiki may hold a summary and pointer, never a duplicate editable pl
 If no writable scaffold or configured destination exists, return the plan inline.
 
 For `plan_only`, stop after the reviewed plan. For `plan_and_implement`, continue into implementation without another user prompt,
-carrying the original bounded workspace authority to `code`. Completion includes implementation,
+carrying the original bounded workspace authority to `poteto-mode`. Completion includes implementation,
 relevant checks, and repair of failures caused by the change within scope; a first draft is not
 completion. A blocked plan keeps its unresolved decisions and next action explicit.
 

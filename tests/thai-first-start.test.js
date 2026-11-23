@@ -25,7 +25,7 @@ describe('Thai-first instant-start router', () => {
 
   test('uses canonical workflow names and omits optional strategy skills', () => {
     for (const text of [runtime, thai]) {
-      expect(text).toContain('code');
+      expect(text).toContain('poteto-mode');
       expect(text).toContain('debug');
       expect(text).toContain('code-review');
       expect(text).toContain('load-project');

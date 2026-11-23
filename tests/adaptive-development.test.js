@@ -8,19 +8,19 @@ function read(relativePath) {
 }
 
 describe('adaptive development workflow', () => {
-  test('/code stays lightweight while /tdd keeps the strict orchestrated path', () => {
+  test('/poteto-mode stays lightweight while /tdd keeps the strict orchestrated path', () => {
     const manifest = JSON.parse(read('manifest.json'));
-    const code = manifest.commands.find(command => command.name === '/code');
+    const code = manifest.commands.find(command => command.name === '/poteto-mode');
     const tdd = manifest.commands.find(command => command.name === '/tdd');
 
-    expect(code).toEqual({ name: '/code', direct: true });
+    expect(code).toEqual({ name: '/poteto-mode', direct: true });
     expect(tdd).toEqual({ name: '/tdd', orchestrator: 'build-orchestrator' });
   });
 
   test.each([
-    'skills/engineering/code/SKILL.md',
-    'locales/en/skills/engineering/code/SKILL.md',
-    'plugins/spk/skills/code/SKILL.md',
+    'skills/engineering/poteto-mode/SKILL.md',
+    'locales/en/skills/engineering/poteto-mode/SKILL.md',
+    'plugins/spk/skills/poteto-mode/SKILL.md',
   ])('%s selects the smallest workflow that fits the task shape', relativePath => {
     const skill = read(relativePath);
 
@@ -45,10 +45,10 @@ describe('adaptive development workflow', () => {
     ]) {
       const router = read(relativePath);
       const flat = router.replace(/\s+/gu, ' ');
-      expect(router).toMatch(/adaptive[\s\S]*`code`|`code`[\s\S]*adaptive/i);
+      expect(router).toMatch(/adaptive[\s\S]*`poteto-mode`|`poteto-mode`[\s\S]*adaptive/i);
       expect(router).toMatch(/strict[\s\S]*`tdd`|`tdd`[\s\S]*strict/i);
       // Assert the selection boundary rather than prescribing an exhaustive example list.
-      expect(flat).toMatch(/Default development to `code`|ค่าเริ่มต้น development ใช้ `code`/i);
+      expect(flat).toMatch(/Default development to `poteto-mode`|ค่าเริ่มต้น development ใช้ `poteto-mode`/i);
       expect(flat).toMatch(/explicit test-first|ผู้ใช้ขอ test-first ชัดเจน/i);
       expect(flat).toMatch(/high-risk[\s\S]*reliable test seam|เสี่ยงสูง[\s\S]*test seam ที่ reliable/i);
       expect(flat).toMatch(/repo policy|policy ของ repo/i);

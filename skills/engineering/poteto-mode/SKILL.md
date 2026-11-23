@@ -1,8 +1,8 @@
 ---
-name: code
-description: ลงมือพัฒนาคำขอที่ชัดหรือแผนที่ review แล้วด้วย adaptive loop ที่เลือกระดับความเข้มตาม Quick patch, Feature, Bug fix หรือ Refactor และใช้ tdd เมื่อผู้ใช้ขอ test-first แบบเข้มงวด
+name: poteto-mode
+description: พัฒนา feature แก้บั๊ก หรือ refactor ด้วย poteto-mode เลือกหลักการตามปัญหาในโค้ด แล้วตรวจการเปลี่ยนแปลงผ่านทางที่ผู้ใช้เรียกจริง
 ---
-# พัฒนาแบบ Adaptive
+# เขียนโค้ดแบบ poteto-mode
 
 นี่คือ default loop สำหรับงาน development ในเครื่อง เลือกรูปทรงงานหนึ่งครั้ง แล้วใช้ workflow
 ที่เล็กที่สุดแต่ยังพิสูจน์ผลลัพธ์ได้ ถ้าผู้ใช้ขอ strict test-first โดยตรง หรือจุดเปลี่ยนมีความเสี่ยงสูง
@@ -12,16 +12,9 @@ description: ลงมือพัฒนาคำขอที่ชัดหร�
 `ai_context/work/plans/`, `docs/plans/` ตามลำดับ อ่าน `ai_context/wiki/plans/` เฉพาะ
 legacy compatibility fallback และห้ามถือว่าเป็น canonical
 
-## หลักการทำงาน
+## Engineering principles
 
-- เลือก smallest change ที่มีเหตุผล ลบ ใช้ของเดิม หรือลดความซับซ้อนก่อนเพิ่ม abstraction,
-  dependency, file หรือ workflow
-- ระบุ data shape หรือ domain shape ก่อนเขียน code เฉพาะเมื่อ state, branching หรือ assumption
-  ที่ซ้ำกันทำให้ model นั้นมีประโยชน์ ถ้าไม่ใช่ให้เลือก code ธรรมดาที่อ่านง่าย
-- ตรวจ real artifact หรือ real surface ที่ผู้ใช้จะเจอจริง การ compile ผ่านอย่างเดียวไม่ได้พิสูจน์ว่า
-  UI, CLI, API, migration หรือ generated output ใช้งานได้
-- subagent เป็น optional และต้องเลือกใช้อย่าง deliberate ใช้เฉพาะ scope ที่เป็นอิสระ, design ที่ต้อง
-  เทียบหลายทาง หรือ context ก้อนใหญ่ที่รบกวน main thread งานเล็กที่ต่อเนื่องกันให้ทำใน main thread
+Read [engineering principles](references/principles.md) and select the rows that change a decision for this task. For a small patch, start with the smallest justified change and verify the real surface. For stateful work, inspect the data shape, retry boundary and write ownership. Subagents are optional when independent work justifies them. In the handoff, name a principle only when it explains a concrete choice.
 
 ## Ticket input
 
@@ -56,20 +49,8 @@ reference is ambiguous. Fetching a ticket grants no tracker or Git write authori
 6. วินิจฉัยและซ่อม failure ใน scope ภายใน repair budget หยุดถามเฉพาะเมื่อมี material user-owned
    decision, access หาย, security/privacy risk, scope expansion หรือ Git, remote, destructive
    effect ที่ยังไม่ได้อนุมัติ
-7. จบด้วยหลักฐานภาษาคน: เปลี่ยนอะไร ตรวจอะไรแล้ว ยังไม่แน่ใจอะไร และ next action เฉพาะเมื่อมี
-   ห้ามแสดง YAML, JSON, schema, field ว่าง หรือ internal receipt เว้นแต่ผู้ใช้ขอ machine-readable
-   output โดยตรง
 
-## Implementation Authorization
-
-ยอมรับ bounded workspace authority ได้สามแบบ:
-
-- request ปัจจุบันขอ implement, fix, update, refactor หรือ test outcome ที่ระบุ
-- request ปัจจุบันขอ plan แล้ว implement outcome ที่ระบุ
-- request ปัจจุบันขอ implement reviewed plan ที่อ้างถึง
-
-สรุปจาก `ask-me` เพียงอย่างเดียวยังเป็น read-only และคำขอ plan-only ต้องหยุดที่ plan ถ้า outcome
-ชัดแต่ไม่มี plan file ให้ใช้ micro-plan ห้ามสร้าง approval local รอบใหม่
+A plan-only request and an interview summary remain read-only. An explicit request to implement a reviewed plan grants workspace authority within that plan.
 
 ## Autonomy Profile
 
@@ -86,13 +67,3 @@ risk หรือ approval boundary ที่สำคัญ และ next acti
 - ห้ามแก้ workspace โดยไม่มี implementation outcome ที่ชัดและ bounded authority ของ scope นั้น
 - ห้ามข้าม failing gate ที่จำเป็น แต่งผล test หรือบอกว่างานเสร็จทั้งที่ยังไม่ได้ตรวจ
 - ห้าม commit, push, เปิด PR, deploy หรือทำ remote write อื่นโดยไม่มีการอนุมัติ action นั้นแยกต่างหาก
-
-## Upstream Discipline
-
-คำแนะนำ implementation จาก Matt Pocock snapshot ที่ pin ไว้ยังเป็น source แต่ adaptive loop และ
-approval boundary ที่เข้มกว่าของ SPK มีผลก่อน
-
-ทำงานที่ user ระบุใน spec หรือ ticket ใช้ `/tdd` ที่ seam ซึ่งตกลงกันและ strict RED/GREEN ช่วยจริง
-รัน type check กับ test ตามขนาดการเปลี่ยน และรัน full suite เมื่อ repo หรือ release กำหนด ใช้
-`/code-review` กับงาน material หรือ high-risk เตรียม commit message ได้ แต่ commit เฉพาะเมื่อ user
-อนุมัติ Git write นั้นแยกต่างหาก

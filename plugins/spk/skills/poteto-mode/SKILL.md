@@ -1,8 +1,8 @@
 ---
-name: code
-description: Implement an explicit software request or reviewed plan with an adaptive loop that matches rigor to a quick patch, feature, bug fix, or refactor; use tdd for an explicitly strict test-first path.
+name: poteto-mode
+description: Implement a feature, fix, or refactor using poteto-mode engineering principles. Select principles for the observed risks, then exercise the smallest change through its public entry point.
 ---
-# Adaptive Development
+# Poteto Mode
 
 ## Response Rules
 
@@ -26,17 +26,9 @@ then `ai_context/work/plans/`, then `docs/plans/`. Read
 `ai_context/wiki/plans/` only as a legacy compatibility fallback and never treat that
 fallback as canonical.
 
-## Working Principles
+## Engineering principles
 
-- Prefer the smallest justified change. Delete, reuse, or simplify before adding an
-  abstraction, dependency, file, or workflow.
-- Name the data shape or domain shape before code only when state, branching, or repeated
-  assumptions make that model useful. Otherwise prefer boring local code.
-- Verify the real artifact or surface the user will experience. Compilation alone is not
-  evidence that UI, CLI, API, migration, or generated output works.
-- Subagents are optional and deliberate. Use them only for independent scopes, competing
-  designs, or bulky context that would obscure the main thread; keep a coherent small
-  change in the main thread.
+Read [engineering principles](references/principles.md) and select the rows that change a decision for this task. For a small patch, start with the smallest justified change and verify the real surface. For stateful work, inspect the data shape, retry boundary and write ownership. Subagents are optional when independent work justifies them. In the handoff, name a principle only when it explains a concrete choice.
 
 ## Ticket input
 
@@ -77,23 +69,8 @@ reference is ambiguous. Fetching a ticket grants no tracker or Git write authori
 6. Diagnose and repair in-scope failures within the autonomy repair budget. Pause only for
    a material user-owned decision, missing access, security or privacy risk, scope
    expansion, or an undeclared Git, remote, or destructive effect.
-7. Finish with concise user-facing evidence: what changed, what was verified, what remains
-   uncertain, and the next action only when one exists. Do not expose YAML, JSON, schemas,
-   empty fields, or internal receipts unless the user asks for machine-readable output.
 
-## Workspace Authority
-
-Accept any of these as bounded workspace authority:
-
-- The current request explicitly asks to implement, fix, update, refactor, or test an
-  identified outcome.
-- The current request explicitly asks to plan and then implement an identified outcome.
-- The current request asks to implement a referenced reviewed plan.
-
-An `ask-me` summary alone remains read-only. A plan-only request remains plan-only. When
-the implementation outcome is explicit but a plan file is absent, derive a bounded
-micro-plan from repository evidence and acceptance criteria. Record assumptions and keep
-working; ask only when one material decision changes scope, risk, cost, or success.
+A plan-only request and an interview summary remain read-only. An explicit request to implement a reviewed plan grants workspace authority within that plan.
 
 ## Autonomy Profile
 
@@ -114,14 +91,3 @@ Do not make the user read an internal receipt format.
   done.
 - Do not commit, push, create a PR, deploy, or perform another remote write without
   separate explicit authorization for that effect.
-
-## Upstream Discipline
-
-The pinned Matt Pocock implementation guidance remains a source, with SPK's adaptive loop
-and stricter approval boundaries taking precedence.
-
-Implement the work described by the user in the spec or tickets. Use `/tdd` at pre-agreed
-seams when strict RED/GREEN evidence is useful. Run type checks and tests at the cadence
-that matches the change, and run the full suite when the repository or release requires it.
-Use `/code-review` for material or high-risk changes. Prepare a clear commit message, but
-commit only when the user separately authorizes that exact Git write.

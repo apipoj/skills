@@ -16,6 +16,8 @@ Install the plugin, then use one entry point:
 
 Describe the outcome normally. The router chooses the smallest fitting workflow, applies safe smart defaults, and asks one material question only when the answer changes scope or risk.
 
+Start coding work with `/spk:poteto-mode` or `$spk:poteto-mode` in Codex. The start router selects it for features, fixes and refactors. For example, if a retry creates duplicate records, inspect write ownership and replay the operation. [Engineering principles](locales/en/skills/engineering/poteto-mode/references/principles.md)
+
 Local work follows the requested outcome through implementation, relevant checks, and repair
 of failures caused by the change. Plan-only requests still stop at the plan. Verification
 scales to risk: strict TDD is for explicit requests or high-risk reliable seams; full suites
@@ -112,7 +114,7 @@ Use one installation method per project to avoid duplicate skills.
 | `/spk:to-tickets` | direct main-thread workflow | typed only |
 | `/spk:to-questionnaire` | direct main-thread workflow | typed only |
 | `/spk:wayfinder` | direct main-thread workflow | typed only |
-| `/spk:code` | direct main-thread workflow | model or typed |
+| `/spk:poteto-mode` | direct main-thread workflow | model or typed |
 | `/spk:prototype` | designer | model or typed |
 | `/spk:research` | researcher | model or typed |
 | `/spk:domain-modeling` | direct main-thread workflow | model or typed |

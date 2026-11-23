@@ -1,6 +1,6 @@
 ---
 name: check-wiki
-description: Audit project documentation, CONTEXT.md, ADRs, and explicitly selected legacy wiki pages for broken links, contradictions, stale claims, missing evidence, and secret exposure.
+description: ตรวจเอกสารโปรเจกต์ CONTEXT.md ADR และ wiki เดิมที่เลือก เพื่อหาลิงก์เสีย ข้อมูลขัดกัน เนื้อหาล้าสมัย และ secret
 ---
 
 # Check Project Documentation

@@ -213,7 +213,7 @@ describe('provider-neutral workflow and authority contracts', () => {
 
   test('plan and code carry explicit end-to-end workspace authority without a second gate', () => {
     const plan = read(path.join(SHARED_SKILLS, 'plan', 'SKILL.md'));
-    const implement = read(path.join(SHARED_SKILLS, 'code', 'SKILL.md'));
+    const implement = read(path.join(SHARED_SKILLS, 'poteto-mode', 'SKILL.md'));
     const planAgent = read(path.join(AGENTS, 'plan-orchestrator.md'));
     const buildAgent = read(path.join(AGENTS, 'build-orchestrator.md'));
 
@@ -352,9 +352,9 @@ describe('provider-neutral workflow and authority contracts', () => {
 
   test('English and Thai implementation workflows never imply automatic commits', () => {
     for (const file of [
-      path.join(SHARED_SKILLS, 'code', 'SKILL.md'),
+      path.join(SHARED_SKILLS, 'poteto-mode', 'SKILL.md'),
       path.join(SHARED_SKILLS, 'tdd', 'SKILL.md'),
-      nativeSkillFile('code'),
+      nativeSkillFile('poteto-mode'),
       nativeSkillFile('tdd'),
     ]) {
       const text = read(file);

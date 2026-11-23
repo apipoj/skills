@@ -25,7 +25,7 @@ describe('upstream reference doc generator', () => {
     const page = renderPage('docs/engineering/implement.md', '## What it does\n\nBody text.\n');
     const lines = page.split('\n');
     expect(lines[0]).toBe(BANNER_NOTICE);
-    expect(lines[1]).toBe('> **Canonical SPK skill:** `/spk:code`');
+    expect(lines[1]).toBe('> **Canonical SPK skill:** `/spk:poteto-mode`');
     expect(lines[2]).toBe('');
     expect(page.endsWith('## What it does\n\nBody text.\n')).toBe(true);
   });
@@ -45,7 +45,7 @@ describe('upstream reference doc generator', () => {
 
   test('says so when SPK ships no counterpart', () => {
     expect(renderCanonicalLine(null)).toBe(NO_COUNTERPART);
-    expect(renderCanonicalLine('code')).toBe('> **Canonical SPK skill:** `/spk:code`');
+    expect(renderCanonicalLine('poteto-mode')).toBe('> **Canonical SPK skill:** `/spk:poteto-mode`');
   });
 
   test('refuses to render a page nobody has reviewed', () => {

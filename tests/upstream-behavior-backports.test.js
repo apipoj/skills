@@ -34,7 +34,7 @@ describe('reviewed upstream behavior backports', () => {
   test.each([
     ['tdd', ['docs/agents/domain.md', 'GLOSSARY-MAP.md', 'CONTEXT-MAP.md', 'what it catches and what it misses']],
     ['code-review', ['CODING_STANDARDS.md', 'CONTRIBUTING.md', 'wait\nfor their reports']],
-    ['code', ['ticket reference', 'acceptance criteria', 'ambiguous']],
+    ['poteto-mode', ['ticket reference', 'acceptance criteria', 'ambiguous']],
     ['asking', ['bare "yes"', 'meaning is explicit']],
     ['teach', ['directory\nwhere teaching was requested', 'correct answer\'s position']],
     ['wayfinder', ['type label', 'real identifiers', 'exact approval']],

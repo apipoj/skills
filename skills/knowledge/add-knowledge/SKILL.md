@@ -1,6 +1,6 @@
 ---
 name: add-knowledge
-description: Add an explicitly selected source to existing project documentation, CONTEXT.md, or ADRs with provenance and secret checks.
+description: เพิ่มความรู้จากแหล่งข้อมูลที่เลือกลงเอกสารโปรเจกต์ CONTEXT.md หรือ ADR พร้อมที่มาและตรวจ secret
 disable-model-invocation: true
 ---
 

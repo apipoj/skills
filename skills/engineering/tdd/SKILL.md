@@ -4,7 +4,7 @@ description: พัฒนา behavior ด้วยวงจร TDD แบบเ�
 ---
 # tdd
 
-รัน TDD loop แบบเข้มงวด: เขียน test ที่ fail ยืนยันว่า fail ด้วยเหตุผลที่ถูกต้อง implement ขั้นต่ำให้ pass refactor แล้วทำซ้ำ นี่คือ strict red-green-refactor loop ถ้าไม่ได้ขอแบบนี้ชัดเจน ให้ใช้ skill `code` แทน
+รัน TDD loop แบบเข้มงวด: เขียน test ที่ fail ยืนยันว่า fail ด้วยเหตุผลที่ถูกต้อง implement ขั้นต่ำให้ pass refactor แล้วทำซ้ำ นี่คือ strict red-green-refactor loop ถ้าไม่ได้ขอแบบนี้ชัดเจน ให้ใช้ skill `poteto-mode` แทน
 
 ## Domain documents
 

@@ -50,8 +50,8 @@ read its actual `SKILL.md`. Router summaries are orientation, not execution cont
    - explain relationships visually → `show-me`; teach one difficult idea to a beginner with a visual lesson → `eli5`
    - create an engineering plan → `plan`; publish an existing discussion as a spec → `to-spec`
    - split work → `to-tickets`; map a large foggy effort → `wayfinder`
-   - implement, fix, refactor, or plan-and-implement → adaptive `code`; use strict red-green or risk-driven orchestration → `tdd`
-   - create reusable proof for tasks, tests, specs, or skills → `create-verification-skill`
+   - implement, fix, refactor, or plan-and-implement → adaptive `poteto-mode`; use strict red-green or risk-driven orchestration → `tdd`
+   - create reusable proof for a task, test, spec, skill, or code invariant → `create-verification-skill`
    - investigate a failure → `debug`; review a diff → `code-review`; get fast test feedback → `test-changes`
    - answer a code-shape question → `prototype`; compare UI directions → `design-options`
    - improve module shape → `codebase-design` or `improve-codebase`
@@ -61,7 +61,7 @@ read its actual `SKILL.md`. Router summaries are orientation, not execution cont
    - prepare delivery → `check-release`, `pr`, `task-to-pr`, or `deploy`; remove Apipoj Skills → `uninstall`
    - carry context to a fresh session → `handoff`; learn a topic → `teach`; write agent docs or skills → `write-skills`
 
-   Default development to `code`. Choose `tdd` for explicit test-first requests or high-risk
+   Default development to `poteto-mode`. Choose `tdd` for explicit test-first requests or high-risk
    behavior with a reliable test seam. Let verification follow the change's risk and repo policy.
 
    When the outcome maps to a manual-only skill (`disable-model-invocation`), present the `/<name>` command to the user and stop instead of invoking it.

@@ -1,6 +1,6 @@
 # Apipoj Skills User Guide
 
-This guide covers Apipoj Skills **v6.10.0** for Claude Code, Codex, and Agent Skills-compatible tools.
+This guide covers Apipoj Skills **v7.0.0** for Claude Code, Codex, and Agent Skills-compatible tools.
 
 For the canonical Thai guide, see [USER_GUIDE.md](USER_GUIDE.md).
 
@@ -74,7 +74,7 @@ The skill table uses two invocation states:
 Typed-only example:
 
 ```text
-/spk:check-release Check v6.10.0 readiness without committing, tagging, or publishing anything.
+/spk:check-release Check v7.0.0 readiness without committing, tagging, or publishing anything.
 ```
 
 On Codex, use `$spk:check-release` instead.
@@ -87,7 +87,7 @@ When uncertain, always begin with `/spk:start`. Use this table when you want to 
 |---|---|
 | Start work and clarify decisions | `/spk:start`, `/spk:ask-me`, `/spk:asking`, `/spk:ask-with-docs`, `/spk:wait-what`, `/spk:teach`, `/spk:handoff`, `/spk:to-questionnaire` |
 | Set direction and design the work | `/spk:to-spec`, `/spk:plan`, `/spk:to-tickets`, `/spk:wayfinder`, `/spk:domain-modeling`, `/spk:codebase-design`, `/spk:prototype`, `/spk:design-options`, `/spk:bala`, `/spk:sunzi` |
-| Build, diagnose, and review | `/spk:code`, `/spk:tdd`, `/spk:debug`, `/spk:triage`, `/spk:improve-codebase`, `/spk:code-review`, `/spk:test-changes`, `/spk:fix-conflicts`, `/spk:implement-spec`, `/spk:retro` |
+| Build, diagnose, and review | `/spk:poteto-mode`, `/spk:tdd`, `/spk:debug`, `/spk:triage`, `/spk:improve-codebase`, `/spk:code-review`, `/spk:test-changes`, `/spk:fix-conflicts`, `/spk:implement-spec`, `/spk:retro` |
 | Understand and maintain project knowledge | `/spk:setup`, `/spk:load-project`, `/spk:ask-project`, `/spk:research`, `/spk:add-knowledge`, `/spk:check-wiki`, `/spk:write-skills` |
 | Check the system and prepare delivery | `/spk:doctor`, `/spk:check-release`, `/spk:pr`, `/spk:task-to-pr`, `/spk:deploy`, `/spk:wizard`, `/spk:uninstall` |
 
@@ -106,7 +106,7 @@ Each step is an option based on the current state, not permission for the agent 
 1. Use `/spk:ask-me` when the idea is not yet in a repository, or `/spk:ask-with-docs` when project knowledge should be captured.
 2. Use `/spk:to-spec` to clarify scope and acceptance criteria.
 3. Use `/spk:plan` or `/spk:to-tickets` to sequence implementation.
-4. Approve the plan you have actually reviewed, then invoke `/spk:code` or `/spk:tdd`.
+4. Approve the plan you have actually reviewed, then invoke `/spk:poteto-mode` or `/spk:tdd`.
 5. Use `/spk:test-changes` for fast feedback and `/spk:code-review` for the diff.
 6. Run `/spk:check-release` before deciding whether to commit, open a PR, or deploy.
 
@@ -114,7 +114,7 @@ Each step is an option based on the current state, not permission for the agent 
 
 1. Use `/spk:debug` to reproduce the failure and prove the root cause.
 2. Review the diagnosis and proposed fix scope.
-3. Request implementation separately, then invoke `/spk:code` or `/spk:tdd`.
+3. Request implementation separately, then invoke `/spk:poteto-mode` or `/spk:tdd`.
 4. Run `/spk:test-changes` and the relevant regression tests.
 
 ### Learn an existing project
@@ -253,5 +253,11 @@ Use `/spk:uninstall` to preview exact removal targets and preserved project know
 ## Create reusable verification
 
 Use `/spk:create-verification-skill` (Codex: `$spk:create-verification-skill`) to create a project verifier for requested tasks, test scripts, specs, or skills. It maps acceptance criteria to evidence, exercises the generated instructions and a failure control, and preserves proof after cleanup. Unexecuted checks remain `NOT_RUN`; proving a subset never means full task coverage.
+
+Example requests
+
+- `/spk:poteto-mode Fix the CLI total. Two padding changes failed the same snapshot. Check what the renderer actually receives.`
+- `/spk:code-review Trace the comment about preserving call order to the caller and suggest a test that catches a reversal.`
+- `/spk:create-verification-skill Build a reusable check that retrying one job issues at most one receipt. Explore every ordering for two workers and show a counterexample with the guard removed.`
 
 For the SPK source repository, [.agents/skills/verify-spk/SKILL.md](.agents/skills/verify-spk/SKILL.md) supplies the concrete check map and evidence-capturing helper. Semantic review and skill behavior remain separate from static gates.

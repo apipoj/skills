@@ -12,7 +12,7 @@
 - [`to-spec`](./to-spec/SKILL.md) — สรุปบทสนทนาและหลักฐานจาก codebase เป็นสเปกที่พร้อมตรวจและนำไปวางแผนต่อ _(manual-only)_
 - [`to-tickets`](./to-tickets/SKILL.md) — แตกสเปกหรือแผนเป็น vertical slices พร้อม blocking edges ที่ทำต่อได้จริง _(manual-only)_
 - [`wayfinder`](./wayfinder/SKILL.md) — ทำแผนที่ decision สำหรับงานใหญ่ที่ยังมีหมอก แล้วคลี่คำถามทีละใบจนเส้นทางชัด _(manual-only)_
-- [`code`](./code/SKILL.md) — ลงมือพัฒนาตามแผนที่อนุมัติแล้วทีละส่วน พร้อม test และ review โดยไม่ commit หรือ push เอง
+- [`poteto-mode`](./poteto-mode/SKILL.md) — โหมดหลักสำหรับเขียนโค้ด เลือกหลักการตามปัญหาที่เจอ แล้วตรวจผลผ่านจุดที่ผู้ใช้เรียกจริง
 - [`prototype`](./prototype/SKILL.md) — สร้าง prototype แบบทิ้งได้เพื่อพิสูจน์คำถามด้าน logic, state หรือ UI ก่อนลงทุนทำ production
 - [`research`](./research/SKILL.md) — ค้นคว้าคำถามจาก primary sources และเก็บข้อค้นพบพร้อม citation ที่ตรวจย้อนกลับได้
 - [`domain-modeling`](./domain-modeling/SKILL.md) — สร้างและปรับภาษากลางของ project พร้อมทดสอบคำศัพท์กับกรณีขอบและบันทึก decision ที่ควรจำ

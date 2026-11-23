@@ -147,7 +147,7 @@ local file changes whose format and path must be shown first.
 - Route only to available workflows: `debug` is `read_only`; `design-options` and `plan` are
   `workspace_write`.
 - A plan-only selection authorizes `plan` only. An explicit end-to-end workspace intent may
-  carry through a reviewed plan into `code` without another prompt.
+  carry through a reviewed plan into `poteto-mode` without another prompt.
 - Creation never authorizes Git, deployment, sending, or publishing. Show the exact artifact,
   recipients, and channel, then request separate delivery approval—even after an earlier ask.
 - Never auto-chain outputs; each additional outcome needs a new choice.
