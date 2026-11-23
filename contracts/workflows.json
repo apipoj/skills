@@ -907,25 +907,26 @@
       "autonomyProfile": "decision_aware"
     },
     {
-      "id": "code",
+      "id": "poteto-mode",
       "tier": "core",
       "origin": {
         "repository": "mattpocock/skills",
         "skill": "implement"
       },
       "sources": {
-        "th": "skills/engineering/code",
-        "en": "locales/en/skills/engineering/code"
+        "th": "skills/engineering/poteto-mode",
+        "en": "locales/en/skills/engineering/poteto-mode"
       },
       "locales": {
         "en": {
-          "displayName": "Code",
-          "description": "Implement an explicit software request or reviewed plan with an adaptive loop that matches rigor to a quick patch, feature, bug fix, or refactor; use tdd for an explicitly strict test-first path.",
-          "shortDescription": "Match development rigor to the task shape, then implement and verify",
-          "defaultPrompt": "Use code for my current request.",
+          "displayName": "Poteto Mode",
+          "description": "Implement a feature, fix, or refactor using poteto-mode engineering principles. Select principles for the observed risks, then exercise the smallest change through its public entry point.",
+          "shortDescription": "Choose engineering principles, implement, and verify",
+          "defaultPrompt": "Apply poteto-mode to my coding task and verify the result.",
           "triggers": [
             "implement this feature with tests",
-            "just build this and ship it, no strict TDD loop needed"
+            "just build this and ship it, no strict TDD loop needed",
+            "use poteto-mode for this coding task"
           ],
           "negativeTriggers": [
             "the request is outside this workflow",
@@ -934,13 +935,14 @@
           ]
         },
         "th": {
-          "displayName": "ลงมือพัฒนาตามแผน",
-          "description": "ลงมือพัฒนาคำขอที่ชัดหรือแผนที่ review แล้วด้วย adaptive loop ที่เลือกระดับความเข้มตาม Quick patch, Feature, Bug fix หรือ Refactor และใช้ tdd เมื่อผู้ใช้ขอ test-first แบบเข้มงวด",
-          "shortDescription": "เลือกระดับความเข้มตามรูปทรงงานแล้วพัฒนาและตรวจให้ครบ",
-          "defaultPrompt": "ใช้ code กับคำขอนี้",
+          "displayName": "เขียนโค้ดแบบ poteto-mode",
+          "description": "พัฒนา feature แก้บั๊ก หรือ refactor ด้วย poteto-mode เลือกหลักการตามปัญหาในโค้ด แล้วตรวจการเปลี่ยนแปลงผ่านทางที่ผู้ใช้เรียกจริง",
+          "shortDescription": "เลือกหลักการให้ตรงกับงาน เขียนโค้ด แล้วตรวจผลจริง",
+          "defaultPrompt": "ใช้ poteto-mode เขียนโค้ดและตรวจผลให้ตรงกับคำขอ",
           "triggers": [
             "implement feature นี้พร้อม test ให้หน่อย",
-            "เขียนโค้ดให้เสร็จเลย ไม่ต้องทำ TDD เข้มงวด"
+            "เขียนโค้ดให้เสร็จเลย ไม่ต้องทำ TDD เข้มงวด",
+            "เขียนโค้ดแบบ poteto-mode"
           ],
           "negativeTriggers": [
             "คำขออยู่นอกขอบเขต workflow นี้",
@@ -953,7 +955,7 @@
         "allowImplicitInvocation": true
       },
       "effectLevel": "workspace_write",
-      "role": "code_workflow",
+      "role": "poteto_mode_workflow",
       "workflow": [
         {
           "phase": "authorize",
@@ -961,7 +963,7 @@
         },
         {
           "phase": "shape",
-          "instruction": "Classify the request once as a Quick patch, Feature, Bug fix, or Refactor. Choose the smallest justified change, name the data or domain shape only when state and branching warrant it, and keep subagents optional unless independent work or context protection makes them useful."
+          "instruction": "Classify the request once as a Quick patch, Feature, Bug fix, or Refactor. Choose the smallest justified change, name the data or domain shape only when state and branching warrant it, and keep subagents optional unless independent work or context protection makes them useful. Consult the engineering principles and apply only those that change a decision in this task."
         },
         {
           "phase": "execute",
@@ -973,11 +975,11 @@
         },
         {
           "phase": "repair",
-          "instruction": "Diagnose failures and repair autonomously within the profile budget. Pause only for a material user-owned decision, security risk, missing access, scope expansion, or an undeclared Git, remote, or destructive effect."
+          "instruction": "Diagnose failures and repair autonomously within the profile budget. Pause only for a material user-owned decision, security risk, missing access, scope expansion, or an undeclared Git, remote, or destructive effect. After two fixes fail the same check, test their shared assumption before another edit. For requested comment cleanup, verify the constraint before replacing it with an executable check."
         }
       ],
       "artifacts": [
-        "code result",
+        "verified implementation",
         "verification evidence"
       ],
       "evidence": [
@@ -1353,7 +1355,7 @@
         },
         {
           "phase": "execute",
-          "instruction": "Review the requested scope using relevant standards and requirements. Verify, deduplicate, and rank actionable findings in one list; missing specs are an evidence gap, not a setup gate. Include all relevant coding guidance, including existing CODING_STANDARDS.md and CONTRIBUTING.md; aggregate any delegated reviews only after their reports return."
+          "instruction": "Review the requested scope using relevant standards and requirements. Verify, deduplicate, and rank actionable findings in one list; missing specs are an evidence gap, not a setup gate. Include all relevant coding guidance, including existing CODING_STANDARDS.md and CONTRIBUTING.md; aggregate any delegated reviews only after their reports return. For a comment-focused review, trace constraints and suppressions to source, retain external rationale, and propose an enforceable check within read-only scope."
         },
         {
           "phase": "verify",
@@ -1482,7 +1484,7 @@
         },
         "th": {
           "displayName": "ถามเป็นรอบจนเคลียร์",
-          "description": "สัมภาษณ์ผู้ใช้เป็นรอบ ๆ ถามทุกคำถามที่พร้อมตอบในรอบเดียวพร้อมคำแนะนำ จนต้นไม้ decision คลี่หมดและเข้าใจตรงกัน",
+          "description": "สัมภาษณ์ผู้ใช้เป็นรอบ ๆ ถามทุกคำถามที่พร้อมตอบในรอบเดียวพร้อมคำแนะนำ จน decision tree (แผนผังการตัดสินใจ) คลี่หมดและเข้าใจตรงกัน",
           "shortDescription": "ถามเป็นรอบ ๆ ทุกคำถามที่พร้อมตอบในรอบเดียว จนต้นไม้ decision คลี่หมด",
           "defaultPrompt": "ใช้ asking กับคำขอนี้",
           "triggers": [
@@ -3595,12 +3597,13 @@
       "locales": {
         "en": {
           "displayName": "Create Verification Skill",
-          "description": "Create or update a project-local verification skill and helpers that prove task acceptance, test behavior, spec consistency, or skill behavior with observable evidence. Use when reusable verification is missing.",
+          "description": "Create a reusable project-local verifier for task acceptance, tests, specs, skills, or formal verification of a code invariant. Record executed checks, failure controls, and coverage limits.",
           "shortDescription": "Build reusable checks for tasks, specs, tests, and skills",
           "defaultPrompt": "Create a reusable verification skill for this project with evidence, safe cleanup, and an executed proof.",
           "triggers": [
             "Create a verification skill for this repository",
-            "Build reusable verification for task acceptance, specs, tests, or skills"
+            "Build reusable verification for task acceptance, specs, tests, or skills",
+            "Build a reusable model check for the retry invariant"
           ],
           "negativeTriggers": [
             "the user only asks to run existing tests once",
@@ -3609,12 +3612,13 @@
         },
         "th": {
           "displayName": "สร้าง skill ตรวจสอบงาน",
-          "description": "สร้างหรือปรับ verification skill ในโปรเจกต์ พร้อม helper ที่พิสูจน์ task, test script, spec หรือพฤติกรรม skill ด้วยหลักฐาน ใช้เมื่อยังไม่มีวิธีตรวจงานที่ใช้ซ้ำได้",
+          "description": "สร้าง verifier ที่รันซ้ำได้ในโปรเจกต์เพื่อตรวจ task, test, spec, skill หรือพิสูจน์ invariant ของโค้ด พร้อมหลักฐานจากการรันและขอบเขตที่ตรวจได้",
           "shortDescription": "สร้างวิธีตรวจ task, spec, tests และ skill ที่ใช้ซ้ำได้",
           "defaultPrompt": "สร้าง verification skill สำหรับโปรเจกต์นี้ พร้อมหลักฐาน cleanup ที่ปลอดภัย และผลจากการลองใช้จริง",
           "triggers": [
             "สร้าง verification skill ให้ repo นี้",
-            "ทำวิธีตรวจ task, spec, test script หรือ skill ที่ใช้ซ้ำได้"
+            "ทำวิธีตรวจ task, spec, test script หรือ skill ที่ใช้ซ้ำได้",
+            "สร้าง verifier ที่พิสูจน์ซ้ำได้ว่า retry แล้วไม่ออกใบเสร็จซ้ำ"
           ],
           "negativeTriggers": [
             "ผู้ใช้ขอรัน tests ที่มีอยู่ครั้งเดียว",
@@ -3638,7 +3642,7 @@
         },
         {
           "phase": "prove",
-          "instruction": "Execute one mapped check per declared verification kind and a safe failure control; retain evidence after cleanup and label unrun coverage."
+          "instruction": "Execute one mapped check per declared verification kind and a safe failure control; retain evidence after cleanup and label unrun coverage. For an invariant, map transitions to implementation, report bounds and assumptions, demonstrate a counterexample on a broken variant, and distinguish sampled tests from proof."
         },
         {
           "phase": "handoff",
@@ -3728,7 +3732,7 @@
         },
         {
           "phase": "implement",
-          "instruction": "Dispatch only ready independent tickets in separate worktrees based on the integration branch. Workers implement and verify with strict RED/GREEN evidence, preserve unrelated work and return path/commit/check receipts."
+          "instruction": "Dispatch only ready independent tickets in separate worktrees based on the integration branch. Workers implement and verify with strict RED/GREEN evidence, preserve unrelated work and return path/commit/check receipts. Give each ticket a fresh worker context when supported and pass scoped pointers and authority."
         },
         {
           "phase": "integrate",
@@ -3736,7 +3740,7 @@
         },
         {
           "phase": "verify",
-          "instruction": "Review the complete spec and integration diff, run required aggregate checks, repair valid findings within budget and report partial or unverified manual acceptance honestly."
+          "instruction": "Review the complete spec and integration diff, run required aggregate checks, repair valid findings within budget and report partial or unverified manual acceptance honestly. Pass verified findings and the reviewed diff to a fresh isolated repair worker when delegation is available."
         },
         {
           "phase": "resolve",

@@ -33,7 +33,7 @@ describe('split-zone artifact routing', () => {
   test.each([
     ['setup', 'engineering'],
     ['plan', 'engineering'],
-    ['code', 'engineering'],
+    ['poteto-mode', 'engineering'],
     ['research', 'engineering'],
     ['to-spec', 'engineering'],
     ['handoff', 'productivity'],
@@ -83,7 +83,7 @@ describe('split-zone artifact routing', () => {
   });
 
   test('plan readers retain a named compatibility fallback without treating legacy wiki plans as canonical', () => {
-    const code = read('plugins/spk/skills/code/SKILL.md');
+    const code = read('plugins/spk/skills/poteto-mode/SKILL.md');
     expect(code).toContain('ai_context/work/plans/');
     expect(code).toContain('docs/plans/');
     expect(code).toContain('ai_context/wiki/plans/');

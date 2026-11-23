@@ -139,7 +139,7 @@ Sales deck การพูดถึง repo, product หรือ feature อย
 - **Workflow ที่มีจริง:** `debug` เป็น `read_only`; `design-options` และ `plan` เป็น
   `workspace_write` route ได้เมื่อมีอยู่และต้องบอก effect/path ก่อน
 - **Plan → Dev:** plan-only อนุญาตเฉพาะ `plan` ส่วน end-to-end workspace intent ที่ชัด
-  carry ผ่าน reviewed plan ไป `code` ได้โดยไม่ถามซ้ำ
+  carry ผ่าน reviewed plan ไป `poteto-mode` ได้โดยไม่ถามซ้ำ
 - **การส่งออก:** การสร้างงานไม่อนุญาต commit, push, PR, deploy, ส่ง หรือ publish ต้อง
   แสดง artifact จริง ผู้รับ และ channel ก่อน แล้วขออนุมัติการส่งแยกอีกครั้ง แม้ผู้ใช้เคย
   ขอให้ส่งไว้ล่วงหน้า

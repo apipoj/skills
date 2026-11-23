@@ -30,7 +30,7 @@ const CANONICAL_BY_DOC = {
   'docs/engineering/diagnosing-bugs.md': 'debug',
   'docs/engineering/domain-modeling.md': 'domain-modeling',
   'docs/engineering/grill-with-docs.md': 'ask-with-docs',
-  'docs/engineering/implement.md': 'code',
+  'docs/engineering/implement.md': 'poteto-mode',
   'docs/engineering/improve-codebase-architecture.md': 'improve-codebase',
   'docs/engineering/prototype.md': 'prototype',
   'docs/engineering/research.md': 'research',

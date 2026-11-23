@@ -40,10 +40,10 @@ read its actual `SKILL.md`. Router summaries are orientation, not execution cont
    - ทำ idea หรือเรื่องที่ต้องตัดสินใจให้ชัด → `ask-me`, `asking`, `ask-with-docs`; เรื่องที่ตอบเองไม่ได้ต้องส่งให้ผู้เชี่ยวชาญที่ไม่อยู่ตรงหน้าตอบ → `to-questionnaire`
    - คำตอบก่อนหน้ายังไม่โดน หรือผู้ใช้บอกว่า "งง" → `wait-what`
    - อธิบายความสัมพันธ์ด้วยภาพ → `show-me`; สอนแนวคิดยากให้มือใหม่ด้วยบทเรียนภาพ → `eli5`
-   - สร้างวิธีตรวจ task, tests, spec หรือ skill ที่ใช้ซ้ำได้ → `create-verification-skill`
+   - สร้างวิธีตรวจ task, tests, spec หรือ skill ที่ใช้ซ้ำได้ รวมถึง invariant ที่ต้องการพิสูจน์ซ้ำ → `create-verification-skill`
    - ทำ engineering plan → `plan`; สรุป discussion เป็น spec → `to-spec`
    - แตกงาน → `to-tickets`; งานใหญ่ที่ยังมีหมอก → `wayfinder`
-   - implement, fix, refactor หรือ plan-and-implement → adaptive `code`; ต้องการ strict RED-GREEN หรือ orchestration ตามความเสี่ยง → `tdd`
+   - implement, fix, refactor หรือ plan-and-implement → adaptive `poteto-mode`; ต้องการ strict RED-GREEN หรือ orchestration ตามความเสี่ยง → `tdd`
    - failure ที่ยังไม่รู้ต้นเหตุ → `debug`; ตรวจ diff → `code-review`; feedback จาก test แบบเร็ว → `test-changes`
    - ตอบคำถามด้วยของทดลอง → `prototype`; เทียบ UI หลายทาง → `design-options`
    - ปรับรูปทรง module → `codebase-design`, `improve-codebase`
@@ -53,7 +53,7 @@ read its actual `SKILL.md`. Router summaries are orientation, not execution cont
    - เตรียมส่งงาน → `check-release`, `pr`, `task-to-pr`, `deploy`; ถอนระบบ → `uninstall`
    - ส่งต่อ context → `handoff`; เรียนรู้เรื่องใหม่ → `teach`; เขียน agent docs หรือ skill → `write-skills`
 
-   ค่าเริ่มต้น development ใช้ `code`; เลือก `tdd` เมื่อผู้ใช้ขอ test-first ชัดเจน
+   ค่าเริ่มต้น development ใช้ `poteto-mode`; เลือก `tdd` เมื่อผู้ใช้ขอ test-first ชัดเจน
    หรือ behavior เสี่ยงสูงมี test seam ที่ reliable เลือกการตรวจตามความเสี่ยงและ policy ของ repo
 
    ถ้า outcome ตรงกับ skill แบบ manual-only (`disable-model-invocation`) ให้บอกคำสั่ง `/<name>` ให้ผู้ใช้แล้วหยุด ไม่ต้องเรียกใช้เอง

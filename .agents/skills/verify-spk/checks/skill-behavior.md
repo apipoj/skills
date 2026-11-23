@@ -9,6 +9,8 @@ limitations, and the actual boundary response.
   visual using neutral accessible styling. Distinguish proposed UI from observed UI.
 - eli5: teach caching with one learning target, concrete example, and stale-data model
   limits; use inline fallback if HTML tools are unavailable.
+- poteto-mode: use a failing public command to distinguish two attempted fixes that shared an incorrect assumption. Inspect its input, apply the matching principle, then rerun the original command.
+- code-review: trace a comment to a caller or an external contract and report the smallest enforceable check. Observe that review leaves the fixture untouched.
 - create-verification-skill: produce a real project-local verifier, coverage map and
   any required helpers; exercise generated instructions and a safe failure control,
   then confirm evidence survived cleanup. Missing tools remain NOT_RUN.

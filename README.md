@@ -18,6 +18,8 @@ Apipoj Skills ใช้ skill ที่เล็กและ composable จา�
 
 บอกสิ่งที่อยากได้ตามปกติ ระบบจะเลือก workflow ที่เล็กที่สุด ใช้ smart defaults เมื่อปลอดภัย และถามทีละหนึ่ง decision เฉพาะตอนที่คำตอบเปลี่ยน scope หรือความเสี่ยง
 
+งานเขียนโค้ดใช้ `/spk:poteto-mode` หรือ `$spk:poteto-mode` ใน Codex ส่วน `/spk:start` เลือกโหมดนี้ให้เมื่อขอเพิ่ม feature แก้บั๊ก หรือ refactor ตัวอย่างเช่น ถ้า retry แล้วเกิดรายการซ้ำ ให้ตรวจว่าใครเป็นเจ้าของการเขียนและลองรัน operation เดิมอีกครั้ง [หลักการเขียนโค้ด](skills/engineering/poteto-mode/references/principles.md)
+
 งาน local ทำต่อจนได้ผลตามคำขอ รวม implementation, การตรวจที่เกี่ยวข้อง และแก้ failure ที่เกิดจาก change ใน scope ส่วนคำขอ plan-only ยังหยุดที่แผน เลือกการตรวจตามความเสี่ยง: ใช้ strict TDD เมื่อขอชัดเจนหรือมีจุดเสี่ยงสูงที่ทดสอบได้มั่นใจ และรันทั้งชุดเมื่อ repo/release กำหนดหรือจับคู่ test ไม่มั่นใจ Review รวมเป็นรายการปัญหาที่จัดลำดับแล้ว พร้อมบอก spec ที่ขาดและสิ่งที่ยังไม่ได้ตรวจ
 
 การ validate ชุดโจทย์ SkillLab ตรวจความครบของข้อมูล ยังไม่พิสูจน์พฤติกรรมโมเดล โจทย์ครอบคลุม review แบบไม่มี repo, แผนงานเล็ก, การทำ local จนจบ และการจบด้วย focused tests ส่วนการทดลอง Claude/Codex จริงยังเป็นแบบเลือกเปิดใช้และอยู่นอก release gate
@@ -108,7 +110,7 @@ npx skills@latest add apipoj/skills
 | `/spk:to-tickets` | direct main-thread workflow | พิมพ์เอง |
 | `/spk:to-questionnaire` | direct main-thread workflow | พิมพ์เอง |
 | `/spk:wayfinder` | direct main-thread workflow | พิมพ์เอง |
-| `/spk:code` | direct main-thread workflow | agent เรียกเองได้ |
+| `/spk:poteto-mode` | direct main-thread workflow | agent เรียกเองได้ |
 | `/spk:prototype` | designer | agent เรียกเองได้ |
 | `/spk:research` | researcher | agent เรียกเองได้ |
 | `/spk:domain-modeling` | direct main-thread workflow | agent เรียกเองได้ |

@@ -2,6 +2,8 @@
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
+const { parseDocument } = require('yaml');
+const { skills } = require('../contracts/workflows.json');
 
 const {
   collectFrontmatterYamlErrors,
@@ -24,6 +26,21 @@ describe('skill frontmatter is parseable YAML', () => {
   // one — the installer caught it in the field, no gate did.
   test('the shipped payload parses', () => {
     expect(collectFrontmatterYamlErrors(ROOT)).toEqual([]);
+  });
+
+  const publishedSkills = skills.flatMap(({ id, sources, locales }) => [
+    [sources.th, id, locales.th.description],
+    [sources.en, id, locales.en.description],
+    [`plugins/spk/skills/${id}`, id, locales.en.description],
+    [`plugins/spk-codex/skills/${id}`, id, locales.en.description],
+  ]);
+  test.each(publishedSkills)('%s decodes to its advertised name and description', (dir, name, description) => {
+    const source = fs.readFileSync(path.join(ROOT, dir, 'SKILL.md'), 'utf8');
+    const header = source.match(/^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/);
+    expect(header).not.toBeNull();
+    const doc = parseDocument(header[1], { strict: true, uniqueKeys: true });
+    expect(doc.errors).toEqual([]);
+    expect(doc.toJS()).toMatchObject({ name, description });
   });
 
   test('rejects a colon-space inside an unquoted value', () => {

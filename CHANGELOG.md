@@ -1,7 +1,11 @@
 # Apipoj Skills
 
-## Unreleased
+## 7.0.0 - 2026-11-23
 
+- **Breaking change.** The former `code` workflow is now `/spk:poteto-mode` in Claude Code and `$spk:poteto-mode` in Codex. Update saved prompts and automations that call the retired command. The `start` router selects the new workflow for features, fixes, and refactors.
+- Apply eleven engineering principles to concrete coding decisions, including retry behavior, write ownership, validation boundaries, and tests of shared assumptions after repeated failures.
+- Trace comment constraints and suppressions to their source during read-only reviews. Generate reusable invariant checks with explicit bounds, source mapping, and counterexamples.
+- Give each delegated spec ticket a fresh worker context where available. Validate published frontmatter across both locales and both platform payloads with a strict YAML parser.
 - Let `start` hand off to `ask-me` in the same turn: `ask-me` now accepts direct invocation, an explicit one-decision-at-a-time interview request, or a `start` handoff, so routing asks the first decision question immediately. Unrelated prompts do not trigger it. Every other manual-only skill, including `bala` and `sunzi`, stays typed only.
 - Merge HumanLayer `show-me` shapes (pseudocode, call tree, component tree, file tree, types, Mermaid, diff, whole block, focused HTML) and compactness guidance into `show-me`, with a note on when to use `diagram-design` instead. Provenance: humanlayer/skills@653b6411c1f70c275a18e37673b042ff99f67ceb by Dex Horthy, MIT License, Copyright (c) 2026 HumanLayer.
 

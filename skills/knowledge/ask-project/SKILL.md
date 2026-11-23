@@ -1,6 +1,6 @@
 ---
 name: ask-project
-description: Answer project questions from existing documentation, CONTEXT.md, ADRs, and source code with exact citations; research externally only when local evidence is insufficient.
+description: ตอบคำถามจากเอกสารโปรเจกต์ CONTEXT.md ADR และ code พร้อมอ้างหลักฐาน ค้นภายนอกเมื่อข้อมูลไม่พอ
 ---
 
 # Ask Project

@@ -84,7 +84,7 @@ Run every variant through these gates before presenting. Every answer must be **
 - C: <strength> / <weakness>
 
 Recommendation: <one opinionated pick and why>
-Next: pick A/B/C, ask for a remix, or approve for `/spk:code`.
+Next: pick A/B/C, ask for a remix, or approve for `/spk:poteto-mode`.
 ```
 
 ## Evidence Receipt

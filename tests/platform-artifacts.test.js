@@ -174,9 +174,9 @@ describe('platform artifact compiler', () => {
     expect(byId.plan.effectLevel).toBe('workspace_write');
     expect(byId.plan.workflow.find((step) => step.phase === 'handoff').instruction)
       .toMatch(/plan-only[\s\S]*plan-and-implement[\s\S]*continue automatically/i);
-    expect(byId.code.effectLevel).toBe('workspace_write');
+    expect(byId['poteto-mode'].effectLevel).toBe('workspace_write');
     expect(fs.readFileSync(
-      path.join(REPO_ROOT, 'plugins/spk/skills/code/SKILL.md'),
+      path.join(REPO_ROOT, 'plugins/spk/skills/poteto-mode/SKILL.md'),
       'utf8',
     )).toMatch(/explicit implementation[\s\S]*request as bounded workspace authority/i);
 

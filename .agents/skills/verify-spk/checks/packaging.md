@@ -1,8 +1,7 @@
 # Skill packaging and task acceptance
 
 Authority: the selected user request, `manifest.json`, and each workflow entry in
-`contracts/workflows.json`. For this change, required IDs are show-me, eli5, and
-create-verification-skill; guide-me must remain in the released roster.
+`contracts/workflows.json`. Derive required IDs from the current request. For a rename, verify the new ID on all four surfaces, the default router target, and removal of the retired ID from the roster and runtime.
 
 Drive the quick helper from the repo root. It runs manifest validation, generated
 platform comparison, locale/payload parity, and router coverage. Full verification

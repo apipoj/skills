@@ -5,7 +5,7 @@ description: Recommend the next best action when the user is unsure what to do n
 
 # Guide Me
 
-Help a user who knows their situation but not their next move. Give one concrete, evidence-backed action they can take or authorize next. This is a read-only decision aid; a clear request to implement an already chosen change belongs to `code` or `start`.
+Help a user who knows their situation but not their next move. Give one concrete, evidence-backed action they can take or authorize next. This is a read-only decision aid; a clear request to implement an already chosen change belongs to `poteto-mode` or `start`.
 
 ## Response Rules
 

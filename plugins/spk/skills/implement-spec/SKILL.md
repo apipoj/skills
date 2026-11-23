@@ -47,6 +47,7 @@ after its code reaches that branch and the required checks pass.
    owned worktree. If its base is wrong, preserve its state and fix isolation with
    approval; never reset it or absorb unrelated changes.
 5. Dispatch independent ready tickets concurrently using host subagents when available.
+   Start each ticket with a fresh worker context wherever the host supports it.
    Each worker receives pointers to the spec, ticket, scoped docs, worktree and current
    integration SHA, plus explicit file ownership and allowed operations. Keep concurrent
    writers in separate worktrees. If delegation or worktrees are unavailable, report
@@ -66,7 +67,8 @@ after its code reaches that branch and the required checks pass.
    A worker being done, a branch existing or an open PR never unlocks dependents.
 8. Review the whole integration diff against the spec with the `code-review` discipline.
    Run aggregate repository checks and confirm every acceptance criterion. Repair valid
-   findings in an isolated worker and repeat affected checks within the repair budget.
+   findings in a fresh isolated worker given the reviewed diff and findings, and repeat
+   affected checks within the repair budget.
    Report manual checks as NOT_RUN until someone actually performs them. Do not call
    the spec complete while required acceptance remains missing or unverified.
 9. If tracker policy closes work through a PR, or the user requests one, prepare a draft

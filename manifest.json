@@ -1,6 +1,6 @@
 {
-  "version": "6.10.0",
-  "released": "2026-10-14",
+  "version": "7.0.0",
+  "released": "2026-11-23",
   "brand": "Apipoj Skills",
   "slug": "spk",
   "tagline": "Thai-first, ready-to-use engineering skills with evidence and safe defaults",
@@ -182,7 +182,7 @@
       "direct": true
     },
     {
-      "name": "/code",
+      "name": "/poteto-mode",
       "direct": true
     },
     {

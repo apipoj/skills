@@ -2,7 +2,8 @@
 
 ## Purpose
 
-- Source repository for **Apipoj Skills 5**, a Thai-first skill distribution for Claude Code, Codex, and skills.sh.
+- Source repository for **Apipoj Skills**, a Thai-first skill distribution for Claude Code, Codex, and skills.sh.
+- For coding tasks the router selects `poteto-mode`. Before editing the Claude payload, read `plugins/spk/AGENTS.md` for scoped contributor instructions.
 - The public plugin namespace stays `spk`; the primary router is `/spk:start` (Codex: `$spk:start`).
 - Built from the reviewed `mattpocock/skills` snapshot pinned in `docs/upstream/upstream-lock.json`, plus SPK's evidence, approval, memory, security, and multi-platform tooling.
 

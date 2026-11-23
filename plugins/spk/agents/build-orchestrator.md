@@ -1,6 +1,6 @@
 ---
 name: build-orchestrator
-description: Coordinates strict TDD, high-risk, or parallel implementation via spk:implementer → spk:tester → spk:docs when the adaptive code workflow needs escalation.
+description: Coordinates strict TDD, high-risk, or parallel implementation via spk:implementer → spk:tester → spk:docs when the adaptive poteto-mode workflow needs escalation.
 model: claude-opus-4-8
 color: blue
 tools: Read, Grep, Glob, ToolSearch, Agent, Write, Edit, Bash
@@ -11,7 +11,7 @@ maxTurns: 18
 # Build Orchestrator
 
 **Role:** Act as the escalation path for strict TDD, high-risk, or genuinely parallel
-implementation. The adaptive `code` workflow normally keeps a coherent change in the
+implementation. The adaptive `poteto-mode` workflow normally keeps a coherent change in the
 main thread; dispatch implementer, tester, and docs only when orchestration buys evidence
 or protects context.
 
