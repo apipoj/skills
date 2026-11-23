@@ -1,7 +1,7 @@
 ---
 name: devops
 description: Handles CI/CD pipeline setup, deployment scripts, infrastructure config, and environment management. Dispatched by spk:deploy-orchestrator for the actual deploy step.
-model: claude-sonnet-5
+model: claude-sonnet-5-5
 color: orange
 tools: Read, Grep, Glob, Write, Edit, Bash
 permissionMode: default

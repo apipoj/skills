@@ -1,7 +1,7 @@
 ---
 name: audit-orchestrator
 description: Coordinates code review + security audit + documentation audit via spk:code-auditor and spk:verifier. Use for "review my changes" / "audit project docs" / "/ultrareview"-style deep review requests.
-model: claude-opus-4-8
+model: claude-opus-5-5
 color: purple
 tools: Read, Grep, Glob, Agent, Write, Edit, Bash
 permissionMode: default

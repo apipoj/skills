@@ -12,9 +12,11 @@ description: พัฒนา feature แก้บั๊ก หรือ refactor
 `ai_context/work/plans/`, `docs/plans/` ตามลำดับ อ่าน `ai_context/wiki/plans/` เฉพาะ
 legacy compatibility fallback และห้ามถือว่าเป็น canonical
 
-## Engineering principles
+## Select the playbook and principles
 
-Read [engineering principles](references/principles.md) and select the rows that change a decision for this task. For a small patch, start with the smallest justified change and verify the real surface. For stateful work, inspect the data shape, retry boundary and write ownership. Subagents are optional when independent work justifies them. In the handoff, name a principle only when it explains a concrete choice.
+For a quick patch, make the smallest justified change and verify the real surface. For a larger task, use the [playbook index](references/playbooks.md) to select the requested outcome and open the matching file. Use the [principle index](references/principles.md) to identify the decision at hand and open the relevant guidance. For stateful work, inspect the data shape, retry boundary and write ownership. Subagents are optional for independent, authorized scopes.
+
+Apply the implementation loop below to code changes. For an investigation, plan, status check or pause, stop at that playbook's requested outcome. Operational playbooks can prepare a concrete intent and check evidence. Git, remote, destructive and deployment actions remain subject to the applicable workflow and exact approval. A request for one playbook does not start the next.
 
 ## Ticket input
 

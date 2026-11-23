@@ -1,7 +1,7 @@
 ---
 name: researcher
 description: Researches technologies, APIs, and libraries using web search + library docs. Returns distilled findings, not raw transcripts.
-model: claude-sonnet-5
+model: claude-sonnet-5-5
 color: blue
 tools: Read, Grep, Glob, ToolSearch, WebSearch, WebFetch
 permissionMode: default

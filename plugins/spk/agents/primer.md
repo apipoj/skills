@@ -1,7 +1,7 @@
 ---
 name: primer
 description: Scans source-code folders and creates/updates AGENTS.md (canonical) + CLAUDE.md (@AGENTS.md pointer) so downstream subagents know how to work safely in each subtree.
-model: claude-sonnet-5
+model: claude-sonnet-5-5
 color: green
 tools: Read, Grep, Glob, ToolSearch, Write, Edit, Bash
 permissionMode: default

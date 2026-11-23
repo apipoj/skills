@@ -570,7 +570,7 @@ ${blocks.join('\n\n')}
 // Reflection is an unsupervised background job, so the model is pinned rather
 // than inherited from the user's session default (which could silently spend
 // Opus on a drift check). Sonnet-tier is the right ceiling for this workload.
-const DEFAULT_REFLECT_MODEL = 'claude-sonnet-5';
+const DEFAULT_REFLECT_MODEL = 'claude-sonnet-5-5';
 
 function projectReflectionPolicy(root) {
   const config = path.join(root, 'ai_context', 'spk.config.json');

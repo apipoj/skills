@@ -1,7 +1,7 @@
 ---
 name: docs
 description: Writes/updates project documentation including READMEs, API docs, guides. Keeps docs in sync with code.
-model: claude-sonnet-5
+model: claude-sonnet-5-5
 color: blue
 tools: Read, Grep, Glob, Write, Edit, Bash
 permissionMode: default

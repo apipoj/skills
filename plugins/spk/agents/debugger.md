@@ -1,7 +1,7 @@
 ---
 name: debugger
 description: Root-cause analysis for bugs using systematic 4-phase debugging. Reads wiki/log.md for past incidents before diagnosing. Use when a test fails or behavior is unexpected.
-model: claude-opus-4-8
+model: claude-opus-5-5
 color: purple
 tools: Read, Grep, Glob, Bash
 permissionMode: default

@@ -1,7 +1,7 @@
 ---
 name: verifier
 description: Runs the pre-commit quality gate. Tests pass, coverage target when configured, no secrets, manifest/docs sync, no grep-gate violations. Pass/fail summary.
-model: claude-sonnet-5
+model: claude-sonnet-5-5
 color: purple
 tools: Read, Grep, Glob, Bash
 permissionMode: default

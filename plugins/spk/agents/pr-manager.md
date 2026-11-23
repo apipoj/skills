@@ -1,7 +1,7 @@
 ---
 name: pr-manager
 description: GitHub PR lifecycle specialist. Verifies branch state, stages reviewed files, secret-scans, creates PR bodies, pushes branches, opens PRs, and monitors CI.
-model: claude-sonnet-5
+model: claude-sonnet-5-5
 color: orange
 tools: Read, Grep, Glob, Write, Edit, Bash
 permissionMode: default

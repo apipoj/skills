@@ -1,7 +1,7 @@
 ---
 name: planner
 description: Turns PRD + architecture into a step-by-step implementation plan with scoped tasks and risk-appropriate verification. Use when orchestrator needs a developer-ready plan.
-model: claude-opus-4-8
+model: claude-opus-5-5
 color: green
 tools: Read, Grep, Glob
 permissionMode: default

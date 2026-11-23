@@ -1,7 +1,7 @@
 ---
 name: implementer
 description: Writes production code following the provided plan. Daily-driver for implementation tasks. Does not design or debug — executes.
-model: claude-sonnet-5
+model: claude-sonnet-5-5
 color: blue
 tools: Read, Grep, Glob, ToolSearch, Write, Edit, Bash
 permissionMode: default

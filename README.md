@@ -18,7 +18,7 @@ Apipoj Skills ใช้ skill ที่เล็กและ composable จา�
 
 บอกสิ่งที่อยากได้ตามปกติ ระบบจะเลือก workflow ที่เล็กที่สุด ใช้ smart defaults เมื่อปลอดภัย และถามทีละหนึ่ง decision เฉพาะตอนที่คำตอบเปลี่ยน scope หรือความเสี่ยง
 
-งานเขียนโค้ดใช้ `/spk:poteto-mode` หรือ `$spk:poteto-mode` ใน Codex ส่วน `/spk:start` เลือกโหมดนี้ให้เมื่อขอเพิ่ม feature แก้บั๊ก หรือ refactor ตัวอย่างเช่น ถ้า retry แล้วเกิดรายการซ้ำ ให้ตรวจว่าใครเป็นเจ้าของการเขียนและลองรัน operation เดิมอีกครั้ง [หลักการเขียนโค้ด](skills/engineering/poteto-mode/references/principles.md)
+งานเขียนโค้ดใช้ `/spk:poteto-mode` หรือ `$spk:poteto-mode` ใน Codex ส่วน `/spk:start` เลือกโหมดนี้ให้เมื่อขอเพิ่ม feature แก้บั๊ก หรือ refactor ตัวอย่างเช่น ถ้า retry แล้วเกิดรายการซ้ำ ให้ตรวจว่าใครเป็นเจ้าของการเขียนและลองรัน operation เดิมอีกครั้ง [หลักการ 24 ข้อ](skills/engineering/poteto-mode/references/principles.md) · [playbooks 22 แบบ](skills/engineering/poteto-mode/references/playbooks.md)
 
 งาน local ทำต่อจนได้ผลตามคำขอ รวม implementation, การตรวจที่เกี่ยวข้อง และแก้ failure ที่เกิดจาก change ใน scope ส่วนคำขอ plan-only ยังหยุดที่แผน เลือกการตรวจตามความเสี่ยง: ใช้ strict TDD เมื่อขอชัดเจนหรือมีจุดเสี่ยงสูงที่ทดสอบได้มั่นใจ และรันทั้งชุดเมื่อ repo/release กำหนดหรือจับคู่ test ไม่มั่นใจ Review รวมเป็นรายการปัญหาที่จัดลำดับแล้ว พร้อมบอก spec ที่ขาดและสิ่งที่ยังไม่ได้ตรวจ
 
@@ -69,27 +69,27 @@ npx skills@latest add apipoj/skills
 <!-- SPK-AGENTS:start -->
 | Name | Role | Model | Color | Phase |
 |---|---|---|---|---|
-| `plan-orchestrator` | orchestrator | claude-opus-4-8 | green | planning |
-| `build-orchestrator` | orchestrator | claude-opus-4-8 | blue | building |
-| `audit-orchestrator` | orchestrator | claude-opus-4-8 | purple | auditing |
-| `deploy-orchestrator` | orchestrator | claude-opus-4-8 | orange | shipping |
-| `prd-writer` | specialist | claude-opus-4-8 | green | planning |
-| `business-analyst` | specialist | claude-opus-4-8 | green | planning |
-| `architect` | specialist | claude-opus-4-8 | green | planning |
-| `planner` | specialist | claude-opus-4-8 | green | planning |
-| `designer` | specialist | claude-sonnet-5 | green | planning |
-| `primer` | specialist | claude-sonnet-5 | green | planning |
-| `debugger` | specialist | claude-opus-4-8 | purple | auditing |
-| `code-auditor` | specialist | claude-opus-4-8 | purple | auditing |
-| `implementer` | specialist | claude-sonnet-5 | blue | building |
-| `tester` | specialist | claude-sonnet-5 | blue | building |
-| `docs` | specialist | claude-sonnet-5 | blue | building |
-| `researcher` | specialist | claude-sonnet-5 | blue | building |
-| `verifier` | specialist | claude-sonnet-5 | purple | auditing |
-| `pr-manager` | specialist | claude-sonnet-5 | orange | shipping |
-| `devops` | specialist | claude-sonnet-5 | orange | shipping |
-| `deployment-smoke` | specialist | claude-sonnet-5 | orange | shipping |
-| `browser-tester` | specialist | claude-sonnet-5 | orange | shipping |
+| `plan-orchestrator` | orchestrator | claude-opus-5-5 | green | planning |
+| `build-orchestrator` | orchestrator | claude-opus-5-5 | blue | building |
+| `audit-orchestrator` | orchestrator | claude-opus-5-5 | purple | auditing |
+| `deploy-orchestrator` | orchestrator | claude-opus-5-5 | orange | shipping |
+| `prd-writer` | specialist | claude-opus-5-5 | green | planning |
+| `business-analyst` | specialist | claude-opus-5-5 | green | planning |
+| `architect` | specialist | claude-opus-5-5 | green | planning |
+| `planner` | specialist | claude-opus-5-5 | green | planning |
+| `designer` | specialist | claude-sonnet-5-5 | green | planning |
+| `primer` | specialist | claude-sonnet-5-5 | green | planning |
+| `debugger` | specialist | claude-opus-5-5 | purple | auditing |
+| `code-auditor` | specialist | claude-opus-5-5 | purple | auditing |
+| `implementer` | specialist | claude-sonnet-5-5 | blue | building |
+| `tester` | specialist | claude-sonnet-5-5 | blue | building |
+| `docs` | specialist | claude-sonnet-5-5 | blue | building |
+| `researcher` | specialist | claude-sonnet-5-5 | blue | building |
+| `verifier` | specialist | claude-sonnet-5-5 | purple | auditing |
+| `pr-manager` | specialist | claude-sonnet-5-5 | orange | shipping |
+| `devops` | specialist | claude-sonnet-5-5 | orange | shipping |
+| `deployment-smoke` | specialist | claude-sonnet-5-5 | orange | shipping |
+| `browser-tester` | specialist | claude-sonnet-5-5 | orange | shipping |
 <!-- SPK-AGENTS:end -->
 
 ### Skills
