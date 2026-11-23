@@ -810,7 +810,9 @@
               "evidence",
               "authority-boundary",
               "shared-assumption",
-              "public-command-result"
+              "public-command-result",
+              "bug-fix-playbook",
+              "attack-the-premise"
             ]
           }
         },

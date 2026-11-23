@@ -963,7 +963,7 @@
         },
         {
           "phase": "shape",
-          "instruction": "Classify the request once as a Quick patch, Feature, Bug fix, or Refactor. Choose the smallest justified change, name the data or domain shape only when state and branching warrant it, and keep subagents optional unless independent work or context protection makes them useful. Consult the engineering principles and apply only those that change a decision in this task."
+          "instruction": "Classify the request once as a Quick patch, Feature, Bug fix, or Refactor. Choose the smallest justified change, name the data or domain shape only when state and branching warrant it, and keep subagents optional unless independent work or context protection makes them useful. Use the internal playbook index for the requested outcome and open only the applicable principle guides. A quick patch stays on the direct path. Read-only, plan-only and operational requests retain their own effect boundaries."
         },
         {
           "phase": "execute",

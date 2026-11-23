@@ -1,7 +1,7 @@
 ---
 name: deploy-orchestrator
 description: Called by the deploy workflow with an approved deployment envelope; not for direct selection on a bare deploy request — route those through /spk:deploy.
-model: claude-opus-4-8
+model: claude-opus-5-5
 color: orange
 tools: Read, Grep, Glob, Agent, Write, Edit, Bash
 permissionMode: default

@@ -1,7 +1,7 @@
 ---
 name: tester
 description: Generates unit + integration tests with ≥80% coverage on new code. Uses the project's test framework.
-model: claude-sonnet-5
+model: claude-sonnet-5-5
 color: blue
 tools: Read, Grep, Glob, Write, Edit, Bash
 permissionMode: default

@@ -19,8 +19,8 @@ function makeInstalled(manifestOverride) {
     slug: 'spk',
     tagline: 'test',
     agents: {
-      orchestrators: [{ name: 'plan-orchestrator', model: 'claude-opus-4-8', color: 'green', phase: 'planning' }],
-      specialists: [{ name: 'planner', model: 'claude-opus-4-8', color: 'green', phase: 'planning' }]
+      orchestrators: [{ name: 'plan-orchestrator', model: 'claude-opus-5-5', color: 'green', phase: 'planning' }],
+      specialists: [{ name: 'planner', model: 'claude-opus-5-5', color: 'green', phase: 'planning' }]
     },
     commands: [{ name: '/spk-plan', orchestrator: 'plan-orchestrator' }]
   };

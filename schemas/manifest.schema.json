@@ -74,7 +74,7 @@
         },
         "model": {
           "type": "string",
-          "enum": ["claude-opus-4-8", "claude-sonnet-5"]
+          "enum": ["claude-opus-5-5", "claude-sonnet-5-5"]
         },
         "color": {
           "type": "string",

@@ -10,10 +10,10 @@ describe('validateManifest', () => {
     tagline: 'Skills-first subagent development via Claude Code subscription',
     agents: {
       orchestrators: [
-        { name: 'plan-orchestrator', model: 'claude-opus-4-8', color: 'green', phase: 'planning' }
+        { name: 'plan-orchestrator', model: 'claude-opus-5-5', color: 'green', phase: 'planning' }
       ],
       specialists: [
-        { name: 'planner', model: 'claude-opus-4-8', color: 'green', phase: 'planning' }
+        { name: 'planner', model: 'claude-opus-5-5', color: 'green', phase: 'planning' }
       ]
     },
     commands: [
@@ -87,7 +87,7 @@ describe('validateManifest', () => {
     const duplicateAgentName = JSON.parse(JSON.stringify(validManifest));
     duplicateAgentName.agents.specialists.push({
       name: 'plan-orchestrator',
-      model: 'claude-sonnet-5',
+      model: 'claude-sonnet-5-5',
       color: 'blue',
       phase: 'building',
     });

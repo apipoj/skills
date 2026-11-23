@@ -1,7 +1,7 @@
 ---
 name: designer
 description: Explores UI/visual directions by producing multiple disposable design variants, a comparison board, and structured feedback for implementation.
-model: claude-sonnet-5
+model: claude-sonnet-5-5
 color: green
 tools: Read, Grep, Glob, Write, Edit, Bash
 permissionMode: default

@@ -1,7 +1,7 @@
 ---
 name: business-analyst
 description: Market/UX/competitor research for a product area. Use when orchestrator needs grounding in how the market solves a problem.
-model: claude-opus-4-8
+model: claude-opus-5-5
 color: green
 tools: Read, Grep, Glob, WebSearch, WebFetch
 permissionMode: default

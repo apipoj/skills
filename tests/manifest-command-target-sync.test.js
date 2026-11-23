@@ -31,7 +31,7 @@ function makeFixtureRoot() {
     version,
     released: '2026-01-02',
     agents: {
-      orchestrators: [{ name: 'plan-orchestrator', model: 'claude-opus-4-8', color: 'green' }],
+      orchestrators: [{ name: 'plan-orchestrator', model: 'claude-opus-5-5', color: 'green' }],
       specialists: [{ name: 'planner', model: 'claude-sonnet-4-6', color: 'green' }],
     },
     commands: [
@@ -47,7 +47,7 @@ function makeFixtureRoot() {
   writeJson(path.join(root, '.claude-plugin/marketplace.json'), { plugins: [{ name: 'spk', version }] });
   writeText(path.join(root, 'USER_GUIDE.md'), `คู่มือนี้ครอบคลุม Apipoj Skills **v${version}**\n`);
   writeText(path.join(root, 'USER_GUIDE-EN.md'), `This guide covers Apipoj Skills **v${version}**.\n`);
-  writeAgent(root, 'plan-orchestrator', 'claude-opus-4-8', 'green');
+  writeAgent(root, 'plan-orchestrator', 'claude-opus-5-5', 'green');
   writeAgent(root, 'planner', 'claude-sonnet-4-6', 'green');
   writeSkill(root, 'plan');
   writeSkill(root, 'sunzi');

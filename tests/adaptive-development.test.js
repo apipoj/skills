@@ -37,6 +37,86 @@ describe('adaptive development workflow', () => {
     expect(skill).not.toMatch(/Return `spk\.evidence\/v1`/i);
   });
 
+  // Names from cursor/plugins@7a583913, independent of the packaged index.
+  const internalGuides = {
+    principles: [
+      'principle-attack-the-premise',
+      'principle-boundary-discipline',
+      'principle-build-the-lever',
+      'principle-encode-lessons-in-structure',
+      'principle-exhaust-the-design-space',
+      'principle-experience-first',
+      'principle-explain-the-number',
+      'principle-fix-root-causes',
+      'principle-foundational-thinking',
+      'principle-guard-the-context-window',
+      'principle-laziness-protocol',
+      'principle-make-operations-idempotent',
+      'principle-migrate-callers-then-delete-legacy-apis',
+      'principle-minimize-reader-load',
+      'principle-model-the-domain',
+      'principle-never-block-on-the-human',
+      'principle-outcome-oriented-execution',
+      'principle-prove-it-works',
+      'principle-redesign-from-first-principles',
+      'principle-separate-before-serializing-shared-state',
+      'principle-sequence-verifiable-units',
+      'principle-subtract-before-you-add',
+      'principle-test-behavior-not-implementation',
+      'principle-type-system-discipline',
+    ],
+    playbooks: [
+      'authoring-a-skill',
+      'autonomous-run',
+      'autopilot-full',
+      'autopilot-stack',
+      'babysit',
+      'bug-fix',
+      'eval',
+      'feature',
+      'hillclimb',
+      'investigation',
+      'multi-phase-plan',
+      'opening-a-pr',
+      'pause-safely',
+      'perf-issue',
+      'prototype',
+      'refactoring',
+      'runtime-forensics',
+      'session-pickup',
+      'shipping',
+      'trace-forensics',
+      'visual-parity',
+      'worktree-cleanup',
+    ],
+  };
+
+  test.each([
+    'skills/engineering/poteto-mode',
+    'locales/en/skills/engineering/poteto-mode',
+    'plugins/spk/skills/poteto-mode',
+    'plugins/spk-codex/skills/poteto-mode',
+  ])('%s ships every reviewed guide and routes to it', directory => {
+    const entry = read(`${directory}/SKILL.md`);
+    const source = 'locales/en/skills/engineering/poteto-mode';
+    for (const [kind, ids] of Object.entries(internalGuides)) {
+      const indexPath = `references/${kind}.md`;
+      expect(entry).toContain(`(${indexPath})`);
+      const index = read(`${directory}/${indexPath}`);
+      const links = [...index.matchAll(/\]\(\.\.\/([^)]*)\)/g)].map(match => match[1]);
+      const files = ids.map(id => `${id}.md`);
+      expect(fs.readdirSync(path.join(ROOT, directory, kind)).sort()).toEqual(files);
+      expect(links.sort()).toEqual(files.map(file => `${kind}/${file}`));
+      for (const target of links) {
+        const guide = read(`${directory}/${target}`);
+        expect(guide).toEqual(read(`${source}/${target}`));
+        for (const [, ref] of guide.matchAll(/\]\(([^):]+)\)/g)) {
+          expect(fs.statSync(path.resolve(ROOT, directory, path.dirname(target), ref)).isFile()).toBe(true);
+        }
+      }
+    }
+  });
+
   test('router describes code as adaptive and reserves strict orchestration for tdd', () => {
     for (const relativePath of [
       'skills/engineering/start/SKILL.md',

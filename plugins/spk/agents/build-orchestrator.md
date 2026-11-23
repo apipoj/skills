@@ -1,7 +1,7 @@
 ---
 name: build-orchestrator
 description: Coordinates strict TDD, high-risk, or parallel implementation via spk:implementer → spk:tester → spk:docs when the adaptive poteto-mode workflow needs escalation.
-model: claude-opus-4-8
+model: claude-opus-5-5
 color: blue
 tools: Read, Grep, Glob, ToolSearch, Agent, Write, Edit, Bash
 permissionMode: default

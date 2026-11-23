@@ -1,5 +1,11 @@
 # Apipoj Skills
 
+## 7.1.0 - 2026-11-23
+
+- Expand Poteto Mode to 24 engineering principles and 22 task playbooks adapted from Cursor pstack. The agent opens the guides relevant to the request. Quick patches keep their direct path, and the public roster stays at 46 commands.
+- Ship the guides and their indexes with the Thai and English sources and both plugin payloads. Check the guide inventory, relative links and packaged content across all four distributions.
+- Update the 21 Claude Code agent definitions to Opus 5.5 and Sonnet 5.5, retain their role assignments, and regenerate the model tables in both READMEs. The optional session reflector now uses Sonnet 5.5.
+
 ## 7.0.0 - 2026-11-23
 
 - **Breaking change.** The former `code` workflow is now `/spk:poteto-mode` in Claude Code and `$spk:poteto-mode` in Codex. Update saved prompts and automations that call the retired command. The `start` router selects the new workflow for features, fixes, and refactors.

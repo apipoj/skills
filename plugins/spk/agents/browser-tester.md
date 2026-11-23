@@ -1,7 +1,7 @@
 ---
 name: browser-tester
 description: Browser-based UI smoke tests using the agent-browser skill. No Playwright install required.
-model: claude-sonnet-5
+model: claude-sonnet-5-5
 color: orange
 tools: Read, Bash
 permissionMode: default

@@ -382,7 +382,7 @@ describe('session-reflect-run.cjs (reflector)', () => {
           '--tools', '',
           '--no-session-persistence',
         ]);
-      expect(reflector.DEFAULT_REFLECT_MODEL).toBe('claude-sonnet-5');
+      expect(reflector.DEFAULT_REFLECT_MODEL).toBe('claude-sonnet-5-5');
       const review = fs.readFileSync(path.join(dir, reflector.REVIEW_FILE), 'utf-8');
       expect(review).toMatch(/REFLECTION BODY/);
     } finally {
