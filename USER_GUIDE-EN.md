@@ -1,6 +1,6 @@
 # Apipoj Skills User Guide
 
-This guide covers Apipoj Skills **v7.2.0** for Claude Code, Codex, and Agent Skills-compatible tools.
+This guide covers Apipoj Skills **v7.2.1** for Claude Code, Codex, and Agent Skills-compatible tools.
 
 For the canonical Thai guide, see [USER_GUIDE.md](USER_GUIDE.md).
 
@@ -74,7 +74,7 @@ The skill table uses two invocation states:
 Typed-only example:
 
 ```text
-/spk:check-release Check v7.2.0 readiness without committing, tagging, or publishing anything.
+/spk:check-release Check v7.2.1 readiness without committing, tagging, or publishing anything.
 ```
 
 On Codex, use `$spk:check-release` instead.

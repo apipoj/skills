@@ -642,6 +642,9 @@ function addSkillDependencyArtifacts(artifacts, repoRoot, skill) {
 
 function buildArtifactMap(contract, manifest, repoRoot = REPO_ROOT) {
   const artifacts = new Map();
+  for (const root of [PLUGIN_ROOT_RELATIVE, CODEX_PLUGIN_ROOT_RELATIVE]) {
+    artifacts.set(path.join(root, MANIFEST_RELATIVE), JSON.stringify(manifest, null, 2) + '\n');
+  }
   artifacts.set(CODEX_MANIFEST_RELATIVE, renderPluginManifest(contract, manifest));
   artifacts.set(MARKETPLACE_RELATIVE, renderMarketplace(contract));
   addCodexRuntimeArtifacts(artifacts, repoRoot);

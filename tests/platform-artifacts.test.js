@@ -261,7 +261,7 @@ describe('platform artifact compiler', () => {
     );
     const first = generatePlatformArtifacts({ repoRoot: fixture.root });
     expect(first.ok).toBe(true);
-    expect(first.written).toHaveLength(fixture.contract.skills.length * 3 + 4);
+    expect(first.written).toHaveLength(fixture.contract.skills.length * 3 + 6);
 
     expect(fs.readFileSync(
       path.join(fixture.root, 'plugins/spk/skills/start/UPSTREAM.md'),
@@ -333,6 +333,9 @@ describe('platform artifact compiler', () => {
     const plugin = JSON.parse(artifacts.get(CODEX_MANIFEST_RELATIVE));
     const marketplace = JSON.parse(artifacts.get(MARKETPLACE_RELATIVE));
 
+    for (const root of ['plugins/spk', CODEX_PLUGIN_ROOT_RELATIVE]) {
+      expect(JSON.parse(artifacts.get(path.join(root, 'manifest.json')))).toEqual(manifest);
+    }
     expect(plugin.name).toBe('spk');
     expect(plugin.version).toBe(manifest.version);
     expect(plugin.skills).toBe('./skills/');
