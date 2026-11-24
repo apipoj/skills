@@ -40,7 +40,8 @@ read its actual `SKILL.md`. Router summaries are orientation, not execution cont
    - ทำ idea หรือเรื่องที่ต้องตัดสินใจให้ชัด → `ask-me`, `asking`, `ask-with-docs`; เรื่องที่ตอบเองไม่ได้ต้องส่งให้ผู้เชี่ยวชาญที่ไม่อยู่ตรงหน้าตอบ → `to-questionnaire`
    - คำตอบก่อนหน้ายังไม่โดน หรือผู้ใช้บอกว่า "งง" → `wait-what`
    - อธิบายความสัมพันธ์ด้วยภาพ → `show-me`; สอนแนวคิดยากให้มือใหม่ด้วยบทเรียนภาพ → `eli5`
-   - สร้างวิธีตรวจ task, tests, spec หรือ skill ที่ใช้ซ้ำได้ รวมถึง invariant ที่ต้องการพิสูจน์ซ้ำ → `create-verification-skill`
+   - สร้างตัวตรวจ acceptance, test, spec หรือ skill → `create-verification-skill`; พิสูจน์ invariant ของโค้ด → `create-formal-verification-skill`
+   - ตรวจและแก้ comment หรือ suppression → `no-comments`; รีวิวอย่างเดียว → `code-review`
    - ทำ engineering plan → `plan`; สรุป discussion เป็น spec → `to-spec`
    - แตกงาน → `to-tickets`; งานใหญ่ที่ยังมีหมอก → `wayfinder`
    - implement, fix, refactor หรือ plan-and-implement → adaptive `poteto-mode`; ต้องการ strict RED-GREEN หรือ orchestration ตามความเสี่ยง → `tdd`

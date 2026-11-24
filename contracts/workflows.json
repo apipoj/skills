@@ -3597,32 +3597,32 @@
       "locales": {
         "en": {
           "displayName": "Create Verification Skill",
-          "description": "Create a reusable project-local verifier for task acceptance, tests, specs, skills, or formal verification of a code invariant. Record executed checks, failure controls, and coverage limits.",
+          "description": "Create a reusable project-local verifier for task acceptance, tests, specs, or skill behavior. Record executed checks, failure controls, and coverage limits.",
           "shortDescription": "Build reusable checks for tasks, specs, tests, and skills",
           "defaultPrompt": "Create a reusable verification skill for this project with evidence, safe cleanup, and an executed proof.",
           "triggers": [
             "Create a verification skill for this repository",
-            "Build reusable verification for task acceptance, specs, tests, or skills",
-            "Build a reusable model check for the retry invariant"
+            "Build reusable verification for task acceptance, specs, tests, or skills"
           ],
           "negativeTriggers": [
             "the user only asks to run existing tests once",
-            "the user requests only a code review or release check"
+            "the user requests only a code review or release check",
+            "model-check retries and leave a reusable verifier"
           ]
         },
         "th": {
           "displayName": "สร้าง skill ตรวจสอบงาน",
-          "description": "สร้าง verifier ที่รันซ้ำได้ในโปรเจกต์เพื่อตรวจ task, test, spec, skill หรือพิสูจน์ invariant ของโค้ด พร้อมหลักฐานจากการรันและขอบเขตที่ตรวจได้",
+          "description": "สร้าง verifier ที่รันซ้ำได้สำหรับ acceptance, test, spec หรือพฤติกรรม skill พร้อมหลักฐานจากการรันและขอบเขตที่ตรวจได้",
           "shortDescription": "สร้างวิธีตรวจ task, spec, tests และ skill ที่ใช้ซ้ำได้",
           "defaultPrompt": "สร้าง verification skill สำหรับโปรเจกต์นี้ พร้อมหลักฐาน cleanup ที่ปลอดภัย และผลจากการลองใช้จริง",
           "triggers": [
             "สร้าง verification skill ให้ repo นี้",
-            "ทำวิธีตรวจ task, spec, test script หรือ skill ที่ใช้ซ้ำได้",
-            "สร้าง verifier ที่พิสูจน์ซ้ำได้ว่า retry แล้วไม่ออกใบเสร็จซ้ำ"
+            "ทำวิธีตรวจ task, spec, test script หรือ skill ที่ใช้ซ้ำได้"
           ],
           "negativeTriggers": [
             "ผู้ใช้ขอรัน tests ที่มีอยู่ครั้งเดียว",
-            "ผู้ใช้ขอ code review หรือ release check อย่างเดียว"
+            "ผู้ใช้ขอ code review หรือ release check อย่างเดียว",
+            "สร้าง skill ตรวจทุกลำดับของ retry ภายในขอบเขตที่กำหนด"
           ]
         }
       },
@@ -3642,7 +3642,7 @@
         },
         {
           "phase": "prove",
-          "instruction": "Execute one mapped check per declared verification kind and a safe failure control; retain evidence after cleanup and label unrun coverage. For an invariant, map transitions to implementation, report bounds and assumptions, demonstrate a counterexample on a broken variant, and distinguish sampled tests from proof."
+          "instruction": "Execute one mapped check per declared verification kind and a safe failure control; retain evidence after cleanup and label unrun coverage."
         },
         {
           "phase": "handoff",
@@ -3847,6 +3847,170 @@
         "Read only; do not modify reports, instructions, checks, hooks, tools or global settings.",
         "Inspect only the selected session and relevant repository evidence; redact secrets and personal data.",
         "Prefer existing navigation and checks over duplicated guidance; do not infer unseen session history."
+      ],
+      "autonomyProfile": "afk_local"
+    },
+    {
+      "id": "no-comments",
+      "tier": "core",
+      "origin": {
+        "repository": "cursor/plugins",
+        "skill": "no-comments",
+        "commit": "7a583913eb1b8d1a0ee76753d1a2cf072e7b54f9"
+      },
+      "sources": {
+        "th": "skills/engineering/no-comments",
+        "en": "locales/en/skills/engineering/no-comments"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Clean up comments",
+          "description": "Review and clean up comments and suppressions in a scoped diff. Apply verified fixes, preserve external constraints, and check behavior in the same run.",
+          "shortDescription": "Clean up comments",
+          "defaultPrompt": "Clean up comments and suppressions in the current diff and verify each accepted change.",
+          "triggers": [
+            "clean up redundant comments in this diff",
+            "audit suppressions and fix the accepted findings"
+          ],
+          "negativeTriggers": [
+            "read-only review of comments",
+            "generate API documentation"
+          ]
+        },
+        "th": {
+          "displayName": "ตรวจและแก้ comment",
+          "description": "ตรวจและแก้ comment กับ suppression ใน diff ที่ขอ เก็บเหตุผลจากข้อกำหนดภายนอก และรัน check ยืนยันพฤติกรรมภายในรอบเดียว",
+          "shortDescription": "ตรวจและแก้ comment",
+          "defaultPrompt": "ตรวจและแก้ comment กับ suppression ใน diff นี้ แล้วตรวจผลของจุดที่แก้",
+          "triggers": [
+            "ขอ cleanup comment ที่ซ้ำใน diff",
+            "ตรวจ suppression แล้วแก้จุดที่ยืนยันได้"
+          ],
+          "negativeTriggers": [
+            "ขอรีวิว comment อย่างเดียว",
+            "ขอเขียน API docs"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": true
+      },
+      "effectLevel": "workspace_write",
+      "role": "no_comments_workflow",
+      "workflow": [
+        {
+          "phase": "scope",
+          "instruction": "Resolve the requested files or diff and record the baseline."
+        },
+        {
+          "phase": "review",
+          "instruction": "Use a focused reviewer to trace comment constraints and suppressions to evidence."
+        },
+        {
+          "phase": "apply",
+          "instruction": "Adjudicate each finding and apply only verified in-scope fixes."
+        },
+        {
+          "phase": "verify",
+          "instruction": "Exercise affected behavior and report edits, retained rationale and open findings."
+        }
+      ],
+      "artifacts": [
+        "scoped workspace diff",
+        "cleanup findings"
+      ],
+      "evidence": [
+        "accepted edits and preserved constraints",
+        "diagnostic or source evidence",
+        "post-edit check results and gaps"
+      ],
+      "guardrails": [
+        "Keep review-only requests read-only and stay inside the cleanup scope.",
+        "Preserve license notices, required directives and unresolved constraints.",
+        "Git, destructive and external effects require their own approval."
+      ],
+      "autonomyProfile": "afk_local"
+    },
+    {
+      "id": "create-formal-verification-skill",
+      "tier": "core",
+      "origin": {
+        "repository": "cursor/plugins",
+        "skill": "create-formal-verification-skill",
+        "commit": "7a583913eb1b8d1a0ee76753d1a2cf072e7b54f9"
+      },
+      "sources": {
+        "th": "skills/engineering/create-formal-verification-skill",
+        "en": "locales/en/skills/engineering/create-formal-verification-skill"
+      },
+      "locales": {
+        "en": {
+          "displayName": "Create formal verification skill",
+          "description": "Create a project-local formal verification skill for a code invariant. Map the property to source, run a proof or bounded model check, and verify detection with a broken variant.",
+          "shortDescription": "Create formal verification skill",
+          "defaultPrompt": "Build a reusable formal verifier for a high-impact invariant in this project.",
+          "triggers": [
+            "model-check retries and leave a reusable verifier",
+            "generate a formal verification skill to prove this invariant"
+          ],
+          "negativeTriggers": [
+            "generate a verifier of CLI acceptance examples",
+            "run the existing test suite once"
+          ]
+        },
+        "th": {
+          "displayName": "สร้าง skill พิสูจน์ invariant",
+          "description": "สร้าง skill สำหรับพิสูจน์ invariant ของโค้ดในโปรเจกต์ ผูกแบบจำลองกับ source ระบุขอบเขต และลองกรณีที่ทำให้เงื่อนไขพัง",
+          "shortDescription": "สร้าง skill พิสูจน์ invariant",
+          "defaultPrompt": "สร้าง verifier ที่ใช้ซ้ำได้สำหรับ invariant สำคัญของโปรเจกต์นี้",
+          "triggers": [
+            "สร้าง skill ตรวจทุกลำดับของ retry ภายในขอบเขตที่กำหนด",
+            "สร้าง formal verifier เพื่อพิสูจน์ invariant นี้"
+          ],
+          "negativeTriggers": [
+            "สร้าง verifier สำหรับตัวอย่าง acceptance ของ CLI",
+            "ขอรัน tests เดิมครั้งเดียว"
+          ]
+        }
+      },
+      "activation": {
+        "allowImplicitInvocation": true
+      },
+      "effectLevel": "workspace_write",
+      "role": "create_formal_verification_skill_workflow",
+      "workflow": [
+        {
+          "phase": "select",
+          "instruction": "Choose a high-impact property and trace its states and atomic steps to implementation."
+        },
+        {
+          "phase": "author",
+          "instruction": "Create a discoverable project-local verifier with a rerunnable check, explicit bounds and source mapping."
+        },
+        {
+          "phase": "exercise",
+          "instruction": "Run the baseline, a controlled broken variant and the restored baseline. Preserve counterexamples and incomplete outcomes."
+        },
+        {
+          "phase": "handoff",
+          "instruction": "Report the exact command, tool, assumptions, detected violations, source correspondence and exclusions."
+        }
+      ],
+      "artifacts": [
+        "project-local formal verification skill",
+        "model or proof and run evidence"
+      ],
+      "evidence": [
+        "property and implementation mapping",
+        "tool version, bounds and assumptions",
+        "baseline, counterexample and restored run",
+        "proof limits and source drift criteria"
+      ],
+      "guardrails": [
+        "Write verification artifacts only and keep product code intact.",
+        "Use disposable controls and retain genuine counterexamples.",
+        "Never claim a sampled or unfinished run proves the property.",
+        "Git, destructive and external effects require their own approval."
       ],
       "autonomyProfile": "afk_local"
     }

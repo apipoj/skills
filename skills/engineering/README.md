@@ -27,3 +27,6 @@
 
 - [`implement-spec`](./implement-spec/SKILL.md) — พัฒนาสเปกหลาย ticket ตาม dependency ด้วย worktree แยกและ integration branch พร้อมหลักฐานและ approval ของ Git/remote _(manual-only)_
 - [`retro`](./retro/SKILL.md) — ทบทวน session และเสนอวิธีปรับ environment จากหลักฐาน โดยไม่แก้ไฟล์ _(manual-only)_
+
+- [no-comments](no-comments/SKILL.md) — ตรวจและแก้ comment หรือ suppression ในรอบเดียว
+- [create-formal-verification-skill](create-formal-verification-skill/SKILL.md) — สร้างตัวพิสูจน์ invariant ที่รันซ้ำได้ในโปรเจกต์

@@ -32,6 +32,8 @@ For a quick patch, make the smallest justified change and verify the real surfac
 
 Apply the implementation loop below to code changes. For an investigation, plan, status check or pause, stop at that playbook's requested outcome. Operational playbooks can prepare a concrete intent and check evidence. Git, remote, destructive and deployment actions remain subject to the applicable workflow and exact approval. A request for one playbook does not start the next.
 
+For a scoped comment cleanup, select `no-comments`. For reusable proof of a code invariant, select `create-formal-verification-skill`.
+
 ## Ticket input
 
 If the user supplies a ticket reference, resolve it through the configured tracker

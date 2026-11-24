@@ -53,7 +53,8 @@ read its actual `SKILL.md`. Router summaries are orientation, not execution cont
    - create an engineering plan → `plan`; publish an existing discussion as a spec → `to-spec`
    - split work → `to-tickets`; map a large foggy effort → `wayfinder`
    - implement, fix, refactor, or plan-and-implement → adaptive `poteto-mode`; use strict red-green or risk-driven orchestration → `tdd`
-   - create reusable proof for a task, test, spec, skill, or code invariant → `create-verification-skill`
+   - create reusable acceptance, test, spec or skill checks → `create-verification-skill`; prove a code invariant → `create-formal-verification-skill`
+   - review and clean up comments or suppressions → `no-comments`; review only → `code-review`
    - investigate a failure → `debug`; review a diff → `code-review`; get fast test feedback → `test-changes`
    - answer a code-shape question → `prototype`; compare UI directions → `design-options`
    - improve module shape → `codebase-design` or `improve-codebase`

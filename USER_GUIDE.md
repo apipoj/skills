@@ -1,6 +1,6 @@
 # คู่มือผู้ใช้ Apipoj Skills
 
-คู่มือนี้ครอบคลุม Apipoj Skills **v7.1.0** สำหรับ Claude Code, Codex และเครื่องมือที่รองรับ Agent Skills
+คู่มือนี้ครอบคลุม Apipoj Skills **v7.2.0** สำหรับ Claude Code, Codex และเครื่องมือที่รองรับ Agent Skills
 
 อ่านฉบับภาษาอังกฤษได้ที่ [USER_GUIDE-EN.md](USER_GUIDE-EN.md)
 
@@ -12,7 +12,7 @@ Apipoj Skills คือชุด workflow สำหรับทำงาน soft
 - งานสำคัญต้องมีหลักฐาน เช่น test result, diff scope, risk และ next action
 - การแก้ไฟล์ไม่ได้แปลว่าอนุญาตให้ commit, push, deploy หรือ publish
 
-source tree นี้มี **46 skills** และเรียกใช้เป็น command ได้ทุกตัว
+source tree นี้มี **48 skills** และเรียกใช้เป็น command ได้ทุกตัว
 
 ## เริ่มใน 2 นาที
 
@@ -74,7 +74,7 @@ npx skills@latest add apipoj/skills
 ตัวอย่าง typed-only:
 
 ```text
-/spk:check-release ตรวจความพร้อม v7.1.0 โดยยังไม่ commit, tag หรือ publish
+/spk:check-release ตรวจความพร้อม v7.2.0 โดยยังไม่ commit, tag หรือ publish
 ```
 
 บน Codex ให้เปลี่ยนรูปแบบเป็น `$spk:check-release`
@@ -258,6 +258,7 @@ approval_required: <true|false>
 
 - `/spk:poteto-mode แก้ CLI แสดงยอดเงิน ลองแก้ padding สองครั้งแล้วยังพัง ช่วยตรวจว่า renderer ได้ค่าอะไรจริง`
 - `/spk:code-review ตรวจ comment ที่บอกว่าห้ามเปลี่ยนลำดับนี้ ไล่ดูว่า caller ไหนพึ่งมัน และเสนอ test ที่จับกรณีสลับลำดับได้`
-- `/spk:create-verification-skill สร้างตัวตรวจว่า retry งานเดียวกันแล้วออกใบเสร็จได้อย่างมากหนึ่งใบ ลองทุกลำดับภายใต้ขอบเขต worker สองตัว พร้อมแสดงลำดับที่ทำให้พังเมื่อเอา guard ออก`
+- `/spk:no-comments ตรวจและแก้ comment กับ suppression ใน diff นี้ เก็บข้อกำหนดของ vendor แล้วรัน checks ที่เกี่ยวข้อง`
+- `/spk:create-formal-verification-skill สร้างตัวตรวจว่า retry งานเดียวกันแล้วออกใบเสร็จได้อย่างมากหนึ่งใบ ลองทุกลำดับภายใต้ขอบเขต worker สองตัว พร้อมแสดงลำดับที่ทำให้พังเมื่อเอา guard ออก`
 
 สำหรับ source repo ของ SPK มี verifier ใน [.agents/skills/verify-spk/SKILL.md](.agents/skills/verify-spk/SKILL.md) พร้อม check map และ helper ที่เก็บหลักฐาน โดยแยก spec review และ behavioral skill checks ออกจาก static gates

@@ -32,7 +32,7 @@ for their reports before aggregating findings. A single review remains the defau
 
 ## Reviewing comments and suppressions
 
-For a comment-focused review, trace each claimed constraint to its caller, spec, or external contract. If correct behavior depends on someone remembering the comment, show a failing example and suggest the smallest type, assertion, or behavior test that would enforce it. For a suppression, identify the diagnostic it hides and whether the underlying condition can occur. Preserve license notices, tool directives, public API documentation and verified external rationale. An uncertain constraint stays visible with its evidence gap. Report file and line, consequence, and proposed change. A review request grants read-only scope.
+For a comment-focused review, trace each claimed constraint to its caller, spec, or external contract. If correct behavior depends on someone remembering the comment, show a failing example and suggest the smallest type, assertion, or behavior test that would enforce it. For a suppression, identify the diagnostic it hides and whether the underlying condition can occur. Preserve license notices, tool directives, public API documentation and verified external rationale. An uncertain constraint stays visible with its evidence gap. Report file and line, consequence, and proposed change. A review request grants read-only scope. For a request to apply the comment cleanup in the same run, select `no-comments`.
 
 ## Workflow
 
