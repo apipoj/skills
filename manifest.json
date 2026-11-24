@@ -1,6 +1,6 @@
 {
-  "version": "7.1.0",
-  "released": "2026-11-23",
+  "version": "7.2.0",
+  "released": "2026-11-24",
   "brand": "Apipoj Skills",
   "slug": "spk",
   "tagline": "Thai-first, ready-to-use engineering skills with evidence and safe defaults",
@@ -319,6 +319,14 @@
     },
     {
       "name": "/retro",
+      "direct": true
+    },
+    {
+      "name": "/no-comments",
+      "direct": true
+    },
+    {
+      "name": "/create-formal-verification-skill",
       "direct": true
     }
   ]

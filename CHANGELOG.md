@@ -1,5 +1,11 @@
 # Apipoj Skills
 
+## 7.2.0 - 2026-11-24
+
+- Add `/spk:no-comments` for reviewing and cleaning up comments and suppressions in one run. It verifies each accepted change and preserves required directives, licensing and external rationale. Use `/spk:code-review` for read-only findings.
+- Add `/spk:create-formal-verification-skill` for reusable invariant checks with source mapping, explicit bounds and a counterexample from a controlled broken variant. Use `/spk:create-verification-skill` for general acceptance, test, spec and skill verification.
+- Both commands ship in the Thai and English sources and in the Claude Code and Codex payloads. The router, user guides and SkillLab cases now cover 48 public commands. In Codex, invoke the new skills as `$spk:no-comments` and `$spk:create-formal-verification-skill`.
+
 ## 7.1.0 - 2026-11-23
 
 - Expand Poteto Mode to 24 engineering principles and 22 task playbooks adapted from Cursor pstack. The agent opens the guides relevant to the request. Quick patches keep their direct path, and the public roster stays at 46 commands.

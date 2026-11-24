@@ -136,7 +136,7 @@ describe('platform artifact compiler', () => {
         contract.skills.filter((skill) => skill.autonomyProfile === profile).length,
       ]),
     )).toEqual({
-      afk_local: 31,
+      afk_local: 33,
       afk_to_pr: 1,
       boundary_gated: 4,
       decision_aware: 10,
@@ -191,6 +191,8 @@ describe('platform artifact compiler', () => {
     expect(byId['check-wiki'].effectLevel).toBe('read_only');
 
     expect(byId['code-review'].effectLevel).toBe('read_only');
+    expect(byId['no-comments'].effectLevel).toBe('workspace_write');
+    expect(byId['create-formal-verification-skill'].effectLevel).toBe('workspace_write');
     expect(byId.debug.effectLevel).toBe('read_only');
 
     expect(byId['implement-spec'].activation.allowImplicitInvocation).toBe(false);

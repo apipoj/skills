@@ -1,11 +1,11 @@
 ---
 name: create-verification-skill
-description: สร้าง verifier ที่รันซ้ำได้ในโปรเจกต์เพื่อตรวจ task, test, spec, skill หรือพิสูจน์ invariant ของโค้ด พร้อมหลักฐานจากการรันและขอบเขตที่ตรวจได้
+description: สร้าง verifier ที่รันซ้ำได้สำหรับ acceptance, test, spec หรือพฤติกรรม skill พร้อมหลักฐานจากการรันและขอบเขตที่ตรวจได้
 ---
 
 # สร้าง skill ตรวจสอบงาน
 
-Create verification that a future agent can execute from a cold start. Cover only the requested work kinds present in the project: task acceptance, executable tests, spec review, skill validation, or a code invariant. A request to run existing checks once belongs to `test-changes`; present the manual `check-release` command for release-readiness checks.
+Create verification that a future agent can execute from a cold start. Cover only the requested work kinds present in the project: task acceptance, executable tests, spec review, or skill validation. A request to run existing checks once belongs to `test-changes`; present the manual `check-release` command for release-readiness checks.
 
 ## Response Rules
 
@@ -19,7 +19,7 @@ Reply in the user's language.
 
 Keep working without user input while the requested outcome remains inside current authority. Use a reversible smart default and record assumptions. Ask only when one material user-owned decision changes scope, risk, cost, or success, or when a required effect crosses an unapproved boundary.
 
-For a requested reusable invariant proof or model check, apply [formal verification](references/formal-verification.md) during discovery, generation and proof.
+For a reusable invariant proof or bounded model check, select `create-formal-verification-skill`.
 
 ## Workflow
 

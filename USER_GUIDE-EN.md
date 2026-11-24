@@ -1,6 +1,6 @@
 # Apipoj Skills User Guide
 
-This guide covers Apipoj Skills **v7.1.0** for Claude Code, Codex, and Agent Skills-compatible tools.
+This guide covers Apipoj Skills **v7.2.0** for Claude Code, Codex, and Agent Skills-compatible tools.
 
 For the canonical Thai guide, see [USER_GUIDE.md](USER_GUIDE.md).
 
@@ -12,7 +12,7 @@ Apipoj Skills is a Thai-first set of software workflows for working with AI from
 - Important work must return evidence such as test results, diff scope, risks, and a verifiable next action.
 - Editing files never silently authorizes a commit, push, deployment, or publication.
 
-This source tree contains **46 skills**, each available as a command.
+This source tree contains **48 skills**, each available as a command.
 
 ## Start in two minutes
 
@@ -74,7 +74,7 @@ The skill table uses two invocation states:
 Typed-only example:
 
 ```text
-/spk:check-release Check v7.1.0 readiness without committing, tagging, or publishing anything.
+/spk:check-release Check v7.2.0 readiness without committing, tagging, or publishing anything.
 ```
 
 On Codex, use `$spk:check-release` instead.
@@ -258,6 +258,7 @@ Example requests
 
 - `/spk:poteto-mode Fix the CLI total. Two padding changes failed the same snapshot. Check what the renderer actually receives.`
 - `/spk:code-review Trace the comment about preserving call order to the caller and suggest a test that catches a reversal.`
-- `/spk:create-verification-skill Build a reusable check that retrying one job issues at most one receipt. Explore every ordering for two workers and show a counterexample with the guard removed.`
+- `/spk:no-comments Review and clean up comments and suppressions in this diff, preserve the vendor constraint, and run the affected checks.`
+- `/spk:create-formal-verification-skill Build a reusable check that retrying one job issues at most one receipt. Explore every ordering for two workers and show a counterexample with the guard removed.`
 
 For the SPK source repository, [.agents/skills/verify-spk/SKILL.md](.agents/skills/verify-spk/SKILL.md) supplies the concrete check map and evidence-capturing helper. Semantic review and skill behavior remain separate from static gates.
