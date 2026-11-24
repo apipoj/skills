@@ -20,10 +20,6 @@ const {
 } = require('./session-reflect-run.cjs');
 
 const CANONICAL_SOURCE_IGNORE_RULES = Object.freeze(['*', '!.gitignore']);
-const EXPECTED_INVENTORY = Object.freeze({
-  sharedSkills: 22,
-  claudeAgents: 21,
-});
 const EXPECTED_HOOK_SCRIPTS = Object.freeze([]);
 
 function check(id, status, message, remediation) {
@@ -202,6 +198,7 @@ function inspectManifests(plugin) {
       'Reinstall the host-specific SPK package.'
     );
   }
+  present.push(['SPK', path.join(plugin, 'manifest.json')]);
   const inspected = present.map(([name, file]) => [name, readJsonFile(file)]);
   const invalid = inspected.filter(([, result]) => !result.ok);
   if (invalid.length > 0) {
@@ -268,18 +265,29 @@ function countClaudeAgents(plugin) {
 }
 
 function inspectInventory(plugin) {
+  const roster = readJsonFile(path.join(plugin, 'manifest.json')).value;
+  const commands = roster?.commands;
+  const orchestrators = roster?.agents?.orchestrators;
+  const specialists = roster?.agents?.specialists;
+  if (![commands, orchestrators, specialists].every(list => Array.isArray(list) && list.length > 0)) {
+    return check(
+      'plugin.inventory', 'fail', 'Packaged manifest.json is missing or has an invalid roster.',
+      'Reinstall the host-specific SPK package.'
+    );
+  }
+
   const skills = countSkillFolders(plugin);
   const agents = countClaudeAgents(plugin);
   const includesClaude = fs.existsSync(
     path.join(plugin, '.claude-plugin', 'plugin.json')
   );
-  const expectedAgents = includesClaude ? EXPECTED_INVENTORY.claudeAgents : 0;
-  const valid = skills === EXPECTED_INVENTORY.sharedSkills &&
+  const expectedAgents = includesClaude ? orchestrators.length + specialists.length : 0;
+  const valid = skills === commands.length &&
     agents === expectedAgents;
   return check(
     'plugin.inventory',
     valid ? 'pass' : 'fail',
-    `Bundled inventory: ${skills}/${EXPECTED_INVENTORY.sharedSkills} skills and ${agents}/${expectedAgents} Claude agent files.`,
+    `Bundled inventory: ${skills}/${commands.length} skills and ${agents}/${expectedAgents} Claude agent files.`,
     valid ? null : 'Reinstall SPK; the installed plugin payload is incomplete or from a mixed release.'
   );
 }
@@ -479,7 +487,6 @@ if (require.main === module) process.exitCode = main();
 module.exports = {
   CANONICAL_SOURCE_IGNORE_RULES,
   EXPECTED_HOOK_SCRIPTS,
-  EXPECTED_INVENTORY,
   commandVersion,
   countClaudeAgents,
   countSkillFolders,

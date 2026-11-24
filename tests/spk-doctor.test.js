@@ -18,13 +18,23 @@ function writePluginFixture(plugin, version = '3.5.0') {
     JSON.stringify({ name: 'spk', version })
   );
 
-  for (let index = 0; index < doctor.EXPECTED_INVENTORY.sharedSkills; index += 1) {
+  const roster = {
+    version,
+    commands: [{ name: '/skill-0' }, { name: '/skill-1' }, { name: '/skill-2' }],
+    agents: {
+      orchestrators: [{ name: 'agent-0' }],
+      specialists: [{ name: 'agent-1' }],
+    },
+  };
+  fs.writeFileSync(path.join(plugin, 'manifest.json'), JSON.stringify(roster));
+
+  for (let index = 0; index < roster.commands.length; index += 1) {
     const directory = path.join(plugin, 'skills', `skill-${index}`);
     fs.mkdirSync(directory, { recursive: true });
     fs.writeFileSync(path.join(directory, 'SKILL.md'), `# Skill ${index}\n`);
   }
   fs.mkdirSync(path.join(plugin, 'agents'), { recursive: true });
-  for (let index = 0; index < doctor.EXPECTED_INVENTORY.claudeAgents; index += 1) {
+  for (let index = 0; index < 2; index += 1) {
     fs.writeFileSync(path.join(plugin, 'agents', `agent-${index}.md`), `# Agent ${index}\n`);
   }
 
@@ -142,6 +152,19 @@ describe('SPK doctor', () => {
         codexFixture.root,
         codexFixture.plugin
       );
+    }
+  });
+
+  test('rejects missing and malformed packaged rosters', () => {
+    const { root, plugin } = fixture();
+    try {
+      const file = path.join(plugin, 'manifest.json');
+      fs.unlinkSync(file);
+      expect(doctor.inspectInventory(plugin).status).toBe('fail');
+      fs.writeFileSync(file, JSON.stringify({ commands: [] }));
+      expect(doctor.inspectInventory(plugin).status).toBe('fail');
+    } finally {
+      cleanup(root, plugin);
     }
   });
 
@@ -290,7 +313,7 @@ describe('SPK doctor', () => {
       }));
       expect(checkOf(report, 'plugin.inventory')).toEqual(expect.objectContaining({
         status: 'fail',
-        message: expect.stringContaining('21/22 skills'),
+        message: expect.stringContaining('2/3 skills'),
       }));
       expect(checkOf(report, 'plugin.hooks')).toEqual(expect.objectContaining({
         status: 'fail',

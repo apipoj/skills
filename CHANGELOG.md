@@ -1,5 +1,9 @@
 # Apipoj Skills
 
+## 7.2.1 - 2026-11-24
+
+- Fix the SPK doctor inventory check in Claude Code and Codex. Each plugin now ships the release manifest. Doctor reads its skill and agent counts and reports an installation error when the packaged roster is missing or the installed counts differ.
+
 ## 7.2.0 - 2026-11-24
 
 - Add `/spk:no-comments` for reviewing and cleaning up comments and suppressions in one run. It verifies each accepted change and preserves required directives, licensing and external rationale. Use `/spk:code-review` for read-only findings.
